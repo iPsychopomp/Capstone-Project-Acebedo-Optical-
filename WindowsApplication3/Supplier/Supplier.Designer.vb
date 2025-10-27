@@ -42,7 +42,7 @@ Partial Class Supplier
         Me.txtSearch = New System.Windows.Forms.TextBox()
         Me.btnEdit = New System.Windows.Forms.Button()
         Me.pnlBar = New System.Windows.Forms.Panel()
-        Me.Button1 = New System.Windows.Forms.Button()
+        Me.btnOrders = New System.Windows.Forms.Button()
         Me.Panel1 = New System.Windows.Forms.Panel()
         Me.PictureBox1 = New System.Windows.Forms.PictureBox()
         Me.Label1 = New System.Windows.Forms.Label()
@@ -199,7 +199,7 @@ Partial Class Supplier
         Me.txtSearch.Font = New System.Drawing.Font("Segoe UI", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.txtSearch.Location = New System.Drawing.Point(938, 16)
         Me.txtSearch.Name = "txtSearch"
-        Me.txtSearch.Size = New System.Drawing.Size(157, 32)
+        Me.txtSearch.Size = New System.Drawing.Size(157, 27)
         Me.txtSearch.TabIndex = 112
         '
         'btnEdit
@@ -222,7 +222,7 @@ Partial Class Supplier
         'pnlBar
         '
         Me.pnlBar.BackColor = System.Drawing.SystemColors.Control
-        Me.pnlBar.Controls.Add(Me.Button1)
+        Me.pnlBar.Controls.Add(Me.btnOrders)
         Me.pnlBar.Controls.Add(Me.btnAdd)
         Me.pnlBar.Controls.Add(Me.btnSearch)
         Me.pnlBar.Controls.Add(Me.txtSearch)
@@ -233,22 +233,22 @@ Partial Class Supplier
         Me.pnlBar.Size = New System.Drawing.Size(1207, 57)
         Me.pnlBar.TabIndex = 116
         '
-        'Button1
+        'btnOrders
         '
-        Me.Button1.BackColor = System.Drawing.Color.White
-        Me.Button1.FlatStyle = System.Windows.Forms.FlatStyle.Flat
-        Me.Button1.Font = New System.Drawing.Font("Segoe UI", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Button1.ForeColor = System.Drawing.Color.Black
-        Me.Button1.Image = CType(resources.GetObject("Button1.Image"), System.Drawing.Image)
-        Me.Button1.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft
-        Me.Button1.Location = New System.Drawing.Point(186, 12)
-        Me.Button1.Name = "Button1"
-        Me.Button1.Size = New System.Drawing.Size(103, 35)
-        Me.Button1.TabIndex = 115
-        Me.Button1.Text = "Orders"
-        Me.Button1.TextAlign = System.Drawing.ContentAlignment.MiddleRight
-        Me.ToolTip1.SetToolTip(Me.Button1, "Order Product/Order History")
-        Me.Button1.UseVisualStyleBackColor = False
+        Me.btnOrders.BackColor = System.Drawing.Color.White
+        Me.btnOrders.FlatStyle = System.Windows.Forms.FlatStyle.Flat
+        Me.btnOrders.Font = New System.Drawing.Font("Segoe UI", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.btnOrders.ForeColor = System.Drawing.Color.Black
+        Me.btnOrders.Image = CType(resources.GetObject("btnOrders.Image"), System.Drawing.Image)
+        Me.btnOrders.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft
+        Me.btnOrders.Location = New System.Drawing.Point(186, 12)
+        Me.btnOrders.Name = "btnOrders"
+        Me.btnOrders.Size = New System.Drawing.Size(103, 35)
+        Me.btnOrders.TabIndex = 115
+        Me.btnOrders.Text = "Orders"
+        Me.btnOrders.TextAlign = System.Drawing.ContentAlignment.MiddleRight
+        Me.ToolTip1.SetToolTip(Me.btnOrders, "Order Product/Order History")
+        Me.btnOrders.UseVisualStyleBackColor = False
         '
         'Panel1
         '
@@ -276,13 +276,13 @@ Partial Class Supplier
         Me.Label1.Font = New System.Drawing.Font("Segoe UI Semibold", 12.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.Label1.Location = New System.Drawing.Point(44, 12)
         Me.Label1.Name = "Label1"
-        Me.Label1.Size = New System.Drawing.Size(87, 28)
+        Me.Label1.Size = New System.Drawing.Size(71, 21)
         Me.Label1.TabIndex = 113
         Me.Label1.Text = "Supplier"
         '
         'Supplier
         '
-        Me.AutoScaleDimensions = New System.Drawing.SizeF(11.0!, 28.0!)
+        Me.AutoScaleDimensions = New System.Drawing.SizeF(9.0!, 21.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.ClientSize = New System.Drawing.Size(1207, 635)
         Me.Controls.Add(Me.pnlUsers)
@@ -321,7 +321,7 @@ Partial Class Supplier
     Friend WithEvents Column5 As System.Windows.Forms.DataGridViewTextBoxColumn
     Friend WithEvents Column6 As System.Windows.Forms.DataGridViewTextBoxColumn
     Friend WithEvents Column7 As System.Windows.Forms.DataGridViewTextBoxColumn
-    Friend WithEvents Button1 As System.Windows.Forms.Button
+    Friend WithEvents btnOrders As System.Windows.Forms.Button
     Friend WithEvents Panel1 As System.Windows.Forms.Panel
     Friend WithEvents PictureBox1 As System.Windows.Forms.PictureBox
     Friend WithEvents Label1 As System.Windows.Forms.Label

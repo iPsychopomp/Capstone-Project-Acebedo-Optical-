@@ -640,14 +640,10 @@ Public Class inventory
         Next
         
         If mainForm IsNot Nothing Then
-            ' Hide the MainForm (which contains this inventory form)
-            mainForm.Hide()
-            
             Dim supply As New Supplier()
-            
+
             ' When Supplier closes, show MainForm again
             AddHandler supply.FormClosed, Sub(s, ev)
-                                              mainForm.Show()
                                               ' Refresh inventory if needed
                                               Dim inv As inventory = Nothing
                                               For Each ctrl As Control In mainForm.pnlContainer.Controls
@@ -660,7 +656,7 @@ Public Class inventory
                                                   inv.SafeLoadProducts()
                                               End If
                                           End Sub
-            
+
             supply.TopMost = True
             supply.ShowDialog()
         End If

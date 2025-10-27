@@ -137,11 +137,12 @@ Public Class Supplier
             MessageBox.Show("Please select a row first.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error)
         End If
     End Sub
-    Private Sub Button1_Click(sender As Object, e As EventArgs) Handles Button1.Click
+    Private Sub btnOrders_Click(sender As Object, e As EventArgs) Handles btnOrders.Click
         Dim order As New OrderProduct()
-        AddHandler order.FormClosed, AddressOf OnAddRecordClosed
+        Me.Hide()
         order.TopMost = True
-        order.ShowDialog()
+        order.ShowDialog(Me)
+        Me.Show()
     End Sub
     Private Sub SupplierDGV_CellDoubleClick(sender As Object, e As DataGridViewCellEventArgs) Handles SupplierDGV.CellDoubleClick
         Try

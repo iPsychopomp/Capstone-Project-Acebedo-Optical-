@@ -870,9 +870,6 @@ Public Class OrderProduct
                     MsgBox("No delivery history because this order is cancelled.", vbInformation, "Order Cancelled")
                     Exit Sub
                 Else
-                    ' Hide OrderProduct form
-                    Me.Hide()
-
                     ' For all other statuses (including partial), show delivery history
                     Dim deliveryHistoryForm As New DeliverHistory(selectedOrderID, Me)
 
@@ -881,8 +878,9 @@ Public Class OrderProduct
                                                                    Me.Show()
                                                                End Sub
 
+                    Me.Hide()
                     deliveryHistoryForm.TopMost = True
-                    deliveryHistoryForm.ShowDialog()
+                    deliveryHistoryForm.ShowDialog(Me)
                 End If
             Catch ex As Exception
                 Me.Show()

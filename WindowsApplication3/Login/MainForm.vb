@@ -35,7 +35,7 @@ Public Class MainForm
     End Class
 
     Private Sub MainForm_Load(sender As Object, e As EventArgs) Handles MyBase.Load
-        Me.WindowState = FormWindowState.Normal
+        Me.WindowState = FormWindowState.Maximized
         Me.Bounds = Screen.PrimaryScreen.Bounds
         Me.KeyPreview = True
         tsButtons.Renderer = New CustomToolStripRenderer()

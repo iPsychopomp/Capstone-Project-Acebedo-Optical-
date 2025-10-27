@@ -212,7 +212,7 @@ Module usersModule
                 Exit Sub
             End Try
 
-            If MsgBox("Are you sure you want to archive this user account? The account will be hidden but not permanently deleted.", vbYesNo + vbQuestion, "Archive User") = vbYes Then
+            If MsgBox("Are you sure you want to Delete this user account?", vbYesNo + vbQuestion, "Archive User") = vbYes Then
                 Try
                     Call dbConn()
 

@@ -56,9 +56,9 @@ Public Class createTransactions
         cmbDiscount.SelectedItem = "N/A"
         cmbLensDisc.SelectedItem = "N/A"
 
-        ' Prevent manual edits on Total; it is computed
-        txtTotal.ReadOnly = True
-        txtTotal.TabStop = False
+        ' Allow manual edits on Total if needed
+        txtTotal.ReadOnly = False
+        txtTotal.TabStop = True
 
         ' Handle checkup payment mode
         If IsCheckupPayment Then

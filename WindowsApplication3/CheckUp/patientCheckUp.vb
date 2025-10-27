@@ -60,8 +60,6 @@ Public Class patientCheckUp
                 End If
                 doctorReader.Close()
 
-
-
             Else
                 ' Clear all fields if no record is found
                 lblPatientID.Text = ""
@@ -92,6 +90,7 @@ Public Class patientCheckUp
         End Try
         GC.Collect()
     End Sub
+
     Private Sub cleaner()
         For Each obj As Control In grpCheckUp.Controls
             If TypeOf obj Is TextBox Then
@@ -105,6 +104,7 @@ Public Class patientCheckUp
             End If
         Next
     End Sub
+
     Private Sub InsertAuditTrail(actionType As String, actionDetails As String, tableName As String, recordID As Integer)
         Try
             Dim auditSql As String = "INSERT INTO tbl_audit_trail (UserID, Username, ActionType, ActionDetails, TableName, RecordID, ActivityTime, ActivityDate) VALUES (?, ?, ?, ?, ?, ?, ?, ?)"
@@ -205,8 +205,6 @@ Public Class patientCheckUp
         End Try
     End Sub
 
-
-
     Private Sub LoadDoctorNames()
         Try
             Call dbConn()
@@ -298,6 +296,7 @@ Public Class patientCheckUp
             MessageBox.Show("Error searching for doctor: " & ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error)
         End Try
     End Sub
+
     Private Sub addCheckup_Load(sender As Object, e As EventArgs) Handles MyBase.Load
         LoadDoctorNames()
         SetupDoctorAutoComplete()
@@ -439,7 +438,6 @@ Public Class patientCheckUp
         End If
     End Sub
 
-
     Private Sub LoadPatientName(patientID As Integer)
         Try
             Call dbConn()
@@ -471,7 +469,6 @@ Public Class patientCheckUp
 
     Private Sub btnCancel_Click(sender As Object, e As EventArgs) Handles btnCancel.Click
         Me.Close()
-
     End Sub
 
     ' Ensure Remarks defaults to "N/A" on validation if left blank.
@@ -490,9 +487,5 @@ Public Class patientCheckUp
                     textControl.Text = "N/A"
                 End If
         End Select
-    End Sub
-
-    Private Sub grpCheckUp_Enter(sender As Object, e As EventArgs) Handles grpCheckUp.Enter
-
     End Sub
 End Class

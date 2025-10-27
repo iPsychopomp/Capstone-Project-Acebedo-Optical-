@@ -1,0 +1,175 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="WindowsApplication3.addCheckup" Collapsed="true">
+    <Position X="0.5" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAFAAICoEDAAAhEAQACgEEAiABD/ChEAAABBAAIAAYA=</HashCode>
+      <FileName>CheckUp\addCheckup.vb</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="WindowsApplication3.addPatient" Collapsed="true">
+    <Position X="2.25" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>EkEYwAQBEDAYgAOCUAiiQEACADD/sBgAAIgJCBoBBQM=</HashCode>
+      <FileName>PatientRecord\addPatient.vb</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="WindowsApplication3.addProduct" Collapsed="true">
+    <Position X="4" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAEAQIAAEjIAAAEAAACAAmAiAAIAABIAAAAAAAoAAQA=</HashCode>
+      <FileName>Inventory\addProduct.vb</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="WindowsApplication3.addUsers" Collapsed="true">
+    <Position X="5.75" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>EgEQQBQAEDAWAAEAFAGAAABCACDnIIAAACgBAApBABA=</HashCode>
+      <FileName>Users\addUsers.vb</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="WindowsApplication3.auditTrail" Collapsed="true">
+    <Position X="7.5" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAACAAAAAACACAAAACgAC4ZwAgAAAAABACAQI=</HashCode>
+      <FileName>Users\auditTrail.vb</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="WindowsApplication3.checkUp" Collapsed="true">
+    <Position X="0.5" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>ADABgAAiACAAAABAAACAAAACgAAoAogAAUAAAAACAII=</HashCode>
+      <FileName>CheckUp\checkUp.vb</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="WindowsApplication3.dashboard" Collapsed="true">
+    <Position X="2.25" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>ABQBBABAEGEAIEQAAACAAAACgQAAIAIBAEAAAAIAAQA=</HashCode>
+      <FileName>Dashboard\dashboard.vb</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="WindowsApplication3.GoogleDriveHelper" Collapsed="true">
+    <Position X="4" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAACAAAAAAAACAAAgCAAAAQAAAACAAAAAAAAA=</HashCode>
+      <FileName>GoogleDriveHelper.vb</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="WindowsApplication3.inventory" Collapsed="true">
+    <Position X="5.75" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAgAAAADAAAAIAACCAAAACwAC45wAhAQQAAAICAQY=</HashCode>
+      <FileName>Inventory\inventory.vb</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="WindowsApplication3.Login" Collapsed="true">
+    <Position X="7.5" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAgABAAEDAEAAQAgACAAEgCAAAASAABAEQAAABAAAA=</HashCode>
+      <FileName>login.vb</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="WindowsApplication3.MainForm" Collapsed="true">
+    <Position X="0.5" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>CFAkIACAgDwAOAKhgJCAEh2HEAAAIAiGAQBMUASEIAA=</HashCode>
+      <FileName>MainForm.vb</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="WindowsApplication3.patientRecord" Collapsed="true">
+    <Position X="5.75" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AgAAgAAgACAAAAAAAACAAAACgAC4R4ggAQAAAAICQAI=</HashCode>
+      <FileName>PatientRecord\patientRecord.vb</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="WindowsApplication3.reOrder" Collapsed="true">
+    <Position X="7.5" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>QAAAAAIAACAAAAEAAACAAEACAAC4AAAAAAAgAAAAAAA=</HashCode>
+      <FileName>Inventory\reOrder.vb</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="WindowsApplication3.stockIN" Collapsed="true">
+    <Position X="0.5" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAEAAAAAEDAAAAEQAICIIEgCAAC5B5AAiAACQQoAAQw=</HashCode>
+      <FileName>Inventory\stockIn.vb</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="WindowsApplication3.stockOUT" Collapsed="true">
+    <Position X="2.25" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAQAACEDAAAAGAAICIAUACCAA4BxABCAAAAAIAAQA=</HashCode>
+      <FileName>Inventory\stockOut.vb</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="WindowsApplication3.transaction" Collapsed="true">
+    <Position X="4" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>IAAAiEAAECAACAQAEACAAAACggAYgAgIAIAAgIACAAI=</HashCode>
+      <FileName>transaction.vb</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="WindowsApplication3.users" Collapsed="true">
+    <Position X="5.75" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAgAAAACAAAAAQAACAAAAChAA4x4AgAQAAAAICAQY=</HashCode>
+      <FileName>Users\users.vb</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="WindowsApplication3.My.MyApplication" Collapsed="true">
+    <Position X="2.25" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAIAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="WindowsApplication3.My.MySettings" Collapsed="true">
+    <Position X="4" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAQAABAAIAAABAABAAAAAAAAAAAAAAA=</HashCode>
+    </TypeIdentifier>
+  </Class>
+  <Module Name="WindowsApplication3.modAuditTrail" Collapsed="true">
+    <Position X="4" Y="4.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAIAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Users\AuditMod.vb</FileName>
+    </TypeIdentifier>
+  </Module>
+  <Module Name="WindowsApplication3.modData" Collapsed="true">
+    <Position X="5.75" Y="4.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAACIAAAAAAAAAAAAAAAAAAAQAACAAAAAAAAAAAAA=</HashCode>
+      <FileName>dataModule.vb</FileName>
+    </TypeIdentifier>
+  </Module>
+  <Module Name="WindowsApplication3.googleDrive" Collapsed="true">
+    <Position X="2.25" Y="4.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAIAAAAEAAAAACAAAAAAAAA=</HashCode>
+      <FileName>Backup\googleDrive.vb</FileName>
+    </TypeIdentifier>
+  </Module>
+  <Module Name="WindowsApplication3.GlobalVariables" Collapsed="true">
+    <Position X="0.5" Y="4.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AACAAAAAAAAAAAAgAAEAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>login.vb</FileName>
+    </TypeIdentifier>
+  </Module>
+  <Module Name="WindowsApplication3.My.MySettingsProperty" Collapsed="true">
+    <Position X="7.5" Y="4.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAgAAAAAAAAAA=</HashCode>
+    </TypeIdentifier>
+  </Module>
+  <Module Name="WindowsApplication3.My.Resources.Resources" Collapsed="true">
+    <Position X="0.5" Y="5.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAABEAAAAQAAAAAAAAAAAAAAAIA=</HashCode>
+    </TypeIdentifier>
+  </Module>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>

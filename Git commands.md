@@ -7,15 +7,18 @@ git init
 ```
 Creates a new local Git repository.
 
+
 ```bash
 git add .
 ```
 Stages all changes for the next commit.
 
+
 ```bash
 git commit -m "Initial commit"
 ```
 Saves a snapshot of your changes locally.
+
 
 ```bash
 git remote add origin https://github.com/username/repo-name.git
@@ -28,15 +31,18 @@ git branch -M main
 ```
 Renames the current branch to main, even if a branch named main already exists.
 
+
 ```bash
 git push -u origin main
 ```
 Push your commits to GitHub (main branch)
 
+
 ```bash
 git push
 ```
 The -u flag sets upstream tracking so future pushes only need git push.
+
 
 ```bash
 git pull origin main

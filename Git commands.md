@@ -1,7 +1,5 @@
 ## 🧩 1. Initialize Git
 
-Start version control in your project folder:
-
 ```bash
 git init
 ```

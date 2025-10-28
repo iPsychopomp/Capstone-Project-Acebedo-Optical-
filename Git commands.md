@@ -3,7 +3,7 @@
 ```bash
 git init
 ```
-## Creates a new local Git repository.
+### Creates a new local Git repository.
 
 &nbsp;
 

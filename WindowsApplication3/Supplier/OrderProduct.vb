@@ -109,7 +109,7 @@ Public Class OrderProduct
             ' Check if productID is already nullable by checking column definition
             Dim isNullable As Boolean = False
             Try
-                Using checkCmd As New Odbc.OdbcCommand("SELECT IS_NULLABLE FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_SCHEMA = DATABASE() AND TABLE_NAME = 'tbl_productOrder_items' AND COLUMN_NAME = 'productID'", conn)
+                Using checkCmd As New Odbc.OdbcCommand("SELECT IS_NULLABLE FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_SCHEMA = DATABASE() AND TABLE_NAME = 'tbl_productorder_items' AND COLUMN_NAME = 'productID'", conn)
                     Dim result = checkCmd.ExecuteScalar()
                     If result IsNot Nothing AndAlso result.ToString().ToUpper() = "YES" Then
                         isNullable = True
@@ -127,20 +127,22 @@ Public Class OrderProduct
 
             ' Drop the foreign key constraint that references tbl_products
             Try
-                Using dropFkCmd As New Odbc.OdbcCommand("ALTER TABLE tbl_productOrder_items DROP FOREIGN KEY tbl_productorder_items_ibfk_2", conn)
+                Using dropFkCmd As New Odbc.OdbcCommand("ALTER TABLE tbl_productorder_items DROP FOREIGN KEY tbl_productorder_items_ibfk_2", conn)
                     dropFkCmd.ExecuteNonQuery()
                 End Using
-            Catch
-                ' Ignore if constraint doesn't exist or has different name
+            Catch ex As Exception
+                ' Log the error but continue - constraint might not exist
+                Console.WriteLine("Could not drop FK constraint: " & ex.Message)
             End Try
 
             ' Make productID nullable
             Try
-                Using alterCmd As New Odbc.OdbcCommand("ALTER TABLE tbl_productOrder_items MODIFY COLUMN productID INT NULL", conn)
+                Using alterCmd As New Odbc.OdbcCommand("ALTER TABLE tbl_productorder_items MODIFY COLUMN productID INT NULL", conn)
                     alterCmd.ExecuteNonQuery()
                 End Using
-            Catch
-                ' Ignore if already nullable
+            Catch ex As Exception
+                ' Log the error
+                Console.WriteLine("Could not modify productID column: " & ex.Message)
             End Try
 
             schemaUpdated = True
@@ -385,17 +387,22 @@ Public Class OrderProduct
                 Exit Sub
             End If
 
-            ' Get productID from tbl_supplier_products (not from tbl_products)
-            Dim productID As Integer = GetSupplierProductID(selectedSupplierID, selectedProductName)
-
             ' Get price and category from tbl_supplier_products (supplier's catalog)
             Dim productCategory As String = GetSupplierItemCategory(selectedSupplierID, selectedProductName)
             Dim unitPrice As Decimal = GetSupplierItemUnitPrice(selectedSupplierID, selectedProductName)
 
             ' Validate that product exists in supplier catalog
-            If productID = 0 OrElse unitPrice = 0 Then
+            If unitPrice = 0 Then
                 MsgBox("Product not found in supplier catalog or missing price information.", vbExclamation, "Error")
                 Exit Sub
+            End If
+
+            ' Try to get productID from tbl_products (main inventory)
+            ' If not found, productID will be 0 (NULL in database)
+            Dim productID As Integer = 0
+            Dim productIDStr As String = GetProductID(selectedProductName)
+            If Not String.IsNullOrEmpty(productIDStr) Then
+                Integer.TryParse(productIDStr, productID)
             End If
 
             Dim selectedSupplier As String = GetSupplierNameByID(selectedSupplierID)

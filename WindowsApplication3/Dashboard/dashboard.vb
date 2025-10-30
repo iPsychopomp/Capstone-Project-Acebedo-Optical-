@@ -317,7 +317,7 @@ Public Class dashboard
         ' Keep profit as overall/all-time
         UpdateProfit(True)
 
-        lblDateRange.Text = "Showing: All-Time Data (Counts: Today)"
+        lblDateRange.Text = "Showing: All-Time Data"
     End Sub
     Private Function GetTotalProductsSold(Optional fromDate As Date? = Nothing, Optional toDate As Date? = Nothing, Optional showAll As Boolean = False) As Integer
         Dim totalSold As Integer = 0
@@ -415,10 +415,13 @@ Public Class dashboard
         End If
     End Sub
 
-    Private Sub UpdateCriticalStockCount()
+    Public Sub UpdateCriticalStockCount()
         Try
             Call dbConn()
-            Dim sql As String = "SELECT COUNT(*) FROM tbl_products WHERE stockQuantity <= reorderLevel"
+            ' Count items where:
+            ' 1. Stock is 0 (out of stock), OR
+            ' 2. reorderLevel > 0 AND stock is at/below reorder level
+            Dim sql As String = "SELECT COUNT(*) FROM tbl_products WHERE stockQuantity = 0 OR (reorderLevel > 0 AND stockQuantity > 0 AND stockQuantity <= reorderLevel)"
             Using cmd As New Odbc.OdbcCommand(sql, conn)
                 Dim count As Object = cmd.ExecuteScalar()
                 If count IsNot Nothing Then
@@ -429,6 +432,8 @@ Public Class dashboard
             End Using
         Catch ex As Exception
             lblCritical.Text = "--"
+            ' Log error for debugging
+            Console.WriteLine("UpdateCriticalStockCount Error: " & ex.Message)
         Finally
             If conn.State = ConnectionState.Open Then conn.Close()
         End Try
@@ -551,6 +556,14 @@ Public Class dashboard
     End Sub
 
     Private Sub pnlPatients_Paint(sender As Object, e As PaintEventArgs) Handles pnlPatients.Paint
+
+    End Sub
+
+    Private Sub Label1_Click(sender As Object, e As EventArgs) Handles Label1.Click
+
+    End Sub
+
+    Private Sub lblDateRange_Click(sender As Object, e As EventArgs) Handles lblDateRange.Click
 
     End Sub
 End Class

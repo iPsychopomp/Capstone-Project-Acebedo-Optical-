@@ -63,6 +63,7 @@ Partial Class createTransactions
         Me.Label10 = New System.Windows.Forms.Label()
         Me.cmbLensDisc = New System.Windows.Forms.ComboBox()
         Me.Label3 = New System.Windows.Forms.Label()
+        Me.rbItems = New System.Windows.Forms.RadioButton()
         CType(Me.dgvSelectedProducts, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.numQuantity, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.Panel1.SuspendLayout()
@@ -212,7 +213,7 @@ Partial Class createTransactions
         '
         Me.rbonly.AutoSize = True
         Me.rbonly.Font = New System.Drawing.Font("Segoe UI", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.rbonly.Location = New System.Drawing.Point(183, 542)
+        Me.rbonly.Location = New System.Drawing.Point(37, 577)
         Me.rbonly.Name = "rbonly"
         Me.rbonly.Size = New System.Drawing.Size(152, 29)
         Me.rbonly.TabIndex = 179
@@ -239,7 +240,7 @@ Partial Class createTransactions
         Me.cmbMode.Font = New System.Drawing.Font("Segoe UI", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.cmbMode.FormattingEnabled = True
         Me.cmbMode.Items.AddRange(New Object() {"G-cash", "Cash"})
-        Me.cmbMode.Location = New System.Drawing.Point(36, 607)
+        Me.cmbMode.Location = New System.Drawing.Point(36, 679)
         Me.cmbMode.Name = "cmbMode"
         Me.cmbMode.Size = New System.Drawing.Size(266, 33)
         Me.cmbMode.TabIndex = 181
@@ -248,7 +249,7 @@ Partial Class createTransactions
         '
         Me.Label12.AutoSize = True
         Me.Label12.Font = New System.Drawing.Font("Segoe UI", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Label12.Location = New System.Drawing.Point(32, 584)
+        Me.Label12.Location = New System.Drawing.Point(32, 656)
         Me.Label12.Name = "Label12"
         Me.Label12.Size = New System.Drawing.Size(164, 25)
         Me.Label12.TabIndex = 180
@@ -497,11 +498,24 @@ Partial Class createTransactions
         Me.Label3.TabIndex = 202
         Me.Label3.Text = "Lens Discount:"
         '
+        'rbItems
+        '
+        Me.rbItems.AutoSize = True
+        Me.rbItems.Font = New System.Drawing.Font("Segoe UI", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.rbItems.Location = New System.Drawing.Point(36, 612)
+        Me.rbItems.Name = "rbItems"
+        Me.rbItems.Size = New System.Drawing.Size(119, 29)
+        Me.rbItems.TabIndex = 234
+        Me.rbItems.TabStop = True
+        Me.rbItems.Text = "Items only"
+        Me.rbItems.UseVisualStyleBackColor = True
+        '
         'createTransactions
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(11.0!, 28.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.ClientSize = New System.Drawing.Size(687, 789)
+        Me.Controls.Add(Me.rbItems)
         Me.Controls.Add(Me.Label3)
         Me.Controls.Add(Me.cmbLensDisc)
         Me.Controls.Add(Me.Panel1)
@@ -588,4 +602,5 @@ Partial Class createTransactions
     Friend WithEvents Label10 As System.Windows.Forms.Label
     Friend WithEvents cmbLensDisc As System.Windows.Forms.ComboBox
     Friend WithEvents Label3 As System.Windows.Forms.Label
+    Friend WithEvents rbItems As System.Windows.Forms.RadioButton
 End Class

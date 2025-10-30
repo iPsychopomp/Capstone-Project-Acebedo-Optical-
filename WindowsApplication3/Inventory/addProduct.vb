@@ -123,6 +123,9 @@ Public Class addProduct
                         inventoryForm.productDGV.Refresh()
                     End If
 
+                    ' Update critical stock count on dashboard
+                    UpdateDashboardCriticalCount()
+
                     cmd.Dispose()
                 Catch ex As Exception
                     MsgBox("Error: " & ex.Message, vbCritical, "Database Error")
@@ -563,5 +566,23 @@ Public Class addProduct
                 e.Handled = True
             End If
         End If
+    End Sub
+
+    Private Sub UpdateDashboardCriticalCount()
+        ' Find dashboard form in MainForm container and update critical count
+        Try
+            Dim mainForm As MainForm = CType(Application.OpenForms("MainForm"), MainForm)
+            If mainForm IsNot Nothing Then
+                For Each ctrl As Control In mainForm.pnlContainer.Controls
+                    If TypeOf ctrl Is dashboard Then
+                        Dim dash As dashboard = DirectCast(ctrl, dashboard)
+                        dash.UpdateCriticalStockCount()
+                        Exit For
+                    End If
+                Next
+            End If
+        Catch ex As Exception
+            ' Silently fail if dashboard is not open
+        End Try
     End Sub
 End Class

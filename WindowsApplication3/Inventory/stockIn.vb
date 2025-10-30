@@ -192,6 +192,9 @@
                     End If
                 Next
 
+                ' Update critical stock count on dashboard
+                UpdateDashboardCriticalCount()
+
                 ' Ask if user wants to add more items, but don't close automatically
                 If MsgBox("Do you want to add more item?", vbQuestion + vbYesNo, "Stock In") = vbYes Then
                     ' User wants to add more, just clear the form
@@ -271,6 +274,24 @@
             MsgBox("Error retrieving unit price: " & ex.Message, vbCritical, "Error")
         Finally
             conn.Close()
+        End Try
+    End Sub
+
+    Private Sub UpdateDashboardCriticalCount()
+        ' Find dashboard form in MainForm container and update critical count
+        Try
+            Dim mainForm As MainForm = CType(Application.OpenForms("MainForm"), MainForm)
+            If mainForm IsNot Nothing Then
+                For Each ctrl As Control In mainForm.pnlContainer.Controls
+                    If TypeOf ctrl Is dashboard Then
+                        Dim dash As dashboard = DirectCast(ctrl, dashboard)
+                        dash.UpdateCriticalStockCount()
+                        Exit For
+                    End If
+                Next
+            End If
+        Catch ex As Exception
+            ' Silently fail if dashboard is not open
         End Try
     End Sub
 

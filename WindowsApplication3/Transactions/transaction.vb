@@ -171,22 +171,30 @@ Public Class Transaction
     Private Sub ComputeTransactionTotals()
         Dim totalPending As Decimal = 0
         Dim totalAmount As Decimal = 0
+        Dim pesoSign As String = ChrW(&H20B1) ' Unicode character for Peso sign
 
         For Each row As DataGridViewRow In transactionDGV.Rows
             If Not row.IsNewRow Then
                 Dim pendingVal As Decimal = 0
                 Dim totalVal As Decimal = 0
 
-                Decimal.TryParse(row.Cells("Column9").Value.ToString(), pendingVal)
-                Decimal.TryParse(row.Cells("Column3").Value.ToString(), totalVal)
+                Dim pendingStr As String = row.Cells("Column9").Value.ToString()
+                Dim totalStr As String = row.Cells("Column3").Value.ToString()
+                
+                ' Remove peso sign if present before parsing
+                pendingStr = pendingStr.Replace(pesoSign, "").Replace(",", "").Trim()
+                totalStr = totalStr.Replace(pesoSign, "").Replace(",", "").Trim()
+
+                Decimal.TryParse(pendingStr, pendingVal)
+                Decimal.TryParse(totalStr, totalVal)
 
                 totalPending += pendingVal
                 totalAmount += totalVal
             End If
         Next
 
-        txtPending.Text = totalPending.ToString("N2")
-        txtAmountTotal.Text = totalAmount.ToString("N2")
+        txtPending.Text = pesoSign & totalPending.ToString("#,##0.00")
+        txtAmountTotal.Text = pesoSign & totalAmount.ToString("#,##0.00")
     End Sub
     Private Sub rbPending_Click(sender As Object, e As EventArgs) Handles rbPending.Click
         HandleRadioButtonFilter(rbPending, "Pending")
@@ -402,5 +410,42 @@ Public Class Transaction
 
     Private Sub pnlTrans_Paint(sender As Object, e As PaintEventArgs) Handles pnlTrans.Paint
 
+    End Sub
+
+    ' Event handler to format amount columns with peso sign
+    Private Sub transactionDGV_CellFormatting(sender As Object, e As DataGridViewCellFormattingEventArgs) Handles transactionDGV.CellFormatting
+        Try
+            Dim colName As String = transactionDGV.Columns(e.ColumnIndex).Name
+            Dim pesoSign As String = ChrW(&H20B1) ' Unicode character for Peso sign
+
+            ' Format Amount Paid column (Column6)
+            If colName = "Column6" OrElse colName = "amountPaid" Then
+                If e.Value IsNot Nothing AndAlso Not IsDBNull(e.Value) AndAlso IsNumeric(e.Value) Then
+                    Dim amount As Decimal = Convert.ToDecimal(e.Value)
+                    e.Value = pesoSign & amount.ToString("#,##0.00")
+                    e.FormattingApplied = True
+                End If
+            End If
+
+            ' Format Balance column (Column9)
+            If colName = "Column9" OrElse colName = "pendingBalance" Then
+                If e.Value IsNot Nothing AndAlso Not IsDBNull(e.Value) AndAlso IsNumeric(e.Value) Then
+                    Dim balance As Decimal = Convert.ToDecimal(e.Value)
+                    e.Value = pesoSign & balance.ToString("#,##0.00")
+                    e.FormattingApplied = True
+                End If
+            End If
+
+            ' Format Total Amount column (Column3)
+            If colName = "Column3" OrElse colName = "totalPayment" Then
+                If e.Value IsNot Nothing AndAlso Not IsDBNull(e.Value) AndAlso IsNumeric(e.Value) Then
+                    Dim total As Decimal = Convert.ToDecimal(e.Value)
+                    e.Value = pesoSign & total.ToString("#,##0.00")
+                    e.FormattingApplied = True
+                End If
+            End If
+        Catch ex As Exception
+            ' Ignore formatting errors
+        End Try
     End Sub
 End Class

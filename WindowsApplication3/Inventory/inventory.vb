@@ -102,7 +102,7 @@ Public Class inventory
 
             Dim hasDiscount As Boolean = ColumnExists("tbl_products", "discount")
 
-            ' SQL query to get all products, with low-stock items first
+            ' SQL query to get all products, with low-stock items first (including out of stock items)
             Dim selectCore As String
             If hasDiscount Then
                 selectCore = _
@@ -110,17 +110,17 @@ Public Class inventory
                     "p.unitPrice, CONCAT(ROUND(p.discount * 100, 2), '%') AS discount, " & _
                     "CASE WHEN p.discount > 0 THEN ROUND(p.unitPrice * (1 - p.discount), 2) ELSE NULL END AS discountedPrice, " & _
                     "p.reorderLevel, s.supplierName, p.dateAdded, " & _
-                    "CASE WHEN p.stockQuantity <= p.reorderLevel THEN 1 ELSE 0 END AS isLowStock " & _
+                    "CASE WHEN p.stockQuantity = 0 OR (p.reorderLevel > 0 AND p.stockQuantity > 0 AND p.stockQuantity <= p.reorderLevel) THEN 1 ELSE 0 END AS isLowStock " & _
                     "FROM tbl_products p LEFT JOIN tbl_suppliers s ON s.supplierID = p.supplierID " & _
-                    "ORDER BY isLowStock DESC, p.productName ASC"
+                    "ORDER BY isLowStock DESC, p.stockQuantity ASC, p.productName ASC"
             Else
                 selectCore = _
                     "SELECT p.productID, p.productName, p.category, p.stockQuantity, p.description, " & _
                     "p.unitPrice, '0%' AS discount, NULL AS discountedPrice, " & _
                     "p.reorderLevel, s.supplierName, p.dateAdded, " & _
-                    "CASE WHEN p.stockQuantity <= p.reorderLevel THEN 1 ELSE 0 END AS isLowStock " & _
+                    "CASE WHEN p.stockQuantity = 0 OR (p.reorderLevel > 0 AND p.stockQuantity > 0 AND p.stockQuantity <= p.reorderLevel) THEN 1 ELSE 0 END AS isLowStock " & _
                     "FROM tbl_products p LEFT JOIN tbl_suppliers s ON s.supplierID = p.supplierID " & _
-                    "ORDER BY isLowStock DESC, p.productName ASC"
+                    "ORDER BY isLowStock DESC, p.stockQuantity ASC, p.productName ASC"
             End If
 
             productDGV.AutoGenerateColumns = True
@@ -141,11 +141,15 @@ Public Class inventory
             Dim timer As New Timer()
             timer.Interval = 100
             AddHandler timer.Tick, Sub()
+                                       FormatColumns()
                                        EnsureStableColumnOrder()
                                        timer.Stop()
                                        timer.Dispose()
                                    End Sub
             timer.Start()
+
+            ' Force refresh to trigger RowPrePaint events for red highlighting
+            productDGV.Refresh()
 
             ' Focus on the first low-stock item if exists
             If productDGV.Rows.Count > 0 Then
@@ -227,6 +231,7 @@ Public Class inventory
             Dim timer As New Timer()
             timer.Interval = 100 ' 100ms delay
             AddHandler timer.Tick, Sub()
+                                       FormatColumns()
                                        EnsureStableColumnOrder()
                                        timer.Stop()
                                        timer.Dispose()
@@ -253,12 +258,17 @@ Public Class inventory
                 Dim reorderLevel As Integer = 0
 
                 ' Try to get values - check if columns exist first
+                ' Check both auto-generated column names and designer column names
                 If productDGV.Columns.Contains("stockQuantity") AndAlso row.Cells("stockQuantity").Value IsNot Nothing Then
                     Integer.TryParse(row.Cells("stockQuantity").Value.ToString(), stockQuantity)
+                ElseIf productDGV.Columns.Contains("Column3") AndAlso row.Cells("Column3").Value IsNot Nothing Then
+                    Integer.TryParse(row.Cells("Column3").Value.ToString(), stockQuantity)
                 End If
 
                 If productDGV.Columns.Contains("reorderLevel") AndAlso row.Cells("reorderLevel").Value IsNot Nothing Then
                     Integer.TryParse(row.Cells("reorderLevel").Value.ToString(), reorderLevel)
+                ElseIf productDGV.Columns.Contains("Column8") AndAlso row.Cells("Column8").Value IsNot Nothing Then
+                    Integer.TryParse(row.Cells("Column8").Value.ToString(), reorderLevel)
                 End If
 
                 ' Highlight row in red if stock is at or below reorder level
@@ -319,10 +329,17 @@ Public Class inventory
                 productDGV.Columns("description").Width = 150
             End If
 
+            ' Format Unit Price column (check both auto-generated and designer names)
             If productDGV.Columns.Contains("unitPrice") Then
                 productDGV.Columns("unitPrice").HeaderText = "Unit Price"
-                productDGV.Columns("unitPrice").DefaultCellStyle.Format = "C2"
+                productDGV.Columns("unitPrice").DefaultCellStyle.Format = "₱#,##0.00"
+                productDGV.Columns("unitPrice").DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleRight
                 productDGV.Columns("unitPrice").Width = 100
+            End If
+
+            ' Also check for Column5 (designer name for unitPrice)
+            If productDGV.Columns.Contains("Column5") Then
+                productDGV.Columns("Column5").DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleRight
             End If
 
             If productDGV.Columns.Contains("discount") Then
@@ -330,11 +347,18 @@ Public Class inventory
                 productDGV.Columns("discount").Width = 80
             End If
 
+            ' Format Discounted Price column (check both auto-generated and designer names)
             If productDGV.Columns.Contains("discountedPrice") Then
                 productDGV.Columns("discountedPrice").HeaderText = "Discounted Price"
-                productDGV.Columns("discountedPrice").DefaultCellStyle.Format = "C2"
+                productDGV.Columns("discountedPrice").DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleRight
                 productDGV.Columns("discountedPrice").DefaultCellStyle.NullValue = ""
                 productDGV.Columns("discountedPrice").Width = 120
+            End If
+
+            ' Also check for Column12 (designer name for discountedPrice)
+            If productDGV.Columns.Contains("Column12") Then
+                productDGV.Columns("Column12").DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleRight
+                productDGV.Columns("Column12").DefaultCellStyle.NullValue = ""
             End If
 
             If productDGV.Columns.Contains("reorderLevel") Then
@@ -638,7 +662,7 @@ Public Class inventory
                 Exit For
             End If
         Next
-        
+
         If mainForm IsNot Nothing Then
             Dim supply As New Supplier()
 
@@ -662,10 +686,23 @@ Public Class inventory
         End If
     End Sub
 
-    ' Event handler to format discounted price column
+    ' Event handler to format price columns with peso sign
     Private Sub ProductDGV_CellFormatting(sender As Object, e As DataGridViewCellFormattingEventArgs)
         Try
-            If productDGV.Columns(e.ColumnIndex).Name = "discountedPrice" Then
+            Dim colName As String = productDGV.Columns(e.ColumnIndex).Name
+            Dim pesoSign As String = ChrW(&H20B1) ' Unicode character for Peso sign
+
+            ' Format Unit Price column (both auto-generated and designer names)
+            If colName = "unitPrice" OrElse colName = "Column5" Then
+                If e.Value IsNot Nothing AndAlso Not IsDBNull(e.Value) AndAlso IsNumeric(e.Value) Then
+                    Dim price As Decimal = Convert.ToDecimal(e.Value)
+                    e.Value = pesoSign & price.ToString("#,##0.00")
+                    e.FormattingApplied = True
+                End If
+            End If
+
+            ' Format Discounted Price column (both auto-generated and designer names)
+            If colName = "discountedPrice" OrElse colName = "Column12" Then
                 ' Handle NULL values (no discount) by showing empty string
                 If e.Value Is Nothing OrElse IsDBNull(e.Value) Then
                     e.Value = ""
@@ -674,6 +711,9 @@ Public Class inventory
                     Dim discountedPrice As Decimal = Convert.ToDecimal(e.Value)
                     If discountedPrice = 0 Then
                         e.Value = ""
+                        e.FormattingApplied = True
+                    Else
+                        e.Value = pesoSign & discountedPrice.ToString("#,##0.00")
                         e.FormattingApplied = True
                     End If
                 End If

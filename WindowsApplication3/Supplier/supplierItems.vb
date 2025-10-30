@@ -222,9 +222,16 @@ Public Class supplierItems
             dt.Columns.Add("status", GetType(String))
             'dt.Columns.Add("supplierName", GetType(String))
 
-            ' 1) Load from tbl_supplier_products
-            Dim q1 As String = "SELECT sp.sProductID, sp.product_name, sp.category, sp.description, sp.product_price, sp.status " & _
+            ' 1) Load from tbl_supplier_products with inventory stock check
+            ' Join with tbl_products to check if item exists in inventory and its quantity
+            ' If quantity = 0, set status to "Inactive", otherwise keep original status
+            Dim q1 As String = "SELECT sp.sProductID, sp.product_name, sp.category, sp.description, sp.product_price, " & _
+                               "CASE " & _
+                               "  WHEN p.productID IS NOT NULL AND p.stockQuantity = 0 THEN 'Inactive' " & _
+                               "  ELSE COALESCE(sp.status, 'Active') " & _
+                               "END AS status " & _
                                "FROM tbl_supplier_products sp " & _
+                               "LEFT JOIN tbl_products p ON UPPER(TRIM(p.productName)) = UPPER(TRIM(sp.product_name)) " & _
                                If(SupplierIdFilter > 0, "WHERE sp.supplierID = ? ", "") & _
                                "ORDER BY sp.product_name"
 
@@ -238,8 +245,7 @@ Public Class supplierItems
                         row("category") = r1("category").ToString()
                         row("description") = r1("description").ToString()
                         row("product_price") = If(IsDBNull(r1("product_price")), 0D, Convert.ToDecimal(r1("product_price")))
-                        row("status") = If(IsDBNull(r1("status")), "", r1("status").ToString())
-                        'row("supplierName") = If(IsDBNull(r1("supplierName")), "", r1("supplierName").ToString())
+                        row("status") = If(IsDBNull(r1("status")), "Active", r1("status").ToString())
                         dt.Rows.Add(row)
                     End While
                 End Using
@@ -254,7 +260,10 @@ Public Class supplierItems
             ' Format columns
             If dgv.Columns.Contains("sProductID") Then dgv.Columns("sProductID").HeaderText = "Product ID"
             If dgv.Columns.Contains("product_name") Then dgv.Columns("product_name").HeaderText = "Product Name"
-            If dgv.Columns.Contains("product_price") Then dgv.Columns("product_price").DefaultCellStyle.Format = "C2"
+            If dgv.Columns.Contains("product_price") Then
+                dgv.Columns("product_price").HeaderText = "Product Price"
+                dgv.Columns("product_price").DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleRight
+            End If
 
             If conn.State = ConnectionState.Open Then conn.Close()
 
@@ -299,8 +308,13 @@ Public Class supplierItems
                 If dgv Is Nothing Then Return
 
                 Dim sb As New System.Text.StringBuilder()
-                sb.Append("SELECT sp.sProductID, sp.product_name, sp.category, sp.description, sp.product_price, sp.status ")
+                sb.Append("SELECT sp.sProductID, sp.product_name, sp.category, sp.description, sp.product_price, ")
+                sb.Append("CASE ")
+                sb.Append("  WHEN p.productID IS NOT NULL AND p.stockQuantity = 0 THEN 'Inactive' ")
+                sb.Append("  ELSE COALESCE(sp.status, 'Active') ")
+                sb.Append("END AS status ")
                 sb.Append("FROM tbl_supplier_products sp ")
+                sb.Append("LEFT JOIN tbl_products p ON UPPER(TRIM(p.productName)) = UPPER(TRIM(sp.product_name)) ")
                 sb.Append("WHERE sp.product_name LIKE ? ")
                 If SupplierIdFilter > 0 Then
                     sb.Append("AND sp.supplierID = ? ")
@@ -318,7 +332,9 @@ Public Class supplierItems
                         adapter.Fill(dt)
                         dgv.DataSource = dt
                         If dgv.Columns.Contains("sProductID") Then dgv.Columns("sProductID").Visible = False
-                        If dgv.Columns.Contains("product_price") Then dgv.Columns("product_price").DefaultCellStyle.Format = "C2"
+                        If dgv.Columns.Contains("product_price") Then
+                            dgv.Columns("product_price").DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleRight
+                        End If
                     End Using
                 End Using
             End If
@@ -339,6 +355,44 @@ Public Class supplierItems
             End Try
         End Try
         DgvStyle(FindDataGridView())
+    End Sub
+
+    ' Event handler to format product price column with peso sign and status column with colors
+    Private Sub supplierItemDGV_CellFormatting(sender As Object, e As DataGridViewCellFormattingEventArgs) Handles supplierItemDGV.CellFormatting
+        Try
+            Dim dgv As DataGridView = DirectCast(sender, DataGridView)
+            Dim colName As String = dgv.Columns(e.ColumnIndex).Name
+
+            ' Format product price with peso sign
+            If colName = "product_price" OrElse colName = "Column3" Then
+                If e.Value IsNot Nothing AndAlso Not IsDBNull(e.Value) AndAlso IsNumeric(e.Value) Then
+                    Dim price As Decimal = Convert.ToDecimal(e.Value)
+                    Dim pesoSign As String = ChrW(&H20B1) ' Unicode character for Peso sign
+                    e.Value = pesoSign & price.ToString("#,##0.00")
+                    e.FormattingApplied = True
+                End If
+            End If
+
+            ' Format status column with colors
+            If colName = "status" Then
+                If e.Value IsNot Nothing AndAlso Not IsDBNull(e.Value) Then
+                    Dim statusText As String = e.Value.ToString().Trim()
+
+                    ' Color coding based on status
+                    If statusText.Equals("Inactive", StringComparison.OrdinalIgnoreCase) Then
+                        e.CellStyle.BackColor = Color.LightCoral
+                        e.CellStyle.ForeColor = Color.DarkRed
+                        e.CellStyle.Font = New Font(dgv.Font, FontStyle.Bold)
+                    ElseIf statusText.Equals("Active", StringComparison.OrdinalIgnoreCase) Then
+                        e.CellStyle.BackColor = Color.LightGreen
+                        e.CellStyle.ForeColor = Color.DarkGreen
+                        e.CellStyle.Font = New Font(dgv.Font, FontStyle.Bold)
+                    End If
+                End If
+            End If
+        Catch ex As Exception
+            ' Ignore formatting errors
+        End Try
     End Sub
 
 End Class

@@ -114,7 +114,7 @@ Module usersModule
             ' Admin can only edit their own account, not other users
             If LoggedInRole = "Admin" OrElse LoggedInRole = "Administrator" Then
                 If UserID <> LoggedInUserID Then
-                    MessageBox.Show("You can only edit your own account. You cannot edit other users.", "Access Denied", MessageBoxButtons.OK, MessageBoxIcon.Warning)
+                    MessageBox.Show("You can only edit your own account.", "Access Denied", MessageBoxButtons.OK, MessageBoxIcon.Warning)
                     Exit Sub
                 End If
             End If
@@ -188,7 +188,7 @@ Module usersModule
                 End If
             End If
 
-            ' Check if trying to delete Super Admin
+            ' Check if trying to delete Super Admin or last Admin
             Try
                 Call dbConn()
                 sql = "SELECT Username, Role FROM tbl_users WHERE UserID = ?"
@@ -200,19 +200,35 @@ Module usersModule
                     userRole = reader("Role").ToString()
                 End If
                 reader.Close()
-                conn.Close()
 
                 ' Prevent deletion of Super Admin
                 If userRole = "Super Admin" Then
+                    conn.Close()
                     MsgBox("Super Admin account cannot be deleted.", vbExclamation, "Cannot Delete")
                     Exit Sub
                 End If
+
+                ' Check if this is the last Admin account
+                If userRole = "Admin" OrElse userRole = "Administrator" Then
+                    sql = "SELECT COUNT(*) FROM tbl_users WHERE (Role = 'Admin' OR Role = 'Administrator') AND (isArchived = 0 OR isArchived IS NULL)"
+                    cmd = New Odbc.OdbcCommand(sql, conn)
+                    Dim adminCount As Integer = Convert.ToInt32(cmd.ExecuteScalar())
+
+                    If adminCount <= 1 Then
+                        conn.Close()
+                        MsgBox("Cannot delete the last Admin account.", vbExclamation, "Cannot Delete")
+                        Exit Sub
+                    End If
+                End If
+
+                conn.Close()
             Catch ex As Exception
+                If conn.State = ConnectionState.Open Then conn.Close()
                 MsgBox("Error checking user role: " & ex.Message, vbCritical, "Error")
                 Exit Sub
             End Try
 
-            If MsgBox("Are you sure you want to Delete this user account?", vbYesNo + vbQuestion, "Archive User") = vbYes Then
+            If MsgBox("Are you sure you want to Delete this user account?", vbYesNo + vbQuestion, "Delete User") = vbYes Then
                 Try
                     Call dbConn()
 
@@ -227,7 +243,7 @@ Module usersModule
 
                     InsertAuditTrail(GlobalVariables.LoggedInUserID, "Archive User", "Archived user: " & username)
 
-                    MsgBox("User account archived successfully! The account is hidden but can be restored from the database.", vbInformation, "Success")
+                    MsgBox("User account Deleted successfully!", vbInformation, "Success")
                     ' Reload with proper filtering
                     If LoggedInRole = "Super Admin" Then
                         Call LoadDGV("SELECT * FROM db_viewuser WHERE isArchived = 0 OR isArchived IS NULL", UserDGV)

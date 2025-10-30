@@ -24,13 +24,13 @@ Partial Class dashboard
     Private Sub InitializeComponent()
         Me.components = New System.ComponentModel.Container()
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(dashboard))
-        Dim ChartArea1 As System.Windows.Forms.DataVisualization.Charting.ChartArea = New System.Windows.Forms.DataVisualization.Charting.ChartArea()
-        Dim Legend1 As System.Windows.Forms.DataVisualization.Charting.Legend = New System.Windows.Forms.DataVisualization.Charting.Legend()
-        Dim Series1 As System.Windows.Forms.DataVisualization.Charting.Series = New System.Windows.Forms.DataVisualization.Charting.Series()
-        Dim Series2 As System.Windows.Forms.DataVisualization.Charting.Series = New System.Windows.Forms.DataVisualization.Charting.Series()
-        Dim ChartArea2 As System.Windows.Forms.DataVisualization.Charting.ChartArea = New System.Windows.Forms.DataVisualization.Charting.ChartArea()
-        Dim Legend2 As System.Windows.Forms.DataVisualization.Charting.Legend = New System.Windows.Forms.DataVisualization.Charting.Legend()
-        Dim Series3 As System.Windows.Forms.DataVisualization.Charting.Series = New System.Windows.Forms.DataVisualization.Charting.Series()
+        Dim ChartArea7 As System.Windows.Forms.DataVisualization.Charting.ChartArea = New System.Windows.Forms.DataVisualization.Charting.ChartArea()
+        Dim Legend7 As System.Windows.Forms.DataVisualization.Charting.Legend = New System.Windows.Forms.DataVisualization.Charting.Legend()
+        Dim Series10 As System.Windows.Forms.DataVisualization.Charting.Series = New System.Windows.Forms.DataVisualization.Charting.Series()
+        Dim Series11 As System.Windows.Forms.DataVisualization.Charting.Series = New System.Windows.Forms.DataVisualization.Charting.Series()
+        Dim ChartArea8 As System.Windows.Forms.DataVisualization.Charting.ChartArea = New System.Windows.Forms.DataVisualization.Charting.ChartArea()
+        Dim Legend8 As System.Windows.Forms.DataVisualization.Charting.Legend = New System.Windows.Forms.DataVisualization.Charting.Legend()
+        Dim Series12 As System.Windows.Forms.DataVisualization.Charting.Series = New System.Windows.Forms.DataVisualization.Charting.Series()
         Me.BackgroundWorker1 = New System.ComponentModel.BackgroundWorker()
         Me.pnlDash = New System.Windows.Forms.Panel()
         Me.lblDateRange = New System.Windows.Forms.Label()
@@ -106,7 +106,7 @@ Partial Class dashboard
         '
         Me.lblDateRange.AutoSize = True
         Me.lblDateRange.Font = New System.Drawing.Font("Segoe UI Semibold", 12.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.lblDateRange.Location = New System.Drawing.Point(91, 22)
+        Me.lblDateRange.Location = New System.Drawing.Point(1230, 34)
         Me.lblDateRange.Name = "lblDateRange"
         Me.lblDateRange.Size = New System.Drawing.Size(71, 28)
         Me.lblDateRange.TabIndex = 152
@@ -118,9 +118,9 @@ Partial Class dashboard
         Me.btnResestFilter.FlatAppearance.BorderSize = 0
         Me.btnResestFilter.FlatStyle = System.Windows.Forms.FlatStyle.Flat
         Me.btnResestFilter.Image = CType(resources.GetObject("btnResestFilter.Image"), System.Drawing.Image)
-        Me.btnResestFilter.Location = New System.Drawing.Point(44, 16)
+        Me.btnResestFilter.Location = New System.Drawing.Point(457, 14)
         Me.btnResestFilter.Name = "btnResestFilter"
-        Me.btnResestFilter.Size = New System.Drawing.Size(41, 34)
+        Me.btnResestFilter.Size = New System.Drawing.Size(48, 44)
         Me.btnResestFilter.TabIndex = 151
         Me.ToolTip1.SetToolTip(Me.btnResestFilter, "Reset date to all-time high")
         Me.btnResestFilter.UseVisualStyleBackColor = False
@@ -129,7 +129,7 @@ Partial Class dashboard
         '
         Me.Label4.AutoSize = True
         Me.Label4.Font = New System.Drawing.Font("Segoe UI Semibold", 12.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Label4.Location = New System.Drawing.Point(263, 217)
+        Me.Label4.Location = New System.Drawing.Point(262, 33)
         Me.Label4.Name = "Label4"
         Me.Label4.Size = New System.Drawing.Size(38, 28)
         Me.Label4.TabIndex = 150
@@ -139,7 +139,7 @@ Partial Class dashboard
         '
         Me.Label1.AutoSize = True
         Me.Label1.Font = New System.Drawing.Font("Segoe UI Semibold", 12.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Label1.Location = New System.Drawing.Point(39, 216)
+        Me.Label1.Location = New System.Drawing.Point(35, 32)
         Me.Label1.Name = "Label1"
         Me.Label1.Size = New System.Drawing.Size(64, 28)
         Me.Label1.TabIndex = 149
@@ -147,10 +147,9 @@ Partial Class dashboard
         '
         'Label3
         '
-        Me.Label3.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.Label3.AutoSize = True
         Me.Label3.Font = New System.Drawing.Font("Segoe UI Semibold", 12.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Label3.Location = New System.Drawing.Point(563, 216)
+        Me.Label3.Location = New System.Drawing.Point(35, 215)
         Me.Label3.Name = "Label3"
         Me.Label3.Size = New System.Drawing.Size(139, 28)
         Me.Label3.TabIndex = 148
@@ -158,10 +157,9 @@ Partial Class dashboard
         '
         'Label2
         '
-        Me.Label2.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.Label2.AutoSize = True
         Me.Label2.Font = New System.Drawing.Font("Segoe UI Semibold", 12.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Label2.Location = New System.Drawing.Point(1267, 216)
+        Me.Label2.Location = New System.Drawing.Point(777, 215)
         Me.Label2.Name = "Label2"
         Me.Label2.Size = New System.Drawing.Size(177, 28)
         Me.Label2.TabIndex = 147
@@ -199,24 +197,24 @@ Partial Class dashboard
         '
         Me.chartSales.BorderlineColor = System.Drawing.Color.Black
         Me.chartSales.BorderlineDashStyle = System.Windows.Forms.DataVisualization.Charting.ChartDashStyle.Solid
-        ChartArea1.Name = "ChartArea1"
-        Me.chartSales.ChartAreas.Add(ChartArea1)
+        ChartArea7.Name = "ChartArea1"
+        Me.chartSales.ChartAreas.Add(ChartArea7)
         Me.chartSales.Dock = System.Windows.Forms.DockStyle.Fill
-        Legend1.Name = "Legend1"
-        Me.chartSales.Legends.Add(Legend1)
+        Legend7.Name = "Legend1"
+        Me.chartSales.Legends.Add(Legend7)
         Me.chartSales.Location = New System.Drawing.Point(0, 0)
         Me.chartSales.Name = "chartSales"
         Me.chartSales.Palette = System.Windows.Forms.DataVisualization.Charting.ChartColorPalette.Pastel
-        Series1.ChartArea = "ChartArea1"
-        Series1.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Line
-        Series1.Legend = "Legend1"
-        Series1.Name = "Series1"
-        Series2.ChartArea = "ChartArea1"
-        Series2.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Line
-        Series2.Legend = "Legend1"
-        Series2.Name = "Series2"
-        Me.chartSales.Series.Add(Series1)
-        Me.chartSales.Series.Add(Series2)
+        Series10.ChartArea = "ChartArea1"
+        Series10.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Line
+        Series10.Legend = "Legend1"
+        Series10.Name = "Series1"
+        Series11.ChartArea = "ChartArea1"
+        Series11.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Line
+        Series11.Legend = "Legend1"
+        Series11.Name = "Series2"
+        Me.chartSales.Series.Add(Series10)
+        Me.chartSales.Series.Add(Series11)
         Me.chartSales.Size = New System.Drawing.Size(664, 425)
         Me.chartSales.TabIndex = 0
         Me.chartSales.Text = "Chart1"
@@ -235,19 +233,19 @@ Partial Class dashboard
         '
         Me.chartTopProducts.BorderlineColor = System.Drawing.Color.Black
         Me.chartTopProducts.BorderlineDashStyle = System.Windows.Forms.DataVisualization.Charting.ChartDashStyle.Solid
-        ChartArea2.Name = "ChartArea1"
-        Me.chartTopProducts.ChartAreas.Add(ChartArea2)
+        ChartArea8.Name = "ChartArea1"
+        Me.chartTopProducts.ChartAreas.Add(ChartArea8)
         Me.chartTopProducts.Dock = System.Windows.Forms.DockStyle.Fill
         Me.chartTopProducts.Enabled = False
-        Legend2.Name = "Legend1"
-        Me.chartTopProducts.Legends.Add(Legend2)
+        Legend8.Name = "Legend1"
+        Me.chartTopProducts.Legends.Add(Legend8)
         Me.chartTopProducts.Location = New System.Drawing.Point(0, 0)
         Me.chartTopProducts.Name = "chartTopProducts"
         Me.chartTopProducts.Palette = System.Windows.Forms.DataVisualization.Charting.ChartColorPalette.Pastel
-        Series3.ChartArea = "ChartArea1"
-        Series3.Legend = "Legend1"
-        Series3.Name = "Series1"
-        Me.chartTopProducts.Series.Add(Series3)
+        Series12.ChartArea = "ChartArea1"
+        Series12.Legend = "Legend1"
+        Series12.Name = "Series1"
+        Me.chartTopProducts.Series.Add(Series12)
         Me.chartTopProducts.Size = New System.Drawing.Size(665, 425)
         Me.chartTopProducts.TabIndex = 0
         Me.chartTopProducts.Text = "Chart1"
@@ -266,7 +264,7 @@ Partial Class dashboard
         Me.TableLayoutPanel1.Controls.Add(Me.pnlProfits, 0, 0)
         Me.TableLayoutPanel1.Controls.Add(Me.pnlPatients, 1, 0)
         Me.TableLayoutPanel1.Controls.Add(Me.pnlCritical, 3, 0)
-        Me.TableLayoutPanel1.Location = New System.Drawing.Point(40, 56)
+        Me.TableLayoutPanel1.Location = New System.Drawing.Point(40, 69)
         Me.TableLayoutPanel1.Name = "TableLayoutPanel1"
         Me.TableLayoutPanel1.RowCount = 1
         Me.TableLayoutPanel1.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100.0!))
@@ -471,7 +469,7 @@ Partial Class dashboard
         '
         Me.dtpFrom.CustomFormat = "dd-MMMM-yyyy"
         Me.dtpFrom.Format = System.Windows.Forms.DateTimePickerFormat.[Short]
-        Me.dtpFrom.Location = New System.Drawing.Point(104, 211)
+        Me.dtpFrom.Location = New System.Drawing.Point(103, 27)
         Me.dtpFrom.Name = "dtpFrom"
         Me.dtpFrom.Size = New System.Drawing.Size(150, 34)
         Me.dtpFrom.TabIndex = 131
@@ -480,7 +478,7 @@ Partial Class dashboard
         '
         Me.dtpTo.CustomFormat = "dd-MMMM-yyyy"
         Me.dtpTo.Format = System.Windows.Forms.DateTimePickerFormat.[Short]
-        Me.dtpTo.Location = New System.Drawing.Point(302, 211)
+        Me.dtpTo.Location = New System.Drawing.Point(301, 27)
         Me.dtpTo.Name = "dtpTo"
         Me.dtpTo.Size = New System.Drawing.Size(150, 34)
         Me.dtpTo.TabIndex = 120

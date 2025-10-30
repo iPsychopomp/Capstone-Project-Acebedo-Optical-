@@ -49,6 +49,7 @@ Partial Class checkProducts
         Me.pnlBar = New System.Windows.Forms.Panel()
         Me.PictureBox1 = New System.Windows.Forms.PictureBox()
         Me.Label7 = New System.Windows.Forms.Label()
+        Me.btnRemaining = New System.Windows.Forms.Button()
         CType(Me.dgvOrderItems, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.pnlBar.SuspendLayout()
         CType(Me.PictureBox1, System.ComponentModel.ISupportInitialize).BeginInit()
@@ -186,13 +187,13 @@ Partial Class checkProducts
         '
         Me.btnOrderReceived.BackColor = System.Drawing.SystemColors.ControlLight
         Me.btnOrderReceived.FlatStyle = System.Windows.Forms.FlatStyle.System
-        Me.btnOrderReceived.Font = New System.Drawing.Font("Segoe UI", 10.8!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.btnOrderReceived.Font = New System.Drawing.Font("Segoe UI", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.btnOrderReceived.ForeColor = System.Drawing.Color.Black
         Me.btnOrderReceived.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft
         Me.btnOrderReceived.Location = New System.Drawing.Point(37, 495)
         Me.btnOrderReceived.Margin = New System.Windows.Forms.Padding(3, 2, 3, 2)
         Me.btnOrderReceived.Name = "btnOrderReceived"
-        Me.btnOrderReceived.Size = New System.Drawing.Size(100, 27)
+        Me.btnOrderReceived.Size = New System.Drawing.Size(150, 27)
         Me.btnOrderReceived.TabIndex = 238
         Me.btnOrderReceived.Text = "Received"
         Me.btnOrderReceived.UseVisualStyleBackColor = False
@@ -201,13 +202,13 @@ Partial Class checkProducts
         '
         Me.btnClose.BackColor = System.Drawing.SystemColors.ControlLight
         Me.btnClose.FlatStyle = System.Windows.Forms.FlatStyle.System
-        Me.btnClose.Font = New System.Drawing.Font("Segoe UI", 10.8!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.btnClose.Font = New System.Drawing.Font("Segoe UI", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.btnClose.ForeColor = System.Drawing.Color.Black
         Me.btnClose.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft
-        Me.btnClose.Location = New System.Drawing.Point(876, 495)
+        Me.btnClose.Location = New System.Drawing.Point(857, 495)
         Me.btnClose.Margin = New System.Windows.Forms.Padding(3, 2, 3, 2)
         Me.btnClose.Name = "btnClose"
-        Me.btnClose.Size = New System.Drawing.Size(100, 27)
+        Me.btnClose.Size = New System.Drawing.Size(150, 27)
         Me.btnClose.TabIndex = 239
         Me.btnClose.Text = "Close"
         Me.btnClose.UseVisualStyleBackColor = False
@@ -242,11 +243,27 @@ Partial Class checkProducts
         Me.Label7.TabIndex = 113
         Me.Label7.Text = "Check Products"
         '
+        'btnRemaining
+        '
+        Me.btnRemaining.BackColor = System.Drawing.SystemColors.ControlLight
+        Me.btnRemaining.FlatStyle = System.Windows.Forms.FlatStyle.System
+        Me.btnRemaining.Font = New System.Drawing.Font("Segoe UI", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.btnRemaining.ForeColor = System.Drawing.Color.Black
+        Me.btnRemaining.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft
+        Me.btnRemaining.Location = New System.Drawing.Point(193, 495)
+        Me.btnRemaining.Margin = New System.Windows.Forms.Padding(3, 2, 3, 2)
+        Me.btnRemaining.Name = "btnRemaining"
+        Me.btnRemaining.Size = New System.Drawing.Size(221, 27)
+        Me.btnRemaining.TabIndex = 244
+        Me.btnRemaining.Text = "Cancel Remaining Items"
+        Me.btnRemaining.UseVisualStyleBackColor = False
+        '
         'checkProducts
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(11.0!, 28.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.ClientSize = New System.Drawing.Size(1019, 548)
+        Me.Controls.Add(Me.btnRemaining)
         Me.Controls.Add(Me.pnlBar)
         Me.Controls.Add(Me.btnClose)
         Me.Controls.Add(Me.btnOrderReceived)
@@ -282,4 +299,5 @@ Partial Class checkProducts
     Friend WithEvents pnlBar As System.Windows.Forms.Panel
     Friend WithEvents PictureBox1 As System.Windows.Forms.PictureBox
     Friend WithEvents Label7 As System.Windows.Forms.Label
+    Friend WithEvents btnRemaining As System.Windows.Forms.Button
 End Class

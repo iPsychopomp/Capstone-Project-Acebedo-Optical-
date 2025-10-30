@@ -152,9 +152,11 @@ Public Class CreateBackup
                 ' Verify result
                 If result.Status = Google.Apis.Upload.UploadStatus.Completed Then
                     UpdateLoadingStatus(100, "Backup uploaded successfully!")
+                    Me.TopMost = True
                     MsgBox("Backup uploaded to Google Drive successfully!" & vbCrLf &
                           "File ID: " & request.ResponseBody.Id,
                           MsgBoxStyle.Information, "Backup Complete")
+                    Me.TopMost = False
                 Else
                     Throw New Exception("Upload failed: " &
                                       If(result.Exception IsNot Nothing, result.Exception.Message, "Unknown error"))
@@ -163,7 +165,9 @@ Public Class CreateBackup
 
         Catch ex As Exception
             UpdateLoadingStatus(0, "Backup failed!")
+            Me.TopMost = True
             MsgBox("Backup Error:" & vbCrLf & ex.Message, MsgBoxStyle.Critical, "Backup Failed")
+            Me.TopMost = False
         Finally
             ' Clean up
             If Not String.IsNullOrEmpty(backupPath) AndAlso File.Exists(backupPath) Then
@@ -184,10 +188,14 @@ Public Class CreateBackup
         Try
             Me.Cursor = Cursors.WaitCursor
             If ImportBackupLocal.CreateLocalBackup(AddressOf UpdateLoadingStatus) Then
+                Me.TopMost = True
                 MsgBox("Backup created successfully in " & ImportBackupLocal.BackupDirectory, MsgBoxStyle.Information)
+                Me.TopMost = False
             End If
         Catch ex As Exception
+            Me.TopMost = True
             MsgBox("Backup Error: " & ex.Message, MsgBoxStyle.Critical)
+            Me.TopMost = False
         Finally
             Me.Cursor = Cursors.Default
             UpdateLoadingStatus(0, "Ready")

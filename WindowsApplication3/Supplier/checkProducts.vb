@@ -22,8 +22,8 @@ Public Class checkProducts
         LoadOrderItems(orderID)
         btnOrderReceived.Enabled = (orderStatus <> "Received" AndAlso orderStatus <> "Cancelled")
 
-        ' Setup context menu: always include View Item History; add Cancel option for specific statuses
-        SetupContextMenu()
+        ' Show/hide Cancel Remaining Items button based on order status
+        btnRemaining.Visible = (orderStatus = "To Be Followed" OrElse orderStatus = "Incomplete" OrElse orderStatus = "Partial")
 
         If Not btnOrderReceived.Enabled Then
             MsgBox("This order has already been received or cancelled. No further actions can be taken.", vbExclamation, "Order Status Not Editable")
@@ -401,56 +401,22 @@ Public Class checkProducts
             End If
 
             Dim receiveForm As New ReceivedItems(orderID, itemID, productID, p_productName, pendingQty, Me)
-            
+
             ' When ReceivedItems closes, reload items if saved
             AddHandler receiveForm.FormClosed, Sub(s, ev)
-                If receiveForm.DeliverySaved Then
-                    DeliverySaved = True ' Set flag so btnOrderReceived can process
-                    LoadOrderItems(orderID)
-                End If
-            End Sub
-            
+                                                   If receiveForm.DeliverySaved Then
+                                                       DeliverySaved = True ' Set flag so btnOrderReceived can process
+                                                       LoadOrderItems(orderID)
+                                                   End If
+                                               End Sub
+
             receiveForm.TopMost = True
             receiveForm.ShowDialog()
         End If
         DgvStyle(dgvOrderItems)
     End Sub
-    Private Sub SetupContextMenu()
-        Dim menu As ContextMenuStrip = dgvOrderItems.ContextMenuStrip
-        If menu Is Nothing Then
-            menu = New ContextMenuStrip()
-            dgvOrderItems.ContextMenuStrip = menu
-        Else
-            menu.Items.Clear()
-        End If
-
-        ' View Item History
-        Dim viewItem As New ToolStripMenuItem("View Item History")
-        AddHandler viewItem.Click, AddressOf ViewItemHistory_Click
-        menu.Items.Add(viewItem)
-
-        ' Conditional: Cancel Remaining Items
-        If orderStatus = "To Be Followed" OrElse orderStatus = "Incomplete" OrElse orderStatus = "Partial" Then
-            Dim cancelMenuItem As New ToolStripMenuItem("Cancel Remaining Items")
-            AddHandler cancelMenuItem.Click, AddressOf CancelMenuItem_Click
-            menu.Items.Add(cancelMenuItem)
-        End If
-    End Sub
-
-    Private Sub ViewItemHistory_Click(sender As Object, e As EventArgs)
-        If dgvOrderItems.SelectedRows.Count = 0 Then Exit Sub
-        Dim row As DataGridViewRow = dgvOrderItems.SelectedRows(0)
-        Dim pName As String = ""
-        Try
-            pName = Convert.ToString(row.Cells("productName").Value)
-        Catch
-        End Try
-        If String.IsNullOrWhiteSpace(pName) Then Exit Sub
-        Dim hist As New DeliverHistory(orderID, pName)
-        hist.ShowDialog()
-    End Sub
-
-    Private Sub CancelMenuItem_Click(sender As Object, e As EventArgs)
+    ' Cancel Remaining Items button click event
+    Private Sub btnRemaining_Click(sender As Object, e As EventArgs) Handles btnRemaining.Click
         CancelOrder()
     End Sub
 

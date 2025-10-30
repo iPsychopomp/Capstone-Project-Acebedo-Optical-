@@ -39,7 +39,9 @@ Public Class ImportData
                 File.Delete(tempPath)
             End If
         Catch ex As Exception
+            Me.TopMost = True
             MessageBox.Show("Error importing from Google Drive: " & ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error)
+            Me.TopMost = False
         Finally
             Me.Cursor = Cursors.Default
         End Try
@@ -59,7 +61,9 @@ Public Class ImportData
             ' Count total lines for progress
             Dim totalLines As Integer = File.ReadLines(filePath).Count()
             If totalLines = 0 Then
+                Me.TopMost = True
                 MessageBox.Show("SQL file is empty")
+                Me.TopMost = False
                 Return
             End If
 
@@ -233,10 +237,12 @@ Public Class ImportData
         Catch ex As Exception
             TSPLabel.Text = "Google Drive download failed"
             tspBar.Value = 0
+            Me.TopMost = True
             MessageBox.Show("Download failed: " & ex.Message,
                            "Error",
                            MessageBoxButtons.OK,
                            MessageBoxIcon.Error)
+            Me.TopMost = False
         End Try
     End Sub
 End Class

@@ -129,9 +129,9 @@ Public Class ReceivedItems
             remarks = "N/A"
         End If
 
-        ' Qty Received: numbers only, required, and must be > 0
-        If Not Integer.TryParse(txtQtyReceived.Text.Trim(), received) OrElse received <= 0 Then
-            MsgBox("Quantity Received must be a number greater than 0.", vbExclamation, "Invalid Input")
+        ' Qty Received: numbers only, required, can be 0 (in case all items are defective)
+        If Not Integer.TryParse(txtQtyReceived.Text.Trim(), received) OrElse received < 0 Then
+            MsgBox("Quantity Received must be a number 0 or greater.", vbExclamation, "Invalid Input")
             Exit Sub
         End If
 
@@ -300,8 +300,14 @@ Public Class ReceivedItems
                 End Using
             End Using
 
-            If String.IsNullOrWhiteSpace(resolvedName) OrElse receivedQty <= 0 Then
+            If String.IsNullOrWhiteSpace(resolvedName) Then
                 Throw New Exception("Invalid delivery data to transfer.")
+            End If
+
+            ' If receivedQty is 0 (all defective), skip inventory transfer but don't error
+            If receivedQty <= 0 Then
+                trans.Commit()
+                Return
             End If
 
             ' Check existing product by case-insensitive name

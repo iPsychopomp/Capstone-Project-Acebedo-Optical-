@@ -19,7 +19,7 @@ Public Class patientCheckUp
 
             If dt.Rows.Count > 0 Then
                 ' Load checkup data
-                lblPatientID.Text = dt.Rows(0)("patientID").ToString()
+                'lblPatientID.Text = dt.Rows(0)("patientID").ToString()
                 txtRemarks.Text = dt.Rows(0)("remarks").ToString()
                 dtpDate.Text = dt.Rows(0)("CheckupDate").ToString()
 
@@ -35,7 +35,7 @@ Public Class patientCheckUp
                 ' Load patient's name based on patientID
                 Dim patientSql As String = "SELECT fullname FROM db_viewpatient WHERE patientID=?"
                 Dim patientCmd As New Odbc.OdbcCommand(patientSql, conn)
-                patientCmd.Parameters.AddWithValue("?", lblPatientID.Text)
+                'patientCmd.Parameters.AddWithValue("?", lblPatientID.Text)
 
                 Dim patientReader As Odbc.OdbcDataReader = patientCmd.ExecuteReader()
                 If patientReader.Read() Then
@@ -62,7 +62,7 @@ Public Class patientCheckUp
 
             Else
                 ' Clear all fields if no record is found
-                lblPatientID.Text = ""
+                'lblPatientID.Text = ""
                 txtPName.Text = ""
                 txtDName.Text = ""
                 txtDName.Tag = Nothing
@@ -300,7 +300,7 @@ Public Class patientCheckUp
     Private Sub addCheckup_Load(sender As Object, e As EventArgs) Handles MyBase.Load
         LoadDoctorNames()
         SetupDoctorAutoComplete()
-        lblPatientID.Text = SelectedPatientID.ToString()
+        'lblPatientID.Text = SelectedPatientID.ToString()
         txtPName.Text = SelectedPatientName
 
         ' Default selection: Check-up Only

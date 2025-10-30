@@ -586,5 +586,4 @@ Public Class CreateCheckUp
                 End If
         End Select
     End Sub
-
 End Class

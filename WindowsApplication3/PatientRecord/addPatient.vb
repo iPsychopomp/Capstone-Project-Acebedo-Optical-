@@ -260,8 +260,6 @@ Public Class addPatient
         cmbBgy.SelectedIndex = 0
     End Sub
 
-
-
     Private Sub cmbProvince_SelectedIndexChanged(sender As Object, e As EventArgs) Handles cmbProvince.SelectedIndexChanged
         Try
             If cmbProvince.SelectedItem Is Nothing Then Return
@@ -647,9 +645,6 @@ Public Class addPatient
                     ' Load address components
                     LoadAddressForEditing(regionName, provinceName, cityName, barangayName)
 
-
-
-
                 End With
             Else
                 ' Clear all fields if no record found
@@ -690,7 +685,6 @@ Public Class addPatient
             End If
         End Try
     End Sub
-
 
     Private Function IsAddressDataLoaded() As Boolean
         Return regions IsNot Nothing AndAlso regions.Count > 0 AndAlso
@@ -983,7 +977,7 @@ Public Class addPatient
                 ' Allow user to move past Mobile without blocking; saving enforces requirement
                 If String.IsNullOrWhiteSpace(textControl.Text) Then
                     ' Show a gentle alert but do not cancel or force focus here
-                    MsgBox("Mobile Number is currently blank. You can continue, but it is required before saving.", vbInformation, "Notice")
+                    'MsgBox("Mobile Number is currently blank. You can continue, but it is required before saving.", vbInformation, "Notice")
                 End If
             Case "txtOccu", "txtSports", "txtMname", "txtHobbies"
                 ' Set N/A for these specific text boxes if empty
@@ -1169,7 +1163,8 @@ Public Class addPatient
         ' Show notice when leaving field blank or retaining only +63
         If mobile = String.Empty OrElse mobile = "+63" Then
             'ErrorProvider1.SetError(txtMobile, "Mobile Number is required before saving.")
-            MessageBox.Show("Mobile Number is currently blank (+63). You can continue, but it will be required before saving.", "Notice", MessageBoxButtons.OK, MessageBoxIcon.Information)
+
+
             e.Cancel = False
             Exit Sub
         End If
@@ -1213,9 +1208,5 @@ Public Class addPatient
             txtMobile.Text = "+63"
             txtMobile.SelectionStart = txtMobile.Text.Length
         End If
-    End Sub
-
-    Private Sub Label20_Click(sender As Object, e As EventArgs) Handles Label20.Click
-
     End Sub
 End Class

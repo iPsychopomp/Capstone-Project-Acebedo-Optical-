@@ -1,6 +1,7 @@
 Public Class patientCheckUp
     Public Property SelectedPatientID As Integer
     Public Property SelectedPatientName As String
+
     Public ParentFormRef As patientActions
 
     Public Sub LoadCheckup(checkupID As Integer)

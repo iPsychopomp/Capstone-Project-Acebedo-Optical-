@@ -610,8 +610,8 @@ Public Class checkProducts
                     cancelCmd.Parameters.Add(pParam)
                     cancelCmd.Parameters.AddWithValue("?", 0) ' quantityReceived = 0
                     cancelCmd.Parameters.AddWithValue("?", 0) ' quantityDefective = 0
-                    cancelCmd.Parameters.AddWithValue("?", "CANCELLED - " & pendingQty & " items not delivered")
-                    cancelCmd.Parameters.AddWithValue("?", GlobalVariables.LoggedInUser)
+                    cancelCmd.Parameters.AddWithValue("?", "Cancelled - " & pendingQty & " items not delivered")
+                    cancelCmd.Parameters.AddWithValue("?", GlobalVariables.LoggedInFullName)
                     cancelCmd.Parameters.AddWithValue("?", DateTime.Now.Date)
                     cancelCmd.Parameters.AddWithValue("?", "Cancelled")
                     ' Persist productName for better history display and supplier matching
@@ -642,5 +642,4 @@ Public Class checkProducts
             _ParentForm.BringToFront()
         End If
     End Sub
-
 End Class

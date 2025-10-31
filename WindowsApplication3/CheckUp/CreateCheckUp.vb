@@ -309,7 +309,7 @@ Public Class CreateCheckUp
             Catch ex As Exception
                 MessageBox.Show("Error opening transaction form: " & ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Warning)
             End Try
-            
+
             Me.DialogResult = DialogResult.OK
             Me.Close()
 

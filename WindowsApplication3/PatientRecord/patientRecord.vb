@@ -252,8 +252,6 @@ Public Class patientRecord
         patientDGV.DefaultCellStyle.WrapMode = DataGridViewTriState.False
         patientDGV.AutoSizeRowsMode = DataGridViewAutoSizeRowsMode.AllCells
     End Sub
-
-
 End Class
 
 

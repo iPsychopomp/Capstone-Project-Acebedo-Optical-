@@ -313,9 +313,9 @@ Partial Class CreateCheckUp
         Me.Label3.Font = New System.Drawing.Font("Segoe UI", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.Label3.Location = New System.Drawing.Point(475, 67)
         Me.Label3.Name = "Label3"
-        Me.Label3.Size = New System.Drawing.Size(136, 25)
+        Me.Label3.Size = New System.Drawing.Size(140, 25)
         Me.Label3.TabIndex = 116
-        Me.Label3.Text = "Doctor's Name"
+        Me.Label3.Text = "Doctor's Name:"
         '
         'Label2
         '

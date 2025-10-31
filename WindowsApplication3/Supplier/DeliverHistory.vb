@@ -19,6 +19,7 @@ Public Class DeliverHistory
         _NeworderID = orderID
         _FilterProductName = If(productName, String.Empty)
     End Sub
+
     Public Sub DgvStyle(ByRef dgvDeliveryHistory As DataGridView)
         ' Basic Grid Setup
         dgvDeliveryHistory.AutoGenerateColumns = False
@@ -47,9 +48,11 @@ Public Class DeliverHistory
         dgvDeliveryHistory.DefaultCellStyle.WrapMode = DataGridViewTriState.False
         dgvDeliveryHistory.AutoSizeRowsMode = DataGridViewAutoSizeRowsMode.AllCells
     End Sub
+
     Private Sub DeliverHistory_Load(sender As Object, e As EventArgs) Handles MyBase.Load
         LoadDeliveryHistory()
     End Sub
+
     Private Sub LoadDeliveryHistory()
         Call dbConn()
         EnsureDeliveriesProductNameColumn()

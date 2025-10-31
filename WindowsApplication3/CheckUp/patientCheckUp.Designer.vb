@@ -34,16 +34,23 @@ Partial Class patientCheckUp
         Me.txtAddOD = New System.Windows.Forms.TextBox()
         Me.Label15 = New System.Windows.Forms.Label()
         Me.pnlCheckUp = New System.Windows.Forms.Panel()
+        Me.txtDName = New System.Windows.Forms.TextBox()
         Me.Panel1 = New System.Windows.Forms.Panel()
         Me.pbAdd = New System.Windows.Forms.PictureBox()
         Me.lblhead = New System.Windows.Forms.Label()
+        Me.btnDSearch = New System.Windows.Forms.Button()
         Me.btnCancel = New System.Windows.Forms.Button()
+        Me.btnPSearch = New System.Windows.Forms.Button()
         Me.btnClear = New System.Windows.Forms.Button()
         Me.btnSave = New System.Windows.Forms.Button()
         Me.grpCheckUp = New System.Windows.Forms.GroupBox()
-        Me.txtDName = New System.Windows.Forms.TextBox()
-        Me.btnDSearch = New System.Windows.Forms.Button()
-        Me.btnPSearch = New System.Windows.Forms.Button()
+        Me.Label21 = New System.Windows.Forms.Label()
+        Me.pdOU = New System.Windows.Forms.TextBox()
+        Me.Label1 = New System.Windows.Forms.Label()
+        Me.pdOS = New System.Windows.Forms.TextBox()
+        Me.Label19 = New System.Windows.Forms.Label()
+        Me.pdOD = New System.Windows.Forms.TextBox()
+        Me.Label20 = New System.Windows.Forms.Label()
         Me.Label10 = New System.Windows.Forms.Label()
         Me.txtAXOS = New System.Windows.Forms.TextBox()
         Me.Label11 = New System.Windows.Forms.Label()
@@ -59,15 +66,8 @@ Partial Class patientCheckUp
         Me.Label5 = New System.Windows.Forms.Label()
         Me.txtODSP = New System.Windows.Forms.TextBox()
         Me.Label4 = New System.Windows.Forms.Label()
-        Me.Label3 = New System.Windows.Forms.Label()
         Me.Label2 = New System.Windows.Forms.Label()
-        Me.Label1 = New System.Windows.Forms.Label()
-        Me.pdOS = New System.Windows.Forms.TextBox()
-        Me.Label19 = New System.Windows.Forms.Label()
-        Me.pdOD = New System.Windows.Forms.TextBox()
-        Me.Label20 = New System.Windows.Forms.Label()
-        Me.Label21 = New System.Windows.Forms.Label()
-        Me.pdOU = New System.Windows.Forms.TextBox()
+        Me.Label3 = New System.Windows.Forms.Label()
         Me.pnlCheckUp.SuspendLayout()
         Me.Panel1.SuspendLayout()
         CType(Me.pbAdd, System.ComponentModel.ISupportInitialize).BeginInit()
@@ -197,6 +197,16 @@ Partial Class patientCheckUp
         Me.pnlCheckUp.Size = New System.Drawing.Size(1137, 465)
         Me.pnlCheckUp.TabIndex = 24
         '
+        'txtDName
+        '
+        Me.txtDName.BackColor = System.Drawing.Color.White
+        Me.txtDName.Font = New System.Drawing.Font("Segoe UI", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.txtDName.Location = New System.Drawing.Point(480, 93)
+        Me.txtDName.Margin = New System.Windows.Forms.Padding(3, 2, 3, 2)
+        Me.txtDName.Name = "txtDName"
+        Me.txtDName.Size = New System.Drawing.Size(306, 32)
+        Me.txtDName.TabIndex = 151
+        '
         'Panel1
         '
         Me.Panel1.BackColor = System.Drawing.SystemColors.GradientActiveCaption
@@ -227,6 +237,21 @@ Partial Class patientCheckUp
         Me.lblhead.TabIndex = 113
         Me.lblhead.Text = "Add Checkup"
         '
+        'btnDSearch
+        '
+        Me.btnDSearch.BackColor = System.Drawing.SystemColors.ControlLight
+        Me.btnDSearch.FlatStyle = System.Windows.Forms.FlatStyle.System
+        Me.btnDSearch.Font = New System.Drawing.Font("Segoe UI", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.btnDSearch.ForeColor = System.Drawing.Color.Black
+        Me.btnDSearch.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft
+        Me.btnDSearch.Location = New System.Drawing.Point(792, 95)
+        Me.btnDSearch.Margin = New System.Windows.Forms.Padding(3, 2, 3, 2)
+        Me.btnDSearch.Name = "btnDSearch"
+        Me.btnDSearch.Size = New System.Drawing.Size(87, 27)
+        Me.btnDSearch.TabIndex = 150
+        Me.btnDSearch.Text = "&Search"
+        Me.btnDSearch.UseVisualStyleBackColor = False
+        '
         'btnCancel
         '
         Me.btnCancel.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
@@ -242,6 +267,22 @@ Partial Class patientCheckUp
         Me.btnCancel.TabIndex = 7
         Me.btnCancel.Text = "Cancel"
         Me.btnCancel.UseVisualStyleBackColor = False
+        '
+        'btnPSearch
+        '
+        Me.btnPSearch.BackColor = System.Drawing.SystemColors.ControlLight
+        Me.btnPSearch.FlatStyle = System.Windows.Forms.FlatStyle.System
+        Me.btnPSearch.Font = New System.Drawing.Font("Segoe UI", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.btnPSearch.ForeColor = System.Drawing.Color.Black
+        Me.btnPSearch.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft
+        Me.btnPSearch.Location = New System.Drawing.Point(347, 95)
+        Me.btnPSearch.Margin = New System.Windows.Forms.Padding(3, 2, 3, 2)
+        Me.btnPSearch.Name = "btnPSearch"
+        Me.btnPSearch.Size = New System.Drawing.Size(87, 27)
+        Me.btnPSearch.TabIndex = 8
+        Me.btnPSearch.Text = "&Search"
+        Me.btnPSearch.UseVisualStyleBackColor = False
+        Me.btnPSearch.Visible = False
         '
         'btnClear
         '
@@ -313,46 +354,72 @@ Partial Class patientCheckUp
         Me.grpCheckUp.TabIndex = 0
         Me.grpCheckUp.TabStop = False
         '
-        'txtDName
+        'Label21
         '
-        Me.txtDName.BackColor = System.Drawing.Color.White
-        Me.txtDName.Font = New System.Drawing.Font("Segoe UI", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.txtDName.Location = New System.Drawing.Point(480, 93)
-        Me.txtDName.Margin = New System.Windows.Forms.Padding(3, 2, 3, 2)
-        Me.txtDName.Name = "txtDName"
-        Me.txtDName.Size = New System.Drawing.Size(306, 32)
-        Me.txtDName.TabIndex = 151
+        Me.Label21.AutoSize = True
+        Me.Label21.Font = New System.Drawing.Font("Segoe UI", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label21.Location = New System.Drawing.Point(900, 121)
+        Me.Label21.Name = "Label21"
+        Me.Label21.Size = New System.Drawing.Size(43, 25)
+        Me.Label21.TabIndex = 156
+        Me.Label21.Text = "OU:"
         '
-        'btnDSearch
+        'pdOU
         '
-        Me.btnDSearch.BackColor = System.Drawing.SystemColors.ControlLight
-        Me.btnDSearch.FlatStyle = System.Windows.Forms.FlatStyle.System
-        Me.btnDSearch.Font = New System.Drawing.Font("Segoe UI", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.btnDSearch.ForeColor = System.Drawing.Color.Black
-        Me.btnDSearch.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft
-        Me.btnDSearch.Location = New System.Drawing.Point(792, 95)
-        Me.btnDSearch.Margin = New System.Windows.Forms.Padding(3, 2, 3, 2)
-        Me.btnDSearch.Name = "btnDSearch"
-        Me.btnDSearch.Size = New System.Drawing.Size(87, 27)
-        Me.btnDSearch.TabIndex = 150
-        Me.btnDSearch.Text = "&Search"
-        Me.btnDSearch.UseVisualStyleBackColor = False
+        Me.pdOU.Font = New System.Drawing.Font("Segoe UI", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.pdOU.Location = New System.Drawing.Point(952, 120)
+        Me.pdOU.Margin = New System.Windows.Forms.Padding(3, 2, 3, 2)
+        Me.pdOU.Name = "pdOU"
+        Me.pdOU.Size = New System.Drawing.Size(138, 32)
+        Me.pdOU.TabIndex = 155
         '
-        'btnPSearch
+        'Label1
         '
-        Me.btnPSearch.BackColor = System.Drawing.SystemColors.ControlLight
-        Me.btnPSearch.FlatStyle = System.Windows.Forms.FlatStyle.System
-        Me.btnPSearch.Font = New System.Drawing.Font("Segoe UI", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.btnPSearch.ForeColor = System.Drawing.Color.Black
-        Me.btnPSearch.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft
-        Me.btnPSearch.Location = New System.Drawing.Point(347, 95)
-        Me.btnPSearch.Margin = New System.Windows.Forms.Padding(3, 2, 3, 2)
-        Me.btnPSearch.Name = "btnPSearch"
-        Me.btnPSearch.Size = New System.Drawing.Size(87, 27)
-        Me.btnPSearch.TabIndex = 8
-        Me.btnPSearch.Text = "&Search"
-        Me.btnPSearch.UseVisualStyleBackColor = False
-        Me.btnPSearch.Visible = False
+        Me.Label1.AutoSize = True
+        Me.Label1.Font = New System.Drawing.Font("Segoe UI", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label1.Location = New System.Drawing.Point(900, 91)
+        Me.Label1.Name = "Label1"
+        Me.Label1.Size = New System.Drawing.Size(40, 25)
+        Me.Label1.TabIndex = 154
+        Me.Label1.Text = "OS:"
+        '
+        'pdOS
+        '
+        Me.pdOS.Font = New System.Drawing.Font("Segoe UI", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.pdOS.Location = New System.Drawing.Point(952, 88)
+        Me.pdOS.Margin = New System.Windows.Forms.Padding(3, 2, 3, 2)
+        Me.pdOS.Name = "pdOS"
+        Me.pdOS.Size = New System.Drawing.Size(138, 32)
+        Me.pdOS.TabIndex = 153
+        '
+        'Label19
+        '
+        Me.Label19.AutoSize = True
+        Me.Label19.Font = New System.Drawing.Font("Segoe UI", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label19.Location = New System.Drawing.Point(900, 60)
+        Me.Label19.Name = "Label19"
+        Me.Label19.Size = New System.Drawing.Size(43, 25)
+        Me.Label19.TabIndex = 152
+        Me.Label19.Text = "OD:"
+        '
+        'pdOD
+        '
+        Me.pdOD.Font = New System.Drawing.Font("Segoe UI", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.pdOD.Location = New System.Drawing.Point(952, 57)
+        Me.pdOD.Margin = New System.Windows.Forms.Padding(3, 2, 3, 2)
+        Me.pdOD.Name = "pdOD"
+        Me.pdOD.Size = New System.Drawing.Size(138, 32)
+        Me.pdOD.TabIndex = 151
+        '
+        'Label20
+        '
+        Me.Label20.AutoSize = True
+        Me.Label20.Font = New System.Drawing.Font("Segoe UI", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label20.Location = New System.Drawing.Point(900, 29)
+        Me.Label20.Name = "Label20"
+        Me.Label20.Size = New System.Drawing.Size(40, 25)
+        Me.Label20.TabIndex = 150
+        Me.Label20.Text = "PD:"
         '
         'Label10
         '
@@ -498,16 +565,6 @@ Partial Class patientCheckUp
         Me.Label4.TabIndex = 118
         Me.Label4.Text = "Sphere:"
         '
-        'Label3
-        '
-        Me.Label3.AutoSize = True
-        Me.Label3.Font = New System.Drawing.Font("Segoe UI", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Label3.Location = New System.Drawing.Point(475, 67)
-        Me.Label3.Name = "Label3"
-        Me.Label3.Size = New System.Drawing.Size(136, 25)
-        Me.Label3.TabIndex = 116
-        Me.Label3.Text = "Doctor's Name"
-        '
         'Label2
         '
         Me.Label2.AutoSize = True
@@ -518,72 +575,15 @@ Partial Class patientCheckUp
         Me.Label2.TabIndex = 79
         Me.Label2.Text = "Patient's Name:"
         '
-        'Label1
+        'Label3
         '
-        Me.Label1.AutoSize = True
-        Me.Label1.Font = New System.Drawing.Font("Segoe UI", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Label1.Location = New System.Drawing.Point(900, 91)
-        Me.Label1.Name = "Label1"
-        Me.Label1.Size = New System.Drawing.Size(40, 25)
-        Me.Label1.TabIndex = 154
-        Me.Label1.Text = "OS:"
-        '
-        'pdOS
-        '
-        Me.pdOS.Font = New System.Drawing.Font("Segoe UI", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.pdOS.Location = New System.Drawing.Point(952, 88)
-        Me.pdOS.Margin = New System.Windows.Forms.Padding(3, 2, 3, 2)
-        Me.pdOS.Name = "pdOS"
-        Me.pdOS.Size = New System.Drawing.Size(138, 32)
-        Me.pdOS.TabIndex = 153
-        '
-        'Label19
-        '
-        Me.Label19.AutoSize = True
-        Me.Label19.Font = New System.Drawing.Font("Segoe UI", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Label19.Location = New System.Drawing.Point(900, 60)
-        Me.Label19.Name = "Label19"
-        Me.Label19.Size = New System.Drawing.Size(43, 25)
-        Me.Label19.TabIndex = 152
-        Me.Label19.Text = "OD:"
-        '
-        'pdOD
-        '
-        Me.pdOD.Font = New System.Drawing.Font("Segoe UI", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.pdOD.Location = New System.Drawing.Point(952, 57)
-        Me.pdOD.Margin = New System.Windows.Forms.Padding(3, 2, 3, 2)
-        Me.pdOD.Name = "pdOD"
-        Me.pdOD.Size = New System.Drawing.Size(138, 32)
-        Me.pdOD.TabIndex = 151
-        '
-        'Label20
-        '
-        Me.Label20.AutoSize = True
-        Me.Label20.Font = New System.Drawing.Font("Segoe UI", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Label20.Location = New System.Drawing.Point(900, 29)
-        Me.Label20.Name = "Label20"
-        Me.Label20.Size = New System.Drawing.Size(40, 25)
-        Me.Label20.TabIndex = 150
-        Me.Label20.Text = "PD:"
-        '
-        'Label21
-        '
-        Me.Label21.AutoSize = True
-        Me.Label21.Font = New System.Drawing.Font("Segoe UI", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Label21.Location = New System.Drawing.Point(900, 121)
-        Me.Label21.Name = "Label21"
-        Me.Label21.Size = New System.Drawing.Size(43, 25)
-        Me.Label21.TabIndex = 156
-        Me.Label21.Text = "OU:"
-        '
-        'pdOU
-        '
-        Me.pdOU.Font = New System.Drawing.Font("Segoe UI", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.pdOU.Location = New System.Drawing.Point(952, 120)
-        Me.pdOU.Margin = New System.Windows.Forms.Padding(3, 2, 3, 2)
-        Me.pdOU.Name = "pdOU"
-        Me.pdOU.Size = New System.Drawing.Size(138, 32)
-        Me.pdOU.TabIndex = 155
+        Me.Label3.AutoSize = True
+        Me.Label3.Font = New System.Drawing.Font("Segoe UI", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label3.Location = New System.Drawing.Point(475, 67)
+        Me.Label3.Name = "Label3"
+        Me.Label3.Size = New System.Drawing.Size(140, 25)
+        Me.Label3.TabIndex = 116
+        Me.Label3.Text = "Doctor's Name:"
         '
         'patientCheckUp
         '

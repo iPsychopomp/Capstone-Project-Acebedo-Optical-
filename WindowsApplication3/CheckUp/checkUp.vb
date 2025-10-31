@@ -141,6 +141,4 @@ Public Class checkUp
             MsgBox("Search Error: " & ex.Message, vbCritical, "Error")
         End Try
     End Sub
-
- 
 End Class

@@ -824,7 +824,7 @@ Public Class OrderProduct
             ElseIf currentStatus = "Received" Then
                 MsgBox("This order has already been received and cannot be cancelled.", vbExclamation, "Cannot Cancel")
             ElseIf currentStatus = "Partial" OrElse currentStatus = "To Be Followed" OrElse currentStatus = "Incomplete" Then
-                MsgBox("This order has partial deliveries. Please double-click the order to access cancellation options.", vbInformation, "Use Double-Click")
+                MsgBox("This order has partial deliveries. Cancelled in Check Products.", vbInformation, "Use Check Product")
             Else
                 Dim updateCmd As New Odbc.OdbcCommand("UPDATE tbl_productOrders SET status = 'Cancelled' WHERE orderID = ?", conn)
                 updateCmd.Parameters.AddWithValue("?", selectedOrderID)

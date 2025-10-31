@@ -23,22 +23,16 @@ Partial Class patientRecord
     <System.Diagnostics.DebuggerStepThrough()> _
     Private Sub InitializeComponent()
         Me.components = New System.ComponentModel.Container()
+        Dim DataGridViewCellStyle9 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
+        Dim DataGridViewCellStyle10 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
+        Dim DataGridViewCellStyle14 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
+        Dim DataGridViewCellStyle15 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
+        Dim DataGridViewCellStyle16 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
+        Dim DataGridViewCellStyle11 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
+        Dim DataGridViewCellStyle12 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
+        Dim DataGridViewCellStyle13 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(patientRecord))
-        Dim DataGridViewCellStyle1 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
-        Dim DataGridViewCellStyle2 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
-        Dim DataGridViewCellStyle6 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
-        Dim DataGridViewCellStyle7 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
-        Dim DataGridViewCellStyle8 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
-        Dim DataGridViewCellStyle3 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
-        Dim DataGridViewCellStyle4 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
-        Dim DataGridViewCellStyle5 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
         Me.pnlPatientRecord = New System.Windows.Forms.Panel()
-        Me.pnlBar = New System.Windows.Forms.Panel()
-        Me.cmbSearch = New System.Windows.Forms.ComboBox()
-        Me.btnNew = New System.Windows.Forms.Button()
-        Me.btnSearch = New System.Windows.Forms.Button()
-        Me.txtSearch = New System.Windows.Forms.TextBox()
-        Me.ToolTip1 = New System.Windows.Forms.ToolTip(Me.components)
         Me.patientDGV = New System.Windows.Forms.DataGridView()
         Me.Column1 = New System.Windows.Forms.DataGridViewTextBoxColumn()
         Me.Column9 = New System.Windows.Forms.DataGridViewTextBoxColumn()
@@ -49,9 +43,15 @@ Partial Class patientRecord
         Me.Column5 = New System.Windows.Forms.DataGridViewTextBoxColumn()
         Me.Column6 = New System.Windows.Forms.DataGridViewTextBoxColumn()
         Me.Column8 = New System.Windows.Forms.DataGridViewTextBoxColumn()
+        Me.pnlBar = New System.Windows.Forms.Panel()
+        Me.cmbSearch = New System.Windows.Forms.ComboBox()
+        Me.btnNew = New System.Windows.Forms.Button()
+        Me.btnSearch = New System.Windows.Forms.Button()
+        Me.txtSearch = New System.Windows.Forms.TextBox()
+        Me.ToolTip1 = New System.Windows.Forms.ToolTip(Me.components)
         Me.pnlPatientRecord.SuspendLayout()
-        Me.pnlBar.SuspendLayout()
         CType(Me.patientDGV, System.ComponentModel.ISupportInitialize).BeginInit()
+        Me.pnlBar.SuspendLayout()
         Me.SuspendLayout()
         '
         'pnlPatientRecord
@@ -64,6 +64,142 @@ Partial Class patientRecord
         Me.pnlPatientRecord.Name = "pnlPatientRecord"
         Me.pnlPatientRecord.Size = New System.Drawing.Size(1191, 596)
         Me.pnlPatientRecord.TabIndex = 11
+        '
+        'patientDGV
+        '
+        Me.patientDGV.AllowUserToAddRows = False
+        Me.patientDGV.AllowUserToDeleteRows = False
+        DataGridViewCellStyle9.BackColor = System.Drawing.Color.Gainsboro
+        Me.patientDGV.AlternatingRowsDefaultCellStyle = DataGridViewCellStyle9
+        Me.patientDGV.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill
+        Me.patientDGV.BackgroundColor = System.Drawing.Color.White
+        DataGridViewCellStyle10.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter
+        DataGridViewCellStyle10.BackColor = System.Drawing.SystemColors.Control
+        DataGridViewCellStyle10.Font = New System.Drawing.Font("Segoe UI", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        DataGridViewCellStyle10.ForeColor = System.Drawing.SystemColors.WindowText
+        DataGridViewCellStyle10.SelectionBackColor = System.Drawing.Color.SkyBlue
+        DataGridViewCellStyle10.SelectionForeColor = System.Drawing.SystemColors.HighlightText
+        Me.patientDGV.ColumnHeadersDefaultCellStyle = DataGridViewCellStyle10
+        Me.patientDGV.ColumnHeadersHeight = 50
+        Me.patientDGV.Columns.AddRange(New System.Windows.Forms.DataGridViewColumn() {Me.Column1, Me.Column9, Me.Column2, Me.Column3, Me.Column7, Me.Column4, Me.Column5, Me.Column6, Me.Column8})
+        DataGridViewCellStyle14.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft
+        DataGridViewCellStyle14.BackColor = System.Drawing.SystemColors.Window
+        DataGridViewCellStyle14.Font = New System.Drawing.Font("Segoe UI", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        DataGridViewCellStyle14.ForeColor = System.Drawing.SystemColors.ControlText
+        DataGridViewCellStyle14.SelectionBackColor = System.Drawing.SystemColors.ActiveCaption
+        DataGridViewCellStyle14.SelectionForeColor = System.Drawing.Color.Black
+        DataGridViewCellStyle14.WrapMode = System.Windows.Forms.DataGridViewTriState.[False]
+        Me.patientDGV.DefaultCellStyle = DataGridViewCellStyle14
+        Me.patientDGV.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.patientDGV.GridColor = System.Drawing.Color.Black
+        Me.patientDGV.Location = New System.Drawing.Point(0, 57)
+        Me.patientDGV.MultiSelect = False
+        Me.patientDGV.Name = "patientDGV"
+        Me.patientDGV.ReadOnly = True
+        DataGridViewCellStyle15.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft
+        DataGridViewCellStyle15.BackColor = System.Drawing.SystemColors.Control
+        DataGridViewCellStyle15.Font = New System.Drawing.Font("Segoe UI", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        DataGridViewCellStyle15.ForeColor = System.Drawing.SystemColors.WindowText
+        DataGridViewCellStyle15.SelectionBackColor = System.Drawing.Color.SkyBlue
+        DataGridViewCellStyle15.SelectionForeColor = System.Drawing.SystemColors.HighlightText
+        Me.patientDGV.RowHeadersDefaultCellStyle = DataGridViewCellStyle15
+        Me.patientDGV.RowHeadersVisible = False
+        Me.patientDGV.RowHeadersWidthSizeMode = System.Windows.Forms.DataGridViewRowHeadersWidthSizeMode.DisableResizing
+        DataGridViewCellStyle16.Font = New System.Drawing.Font("Segoe UI", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.patientDGV.RowsDefaultCellStyle = DataGridViewCellStyle16
+        Me.patientDGV.RowTemplate.Height = 30
+        Me.patientDGV.RowTemplate.Resizable = System.Windows.Forms.DataGridViewTriState.[False]
+        Me.patientDGV.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect
+        Me.patientDGV.Size = New System.Drawing.Size(1191, 539)
+        Me.patientDGV.TabIndex = 9
+        '
+        'Column1
+        '
+        Me.Column1.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None
+        Me.Column1.DataPropertyName = "patientID"
+        Me.Column1.HeaderText = "ID"
+        Me.Column1.Name = "Column1"
+        Me.Column1.ReadOnly = True
+        Me.Column1.Width = 40
+        '
+        'Column9
+        '
+        Me.Column9.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None
+        Me.Column9.DataPropertyName = "patientID"
+        DataGridViewCellStyle11.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter
+        Me.Column9.DefaultCellStyle = DataGridViewCellStyle11
+        Me.Column9.HeaderText = "ID"
+        Me.Column9.Name = "Column9"
+        Me.Column9.ReadOnly = True
+        Me.Column9.Width = 40
+        '
+        'Column2
+        '
+        Me.Column2.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None
+        Me.Column2.DataPropertyName = "fullname"
+        Me.Column2.FillWeight = 281.0131!
+        Me.Column2.HeaderText = "Patient Name"
+        Me.Column2.Name = "Column2"
+        Me.Column2.ReadOnly = True
+        Me.Column2.Width = 380
+        '
+        'Column3
+        '
+        Me.Column3.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None
+        Me.Column3.DataPropertyName = "age"
+        Me.Column3.FillWeight = 42.15196!
+        Me.Column3.HeaderText = "Age"
+        Me.Column3.Name = "Column3"
+        Me.Column3.ReadOnly = True
+        Me.Column3.Width = 80
+        '
+        'Column7
+        '
+        Me.Column7.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None
+        Me.Column7.DataPropertyName = "gender"
+        Me.Column7.FillWeight = 56.20261!
+        Me.Column7.HeaderText = "Gender"
+        Me.Column7.Name = "Column7"
+        Me.Column7.ReadOnly = True
+        Me.Column7.Width = 80
+        '
+        'Column4
+        '
+        Me.Column4.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None
+        Me.Column4.DataPropertyName = "bday"
+        DataGridViewCellStyle12.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight
+        Me.Column4.DefaultCellStyle = DataGridViewCellStyle12
+        Me.Column4.FillWeight = 93.67102!
+        Me.Column4.HeaderText = "Birthtday"
+        Me.Column4.Name = "Column4"
+        Me.Column4.ReadOnly = True
+        Me.Column4.Width = 200
+        '
+        'Column5
+        '
+        Me.Column5.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill
+        Me.Column5.DataPropertyName = "address"
+        Me.Column5.FillWeight = 220.0!
+        Me.Column5.HeaderText = "Address"
+        Me.Column5.Name = "Column5"
+        Me.Column5.ReadOnly = True
+        '
+        'Column6
+        '
+        Me.Column6.DataPropertyName = "mobilenum"
+        Me.Column6.FillWeight = 70.0!
+        Me.Column6.HeaderText = "Mobile Number"
+        Me.Column6.Name = "Column6"
+        Me.Column6.ReadOnly = True
+        '
+        'Column8
+        '
+        Me.Column8.DataPropertyName = "date"
+        DataGridViewCellStyle13.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight
+        Me.Column8.DefaultCellStyle = DataGridViewCellStyle13
+        Me.Column8.HeaderText = "Date Added"
+        Me.Column8.Name = "Column8"
+        Me.Column8.ReadOnly = True
         '
         'pnlBar
         '
@@ -135,142 +271,6 @@ Partial Class patientRecord
         Me.txtSearch.Size = New System.Drawing.Size(157, 32)
         Me.txtSearch.TabIndex = 7
         '
-        'patientDGV
-        '
-        Me.patientDGV.AllowUserToAddRows = False
-        Me.patientDGV.AllowUserToDeleteRows = False
-        DataGridViewCellStyle1.BackColor = System.Drawing.Color.Gainsboro
-        Me.patientDGV.AlternatingRowsDefaultCellStyle = DataGridViewCellStyle1
-        Me.patientDGV.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill
-        Me.patientDGV.BackgroundColor = System.Drawing.Color.White
-        DataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter
-        DataGridViewCellStyle2.BackColor = System.Drawing.SystemColors.Control
-        DataGridViewCellStyle2.Font = New System.Drawing.Font("Segoe UI", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        DataGridViewCellStyle2.ForeColor = System.Drawing.SystemColors.WindowText
-        DataGridViewCellStyle2.SelectionBackColor = System.Drawing.Color.SkyBlue
-        DataGridViewCellStyle2.SelectionForeColor = System.Drawing.SystemColors.HighlightText
-        Me.patientDGV.ColumnHeadersDefaultCellStyle = DataGridViewCellStyle2
-        Me.patientDGV.ColumnHeadersHeight = 50
-        Me.patientDGV.Columns.AddRange(New System.Windows.Forms.DataGridViewColumn() {Me.Column1, Me.Column9, Me.Column2, Me.Column3, Me.Column7, Me.Column4, Me.Column5, Me.Column6, Me.Column8})
-        DataGridViewCellStyle6.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft
-        DataGridViewCellStyle6.BackColor = System.Drawing.SystemColors.Window
-        DataGridViewCellStyle6.Font = New System.Drawing.Font("Segoe UI", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        DataGridViewCellStyle6.ForeColor = System.Drawing.SystemColors.ControlText
-        DataGridViewCellStyle6.SelectionBackColor = System.Drawing.SystemColors.ActiveCaption
-        DataGridViewCellStyle6.SelectionForeColor = System.Drawing.Color.Black
-        DataGridViewCellStyle6.WrapMode = System.Windows.Forms.DataGridViewTriState.[False]
-        Me.patientDGV.DefaultCellStyle = DataGridViewCellStyle6
-        Me.patientDGV.Dock = System.Windows.Forms.DockStyle.Fill
-        Me.patientDGV.GridColor = System.Drawing.Color.Black
-        Me.patientDGV.Location = New System.Drawing.Point(0, 57)
-        Me.patientDGV.MultiSelect = False
-        Me.patientDGV.Name = "patientDGV"
-        Me.patientDGV.ReadOnly = True
-        DataGridViewCellStyle7.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft
-        DataGridViewCellStyle7.BackColor = System.Drawing.SystemColors.Control
-        DataGridViewCellStyle7.Font = New System.Drawing.Font("Segoe UI", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        DataGridViewCellStyle7.ForeColor = System.Drawing.SystemColors.WindowText
-        DataGridViewCellStyle7.SelectionBackColor = System.Drawing.Color.SkyBlue
-        DataGridViewCellStyle7.SelectionForeColor = System.Drawing.SystemColors.HighlightText
-        Me.patientDGV.RowHeadersDefaultCellStyle = DataGridViewCellStyle7
-        Me.patientDGV.RowHeadersVisible = False
-        Me.patientDGV.RowHeadersWidthSizeMode = System.Windows.Forms.DataGridViewRowHeadersWidthSizeMode.DisableResizing
-        DataGridViewCellStyle8.Font = New System.Drawing.Font("Segoe UI", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.patientDGV.RowsDefaultCellStyle = DataGridViewCellStyle8
-        Me.patientDGV.RowTemplate.Height = 30
-        Me.patientDGV.RowTemplate.Resizable = System.Windows.Forms.DataGridViewTriState.[False]
-        Me.patientDGV.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect
-        Me.patientDGV.Size = New System.Drawing.Size(1191, 539)
-        Me.patientDGV.TabIndex = 9
-        '
-        'Column1
-        '
-        Me.Column1.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None
-        Me.Column1.DataPropertyName = "patientID"
-        Me.Column1.HeaderText = "ID"
-        Me.Column1.Name = "Column1"
-        Me.Column1.ReadOnly = True
-        Me.Column1.Width = 40
-        '
-        'Column9
-        '
-        Me.Column9.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None
-        Me.Column9.DataPropertyName = "patientID"
-        DataGridViewCellStyle3.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter
-        Me.Column9.DefaultCellStyle = DataGridViewCellStyle3
-        Me.Column9.HeaderText = "ID"
-        Me.Column9.Name = "Column9"
-        Me.Column9.ReadOnly = True
-        Me.Column9.Width = 40
-        '
-        'Column2
-        '
-        Me.Column2.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None
-        Me.Column2.DataPropertyName = "fullname"
-        Me.Column2.FillWeight = 281.0131!
-        Me.Column2.HeaderText = "Patient Name"
-        Me.Column2.Name = "Column2"
-        Me.Column2.ReadOnly = True
-        Me.Column2.Width = 380
-        '
-        'Column3
-        '
-        Me.Column3.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None
-        Me.Column3.DataPropertyName = "age"
-        Me.Column3.FillWeight = 42.15196!
-        Me.Column3.HeaderText = "Age"
-        Me.Column3.Name = "Column3"
-        Me.Column3.ReadOnly = True
-        Me.Column3.Width = 80
-        '
-        'Column7
-        '
-        Me.Column7.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None
-        Me.Column7.DataPropertyName = "gender"
-        Me.Column7.FillWeight = 56.20261!
-        Me.Column7.HeaderText = "Gender"
-        Me.Column7.Name = "Column7"
-        Me.Column7.ReadOnly = True
-        Me.Column7.Width = 80
-        '
-        'Column4
-        '
-        Me.Column4.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None
-        Me.Column4.DataPropertyName = "bday"
-        DataGridViewCellStyle4.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight
-        Me.Column4.DefaultCellStyle = DataGridViewCellStyle4
-        Me.Column4.FillWeight = 93.67102!
-        Me.Column4.HeaderText = "Birthtday"
-        Me.Column4.Name = "Column4"
-        Me.Column4.ReadOnly = True
-        Me.Column4.Width = 200
-        '
-        'Column5
-        '
-        Me.Column5.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill
-        Me.Column5.DataPropertyName = "address"
-        Me.Column5.FillWeight = 220.0!
-        Me.Column5.HeaderText = "Address"
-        Me.Column5.Name = "Column5"
-        Me.Column5.ReadOnly = True
-        '
-        'Column6
-        '
-        Me.Column6.DataPropertyName = "mobilenum"
-        Me.Column6.FillWeight = 70.0!
-        Me.Column6.HeaderText = "Mobile Number"
-        Me.Column6.Name = "Column6"
-        Me.Column6.ReadOnly = True
-        '
-        'Column8
-        '
-        Me.Column8.DataPropertyName = "date"
-        DataGridViewCellStyle5.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight
-        Me.Column8.DefaultCellStyle = DataGridViewCellStyle5
-        Me.Column8.HeaderText = "Date Added"
-        Me.Column8.Name = "Column8"
-        Me.Column8.ReadOnly = True
-        '
         'patientRecord
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(11.0!, 28.0!)
@@ -284,9 +284,9 @@ Partial Class patientRecord
         Me.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen
         Me.Text = "``````"
         Me.pnlPatientRecord.ResumeLayout(False)
+        CType(Me.patientDGV, System.ComponentModel.ISupportInitialize).EndInit()
         Me.pnlBar.ResumeLayout(False)
         Me.pnlBar.PerformLayout()
-        CType(Me.patientDGV, System.ComponentModel.ISupportInitialize).EndInit()
         Me.ResumeLayout(False)
 
     End Sub

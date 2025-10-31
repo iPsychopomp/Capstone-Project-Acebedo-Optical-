@@ -62,15 +62,13 @@ Public Class users
         AuditDGV.AutoSizeRowsMode = DataGridViewAutoSizeRowsMode.AllCells
     End Sub
 
-    Private Sub txtSearch_TextChanged(sender As Object, e As EventArgs) Handles txtSearch.TextChanged
-
-    End Sub
     Private Sub txtSearch_GotFocus(sender As Object, e As EventArgs) Handles txtSearch.GotFocus
         If txtSearch.Text = "Search by username" Then
             txtSearch.Text = ""
             txtSearch.ForeColor = Color.Black
         End If
     End Sub
+
     Private Sub txtSearch_LostFocus(sender As Object, e As EventArgs) Handles txtSearch.LostFocus
         If String.IsNullOrWhiteSpace(txtSearch.Text) Then
             txtSearch.Text = "Search by username"

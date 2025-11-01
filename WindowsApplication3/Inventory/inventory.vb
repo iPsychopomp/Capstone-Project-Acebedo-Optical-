@@ -50,6 +50,11 @@ Public Class inventory
         productDGV.RowTemplate.Height = 30
         productDGV.DefaultCellStyle.WrapMode = DataGridViewTriState.False
         productDGV.AutoSizeRowsMode = DataGridViewAutoSizeRowsMode.AllCells
+
+        ' Center align all column headers
+        For Each col As DataGridViewColumn In productDGV.Columns
+            col.HeaderCell.Style.Alignment = DataGridViewContentAlignment.MiddleCenter
+        Next
     End Sub
 
     ' Helper method to ensure discount columns exist

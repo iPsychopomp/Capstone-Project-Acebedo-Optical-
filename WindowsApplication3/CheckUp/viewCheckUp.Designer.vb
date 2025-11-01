@@ -39,6 +39,10 @@ Partial Class viewCheckUp
         Me.lblRemarks = New System.Windows.Forms.Label()
         Me.lblDoctor = New System.Windows.Forms.Label()
         Me.pnlViewCheck = New System.Windows.Forms.Panel()
+        Me.lblPDos = New System.Windows.Forms.Label()
+        Me.lblPDod = New System.Windows.Forms.Label()
+        Me.Label3 = New System.Windows.Forms.Label()
+        Me.lblPDou = New System.Windows.Forms.Label()
         Me.pnlViewCheck.SuspendLayout()
         Me.SuspendLayout()
         '
@@ -48,7 +52,7 @@ Partial Class viewCheckUp
         Me.lblDate.Font = New System.Drawing.Font("Segoe UI Semibold", 13.8!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.lblDate.Location = New System.Drawing.Point(12, 10)
         Me.lblDate.Name = "lblDate"
-        Me.lblDate.Size = New System.Drawing.Size(58, 25)
+        Me.lblDate.Size = New System.Drawing.Size(73, 32)
         Me.lblDate.TabIndex = 0
         Me.lblDate.Text = "Date:"
         '
@@ -58,7 +62,7 @@ Partial Class viewCheckUp
         Me.Label8.Font = New System.Drawing.Font("Segoe UI Semibold", 13.8!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.Label8.Location = New System.Drawing.Point(12, 54)
         Me.Label8.Name = "Label8"
-        Me.Label8.Size = New System.Drawing.Size(76, 25)
+        Me.Label8.Size = New System.Drawing.Size(97, 32)
         Me.Label8.TabIndex = 1
         Me.Label8.Text = "Sphere:"
         '
@@ -68,7 +72,7 @@ Partial Class viewCheckUp
         Me.lblSphereOD.Font = New System.Drawing.Font("Segoe UI Semibold", 13.8!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.lblSphereOD.Location = New System.Drawing.Point(12, 102)
         Me.lblSphereOD.Name = "lblSphereOD"
-        Me.lblSphereOD.Size = New System.Drawing.Size(45, 25)
+        Me.lblSphereOD.Size = New System.Drawing.Size(56, 32)
         Me.lblSphereOD.TabIndex = 2
         Me.lblSphereOD.Text = "OD:"
         '
@@ -78,7 +82,7 @@ Partial Class viewCheckUp
         Me.lblSphereOS.Font = New System.Drawing.Font("Segoe UI Semibold", 13.8!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.lblSphereOS.Location = New System.Drawing.Point(12, 134)
         Me.lblSphereOS.Name = "lblSphereOS"
-        Me.lblSphereOS.Size = New System.Drawing.Size(41, 25)
+        Me.lblSphereOS.Size = New System.Drawing.Size(52, 32)
         Me.lblSphereOS.TabIndex = 3
         Me.lblSphereOS.Text = "OS:"
         '
@@ -88,7 +92,7 @@ Partial Class viewCheckUp
         Me.Label11.Font = New System.Drawing.Font("Segoe UI Semibold", 13.8!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.Label11.Location = New System.Drawing.Point(153, 54)
         Me.Label11.Name = "Label11"
-        Me.Label11.Size = New System.Drawing.Size(89, 25)
+        Me.Label11.Size = New System.Drawing.Size(111, 32)
         Me.Label11.TabIndex = 4
         Me.Label11.Text = "Cylinder:"
         '
@@ -98,7 +102,7 @@ Partial Class viewCheckUp
         Me.Label12.Font = New System.Drawing.Font("Segoe UI Semibold", 13.8!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.Label12.Location = New System.Drawing.Point(314, 52)
         Me.Label12.Name = "Label12"
-        Me.Label12.Size = New System.Drawing.Size(53, 25)
+        Me.Label12.Size = New System.Drawing.Size(65, 32)
         Me.Label12.TabIndex = 5
         Me.Label12.Text = "Axis:"
         '
@@ -108,7 +112,7 @@ Partial Class viewCheckUp
         Me.Label13.Font = New System.Drawing.Font("Segoe UI Semibold", 13.8!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.Label13.Location = New System.Drawing.Point(438, 54)
         Me.Label13.Name = "Label13"
-        Me.Label13.Size = New System.Drawing.Size(52, 25)
+        Me.Label13.Size = New System.Drawing.Size(65, 32)
         Me.Label13.TabIndex = 6
         Me.Label13.Text = "Add:"
         '
@@ -118,7 +122,7 @@ Partial Class viewCheckUp
         Me.lblCylinderOD.Font = New System.Drawing.Font("Segoe UI Semibold", 13.8!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.lblCylinderOD.Location = New System.Drawing.Point(153, 102)
         Me.lblCylinderOD.Name = "lblCylinderOD"
-        Me.lblCylinderOD.Size = New System.Drawing.Size(45, 25)
+        Me.lblCylinderOD.Size = New System.Drawing.Size(56, 32)
         Me.lblCylinderOD.TabIndex = 7
         Me.lblCylinderOD.Text = "OD:"
         '
@@ -128,7 +132,7 @@ Partial Class viewCheckUp
         Me.lblCylinderOS.Font = New System.Drawing.Font("Segoe UI Semibold", 13.8!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.lblCylinderOS.Location = New System.Drawing.Point(153, 134)
         Me.lblCylinderOS.Name = "lblCylinderOS"
-        Me.lblCylinderOS.Size = New System.Drawing.Size(41, 25)
+        Me.lblCylinderOS.Size = New System.Drawing.Size(52, 32)
         Me.lblCylinderOS.TabIndex = 8
         Me.lblCylinderOS.Text = "OS:"
         '
@@ -138,7 +142,7 @@ Partial Class viewCheckUp
         Me.lblAxisOD.Font = New System.Drawing.Font("Segoe UI Semibold", 13.8!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.lblAxisOD.Location = New System.Drawing.Point(314, 102)
         Me.lblAxisOD.Name = "lblAxisOD"
-        Me.lblAxisOD.Size = New System.Drawing.Size(45, 25)
+        Me.lblAxisOD.Size = New System.Drawing.Size(56, 32)
         Me.lblAxisOD.TabIndex = 9
         Me.lblAxisOD.Text = "OD:"
         '
@@ -148,7 +152,7 @@ Partial Class viewCheckUp
         Me.lblAxisOS.Font = New System.Drawing.Font("Segoe UI Semibold", 13.8!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.lblAxisOS.Location = New System.Drawing.Point(314, 134)
         Me.lblAxisOS.Name = "lblAxisOS"
-        Me.lblAxisOS.Size = New System.Drawing.Size(41, 25)
+        Me.lblAxisOS.Size = New System.Drawing.Size(52, 32)
         Me.lblAxisOS.TabIndex = 10
         Me.lblAxisOS.Text = "OS:"
         '
@@ -158,7 +162,7 @@ Partial Class viewCheckUp
         Me.lblAddOD.Font = New System.Drawing.Font("Segoe UI Semibold", 13.8!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.lblAddOD.Location = New System.Drawing.Point(438, 102)
         Me.lblAddOD.Name = "lblAddOD"
-        Me.lblAddOD.Size = New System.Drawing.Size(45, 25)
+        Me.lblAddOD.Size = New System.Drawing.Size(56, 32)
         Me.lblAddOD.TabIndex = 11
         Me.lblAddOD.Text = "OD:"
         '
@@ -168,7 +172,7 @@ Partial Class viewCheckUp
         Me.lblAddOS.Font = New System.Drawing.Font("Segoe UI Semibold", 13.8!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.lblAddOS.Location = New System.Drawing.Point(438, 134)
         Me.lblAddOS.Name = "lblAddOS"
-        Me.lblAddOS.Size = New System.Drawing.Size(41, 25)
+        Me.lblAddOS.Size = New System.Drawing.Size(52, 32)
         Me.lblAddOS.TabIndex = 12
         Me.lblAddOS.Text = "OS:"
         '
@@ -178,7 +182,7 @@ Partial Class viewCheckUp
         Me.lblPatientName.Font = New System.Drawing.Font("Segoe UI", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.lblPatientName.Location = New System.Drawing.Point(2, 10)
         Me.lblPatientName.Name = "lblPatientName"
-        Me.lblPatientName.Size = New System.Drawing.Size(101, 20)
+        Me.lblPatientName.Size = New System.Drawing.Size(129, 25)
         Me.lblPatientName.TabIndex = 13
         Me.lblPatientName.Text = "Patient Name:"
         '
@@ -186,9 +190,9 @@ Partial Class viewCheckUp
         '
         Me.lblRemarks.AutoSize = True
         Me.lblRemarks.Font = New System.Drawing.Font("Segoe UI Semibold", 13.8!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.lblRemarks.Location = New System.Drawing.Point(12, 185)
+        Me.lblRemarks.Location = New System.Drawing.Point(12, 207)
         Me.lblRemarks.Name = "lblRemarks"
-        Me.lblRemarks.Size = New System.Drawing.Size(90, 25)
+        Me.lblRemarks.Size = New System.Drawing.Size(114, 32)
         Me.lblRemarks.TabIndex = 14
         Me.lblRemarks.Text = "Remarks:"
         '
@@ -198,13 +202,17 @@ Partial Class viewCheckUp
         Me.lblDoctor.Font = New System.Drawing.Font("Segoe UI Semibold", 13.8!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.lblDoctor.Location = New System.Drawing.Point(12, 280)
         Me.lblDoctor.Name = "lblDoctor"
-        Me.lblDoctor.Size = New System.Drawing.Size(133, 25)
+        Me.lblDoctor.Size = New System.Drawing.Size(167, 32)
         Me.lblDoctor.TabIndex = 15
         Me.lblDoctor.Text = "Doctor Name:"
         '
         'pnlViewCheck
         '
         Me.pnlViewCheck.BackColor = System.Drawing.Color.White
+        Me.pnlViewCheck.Controls.Add(Me.lblPDou)
+        Me.pnlViewCheck.Controls.Add(Me.lblPDos)
+        Me.pnlViewCheck.Controls.Add(Me.lblPDod)
+        Me.pnlViewCheck.Controls.Add(Me.Label3)
         Me.pnlViewCheck.Controls.Add(Me.lblDoctor)
         Me.pnlViewCheck.Controls.Add(Me.lblRemarks)
         Me.pnlViewCheck.Controls.Add(Me.lblAddOS)
@@ -223,15 +231,55 @@ Partial Class viewCheckUp
         Me.pnlViewCheck.Dock = System.Windows.Forms.DockStyle.Bottom
         Me.pnlViewCheck.Location = New System.Drawing.Point(0, 44)
         Me.pnlViewCheck.Name = "pnlViewCheck"
-        Me.pnlViewCheck.Size = New System.Drawing.Size(587, 314)
+        Me.pnlViewCheck.Size = New System.Drawing.Size(643, 314)
         Me.pnlViewCheck.TabIndex = 3
+        '
+        'lblPDos
+        '
+        Me.lblPDos.AutoSize = True
+        Me.lblPDos.Font = New System.Drawing.Font("Segoe UI Semibold", 13.8!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.lblPDos.Location = New System.Drawing.Point(547, 134)
+        Me.lblPDos.Name = "lblPDos"
+        Me.lblPDos.Size = New System.Drawing.Size(52, 32)
+        Me.lblPDos.TabIndex = 18
+        Me.lblPDos.Text = "OS:"
+        '
+        'lblPDod
+        '
+        Me.lblPDod.AutoSize = True
+        Me.lblPDod.Font = New System.Drawing.Font("Segoe UI Semibold", 13.8!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.lblPDod.Location = New System.Drawing.Point(547, 102)
+        Me.lblPDod.Name = "lblPDod"
+        Me.lblPDod.Size = New System.Drawing.Size(56, 32)
+        Me.lblPDod.TabIndex = 17
+        Me.lblPDod.Text = "OD:"
+        '
+        'Label3
+        '
+        Me.Label3.AutoSize = True
+        Me.Label3.Font = New System.Drawing.Font("Segoe UI Semibold", 13.8!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label3.Location = New System.Drawing.Point(547, 54)
+        Me.Label3.Name = "Label3"
+        Me.Label3.Size = New System.Drawing.Size(52, 32)
+        Me.Label3.TabIndex = 16
+        Me.Label3.Text = "PD:"
+        '
+        'lblPDou
+        '
+        Me.lblPDou.AutoSize = True
+        Me.lblPDou.Font = New System.Drawing.Font("Segoe UI Semibold", 13.8!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.lblPDou.Location = New System.Drawing.Point(547, 166)
+        Me.lblPDou.Name = "lblPDou"
+        Me.lblPDou.Size = New System.Drawing.Size(56, 32)
+        Me.lblPDou.TabIndex = 19
+        Me.lblPDou.Text = "OU:"
         '
         'viewCheckUp
         '
-        Me.AutoScaleDimensions = New System.Drawing.SizeF(9.0!, 21.0!)
+        Me.AutoScaleDimensions = New System.Drawing.SizeF(11.0!, 28.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.BackColor = System.Drawing.SystemColors.GradientActiveCaption
-        Me.ClientSize = New System.Drawing.Size(587, 358)
+        Me.ClientSize = New System.Drawing.Size(643, 358)
         Me.Controls.Add(Me.pnlViewCheck)
         Me.Controls.Add(Me.lblPatientName)
         Me.Font = New System.Drawing.Font("Segoe UI", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
@@ -265,4 +313,8 @@ Partial Class viewCheckUp
     Friend WithEvents lblRemarks As System.Windows.Forms.Label
     Friend WithEvents lblDoctor As System.Windows.Forms.Label
     Friend WithEvents pnlViewCheck As System.Windows.Forms.Panel
+    Friend WithEvents lblPDou As System.Windows.Forms.Label
+    Friend WithEvents lblPDos As System.Windows.Forms.Label
+    Friend WithEvents lblPDod As System.Windows.Forms.Label
+    Friend WithEvents Label3 As System.Windows.Forms.Label
 End Class

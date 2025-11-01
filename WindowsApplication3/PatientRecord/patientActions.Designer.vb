@@ -33,6 +33,9 @@ Partial Class patientActions
         Me.btnCancel = New System.Windows.Forms.Button()
         Me.grpHistory = New System.Windows.Forms.GroupBox()
         Me.pnlTransactions = New System.Windows.Forms.Panel()
+        Me.lblFrameTotal = New System.Windows.Forms.Label()
+        Me.lblLensDiscount = New System.Windows.Forms.Label()
+        Me.lblLensTotal = New System.Windows.Forms.Label()
         Me.Label22 = New System.Windows.Forms.Label()
         Me.lblPaymentStatus = New System.Windows.Forms.Label()
         Me.lblModeOfPayment = New System.Windows.Forms.Label()
@@ -109,9 +112,6 @@ Partial Class patientActions
         Me.lblGender = New System.Windows.Forms.Label()
         Me.lblAge = New System.Windows.Forms.Label()
         Me.viewRecord = New System.Windows.Forms.TabControl()
-        Me.lblLensDiscount = New System.Windows.Forms.Label()
-        Me.lblLensTotal = New System.Windows.Forms.Label()
-        Me.lblFrameTotal = New System.Windows.Forms.Label()
         Me.TabPage3.SuspendLayout()
         Me.TabPage2.SuspendLayout()
         Me.grpHistory.SuspendLayout()
@@ -268,6 +268,36 @@ Partial Class patientActions
         Me.pnlTransactions.Size = New System.Drawing.Size(610, 407)
         Me.pnlTransactions.TabIndex = 4
         Me.pnlTransactions.Visible = False
+        '
+        'lblFrameTotal
+        '
+        Me.lblFrameTotal.AutoSize = True
+        Me.lblFrameTotal.Font = New System.Drawing.Font("Segoe UI Semibold", 13.8!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.lblFrameTotal.Location = New System.Drawing.Point(315, 264)
+        Me.lblFrameTotal.Name = "lblFrameTotal"
+        Me.lblFrameTotal.Size = New System.Drawing.Size(35, 32)
+        Me.lblFrameTotal.TabIndex = 49
+        Me.lblFrameTotal.Text = "--"
+        '
+        'lblLensDiscount
+        '
+        Me.lblLensDiscount.AutoSize = True
+        Me.lblLensDiscount.Font = New System.Drawing.Font("Segoe UI Semibold", 13.8!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.lblLensDiscount.Location = New System.Drawing.Point(55, 315)
+        Me.lblLensDiscount.Name = "lblLensDiscount"
+        Me.lblLensDiscount.Size = New System.Drawing.Size(172, 32)
+        Me.lblLensDiscount.TabIndex = 47
+        Me.lblLensDiscount.Text = "Lens Discount:"
+        '
+        'lblLensTotal
+        '
+        Me.lblLensTotal.AutoSize = True
+        Me.lblLensTotal.Font = New System.Drawing.Font("Segoe UI Semibold", 13.8!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.lblLensTotal.Location = New System.Drawing.Point(315, 315)
+        Me.lblLensTotal.Name = "lblLensTotal"
+        Me.lblLensTotal.Size = New System.Drawing.Size(35, 32)
+        Me.lblLensTotal.TabIndex = 48
+        Me.lblLensTotal.Text = "--"
         '
         'Label22
         '
@@ -1089,36 +1119,6 @@ Partial Class patientActions
         Me.viewRecord.SelectedIndex = 0
         Me.viewRecord.Size = New System.Drawing.Size(621, 545)
         Me.viewRecord.TabIndex = 0
-        '
-        'lblLensDiscount
-        '
-        Me.lblLensDiscount.AutoSize = True
-        Me.lblLensDiscount.Font = New System.Drawing.Font("Segoe UI Semibold", 13.8!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.lblLensDiscount.Location = New System.Drawing.Point(55, 315)
-        Me.lblLensDiscount.Name = "lblLensDiscount"
-        Me.lblLensDiscount.Size = New System.Drawing.Size(172, 32)
-        Me.lblLensDiscount.TabIndex = 47
-        Me.lblLensDiscount.Text = "Lens Discount:"
-        '
-        'lblLensTotal
-        '
-        Me.lblLensTotal.AutoSize = True
-        Me.lblLensTotal.Font = New System.Drawing.Font("Segoe UI Semibold", 13.8!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.lblLensTotal.Location = New System.Drawing.Point(315, 315)
-        Me.lblLensTotal.Name = "lblLensTotal"
-        Me.lblLensTotal.Size = New System.Drawing.Size(35, 32)
-        Me.lblLensTotal.TabIndex = 48
-        Me.lblLensTotal.Text = "--"
-        '
-        'lblFrameTotal
-        '
-        Me.lblFrameTotal.AutoSize = True
-        Me.lblFrameTotal.Font = New System.Drawing.Font("Segoe UI Semibold", 13.8!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.lblFrameTotal.Location = New System.Drawing.Point(315, 264)
-        Me.lblFrameTotal.Name = "lblFrameTotal"
-        Me.lblFrameTotal.Size = New System.Drawing.Size(35, 32)
-        Me.lblFrameTotal.TabIndex = 49
-        Me.lblFrameTotal.Text = "--"
         '
         'patientActions
         '

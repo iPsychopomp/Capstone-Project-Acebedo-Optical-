@@ -65,10 +65,6 @@ Public Class patientRecord
                         paramValue = "%" & searchValue & "%"
                     End If
 
-                Case "Mobile Number"
-                    sql += "mobilenum LIKE ?"
-                    paramValue = "%" & searchValue & "%"
-
                 Case Else ' Default search (by name)
                     sql += "fullname LIKE ?"
                     paramValue = "%" & searchValue & "%"
@@ -163,7 +159,6 @@ Public Class patientRecord
             ' Initialize search filter ComboBox (no default selection)
             cmbSearch.Items.Clear()
             cmbSearch.Items.Add("Patient Name")
-            cmbSearch.Items.Add("Mobile Number")
             cmbSearch.Items.Add("Date Added")
             cmbSearch.Items.Add("Birthday")
             cmbSearch.SelectedIndex = -1
@@ -251,6 +246,11 @@ Public Class patientRecord
         patientDGV.RowTemplate.Height = 30
         patientDGV.DefaultCellStyle.WrapMode = DataGridViewTriState.False
         patientDGV.AutoSizeRowsMode = DataGridViewAutoSizeRowsMode.AllCells
+
+        ' Center align all column headers
+        For Each col As DataGridViewColumn In patientDGV.Columns
+            col.HeaderCell.Style.Alignment = DataGridViewContentAlignment.MiddleCenter
+        Next
     End Sub
 End Class
 

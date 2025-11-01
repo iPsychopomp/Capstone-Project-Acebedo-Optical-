@@ -47,6 +47,11 @@ Public Class doctors
         doctorsDGV.RowTemplate.Height = 30
         doctorsDGV.DefaultCellStyle.WrapMode = DataGridViewTriState.False
         doctorsDGV.AutoSizeRowsMode = DataGridViewAutoSizeRowsMode.AllCells
+
+        ' Center align all column headers
+        For Each col As DataGridViewColumn In doctorsDGV.Columns
+            col.HeaderCell.Style.Alignment = DataGridViewContentAlignment.MiddleCenter
+        Next
     End Sub
     Public Sub LoadDoctors()
         Try

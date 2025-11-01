@@ -341,6 +341,4 @@ Module usersModule
         UserDGV.DefaultCellStyle.WrapMode = DataGridViewTriState.False
         UserDGV.AutoSizeRowsMode = DataGridViewAutoSizeRowsMode.AllCells
     End Sub
-
-
 End Module

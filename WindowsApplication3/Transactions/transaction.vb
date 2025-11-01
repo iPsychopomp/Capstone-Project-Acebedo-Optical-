@@ -43,6 +43,10 @@ Public Class Transaction
         transactionDGV.DefaultCellStyle.WrapMode = DataGridViewTriState.False
         transactionDGV.AutoSizeRowsMode = DataGridViewAutoSizeRowsMode.AllCells
 
+        ' Center align all column headers
+        For Each col As DataGridViewColumn In transactionDGV.Columns
+            col.HeaderCell.Style.Alignment = DataGridViewContentAlignment.MiddleCenter
+        Next
     End Sub
 
 

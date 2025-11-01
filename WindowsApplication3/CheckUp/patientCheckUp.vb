@@ -489,4 +489,23 @@ Public Class patientCheckUp
                 End If
         End Select
     End Sub
+
+    ' Auto-fill PD textboxes with "0" if left empty
+    Private Sub pdOD_Leave(sender As Object, e As EventArgs) Handles pdOD.Leave
+        If String.IsNullOrWhiteSpace(pdOD.Text) Then
+            pdOD.Text = "0"
+        End If
+    End Sub
+
+    Private Sub pdOS_Leave(sender As Object, e As EventArgs) Handles pdOS.Leave
+        If String.IsNullOrWhiteSpace(pdOS.Text) Then
+            pdOS.Text = "0"
+        End If
+    End Sub
+
+    Private Sub pdOU_Leave(sender As Object, e As EventArgs) Handles pdOU.Leave
+        If String.IsNullOrWhiteSpace(pdOU.Text) Then
+            pdOU.Text = "0"
+        End If
+    End Sub
 End Class

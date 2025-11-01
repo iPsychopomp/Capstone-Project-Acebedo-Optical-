@@ -22,9 +22,6 @@ Public Class addProduct
                     Call dbConn()
 
                     ' Parse numeric fields to pass correct types to ODBC
-                    Dim qtyVal As Integer = 0
-                    Integer.TryParse(txtQuantity.Text.Trim(), qtyVal)
-
                     Dim priceVal As Decimal = 0D
                     Decimal.TryParse(txtUnitPrice.Text.Trim(), priceVal)
 
@@ -36,6 +33,7 @@ Public Class addProduct
 
                     If Len(pnlPrdct.Tag) = 0 Then
                         ' Insert including discount and discount applied date (columns already exist in DB)
+                        ' Stock quantity starts at 0, use stockIN form to add stock
 
                         sql = "INSERT INTO tbl_products (productName, category, stockQuantity, unitPrice, description, reorderLevel, dateAdded, supplierID, discount, discountAppliedDate) " & _
                               "VALUES (?,?,?,?,?,?,?,?,?,?)"
@@ -43,7 +41,7 @@ Public Class addProduct
 
                         cmd.Parameters.AddWithValue("?", StrConv(Trim(cmbPrdctName.Text), VbStrConv.ProperCase))
                         cmd.Parameters.AddWithValue("?", cmbCategory.Text)
-                        cmd.Parameters.AddWithValue("?", qtyVal)
+                        cmd.Parameters.AddWithValue("?", 0)
                         cmd.Parameters.AddWithValue("?", CDbl(priceVal))
                         cmd.Parameters.AddWithValue("?", StrConv(Trim(txtDescription.Text), VbStrConv.ProperCase))
                         cmd.Parameters.AddWithValue("?", reorderVal)
@@ -81,13 +79,13 @@ Public Class addProduct
                         MsgBox("Product saved successfully!", vbInformation, "Success")
                     Else
                         ' Update including discount and discount applied date (columns already exist in DB)
+                        ' Stock quantity is not updated here, use stockIN/stockOut forms
 
-                        sql = "UPDATE tbl_products SET productName=?, category=?, stockQuantity=?, unitPrice=?, description=?, reorderLevel=?, dateAdded=?, supplierID=?, discount=?, discountAppliedDate=? WHERE productID=?"
+                        sql = "UPDATE tbl_products SET productName=?, category=?, unitPrice=?, description=?, reorderLevel=?, dateAdded=?, supplierID=?, discount=?, discountAppliedDate=? WHERE productID=?"
                         cmd = New Odbc.OdbcCommand(sql, conn)
 
                         cmd.Parameters.AddWithValue("?", StrConv(Trim(cmbPrdctName.Text), VbStrConv.ProperCase))
                         cmd.Parameters.AddWithValue("?", cmbCategory.Text)
-                        cmd.Parameters.AddWithValue("?", qtyVal)
                         cmd.Parameters.AddWithValue("?", CDbl(priceVal))
                         cmd.Parameters.AddWithValue("?", StrConv(Trim(txtDescription.Text), VbStrConv.ProperCase))
                         cmd.Parameters.AddWithValue("?", reorderVal)
@@ -305,13 +303,6 @@ Public Class addProduct
             assignFirst(cmbCategory)
         End If
 
-        ' Required: Stock Quantity (*)  - numeric TextBox
-        Dim qty As Integer
-        If String.IsNullOrWhiteSpace(txtQuantity.Text) OrElse Not Integer.TryParse(txtQuantity.Text.Trim(), qty) Then
-            missing.Add("Stock Quantity (numeric)")
-            assignFirst(txtQuantity)
-        End If
-
         ' Required: Unit Price (*)      - numeric TextBox
         Dim price As Decimal
         If String.IsNullOrWhiteSpace(txtUnitPrice.Text) OrElse Not Decimal.TryParse(txtUnitPrice.Text.Trim(), price) Then
@@ -394,7 +385,6 @@ Public Class addProduct
                 LoadSupplierProducts(supplierID)
                 cmbPrdctName.Text = dt.Rows(0)("productName").ToString()
                 cmbCategory.Text = dt.Rows(0)("category").ToString()
-                txtQuantity.Text = dt.Rows(0)("stockQuantity").ToString()
                 txtUnitPrice.Text = dt.Rows(0)("unitPrice").ToString()
                 txtDescription.Text = dt.Rows(0)("description").ToString()
                 txtReorder.Text = dt.Rows(0)("reorderLevel").ToString()
@@ -440,13 +430,12 @@ Public Class addProduct
     Private Sub grpAddPrdct_Enter(sender As Object, e As EventArgs) Handles grpAddPrdct.Enter
         cmbPrdctName.TabIndex = 0
         cmbCategory.TabIndex = 1
-        txtQuantity.TabIndex = 2
-        txtUnitPrice.TabIndex = 3
-        txtDiscount.TabIndex = 4
-        txtDescription.TabIndex = 5
-        txtReorder.TabIndex = 6
-        dtpDate.TabIndex = 7
-        cmbSuppliers.TabIndex = 8
+        txtUnitPrice.TabIndex = 2
+        txtDiscount.TabIndex = 3
+        txtDescription.TabIndex = 4
+        txtReorder.TabIndex = 5
+        dtpDate.TabIndex = 6
+        cmbSuppliers.TabIndex = 7
     End Sub
 
     Private Sub btnCancel_Click(sender As Object, e As EventArgs) Handles btnCancel.Click
@@ -522,13 +511,6 @@ Public Class addProduct
     ' Remove EnsureDiscountColumn and CheckDiscountColumnExists: no discount column in database
 
     ' Numeric-only inputs for required numeric fields
-    Private Sub txtQuantity_KeyPress(sender As Object, e As KeyPressEventArgs) Handles txtQuantity.KeyPress
-        ' Allow digits and control keys only
-        If Not Char.IsControl(e.KeyChar) AndAlso Not Char.IsDigit(e.KeyChar) Then
-            e.Handled = True
-        End If
-    End Sub
-
     Private Sub txtReorder_KeyPress(sender As Object, e As KeyPressEventArgs) Handles txtReorder.KeyPress
         ' Allow digits and control keys only
         If Not Char.IsControl(e.KeyChar) AndAlso Not Char.IsDigit(e.KeyChar) Then

@@ -6,7 +6,15 @@
 
         Dim yOffset As Integer = 10
         Dim cmd As New Odbc.OdbcCommand()
-        Dim sql As String = "SELECT * FROM db_viewcheckupdetails WHERE PatientID = ? ORDER BY checkupID DESC"
+        ' Updated query to include PD fields from tbl_checkup
+        Dim sql As String = "SELECT c.checkupID AS CheckupID, p.fullname AS PatientName, p.patientID AS PatientID, " & _
+                            "d.fullname AS DoctorName, c.checkupDate AS CheckupDate, " & _
+                            "c.sphereOD, c.sphereOS, c.cylinderOD, c.cylinderOS, c.axisOD, c.axisOS, " & _
+                            "c.addOD, c.addOS, c.pdOD, c.pdOS, c.pdOU, c.remarks " & _
+                            "FROM tbl_checkup c " & _
+                            "JOIN db_viewpatient p ON c.patientID = p.patientID " & _
+                            "JOIN db_viewdoctors d ON c.doctorID = d.doctorID " & _
+                            "WHERE c.patientID = ? ORDER BY c.checkupID DESC"
         Call dbConn()
         cmd.Connection = conn
         cmd.CommandText = sql
@@ -61,14 +69,14 @@
             card.Controls.Add(dateLine)
 
             ' Headers
-            Dim colWidth As Integer = (card.Width - 20) \ 4
+            Dim colWidth As Integer = (card.Width - 20) \ 5
             Dim headerTop As Integer = 90
             Dim rowTop1 As Integer = 125
             Dim rowTop2 As Integer = 155
             Dim leftMargin As Integer = 10
 
-            Dim headers() As String = {"Sphere:", "Cylinder:", "Axis:", "Add:"}
-            For i As Integer = 0 To 3
+            Dim headers() As String = {"Sphere:", "Cylinder:", "Axis:", "Add:", "PD:"}
+            For i As Integer = 0 To 4
                 Dim lblHeader As New Label()
                 lblHeader.Text = headers(i)
                 lblHeader.Font = labelFontBold
@@ -199,24 +207,69 @@
             valAddOS.Font = labelFontRegular
             card.Controls.Add(valAddOS)
 
+            ' PD OD/OS/OU (5th column)
+            Dim lblPDOD As New Label()
+            lblPDOD.Text = "OD:"
+            lblPDOD.Location = New Point(leftMargin + (colWidth * 4), rowTop1)
+            lblPDOD.AutoSize = True
+            lblPDOD.Font = labelFontBold
+            card.Controls.Add(lblPDOD)
+
+            Dim valPDOD As New Label()
+            valPDOD.Text = If(IsDBNull(reader("pdOD")), "N/A", reader("pdOD").ToString())
+            valPDOD.Location = New Point(lblPDOD.Right + 5, rowTop1)
+            valPDOD.AutoSize = True
+            valPDOD.Font = labelFontRegular
+            card.Controls.Add(valPDOD)
+
+            Dim lblPDOS As New Label()
+            lblPDOS.Text = "OS:"
+            lblPDOS.Location = New Point(leftMargin + (colWidth * 4), rowTop2)
+            lblPDOS.AutoSize = True
+            lblPDOS.Font = labelFontBold
+            card.Controls.Add(lblPDOS)
+
+            Dim valPDOS As New Label()
+            valPDOS.Text = If(IsDBNull(reader("pdOS")), "N/A", reader("pdOS").ToString())
+            valPDOS.Location = New Point(lblPDOS.Right + 5, rowTop2)
+            valPDOS.AutoSize = True
+            valPDOS.Font = labelFontRegular
+            card.Controls.Add(valPDOS)
+
+            ' PD OU (3rd row in PD column)
+            Dim rowTop3 As Integer = 185
+            Dim lblPDOU As New Label()
+            lblPDOU.Text = "OU:"
+            lblPDOU.Location = New Point(leftMargin + (colWidth * 4), rowTop3)
+            lblPDOU.AutoSize = True
+            lblPDOU.Font = labelFontBold
+            card.Controls.Add(lblPDOU)
+
+            Dim valPDOU As New Label()
+            valPDOU.Text = If(IsDBNull(reader("pdOU")), "N/A", reader("pdOU").ToString())
+            valPDOU.Location = New Point(lblPDOU.Right + 5, rowTop3)
+            valPDOU.AutoSize = True
+            valPDOU.Font = labelFontRegular
+            card.Controls.Add(valPDOU)
+
             ' Remarks line
             Dim remarksLine As New Panel()
             remarksLine.BackColor = Color.Black
             remarksLine.Size = New Size(card.Width - 20, 2)
-            remarksLine.Location = New Point(10, 190)
+            remarksLine.Location = New Point(10, 220)
             card.Controls.Add(remarksLine)
 
             ' Remarks
             Dim lblRemarksTitle As New Label()
             lblRemarksTitle.Text = "Remarks:"
-            lblRemarksTitle.Location = New Point(leftMargin, 200)
+            lblRemarksTitle.Location = New Point(leftMargin, 230)
             lblRemarksTitle.AutoSize = True
             lblRemarksTitle.Font = labelFontBold
             card.Controls.Add(lblRemarksTitle)
 
             Dim lblRemarksValue As New Label()
             lblRemarksValue.Text = reader("remarks").ToString()
-            lblRemarksValue.Location = New Point(lblRemarksTitle.Right + 5, 200)
+            lblRemarksValue.Location = New Point(lblRemarksTitle.Right + 5, 230)
             lblRemarksValue.AutoSize = True
             lblRemarksValue.Font = labelFontRegular
             card.Controls.Add(lblRemarksValue)
@@ -225,20 +278,20 @@
             Dim doctorline As New Panel()
             doctorline.BackColor = Color.Black
             doctorline.Size = New Size(card.Width - 20, 2)
-            doctorline.Location = New Point(leftMargin, 250)
+            doctorline.Location = New Point(leftMargin, 280)
             card.Controls.Add(doctorline)
 
             ' Doctor Name
             Dim lblDoctorTitle As New Label()
             lblDoctorTitle.Text = "Doctor Name:"
-            lblDoctorTitle.Location = New Point(leftMargin, 260)
+            lblDoctorTitle.Location = New Point(leftMargin, 290)
             lblDoctorTitle.AutoSize = True
             lblDoctorTitle.Font = labelFontBold
             card.Controls.Add(lblDoctorTitle)
 
             Dim lblDoctorValue As New Label()
             lblDoctorValue.Text = reader("DoctorName").ToString()
-            lblDoctorValue.Location = New Point(lblDoctorTitle.Right + 5, 260)
+            lblDoctorValue.Location = New Point(lblDoctorTitle.Right + 5, 290)
             lblDoctorValue.AutoSize = True
             lblDoctorValue.Font = labelFontRegular
             card.Controls.Add(lblDoctorValue)

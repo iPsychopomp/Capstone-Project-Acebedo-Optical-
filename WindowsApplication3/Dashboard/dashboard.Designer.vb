@@ -24,13 +24,13 @@ Partial Class dashboard
     Private Sub InitializeComponent()
         Me.components = New System.ComponentModel.Container()
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(dashboard))
-        Dim ChartArea7 As System.Windows.Forms.DataVisualization.Charting.ChartArea = New System.Windows.Forms.DataVisualization.Charting.ChartArea()
-        Dim Legend7 As System.Windows.Forms.DataVisualization.Charting.Legend = New System.Windows.Forms.DataVisualization.Charting.Legend()
-        Dim Series10 As System.Windows.Forms.DataVisualization.Charting.Series = New System.Windows.Forms.DataVisualization.Charting.Series()
-        Dim Series11 As System.Windows.Forms.DataVisualization.Charting.Series = New System.Windows.Forms.DataVisualization.Charting.Series()
-        Dim ChartArea8 As System.Windows.Forms.DataVisualization.Charting.ChartArea = New System.Windows.Forms.DataVisualization.Charting.ChartArea()
-        Dim Legend8 As System.Windows.Forms.DataVisualization.Charting.Legend = New System.Windows.Forms.DataVisualization.Charting.Legend()
-        Dim Series12 As System.Windows.Forms.DataVisualization.Charting.Series = New System.Windows.Forms.DataVisualization.Charting.Series()
+        Dim ChartArea1 As System.Windows.Forms.DataVisualization.Charting.ChartArea = New System.Windows.Forms.DataVisualization.Charting.ChartArea()
+        Dim Legend1 As System.Windows.Forms.DataVisualization.Charting.Legend = New System.Windows.Forms.DataVisualization.Charting.Legend()
+        Dim Series1 As System.Windows.Forms.DataVisualization.Charting.Series = New System.Windows.Forms.DataVisualization.Charting.Series()
+        Dim Series2 As System.Windows.Forms.DataVisualization.Charting.Series = New System.Windows.Forms.DataVisualization.Charting.Series()
+        Dim ChartArea2 As System.Windows.Forms.DataVisualization.Charting.ChartArea = New System.Windows.Forms.DataVisualization.Charting.ChartArea()
+        Dim Legend2 As System.Windows.Forms.DataVisualization.Charting.Legend = New System.Windows.Forms.DataVisualization.Charting.Legend()
+        Dim Series3 As System.Windows.Forms.DataVisualization.Charting.Series = New System.Windows.Forms.DataVisualization.Charting.Series()
         Me.BackgroundWorker1 = New System.ComponentModel.BackgroundWorker()
         Me.pnlDash = New System.Windows.Forms.Panel()
         Me.lblDateRange = New System.Windows.Forms.Label()
@@ -197,24 +197,24 @@ Partial Class dashboard
         '
         Me.chartSales.BorderlineColor = System.Drawing.Color.Black
         Me.chartSales.BorderlineDashStyle = System.Windows.Forms.DataVisualization.Charting.ChartDashStyle.Solid
-        ChartArea7.Name = "ChartArea1"
-        Me.chartSales.ChartAreas.Add(ChartArea7)
+        ChartArea1.Name = "ChartArea1"
+        Me.chartSales.ChartAreas.Add(ChartArea1)
         Me.chartSales.Dock = System.Windows.Forms.DockStyle.Fill
-        Legend7.Name = "Legend1"
-        Me.chartSales.Legends.Add(Legend7)
+        Legend1.Name = "Legend1"
+        Me.chartSales.Legends.Add(Legend1)
         Me.chartSales.Location = New System.Drawing.Point(0, 0)
         Me.chartSales.Name = "chartSales"
         Me.chartSales.Palette = System.Windows.Forms.DataVisualization.Charting.ChartColorPalette.Pastel
-        Series10.ChartArea = "ChartArea1"
-        Series10.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Line
-        Series10.Legend = "Legend1"
-        Series10.Name = "Series1"
-        Series11.ChartArea = "ChartArea1"
-        Series11.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Line
-        Series11.Legend = "Legend1"
-        Series11.Name = "Series2"
-        Me.chartSales.Series.Add(Series10)
-        Me.chartSales.Series.Add(Series11)
+        Series1.ChartArea = "ChartArea1"
+        Series1.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Line
+        Series1.Legend = "Legend1"
+        Series1.Name = "Series1"
+        Series2.ChartArea = "ChartArea1"
+        Series2.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Line
+        Series2.Legend = "Legend1"
+        Series2.Name = "Series2"
+        Me.chartSales.Series.Add(Series1)
+        Me.chartSales.Series.Add(Series2)
         Me.chartSales.Size = New System.Drawing.Size(664, 425)
         Me.chartSales.TabIndex = 0
         Me.chartSales.Text = "Chart1"
@@ -233,19 +233,19 @@ Partial Class dashboard
         '
         Me.chartTopProducts.BorderlineColor = System.Drawing.Color.Black
         Me.chartTopProducts.BorderlineDashStyle = System.Windows.Forms.DataVisualization.Charting.ChartDashStyle.Solid
-        ChartArea8.Name = "ChartArea1"
-        Me.chartTopProducts.ChartAreas.Add(ChartArea8)
+        ChartArea2.Name = "ChartArea1"
+        Me.chartTopProducts.ChartAreas.Add(ChartArea2)
         Me.chartTopProducts.Dock = System.Windows.Forms.DockStyle.Fill
         Me.chartTopProducts.Enabled = False
-        Legend8.Name = "Legend1"
-        Me.chartTopProducts.Legends.Add(Legend8)
+        Legend2.Name = "Legend1"
+        Me.chartTopProducts.Legends.Add(Legend2)
         Me.chartTopProducts.Location = New System.Drawing.Point(0, 0)
         Me.chartTopProducts.Name = "chartTopProducts"
         Me.chartTopProducts.Palette = System.Windows.Forms.DataVisualization.Charting.ChartColorPalette.Pastel
-        Series12.ChartArea = "ChartArea1"
-        Series12.Legend = "Legend1"
-        Series12.Name = "Series1"
-        Me.chartTopProducts.Series.Add(Series12)
+        Series3.ChartArea = "ChartArea1"
+        Series3.Legend = "Legend1"
+        Series3.Name = "Series1"
+        Me.chartTopProducts.Series.Add(Series3)
         Me.chartTopProducts.Size = New System.Drawing.Size(665, 425)
         Me.chartTopProducts.TabIndex = 0
         Me.chartTopProducts.Text = "Chart1"

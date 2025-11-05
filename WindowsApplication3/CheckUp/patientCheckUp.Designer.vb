@@ -83,7 +83,7 @@ Partial Class patientCheckUp
         Me.txtPName.Name = "txtPName"
         Me.txtPName.ReadOnly = True
         Me.txtPName.Size = New System.Drawing.Size(306, 32)
-        Me.txtPName.TabIndex = 144
+        Me.txtPName.TabIndex = 1
         '
         'Label17
         '
@@ -113,7 +113,7 @@ Partial Class patientCheckUp
         Me.txtRemarks.Location = New System.Drawing.Point(24, 169)
         Me.txtRemarks.Name = "txtRemarks"
         Me.txtRemarks.Size = New System.Drawing.Size(1066, 97)
-        Me.txtRemarks.TabIndex = 139
+        Me.txtRemarks.TabIndex = 16
         Me.txtRemarks.Text = ""
         '
         'Label16
@@ -143,7 +143,7 @@ Partial Class patientCheckUp
         Me.txtAddOS.Margin = New System.Windows.Forms.Padding(3, 2, 3, 2)
         Me.txtAddOS.Name = "txtAddOS"
         Me.txtAddOS.Size = New System.Drawing.Size(138, 32)
-        Me.txtAddOS.TabIndex = 136
+        Me.txtAddOS.TabIndex = 12
         '
         'Label14
         '
@@ -162,7 +162,7 @@ Partial Class patientCheckUp
         Me.txtAddOD.Margin = New System.Windows.Forms.Padding(3, 2, 3, 2)
         Me.txtAddOD.Name = "txtAddOD"
         Me.txtAddOD.Size = New System.Drawing.Size(138, 32)
-        Me.txtAddOD.TabIndex = 134
+        Me.txtAddOD.TabIndex = 11
         '
         'Label15
         '
@@ -205,7 +205,7 @@ Partial Class patientCheckUp
         Me.txtDName.Margin = New System.Windows.Forms.Padding(3, 2, 3, 2)
         Me.txtDName.Name = "txtDName"
         Me.txtDName.Size = New System.Drawing.Size(306, 32)
-        Me.txtDName.TabIndex = 151
+        Me.txtDName.TabIndex = 3
         '
         'Panel1
         '
@@ -248,7 +248,7 @@ Partial Class patientCheckUp
         Me.btnDSearch.Margin = New System.Windows.Forms.Padding(3, 2, 3, 2)
         Me.btnDSearch.Name = "btnDSearch"
         Me.btnDSearch.Size = New System.Drawing.Size(87, 27)
-        Me.btnDSearch.TabIndex = 150
+        Me.btnDSearch.TabIndex = 4
         Me.btnDSearch.Text = "&Search"
         Me.btnDSearch.UseVisualStyleBackColor = False
         '
@@ -264,7 +264,7 @@ Partial Class patientCheckUp
         Me.btnCancel.Margin = New System.Windows.Forms.Padding(3, 2, 3, 2)
         Me.btnCancel.Name = "btnCancel"
         Me.btnCancel.Size = New System.Drawing.Size(100, 27)
-        Me.btnCancel.TabIndex = 7
+        Me.btnCancel.TabIndex = 19
         Me.btnCancel.Text = "Cancel"
         Me.btnCancel.UseVisualStyleBackColor = False
         '
@@ -279,7 +279,7 @@ Partial Class patientCheckUp
         Me.btnPSearch.Margin = New System.Windows.Forms.Padding(3, 2, 3, 2)
         Me.btnPSearch.Name = "btnPSearch"
         Me.btnPSearch.Size = New System.Drawing.Size(87, 27)
-        Me.btnPSearch.TabIndex = 8
+        Me.btnPSearch.TabIndex = 2
         Me.btnPSearch.Text = "&Search"
         Me.btnPSearch.UseVisualStyleBackColor = False
         Me.btnPSearch.Visible = False
@@ -295,7 +295,7 @@ Partial Class patientCheckUp
         Me.btnClear.Margin = New System.Windows.Forms.Padding(3, 2, 3, 2)
         Me.btnClear.Name = "btnClear"
         Me.btnClear.Size = New System.Drawing.Size(100, 27)
-        Me.btnClear.TabIndex = 6
+        Me.btnClear.TabIndex = 18
         Me.btnClear.Text = "Clear"
         Me.btnClear.UseVisualStyleBackColor = False
         Me.btnClear.Visible = False
@@ -311,7 +311,7 @@ Partial Class patientCheckUp
         Me.btnSave.Margin = New System.Windows.Forms.Padding(3, 2, 3, 2)
         Me.btnSave.Name = "btnSave"
         Me.btnSave.Size = New System.Drawing.Size(100, 27)
-        Me.btnSave.TabIndex = 5
+        Me.btnSave.TabIndex = 17
         Me.btnSave.Text = "Save"
         Me.btnSave.UseVisualStyleBackColor = False
         '
@@ -371,7 +371,7 @@ Partial Class patientCheckUp
         Me.pdOU.Margin = New System.Windows.Forms.Padding(3, 2, 3, 2)
         Me.pdOU.Name = "pdOU"
         Me.pdOU.Size = New System.Drawing.Size(138, 32)
-        Me.pdOU.TabIndex = 155
+        Me.pdOU.TabIndex = 15
         '
         'Label1
         '
@@ -390,7 +390,7 @@ Partial Class patientCheckUp
         Me.pdOS.Margin = New System.Windows.Forms.Padding(3, 2, 3, 2)
         Me.pdOS.Name = "pdOS"
         Me.pdOS.Size = New System.Drawing.Size(138, 32)
-        Me.pdOS.TabIndex = 153
+        Me.pdOS.TabIndex = 14
         '
         'Label19
         '
@@ -409,7 +409,7 @@ Partial Class patientCheckUp
         Me.pdOD.Margin = New System.Windows.Forms.Padding(3, 2, 3, 2)
         Me.pdOD.Name = "pdOD"
         Me.pdOD.Size = New System.Drawing.Size(138, 32)
-        Me.pdOD.TabIndex = 151
+        Me.pdOD.TabIndex = 13
         '
         'Label20
         '
@@ -438,7 +438,7 @@ Partial Class patientCheckUp
         Me.txtAXOS.Margin = New System.Windows.Forms.Padding(3, 2, 3, 2)
         Me.txtAXOS.Name = "txtAXOS"
         Me.txtAXOS.Size = New System.Drawing.Size(138, 32)
-        Me.txtAXOS.TabIndex = 131
+        Me.txtAXOS.TabIndex = 10
         '
         'Label11
         '
@@ -457,7 +457,7 @@ Partial Class patientCheckUp
         Me.txtAXOD.Margin = New System.Windows.Forms.Padding(3, 2, 3, 2)
         Me.txtAXOD.Name = "txtAXOD"
         Me.txtAXOD.Size = New System.Drawing.Size(138, 32)
-        Me.txtAXOD.TabIndex = 129
+        Me.txtAXOD.TabIndex = 9
         '
         'Label12
         '
@@ -486,7 +486,7 @@ Partial Class patientCheckUp
         Me.txtCYOS.Margin = New System.Windows.Forms.Padding(3, 2, 3, 2)
         Me.txtCYOS.Name = "txtCYOS"
         Me.txtCYOS.Size = New System.Drawing.Size(138, 32)
-        Me.txtCYOS.TabIndex = 126
+        Me.txtCYOS.TabIndex = 8
         '
         'Label8
         '
@@ -505,7 +505,7 @@ Partial Class patientCheckUp
         Me.txtCYOD.Margin = New System.Windows.Forms.Padding(3, 2, 3, 2)
         Me.txtCYOD.Name = "txtCYOD"
         Me.txtCYOD.Size = New System.Drawing.Size(138, 32)
-        Me.txtCYOD.TabIndex = 124
+        Me.txtCYOD.TabIndex = 7
         '
         'Label9
         '
@@ -534,7 +534,7 @@ Partial Class patientCheckUp
         Me.txtOSSP.Margin = New System.Windows.Forms.Padding(3, 2, 3, 2)
         Me.txtOSSP.Name = "txtOSSP"
         Me.txtOSSP.Size = New System.Drawing.Size(138, 32)
-        Me.txtOSSP.TabIndex = 121
+        Me.txtOSSP.TabIndex = 6
         '
         'Label5
         '
@@ -553,7 +553,7 @@ Partial Class patientCheckUp
         Me.txtODSP.Margin = New System.Windows.Forms.Padding(3, 2, 3, 2)
         Me.txtODSP.Name = "txtODSP"
         Me.txtODSP.Size = New System.Drawing.Size(138, 32)
-        Me.txtODSP.TabIndex = 119
+        Me.txtODSP.TabIndex = 5
         '
         'Label4
         '

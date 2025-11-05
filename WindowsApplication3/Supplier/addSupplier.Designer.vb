@@ -46,14 +46,14 @@ Partial Class addSupplier
         Me.txtSupplierName = New System.Windows.Forms.TextBox()
         Me.pnlAddUser = New System.Windows.Forms.Panel()
         Me.Panel1 = New System.Windows.Forms.Panel()
+        Me.pbEdit = New System.Windows.Forms.PictureBox()
         Me.pbAdd = New System.Windows.Forms.PictureBox()
         Me.lblhead = New System.Windows.Forms.Label()
-        Me.pbEdit = New System.Windows.Forms.PictureBox()
         Me.grpAddUser.SuspendLayout()
         Me.pnlAddUser.SuspendLayout()
         Me.Panel1.SuspendLayout()
-        CType(Me.pbAdd, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.pbEdit, System.ComponentModel.ISupportInitialize).BeginInit()
+        CType(Me.pbAdd, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.SuspendLayout()
         '
         'btnCancel
@@ -64,7 +64,7 @@ Partial Class addSupplier
         Me.btnCancel.Font = New System.Drawing.Font("Segoe UI", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.btnCancel.ForeColor = System.Drawing.Color.Black
         Me.btnCancel.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft
-        Me.btnCancel.Location = New System.Drawing.Point(483, 298)
+        Me.btnCancel.Location = New System.Drawing.Point(483, 282)
         Me.btnCancel.Name = "btnCancel"
         Me.btnCancel.Size = New System.Drawing.Size(100, 27)
         Me.btnCancel.TabIndex = 48
@@ -79,7 +79,7 @@ Partial Class addSupplier
         Me.btnSave.Font = New System.Drawing.Font("Segoe UI", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.btnSave.ForeColor = System.Drawing.Color.Black
         Me.btnSave.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft
-        Me.btnSave.Location = New System.Drawing.Point(42, 298)
+        Me.btnSave.Location = New System.Drawing.Point(42, 282)
         Me.btnSave.Name = "btnSave"
         Me.btnSave.Size = New System.Drawing.Size(100, 27)
         Me.btnSave.TabIndex = 46
@@ -94,7 +94,7 @@ Partial Class addSupplier
         Me.btnClear.Font = New System.Drawing.Font("Segoe UI", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.btnClear.ForeColor = System.Drawing.Color.Black
         Me.btnClear.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft
-        Me.btnClear.Location = New System.Drawing.Point(148, 298)
+        Me.btnClear.Location = New System.Drawing.Point(148, 282)
         Me.btnClear.Name = "btnClear"
         Me.btnClear.Size = New System.Drawing.Size(100, 27)
         Me.btnClear.TabIndex = 47
@@ -150,7 +150,7 @@ Partial Class addSupplier
         Me.Label10.AutoSize = True
         Me.Label10.Font = New System.Drawing.Font("Segoe UI", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.Label10.ForeColor = System.Drawing.Color.Red
-        Me.Label10.Location = New System.Drawing.Point(143, 75)
+        Me.Label10.Location = New System.Drawing.Point(138, 75)
         Me.Label10.Name = "Label10"
         Me.Label10.Size = New System.Drawing.Size(20, 25)
         Me.Label10.TabIndex = 64
@@ -161,7 +161,7 @@ Partial Class addSupplier
         Me.Label13.AutoSize = True
         Me.Label13.Font = New System.Drawing.Font("Segoe UI", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.Label13.ForeColor = System.Drawing.Color.Red
-        Me.Label13.Location = New System.Drawing.Point(404, 75)
+        Me.Label13.Location = New System.Drawing.Point(399, 75)
         Me.Label13.Name = "Label13"
         Me.Label13.Size = New System.Drawing.Size(20, 25)
         Me.Label13.TabIndex = 60
@@ -172,7 +172,7 @@ Partial Class addSupplier
         Me.Label12.AutoSize = True
         Me.Label12.Font = New System.Drawing.Font("Segoe UI", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.Label12.ForeColor = System.Drawing.Color.Red
-        Me.Label12.Location = New System.Drawing.Point(389, 22)
+        Me.Label12.Location = New System.Drawing.Point(384, 22)
         Me.Label12.Name = "Label12"
         Me.Label12.Size = New System.Drawing.Size(20, 25)
         Me.Label12.TabIndex = 59
@@ -183,7 +183,7 @@ Partial Class addSupplier
         Me.Label11.AutoSize = True
         Me.Label11.Font = New System.Drawing.Font("Segoe UI", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.Label11.ForeColor = System.Drawing.Color.Red
-        Me.Label11.Location = New System.Drawing.Point(154, 128)
+        Me.Label11.Location = New System.Drawing.Point(149, 128)
         Me.Label11.Name = "Label11"
         Me.Label11.Size = New System.Drawing.Size(20, 25)
         Me.Label11.TabIndex = 58
@@ -194,7 +194,7 @@ Partial Class addSupplier
         Me.Label1.AutoSize = True
         Me.Label1.Font = New System.Drawing.Font("Segoe UI", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.Label1.ForeColor = System.Drawing.Color.Red
-        Me.Label1.Location = New System.Drawing.Point(145, 22)
+        Me.Label1.Location = New System.Drawing.Point(140, 22)
         Me.Label1.Name = "Label1"
         Me.Label1.Size = New System.Drawing.Size(20, 25)
         Me.Label1.TabIndex = 56
@@ -304,7 +304,7 @@ Partial Class addSupplier
         Me.pnlAddUser.Dock = System.Windows.Forms.DockStyle.Fill
         Me.pnlAddUser.Location = New System.Drawing.Point(0, 0)
         Me.pnlAddUser.Name = "pnlAddUser"
-        Me.pnlAddUser.Size = New System.Drawing.Size(626, 359)
+        Me.pnlAddUser.Size = New System.Drawing.Size(626, 319)
         Me.pnlAddUser.TabIndex = 25
         '
         'Panel1
@@ -318,6 +318,16 @@ Partial Class addSupplier
         Me.Panel1.Name = "Panel1"
         Me.Panel1.Size = New System.Drawing.Size(626, 49)
         Me.Panel1.TabIndex = 122
+        '
+        'pbEdit
+        '
+        Me.pbEdit.Image = CType(resources.GetObject("pbEdit.Image"), System.Drawing.Image)
+        Me.pbEdit.Location = New System.Drawing.Point(18, 6)
+        Me.pbEdit.Name = "pbEdit"
+        Me.pbEdit.Size = New System.Drawing.Size(34, 37)
+        Me.pbEdit.TabIndex = 115
+        Me.pbEdit.TabStop = False
+        Me.pbEdit.Visible = False
         '
         'pbAdd
         '
@@ -338,21 +348,11 @@ Partial Class addSupplier
         Me.lblhead.TabIndex = 113
         Me.lblhead.Text = "Add Supplier"
         '
-        'pbEdit
-        '
-        Me.pbEdit.Image = CType(resources.GetObject("pbEdit.Image"), System.Drawing.Image)
-        Me.pbEdit.Location = New System.Drawing.Point(18, 6)
-        Me.pbEdit.Name = "pbEdit"
-        Me.pbEdit.Size = New System.Drawing.Size(34, 37)
-        Me.pbEdit.TabIndex = 115
-        Me.pbEdit.TabStop = False
-        Me.pbEdit.Visible = False
-        '
         'addSupplier
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(11.0!, 28.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
-        Me.ClientSize = New System.Drawing.Size(626, 359)
+        Me.ClientSize = New System.Drawing.Size(626, 319)
         Me.Controls.Add(Me.pnlAddUser)
         Me.Font = New System.Drawing.Font("Segoe UI", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog
@@ -368,8 +368,8 @@ Partial Class addSupplier
         Me.pnlAddUser.ResumeLayout(False)
         Me.Panel1.ResumeLayout(False)
         Me.Panel1.PerformLayout()
-        CType(Me.pbAdd, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.pbEdit, System.ComponentModel.ISupportInitialize).EndInit()
+        CType(Me.pbAdd, System.ComponentModel.ISupportInitialize).EndInit()
         Me.ResumeLayout(False)
 
     End Sub

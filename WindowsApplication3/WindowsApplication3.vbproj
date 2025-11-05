@@ -188,6 +188,11 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>DataSet6.xsd</DependentUpon>
     </Compile>
+    <Compile Include="Datasets\DataSet7.Designer.vb">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>DataSet7.xsd</DependentUpon>
+    </Compile>
     <Compile Include="dgvDesign.vb" />
     <Compile Include="Doctors\addDoctors.Designer.vb">
       <DependentUpon>addDoctors.vb</DependentUpon>
@@ -418,6 +423,12 @@
     <Compile Include="Transactions\transaction.vb">
       <SubType>Form</SubType>
     </Compile>
+    <Compile Include="Users\Profile.Designer.vb">
+      <DependentUpon>Profile.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Users\Profile.vb">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="Users\userModule.vb" />
     <Compile Include="Users\users.Designer.vb">
       <DependentUpon>users.vb</DependentUpon>
@@ -574,6 +585,9 @@
     <EmbeddedResource Include="Transactions\transaction.resx">
       <DependentUpon>transaction.vb</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Users\Profile.resx">
+      <DependentUpon>Profile.vb</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Users\users.resx">
       <DependentUpon>users.vb</DependentUpon>
     </EmbeddedResource>
@@ -645,6 +659,17 @@
     </None>
     <None Include="Datasets\DataSet6.xss">
       <DependentUpon>DataSet6.xsd</DependentUpon>
+    </None>
+    <None Include="Datasets\DataSet7.xsc">
+      <DependentUpon>DataSet7.xsd</DependentUpon>
+    </None>
+    <None Include="Datasets\DataSet7.xsd">
+      <SubType>Designer</SubType>
+      <Generator>MSDataSetGenerator</Generator>
+      <LastGenOutput>DataSet7.Designer.vb</LastGenOutput>
+    </None>
+    <None Include="Datasets\DataSet7.xss">
+      <DependentUpon>DataSet7.xsd</DependentUpon>
     </None>
     <None Include="My Project\Application.myapp">
       <Generator>MyApplicationCodeGenerator</Generator>

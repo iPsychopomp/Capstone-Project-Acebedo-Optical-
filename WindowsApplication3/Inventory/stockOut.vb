@@ -1,6 +1,58 @@
 ﻿Imports System.Data.Odbc
 Public Class stockOUT
 
+    Private Sub ComputeTotalCost()
+        Dim costPerItem As Decimal
+        Dim quantity As Integer
+
+        If Decimal.TryParse(txtCostPerItem.Text, costPerItem) AndAlso Integer.TryParse(NumQuantity.Value.ToString(), quantity) Then
+            Dim totalCost As Decimal = costPerItem * quantity
+            txtCost.Text = totalCost.ToString("N2")
+        Else
+            txtCost.Text = "0.00"
+        End If
+    End Sub
+
+    Private Sub txtCostPerItem_TextChanged(sender As Object, e As EventArgs) Handles txtCostPerItem.TextChanged
+        ComputeTotalCost()
+    End Sub
+
+    Private Sub NumQuantity_ValueChanged(sender As Object, e As EventArgs) Handles NumQuantity.ValueChanged
+        ComputeTotalCost()
+    End Sub
+
+    Private Sub cmbPrdctName_DropDown(sender As Object, e As EventArgs) Handles cmbPrdctName.DropDown
+        ' Clear the selection before dropdown opens
+        cmbPrdctName.SelectedIndex = -1
+    End Sub
+
+    Private Sub cmbPrdctName_SelectedIndexChanged(sender As Object, e As EventArgs) Handles cmbPrdctName.SelectedIndexChanged
+        If cmbPrdctName.SelectedValue Is Nothing OrElse Not IsNumeric(cmbPrdctName.SelectedValue) Then Exit Sub
+
+        Dim selectedProductID As Integer = Convert.ToInt32(cmbPrdctName.SelectedValue)
+
+        Try
+            Call dbConn()
+
+            Dim cmd As New Odbc.OdbcCommand("SELECT unitPrice FROM tbl_products WHERE productID = ?", conn)
+            cmd.Parameters.AddWithValue("?", selectedProductID)
+
+            Dim reader As Odbc.OdbcDataReader = cmd.ExecuteReader()
+
+            If reader.Read() Then
+                txtCostPerItem.Text = reader("unitPrice").ToString()
+            Else
+                txtCostPerItem.Text = "0.00"
+            End If
+
+            reader.Close()
+        Catch ex As Exception
+            MsgBox("Error retrieving unit price: " & ex.Message, vbCritical, "Error")
+        Finally
+            conn.Close()
+        End Try
+    End Sub
+
     Private Sub btnCancel_Click(sender As Object, e As EventArgs) Handles btnCancel.Click
         Me.Close()
     End Sub
@@ -22,10 +74,18 @@ Public Class stockOUT
                     Exit Sub
                 End If
 
-                Dim sql As String = "INSERT INTO tbl_stock_out (productID, quantityIssued, reason, dateIssued, issuedBy) VALUES (?,?,?,?,?)"
+                Dim totalCost As Decimal
+                If Not Decimal.TryParse(txtCost.Text, totalCost) Then
+                    MsgBox("Invalid total cost value.", vbExclamation, "Error")
+                    Exit Sub
+                End If
+
+                Dim sql As String = "INSERT INTO tbl_stock_out (productID, quantityIssued, costPerItem, totalCost, reason, dateIssued, issuedBy) VALUES (?,?,?,?,?,?,?)"
                 Using cmdInsert As New Odbc.OdbcCommand(sql, conn)
                     cmdInsert.Parameters.Add("?", Odbc.OdbcType.Int).Value = productID
                     cmdInsert.Parameters.Add("?", Odbc.OdbcType.Int).Value = NumQuantity.Value
+                    cmdInsert.Parameters.Add("?", Odbc.OdbcType.Double).Value = Convert.ToDouble(txtCostPerItem.Text)
+                    cmdInsert.Parameters.Add("?", Odbc.OdbcType.Double).Value = Convert.ToDouble(totalCost)
                     cmdInsert.Parameters.Add("?", Odbc.OdbcType.VarChar, 100).Value = cmbReason.Text
                     cmdInsert.Parameters.Add("?", Odbc.OdbcType.Date).Value = dtpDate.Value
                     cmdInsert.Parameters.Add("?", Odbc.OdbcType.VarChar, 100).Value = StrConv(Trim(txtIssuedBy.Text), VbStrConv.ProperCase)
@@ -47,7 +107,7 @@ Public Class stockOUT
 
                 ' Reload the stock out DGV
                 LoadDGV("SELECT * FROM db_viewstockout", Me.StockOutDGV)
-                
+
                 ' Refresh the inventory form if it's open
                 For Each frm As Form In Application.OpenForms
                     If TypeOf frm Is inventory Then
@@ -67,6 +127,9 @@ Public Class stockOUT
 
                 ' Update critical stock count on dashboard
                 UpdateDashboardCriticalCount()
+
+                ' Clear all fields after successful save
+                ClearFields()
             Else
                 MsgBox("Please select a valid product.", vbExclamation, "Invalid Selection")
             End If
@@ -81,7 +144,25 @@ Public Class stockOUT
         DgvStyle(StockOutDGV)
     End Sub
 
+    Private Sub ClearFields()
+        ' Clear product selection
+        cmbPrdctName.SelectedIndex = -1
 
+        ' Reset quantity
+        NumQuantity.Value = NumQuantity.Minimum
+
+        ' Clear cost fields
+        txtCostPerItem.Text = "0.00"
+        txtCost.Text = "0.00"
+
+        ' Clear reason
+        cmbReason.SelectedIndex = -1
+
+        ' Reset date to today
+        dtpDate.Value = DateTime.Now
+
+        ' Note: txtIssuedBy is ReadOnly and should keep the logged-in user's name
+    End Sub
 
     Private Function GetCurrentStock(productID As Integer) As Integer
         Dim cmd As New Odbc.OdbcCommand("SELECT stockQuantity FROM tbl_products WHERE productID=?", conn)
@@ -117,6 +198,7 @@ Public Class stockOUT
                 cmbPrdctName.DataSource = dt
                 cmbPrdctName.DisplayMember = "productName"
                 cmbPrdctName.ValueMember = "productID"
+                cmbPrdctName.SelectedIndex = -1
             Else
                 MsgBox("No products found.", vbExclamation, "Warning")
             End If
@@ -156,9 +238,10 @@ Public Class stockOUT
 
     Private Sub stockOUT_Load(sender As Object, e As EventArgs) Handles MyBase.Load
         LoadProducts()
+        ComputeTotalCost()
         Call LoadDGV("SELECT * FROM db_viewstockout", StockOutDGV)
         DgvStyle(StockOutDGV)
-        
+
         ' Set issued by to logged in user's full name
         txtIssuedBy.Text = GlobalVariables.LoggedInFullName
         txtIssuedBy.ReadOnly = True
@@ -195,6 +278,13 @@ Public Class stockOUT
         StockOutDGV.RowTemplate.Height = 30
         StockOutDGV.DefaultCellStyle.WrapMode = DataGridViewTriState.False
         StockOutDGV.AutoSizeRowsMode = DataGridViewAutoSizeRowsMode.AllCells
+
+        ' Center align the Quantity column
+        For Each col As DataGridViewColumn In StockOutDGV.Columns
+            If col.HeaderText = "Quantity" OrElse col.Name.ToLower().Contains("quantity") Then
+                col.DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter
+            End If
+        Next
     End Sub
 
     Private Sub UpdateDashboardCriticalCount()

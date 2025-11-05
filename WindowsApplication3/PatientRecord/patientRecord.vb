@@ -150,12 +150,6 @@ Public Class patientRecord
 
     Private Sub patientRecord_Load(sender As Object, e As EventArgs) Handles MyBase.Load
         Try
-            patientMod.LoadPatientData(patientDGV)
-            ' Configure column visibility if needed
-            If patientDGV.Columns.Contains(PatientIDColumnName) Then
-                patientDGV.Columns(PatientIDColumnName).Visible = False ' Hide ID column
-            End If
-
             ' Initialize search filter ComboBox (no default selection)
             cmbSearch.Items.Clear()
             cmbSearch.Items.Add("Patient Name")
@@ -164,12 +158,21 @@ Public Class patientRecord
             cmbSearch.SelectedIndex = -1
             btnSearch.Enabled = False
 
+            patientMod.LoadPatientData(patientDGV)
+            
+            ' Configure column visibility if needed
+            'If patientDGV.Columns.Contains(PatientIDColumnName) Then
+            '    patientDGV.Columns(PatientIDColumnName).Visible = False ' Hide ID column
+            'End If
+
+            ' Apply styling after data is loaded
+            DgvStyle(patientDGV)
+
             ' Age will display as stored in DB
         Catch ex As Exception
             MessageBox.Show("Error loading patient data: " & ex.Message,
                           "Error", MessageBoxButtons.OK, MessageBoxIcon.Error)
         End Try
-        DgvStyle(patientDGV)
     End Sub
 
     ' Enable Search only when a filter is selected
@@ -214,10 +217,11 @@ Public Class patientRecord
             dbConn()
             LoadDGV("SELECT * FROM db_viewpatient", patientDGV)
             patientDGV.ClearSelection()
+            ' Apply styling after data is reloaded
+            DgvStyle(patientDGV)
         Catch ex As Exception
             MsgBox("Failed to load patient data: " & ex.Message, vbCritical, "Error")
         End Try
-        DgvStyle(patientDGV)
     End Sub
     Public Sub DgvStyle(ByRef patientDGV As DataGridView)
         ' Basic Grid Setup
@@ -231,6 +235,7 @@ Public Class patientRecord
         patientDGV.ColumnHeadersDefaultCellStyle.BackColor = Color.Gainsboro
         patientDGV.ColumnHeadersDefaultCellStyle.ForeColor = Color.Black
         patientDGV.ColumnHeadersDefaultCellStyle.Font = New Font("Segoe UI", 11, FontStyle.Regular)
+        patientDGV.ColumnHeadersDefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter
         patientDGV.EnableHeadersVisualStyles = False
         patientDGV.DefaultCellStyle.ForeColor = Color.Black
         patientDGV.AlternatingRowsDefaultCellStyle.BackColor = SystemColors.Control
@@ -239,7 +244,6 @@ Public Class patientRecord
         patientDGV.GridColor = Color.Silver
         patientDGV.DefaultCellStyle.Padding = New Padding(5)
         patientDGV.DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleLeft
-        patientDGV.ColumnHeadersDefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter
         patientDGV.ReadOnly = True
         patientDGV.MultiSelect = False
         patientDGV.AllowUserToResizeRows = False
@@ -247,10 +251,23 @@ Public Class patientRecord
         patientDGV.DefaultCellStyle.WrapMode = DataGridViewTriState.False
         patientDGV.AutoSizeRowsMode = DataGridViewAutoSizeRowsMode.AllCells
 
-        ' Center align all column headers
+        ' Center align all column headers and disable sort mode to hide sort arrows
         For Each col As DataGridViewColumn In patientDGV.Columns
+            If col.HeaderCell.Style Is Nothing Then
+                col.HeaderCell.Style = New DataGridViewCellStyle()
+            End If
             col.HeaderCell.Style.Alignment = DataGridViewContentAlignment.MiddleCenter
+            ' Disable sorting completely to remove sort arrows
+            col.SortMode = DataGridViewColumnSortMode.NotSortable
+
+            ' Center align the ID and Age column data
+            If col.Name = "Column1" OrElse col.HeaderText = "ID" OrElse col.Name = "Column4" OrElse col.HeaderText = "Age" Then
+                col.DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter
+            End If
         Next
+
+        ' Force refresh to apply changes
+        patientDGV.Refresh()
     End Sub
 End Class
 

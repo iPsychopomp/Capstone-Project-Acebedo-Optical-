@@ -5,6 +5,11 @@ Public Class createTransactions
     Private hasCheckupBaseApplied As Boolean = False
     Public Property IsCheckupPayment As Boolean = False
     
+    ' Edit mode properties
+    Public Property IsEditMode As Boolean = False
+    Public Property TransactionID As Integer = 0
+    Public Property TransactionType As String = "" ' "checkup_only", "with_checkup", "items_only"
+
     ' Checkup data properties
     Public Property CheckupRemarks As String = ""
     Public Property CheckupDoctorID As String = ""
@@ -19,6 +24,9 @@ Public Class createTransactions
     Public Property CheckupDate As DateTime = DateTime.Now
     Public Property CheckupODCost As String = "0.00"
     Public Property CheckupOSCost As String = "0.00"
+    Public Property CheckupPDOD As String = "0"
+    Public Property CheckupPDOS As String = "0"
+    Public Property CheckupPDOU As String = "0"
 
     Private Sub btnCancel_Click(sender As Object, e As EventArgs) Handles btnCancel.Click
         Me.Close()
@@ -29,7 +37,8 @@ Public Class createTransactions
         lblPatientName.Text = SelectedPatientName
 
         ' Set combo box suggestion behavior
-        cmbProducts.AutoCompleteMode = AutoCompleteMode.SuggestAppend
+        ' Note: AutoCompleteSource.ListItems only works with AutoCompleteMode.None
+        cmbProducts.AutoCompleteMode = AutoCompleteMode.None
         cmbProducts.AutoCompleteSource = AutoCompleteSource.ListItems
 
         LoadProductSuggestions()
@@ -60,24 +69,47 @@ Public Class createTransactions
         txtTotal.ReadOnly = False
         txtTotal.TabStop = True
 
-        ' Handle checkup payment mode
-        If IsCheckupPayment Then
-            ' For checkup payments, automatically select "Check up only" and disable mode selection
-            rbonly.Checked = True
+        ' Handle edit mode - set radio button based on transaction type
+        If IsEditMode Then
+            Select Case TransactionType.ToLower()
+                Case "checkup_only"
+                    rbonly.Checked = True
+                    rbwith.Checked = False
+                    rbItems.Checked = False
+                Case "with_checkup"
+                    rbwith.Checked = True
+                    rbonly.Checked = False
+                    rbItems.Checked = False
+                Case "items_only"
+                    rbItems.Checked = True
+                    rbonly.Checked = False
+                    rbwith.Checked = False
+                Case Else
+                    ' Default to with checkup if type is unknown
+                    rbwith.Checked = True
+            End Select
+            ' Handle checkup payment mode
+        ElseIf IsCheckupPayment Then
+            ' For checkup payments, don't auto-select any radio button
+            ' Let user choose between "with check-up" or "check-up only"
+            rbonly.Checked = False
             rbwith.Checked = False
-            rbonly.Enabled = False
-            rbwith.Enabled = False
-            hasCheckupBaseApplied = True
-            
+            rbItems.Checked = False
+            rbonly.Enabled = True
+            rbwith.Enabled = True
+            rbItems.Enabled = False
+            hasCheckupBaseApplied = False
+
             ' Bind checkup data to form fields
             BindCheckupDataToForm()
-            
+
             ' Show checkup information on the form
             DisplayCheckupInfo()
         Else
             ' Start with all options disabled until user selects a radio button
             rbwith.Checked = False
             rbonly.Checked = False
+            rbItems.Checked = False
 
             ' Check if patient has pending balance
             CheckPendingBalance()
@@ -147,19 +179,19 @@ Public Class createTransactions
                 Dim odGrade As String = FormatVisionGrade(CheckupSphereOD, CheckupCylinderOD, CheckupAxisOD, CheckupAddOD)
                 cmbOD.Text = odGrade
             End If
-            
+
             If Not String.IsNullOrEmpty(CheckupSphereOS) AndAlso CheckupSphereOS <> "0" Then
                 Dim osGrade As String = FormatVisionGrade(CheckupSphereOS, CheckupCylinderOS, CheckupAxisOS, CheckupAddOS)
                 cmbOS.Text = osGrade
             End If
-            
+
             ' Set OD/OS costs from checkup data (can be modified by user)
             txtODCost.Text = If(String.IsNullOrEmpty(CheckupODCost), "0.00", CheckupODCost)
             txtOSCost.Text = If(String.IsNullOrEmpty(CheckupOSCost), "0.00", CheckupOSCost)
-            
+
             ' Update total to reflect checkup fee
             UpdateTotalLabel()
-            
+
         Catch ex As Exception
             ' If there's an error binding data, just continue - user can enter manually
             Debug.WriteLine("Error binding checkup data: " & ex.Message)
@@ -168,7 +200,7 @@ Public Class createTransactions
 
     Private Function FormatVisionGrade(sphere As String, cylinder As String, axis As String, add As String) As String
         Dim grade As String = ""
-        
+
         ' Add sphere
         If Not String.IsNullOrEmpty(sphere) AndAlso sphere <> "0" Then
             If Not sphere.StartsWith("+") AndAlso Not sphere.StartsWith("-") Then
@@ -181,7 +213,7 @@ Public Class createTransactions
                 grade = sphere
             End If
         End If
-        
+
         ' Add cylinder
         If Not String.IsNullOrEmpty(cylinder) AndAlso cylinder <> "0" Then
             If Not String.IsNullOrEmpty(grade) Then grade &= " "
@@ -194,13 +226,13 @@ Public Class createTransactions
             Else
                 grade &= cylinder
             End If
-            
+
             ' Add axis if cylinder exists
             If Not String.IsNullOrEmpty(axis) AndAlso axis <> "0" Then
                 grade &= " x " & axis
             End If
         End If
-        
+
         ' Add addition
         If Not String.IsNullOrEmpty(add) AndAlso add <> "0" Then
             If Not String.IsNullOrEmpty(grade) Then grade &= " "
@@ -215,7 +247,7 @@ Public Class createTransactions
                 grade &= add
             End If
         End If
-        
+
         Return grade.Trim()
     End Function
 
@@ -223,18 +255,18 @@ Public Class createTransactions
         Try
             ' You can add code here to display checkup information in labels or other controls
             ' For example, if you have labels for showing checkup details:
-            
+
             ' Example: If you have a label to show checkup date
             ' lblCheckupDate.Text = "Checkup Date: " & CheckupDate.ToString("yyyy-MM-dd")
-            
+
             ' Example: If you have a label to show doctor
             ' lblDoctor.Text = "Doctor: " & CheckupDoctorID
-            
+
             ' Example: If you have a label to show remarks
             ' lblRemarks.Text = "Remarks: " & CheckupRemarks
-            
+
             ' Removed checkup payment text from title
-            
+
         Catch ex As Exception
             Debug.WriteLine("Error displaying checkup info: " & ex.Message)
         End Try
@@ -345,9 +377,38 @@ Public Class createTransactions
                     ' This maintains pricing accuracy based on when discounts become effective
                 End If
 
-                Dim rowTotal = effectivePrice * qty
+                ' Check if product already exists in the grid
+                Dim existingRow As DataGridViewRow = Nothing
+                For Each row As DataGridViewRow In dgvSelectedProducts.Rows
+                    If Not row.IsNewRow AndAlso row.Cells("productID").Value IsNot Nothing Then
+                        If row.Cells("productID").Value.ToString() = productID Then
+                            existingRow = row
+                            Exit For
+                        End If
+                    End If
+                Next
 
-                dgvSelectedProducts.Rows.Add(productID, productName, category, qty, effectivePrice.ToString("0.00"), rowTotal.ToString("0.00"))
+                If existingRow IsNot Nothing Then
+                    ' Product already exists - update quantity and total
+                    Dim currentQty As Integer = Convert.ToInt32(existingRow.Cells("Quantity").Value)
+                    Dim newQty As Integer = currentQty + qty
+
+                    ' Check if new quantity exceeds stock
+                    If newQty > stockQuantity Then
+                        reader.Close()
+                        conn.Close()
+                        MsgBox("Cannot add more. Total quantity (" & newQty.ToString() & ") would exceed available stock (" & stockQuantity.ToString() & ").", vbExclamation, "Insufficient Stock")
+                        Exit Sub
+                    End If
+
+                    ' Update existing row
+                    existingRow.Cells("Quantity").Value = newQty
+                    existingRow.Cells("Total").Value = (effectivePrice * newQty).ToString("0.00")
+                Else
+                    ' Product doesn't exist - add new row
+                    Dim rowTotal = effectivePrice * qty
+                    dgvSelectedProducts.Rows.Add(productID, productName, category, qty, effectivePrice.ToString("0.00"), rowTotal.ToString("0.00"))
+                End If
 
             Else
                 MsgBox("Product not found.", vbExclamation, "Error")
@@ -373,8 +434,6 @@ Public Class createTransactions
         End Try
     End Sub
 
-
-
     Private Function GetProductPrice(productName As String) As Decimal
         Try
             Call dbConn()
@@ -389,6 +448,7 @@ Public Class createTransactions
             Return 0
         End Try
     End Function
+
     Private Sub UpdateTotalLabel()
         Dim total As Decimal = 0D
 
@@ -492,6 +552,48 @@ Public Class createTransactions
         e.Handled = True
     End Sub
 
+    Private Sub txtODCost_KeyPress(sender As Object, e As KeyPressEventArgs) Handles txtODCost.KeyPress
+        Dim isControl As Boolean = Char.IsControl(e.KeyChar)
+        Dim isDigit As Boolean = Char.IsDigit(e.KeyChar)
+        Dim isDot As Boolean = (e.KeyChar = "."c)
+
+        If isControl OrElse isDigit Then
+            Return
+        End If
+
+        If isDot Then
+            ' Allow only a single decimal point
+            If txtODCost.Text.Contains(".") Then
+                e.Handled = True
+            End If
+            Return
+        End If
+
+        ' Block any other characters (letters, signs, etc.)
+        e.Handled = True
+    End Sub
+
+    Private Sub txtOSCost_KeyPress(sender As Object, e As KeyPressEventArgs) Handles txtOSCost.KeyPress
+        Dim isControl As Boolean = Char.IsControl(e.KeyChar)
+        Dim isDigit As Boolean = Char.IsDigit(e.KeyChar)
+        Dim isDot As Boolean = (e.KeyChar = "."c)
+
+        If isControl OrElse isDigit Then
+            Return
+        End If
+
+        If isDot Then
+            ' Allow only a single decimal point
+            If txtOSCost.Text.Contains(".") Then
+                e.Handled = True
+            End If
+            Return
+        End If
+
+        ' Block any other characters (letters, signs, etc.)
+        e.Handled = True
+    End Sub
+
     Private Sub rbwith_CheckedChanged(sender As Object, e As EventArgs) Handles rbwith.CheckedChanged
         UpdateTotalLabel()
         UpdateControls()
@@ -523,6 +625,20 @@ Public Class createTransactions
         UpdateTotalLabel()
         UpdateControls()
     End Sub
+
+    Private Sub rbItems_CheckedChanged(sender As Object, e As EventArgs) Handles rbItems.CheckedChanged
+        If rbItems.Checked Then
+            ' Clear OD/OS prices and grades for Items only mode
+            txtODCost.Text = "0.00"
+            txtOSCost.Text = "0.00"
+            cmbOD.SelectedIndex = -1
+            cmbOS.SelectedIndex = -1
+            cmbOD.Text = String.Empty
+            cmbOS.Text = String.Empty
+        End If
+        UpdateTotalLabel()
+        UpdateControls()
+    End Sub
     Private Sub UpdateControls()
         If rbonly.Checked Then
             cmbProducts.Enabled = False
@@ -535,18 +651,12 @@ Public Class createTransactions
             btnRemove.Enabled = False
             dgvSelectedProducts.Enabled = False
 
-            ' For checkup payments, keep OD/OS controls enabled so user can see/modify checkup data
-            If IsCheckupPayment Then
-                cmbOD.Enabled = True
-                cmbOS.Enabled = True
-                txtODCost.Enabled = True
-                txtOSCost.Enabled = True
-            Else
-                cmbOD.Enabled = False
-                cmbOS.Enabled = False
-                txtODCost.Enabled = False
-                txtOSCost.Enabled = False
-            End If
+            ' For checkup payments, disable OD/OS controls since data is already set from checkup
+            ' User should not modify checkup data during payment
+            cmbOD.Enabled = False
+            cmbOS.Enabled = False
+            txtODCost.Enabled = False
+            txtOSCost.Enabled = False
 
             ' Enable payment-related inputs when a radio option is selected
             cmbMode.Enabled = True
@@ -573,6 +683,41 @@ Public Class createTransactions
             End If
 
             ' Enable OD/OS controls only if there is at least one Lens item
+            cmbOD.Enabled = hasLens
+            cmbOS.Enabled = hasLens
+            txtODCost.Enabled = hasLens
+            txtOSCost.Enabled = hasLens
+
+            btnAdd.Enabled = True
+            btnRemove.Enabled = True
+            dgvSelectedProducts.Enabled = True
+
+            ' Enable payment-related inputs when a radio option is selected
+            cmbMode.Enabled = True
+            txtAmountPaid.Enabled = True
+            txtTotal.Enabled = True ' stays ReadOnly; just visible/active
+        ElseIf rbItems.Checked Then
+            ' Items only mode - similar to "with check-up" but OD/OS enabled only if there's a Lens item
+            cmbProducts.Enabled = True
+            numQuantity.Enabled = True
+
+            ' Enable discount only if there is at least one Frame item
+            Dim hasFrame As Boolean = HasFrameItem()
+            cmbDiscount.Enabled = hasFrame
+            If Not hasFrame Then
+                cmbDiscount.SelectedIndex = -1
+                cmbDiscount.Text = String.Empty
+            End If
+
+            ' Enable lens discount only if there is at least one Lens item
+            Dim hasLens As Boolean = HasLensItem()
+            cmbLensDisc.Enabled = hasLens
+            If Not hasLens Then
+                cmbLensDisc.SelectedIndex = -1
+                cmbLensDisc.Text = String.Empty
+            End If
+
+            ' Enable OD/OS controls only if there is at least one Lens item (same as "with check-up")
             cmbOD.Enabled = hasLens
             cmbOS.Enabled = hasLens
             txtODCost.Enabled = hasLens
@@ -641,6 +786,7 @@ Public Class createTransactions
         RecalculateGridTotals()
         UpdateTotalLabel()
     End Sub
+
     Private Sub RecalculateGridTotals()
         ' parse current discount factor
         Dim discFactor As Decimal = 0D
@@ -697,18 +843,16 @@ Public Class createTransactions
 
         If amountPaid > totalAmount Then
             MsgBox("Amount Paid cannot be greater than the Total Amount.", vbExclamation, "Caution")
-            txtAmountPaid.Text = totalAmount.ToString("F2")
-            txtAmountPaid.Focus()
         End If
     End Sub
 
-  Private Sub btnSave_Click(sender As Object, e As EventArgs) Handles btnSave.Click
+    Private Sub btnSave_Click(sender As Object, e As EventArgs) Handles btnSave.Click
         Dim transactionID As Integer
         Dim totalAmount As Double
         Dim amountPaid As Double
         Dim pendingBalance As Double
         Dim discount As Double
-        Dim isCheckUp As Integer = If(rbonly.Checked, 1, 0)
+        Dim isCheckUp As Integer = If(rbonly.Checked OrElse rbwith.Checked, 1, 0)
         Dim paymentStatus As String
 
         ' Required selections
@@ -716,8 +860,8 @@ Public Class createTransactions
             MsgBox("Please select a Mode of Payment.", vbExclamation, "Caution")
             Exit Sub
         End If
-        If Not (rbwith.Checked OrElse rbonly.Checked) Then
-            MsgBox("Please select either 'With check up' or 'Check up only'.", vbExclamation, "Caution")
+        If Not (rbwith.Checked OrElse rbonly.Checked OrElse rbItems.Checked) Then
+            MsgBox("Please select a transaction type: 'With check up', 'Check up only', or 'Items only'.", vbExclamation, "Caution")
             Exit Sub
         End If
 
@@ -741,25 +885,40 @@ Public Class createTransactions
             End If
         End If
 
+        ' Additional validation for "Items only": must have at least one item
+        If rbItems.Checked Then
+            Dim hasItems As Boolean = False
+            For Each row As DataGridViewRow In dgvSelectedProducts.Rows
+                If Not row.IsNewRow Then
+                    hasItems = True
+                    Exit For
+                End If
+            Next
+            If Not hasItems Then
+                MsgBox("For 'Items only', please add at least one item.", vbExclamation, "Validation")
+                Exit Sub
+            End If
+        End If
+
         ' Validate totals
         If Not Double.TryParse(txtTotal.Text, totalAmount) OrElse totalAmount <= 0 Then
             MsgBox("Total must be greater than 0.", vbCritical, "Error")
             Exit Sub
         End If
-        
+
         ' Validate Amount Paid is not empty or "0.00"
         If String.IsNullOrWhiteSpace(txtAmountPaid.Text) Then
             MsgBox("Amount Paid cannot be empty. Please enter the payment amount.", vbExclamation, "Amount Paid Required")
             txtAmountPaid.Focus()
             Exit Sub
         End If
-        
+
         If Not Double.TryParse(txtAmountPaid.Text, amountPaid) Then
             MsgBox("Amount Paid invalid. Please enter a valid number.", vbCritical, "Error")
             txtAmountPaid.Focus()
             Exit Sub
         End If
-        
+
         If amountPaid <= 0 Then
             MsgBox("Amount Paid must be greater than 0.00. Please enter a valid payment amount.", vbExclamation, "Amount Paid Required")
             txtAmountPaid.Focus()
@@ -834,9 +993,15 @@ Public Class createTransactions
             SaveTransactionItems(transactionID)
 
 
-            ' Save checkup data if this is a checkup payment
-            If IsCheckupPayment Then
-                SaveCheckupData()
+            ' Save checkup data for "Check up only" or "With check up" modes
+            If rbonly.Checked OrElse rbwith.Checked Then
+                ' If this is a checkup payment (data already passed from patientCheckUp form)
+                If IsCheckupPayment Then
+                    SaveCheckupData()
+                Else
+                    ' For regular checkup transactions, save data from form fields
+                    SaveCheckupDataFromForm()
+                End If
             End If
 
             InsertAuditTrail("Insert", "Added new transaction for " & lblPatientName.Text & " with total of " & txtTotal.Text & " and paid ₱" & txtAmountPaid.Text, "tbl_transactions" & "tbl_transaction_items", lblPatientID.Text)
@@ -989,6 +1154,129 @@ Public Class createTransactions
 
 
 
+    Private Sub SaveCheckupDataFromForm()
+        Try
+            ' Make sure connection is open
+            If conn.State <> ConnectionState.Open Then
+                Call dbConn()
+            End If
+
+            ' Parse OD/OS grades from combo boxes
+            Dim sphereOD As String = "0"
+            Dim cylinderOD As String = "0"
+            Dim axisOD As String = "0"
+            Dim addOD As String = "0"
+
+            Dim sphereOS As String = "0"
+            Dim cylinderOS As String = "0"
+            Dim axisOS As String = "0"
+            Dim addOS As String = "0"
+
+            ' Parse OD grade if available
+            If Not String.IsNullOrWhiteSpace(cmbOD.Text) Then
+                ParseVisionGrade(cmbOD.Text, sphereOD, cylinderOD, axisOD, addOD)
+            End If
+
+            ' Parse OS grade if available
+            If Not String.IsNullOrWhiteSpace(cmbOS.Text) Then
+                ParseVisionGrade(cmbOS.Text, sphereOS, cylinderOS, axisOS, addOS)
+            End If
+
+            ' Get PD values if available
+            Dim pdOD As String = If(String.IsNullOrWhiteSpace(CheckupPDOD), "0", CheckupPDOD)
+            Dim pdOS As String = If(String.IsNullOrWhiteSpace(CheckupPDOS), "0", CheckupPDOS)
+            Dim pdOU As String = If(String.IsNullOrWhiteSpace(CheckupPDOU), "0", CheckupPDOU)
+
+            ' === Insert into tbl_checkup ===
+            Dim sql As String = "INSERT INTO tbl_checkup (patientID, remarks, doctorID, sphereOD, sphereOS, cylinderOD, cylinderOS, axisOD, axisOS, addOD, addOS, pdOD, pdOS, pdOU, checkupDate) " &
+                                "VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)"
+            Using cmd As New Odbc.OdbcCommand(sql, conn)
+                cmd.Parameters.AddWithValue("?", SelectedPatientID)
+                cmd.Parameters.AddWithValue("?", "N/A") ' Default remarks for transaction-based checkups
+                cmd.Parameters.AddWithValue("?", 1) ' Default doctor ID (you may want to add a doctor selection field)
+                cmd.Parameters.AddWithValue("?", sphereOD)
+                cmd.Parameters.AddWithValue("?", sphereOS)
+                cmd.Parameters.AddWithValue("?", cylinderOD)
+                cmd.Parameters.AddWithValue("?", cylinderOS)
+                cmd.Parameters.AddWithValue("?", axisOD)
+                cmd.Parameters.AddWithValue("?", axisOS)
+                cmd.Parameters.AddWithValue("?", addOD)
+                cmd.Parameters.AddWithValue("?", addOS)
+                cmd.Parameters.AddWithValue("?", pdOD)
+                cmd.Parameters.AddWithValue("?", pdOS)
+                cmd.Parameters.AddWithValue("?", pdOU)
+                cmd.Parameters.AddWithValue("?", dtpDate.Value.Date.ToString("yyyy-MM-dd"))
+                cmd.ExecuteNonQuery()
+            End Using
+
+            ' === Get last inserted checkup ID ===
+            Dim lastCheckupID As Integer = 0
+            Using getIDCmd As New Odbc.OdbcCommand("SELECT LAST_INSERT_ID()", conn)
+                Dim dbResult As Object = getIDCmd.ExecuteScalar()
+                If dbResult IsNot Nothing Then lastCheckupID = Convert.ToInt32(dbResult)
+            End Using
+
+            ' === Audit Trail for checkup ===
+            InsertAuditTrail("Insert", "Added checkup record for " & SelectedPatientName, "tbl_checkup", lastCheckupID)
+
+        Catch ex As Exception
+            MsgBox("Error saving checkup data from form: " & ex.Message, vbCritical, "Checkup Save Error")
+        End Try
+    End Sub
+
+    Private Sub ParseVisionGrade(gradeText As String, ByRef sphere As String, ByRef cylinder As String, ByRef axis As String, ByRef add As String)
+        Try
+            ' Initialize defaults
+            sphere = "0"
+            cylinder = "0"
+            axis = "0"
+            add = "0"
+
+            If String.IsNullOrWhiteSpace(gradeText) Then Return
+
+            ' Example format: "+2.00 -1.50 x 90 Add +1.00"
+            ' or: "-3.00 -0.75 x 180"
+            ' or: "+1.50"
+
+            Dim parts As String() = gradeText.Trim().Split(" "c)
+            Dim i As Integer = 0
+
+            ' First part is sphere
+            If i < parts.Length AndAlso Not String.IsNullOrWhiteSpace(parts(i)) Then
+                sphere = parts(i).Trim()
+                i += 1
+            End If
+
+            ' Second part might be cylinder (starts with + or -)
+            If i < parts.Length AndAlso Not String.IsNullOrWhiteSpace(parts(i)) AndAlso _
+               (parts(i).StartsWith("+") OrElse parts(i).StartsWith("-")) Then
+                cylinder = parts(i).Trim()
+                i += 1
+
+                ' Next might be "x" followed by axis
+                If i < parts.Length AndAlso parts(i).Trim().ToLower() = "x" Then
+                    i += 1
+                    If i < parts.Length Then
+                        axis = parts(i).Trim()
+                        i += 1
+                    End If
+                End If
+            End If
+
+            ' Check for "Add" keyword
+            If i < parts.Length AndAlso parts(i).Trim().ToLower() = "add" Then
+                i += 1
+                If i < parts.Length Then
+                    add = parts(i).Trim()
+                End If
+            End If
+
+        Catch ex As Exception
+            ' If parsing fails, keep default values
+            Debug.WriteLine("Error parsing vision grade: " & ex.Message)
+        End Try
+    End Sub
+
     Private Sub SaveCheckupData()
         Try
             ' Make sure connection is open
@@ -997,8 +1285,8 @@ Public Class createTransactions
             End If
 
             ' === Insert into tbl_checkup ===
-            Dim sql As String = "INSERT INTO tbl_checkup (patientID, remarks, doctorID, sphereOD, sphereOS, cylinderOD, cylinderOS, axisOD, axisOS, addOD, addOS, checkupDate) " &
-                                "VALUES (?,?,?,?,?,?,?,?,?,?,?,?)"
+            Dim sql As String = "INSERT INTO tbl_checkup (patientID, remarks, doctorID, sphereOD, sphereOS, cylinderOD, cylinderOS, axisOD, axisOS, addOD, addOS, pdOD, pdOS, pdOU, checkupDate) " &
+                                "VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)"
             Using cmd As New Odbc.OdbcCommand(sql, conn)
                 cmd.Parameters.AddWithValue("?", SelectedPatientID)
                 cmd.Parameters.AddWithValue("?", CheckupRemarks)
@@ -1011,6 +1299,9 @@ Public Class createTransactions
                 cmd.Parameters.AddWithValue("?", CheckupAxisOS)
                 cmd.Parameters.AddWithValue("?", CheckupAddOD)
                 cmd.Parameters.AddWithValue("?", CheckupAddOS)
+                cmd.Parameters.AddWithValue("?", If(String.IsNullOrWhiteSpace(CheckupPDOD), "0", CheckupPDOD))
+                cmd.Parameters.AddWithValue("?", If(String.IsNullOrWhiteSpace(CheckupPDOS), "0", CheckupPDOS))
+                cmd.Parameters.AddWithValue("?", If(String.IsNullOrWhiteSpace(CheckupPDOU), "0", CheckupPDOU))
                 cmd.Parameters.AddWithValue("?", CheckupDate.ToString("yyyy-MM-dd HH:mm:ss"))
                 cmd.ExecuteNonQuery()
             End Using

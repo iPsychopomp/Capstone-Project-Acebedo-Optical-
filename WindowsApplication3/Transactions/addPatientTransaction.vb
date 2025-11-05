@@ -208,11 +208,15 @@ Public Class addPatientTransaction
                     loadedLensDiscount = "N/A"
                 End Try
 
-                ' Handle check-up: isCheckUp=True means check-up ONLY
+                ' Handle transaction type: determine if it's checkup only, with checkup, or items only
                 If columns.Contains("isCheckUp") Then
                     Dim isCheckUp As Boolean = If(reader("isCheckUp") Is DBNull.Value, False, Convert.ToBoolean(reader("isCheckUp")))
+
+                    ' Initially set based on isCheckUp flag
                     rbonly.Checked = isCheckUp
                     rbwith.Checked = Not isCheckUp
+                    rbItems.Checked = False
+
                     ' Remember base fee if this was originally check-up only
                     If isCheckUp Then
                         hasCheckupBaseApplied = True
@@ -248,8 +252,7 @@ Public Class addPatientTransaction
             ' Load transaction items if needed
             LoadTransactionItems(transactionID)
 
-            ' Infer proper mode for edited transactions based on loaded items and isCheckUp flag
-            ' Only override the radio button selection if there are actual product items
+            ' Infer proper mode for edited transactions based on loaded items, OD/OS costs, and isCheckUp flag
             Dim hasItems As Boolean = False
             For Each row As DataGridViewRow In dgvSelectedProducts.Rows
                 If Not row.IsNewRow Then
@@ -258,21 +261,53 @@ Public Class addPatientTransaction
                 End If
             Next
 
-            ' Only force "With Check-Up" if there are actual product items
-            ' Do NOT change mode just because of OD/OS costs - respect the isCheckUp flag
-            If hasItems Then
-                ' Force With Check-Up when there are actual product items
+            ' Check if there are OD/OS costs or grades
+            Dim odCost As Decimal = 0D
+            Dim osCost As Decimal = 0D
+            Decimal.TryParse(txtODCost.Text, odCost)
+            Decimal.TryParse(txtOSCost.Text, osCost)
+            Dim hasODOSCosts As Boolean = (odCost > 0D OrElse osCost > 0D)
+            Dim hasODOSGrades As Boolean = (Not String.IsNullOrWhiteSpace(cmbOD.Text) OrElse Not String.IsNullOrWhiteSpace(cmbOS.Text))
+
+            ' Determine transaction type with improved logic:
+            ' Priority 1: Check-up only - no items, but has checkup data (costs or grades) OR isCheckUp = True
+            ' Priority 2: With check-up - has items AND has checkup data (costs or grades)
+            ' Priority 3: Items only - has items but NO checkup data
+
+            If Not hasItems AndAlso (hasODOSCosts OrElse hasODOSGrades OrElse rbonly.Checked) Then
+                ' Check-up only mode: no items but has checkup-related data
+                rbonly.Checked = True
+                rbwith.Checked = False
+                rbItems.Checked = False
+                Debug.WriteLine("Edit Mode: Detected Check-up Only")
+            ElseIf hasItems AndAlso (hasODOSCosts OrElse hasODOSGrades) Then
+                ' With check-up mode: has items AND checkup data
                 rbwith.Checked = True
                 rbonly.Checked = False
-                ' Ensure UI state and totals reflect the correct mode
-                UpdateControls()
-                UpdateTotalLabel()
+                rbItems.Checked = False
+                Debug.WriteLine("Edit Mode: Detected With Check-up")
+            ElseIf hasItems AndAlso Not hasODOSCosts AndAlso Not hasODOSGrades Then
+                ' Items only mode: has items but no checkup data
+                rbItems.Checked = True
+                rbwith.Checked = False
+                rbonly.Checked = False
+                Debug.WriteLine("Edit Mode: Detected Items Only")
             Else
-                ' No product items - respect the original isCheckUp flag from database
-                ' This preserves checkup-only transactions even if they have OD/OS costs
-                UpdateControls()
-                UpdateTotalLabel()
+                ' Fallback: default to check-up only if unclear
+                rbonly.Checked = True
+                rbwith.Checked = False
+                rbItems.Checked = False
+                Debug.WriteLine("Edit Mode: Fallback to Check-up Only")
             End If
+
+            ' Allow radio buttons to be changed in edit mode
+            rbonly.Enabled = True
+            rbwith.Enabled = True
+            rbItems.Enabled = True
+
+            ' Ensure UI state and totals reflect the correct mode
+            UpdateControls()
+            UpdateTotalLabel()
 
             ' Check if patient has OTHER pending balance (excluding current transaction)
             CheckPendingBalanceForEdit(transactionID)
@@ -471,9 +506,38 @@ Public Class addPatientTransaction
                     ' This preserves historical pricing integrity
                 End If
 
-                Dim rowTotal = effectivePrice * qty
+                ' Check if product already exists in the grid
+                Dim existingRow As DataGridViewRow = Nothing
+                For Each row As DataGridViewRow In dgvSelectedProducts.Rows
+                    If Not row.IsNewRow AndAlso row.Cells("productID").Value IsNot Nothing Then
+                        If row.Cells("productID").Value.ToString() = productID Then
+                            existingRow = row
+                            Exit For
+                        End If
+                    End If
+                Next
 
-                dgvSelectedProducts.Rows.Add(productID, productName, category, qty, effectivePrice.ToString("0.00"), rowTotal.ToString("0.00"))
+                If existingRow IsNot Nothing Then
+                    ' Product already exists - update quantity and total
+                    Dim currentQty As Integer = Convert.ToInt32(existingRow.Cells("Quantity").Value)
+                    Dim newQty As Integer = currentQty + qty
+
+                    ' Check if new quantity exceeds stock
+                    If newQty > stockQuantity Then
+                        reader.Close()
+                        conn.Close()
+                        MsgBox("Cannot add more. Total quantity (" & newQty.ToString() & ") would exceed available stock (" & stockQuantity.ToString() & ").", vbExclamation, "Insufficient Stock")
+                        Exit Sub
+                    End If
+
+                    ' Update existing row
+                    existingRow.Cells("Quantity").Value = newQty
+                    existingRow.Cells("Total").Value = (effectivePrice * newQty).ToString("0.00")
+                Else
+                    ' Product doesn't exist - add new row
+                    Dim rowTotal = effectivePrice * qty
+                    dgvSelectedProducts.Rows.Add(productID, productName, category, qty, effectivePrice.ToString("0.00"), rowTotal.ToString("0.00"))
+                End If
 
             Else
                 MsgBox("Product not found.", vbExclamation)
@@ -605,6 +669,48 @@ Public Class addPatientTransaction
         If isDot Then
             ' Allow only a single decimal point
             If txtAmountPaid.Text.Contains(".") Then
+                e.Handled = True
+            End If
+            Return
+        End If
+
+        ' Block any other characters (letters, signs, etc.)
+        e.Handled = True
+    End Sub
+
+    Private Sub txtODCost_KeyPress(sender As Object, e As KeyPressEventArgs) Handles txtODCost.KeyPress
+        Dim isControl As Boolean = Char.IsControl(e.KeyChar)
+        Dim isDigit As Boolean = Char.IsDigit(e.KeyChar)
+        Dim isDot As Boolean = (e.KeyChar = "."c)
+
+        If isControl OrElse isDigit Then
+            Return
+        End If
+
+        If isDot Then
+            ' Allow only a single decimal point
+            If txtODCost.Text.Contains(".") Then
+                e.Handled = True
+            End If
+            Return
+        End If
+
+        ' Block any other characters (letters, signs, etc.)
+        e.Handled = True
+    End Sub
+
+    Private Sub txtOSCost_KeyPress(sender As Object, e As KeyPressEventArgs) Handles txtOSCost.KeyPress
+        Dim isControl As Boolean = Char.IsControl(e.KeyChar)
+        Dim isDigit As Boolean = Char.IsDigit(e.KeyChar)
+        Dim isDot As Boolean = (e.KeyChar = "."c)
+
+        If isControl OrElse isDigit Then
+            Return
+        End If
+
+        If isDot Then
+            ' Allow only a single decimal point
+            If txtOSCost.Text.Contains(".") Then
                 e.Handled = True
             End If
             Return
@@ -820,8 +926,6 @@ Public Class addPatientTransaction
 
         If amountPaid > totalAmount Then
             MsgBox("Amount Paid cannot be greater than the Total Amount.", vbExclamation, "Caution")
-            txtAmountPaid.Text = totalAmount.ToString("F2")
-            txtAmountPaid.Focus()
         End If
     End Sub
 

@@ -1,4 +1,6 @@
 Public Class viewTransactions
+    Private isFormOpen As Boolean = False
+    
     Public Sub LoadViewTransaction(patientID As Integer)
         pnlViewTransactions.Controls.Clear()
         pnlViewTransactions.AutoScroll = True
@@ -102,13 +104,21 @@ Public Class viewTransactions
 
 
 
-                ' Product Name & Quantity
+                ' Product Name & Quantity with text wrapping
                 Dim lblItem As New Label
                 lblItem.Text = quantity.ToString() & " x " & productName
                 lblItem.Location = New Point(10, top)
                 lblItem.Font = labelFont
-                lblItem.AutoSize = True
+                lblItem.AutoSize = False
+                lblItem.Width = costX - 20
+                lblItem.Height = 60 ' Allow space for wrapping
                 card.Controls.Add(lblItem)
+
+                ' Calculate actual height needed after text is set
+                Using g As Graphics = lblItem.CreateGraphics()
+                    Dim textSize As SizeF = g.MeasureString(lblItem.Text, lblItem.Font, lblItem.Width)
+                    lblItem.Height = CInt(Math.Ceiling(textSize.Height)) + 5
+                End Using
 
                 ' Product Price
                 Dim lblItemPrice As New Label
@@ -117,7 +127,10 @@ Public Class viewTransactions
                 lblItemPrice.Font = labelFont
                 lblItemPrice.AutoSize = True
                 card.Controls.Add(lblItemPrice)
-                top += 30
+
+                ' Adjust top based on the taller of the two labels
+                Dim itemHeight As Integer = Math.Max(lblItem.Height, lblItemPrice.Height)
+                top += itemHeight + 5
 
                 ' Store OD and OS Grades and Prices (Only set them once)
                 If String.IsNullOrEmpty(odGrade) Then
@@ -303,10 +316,25 @@ Public Class viewTransactions
 
     Private Sub btnClose_Click(sender As Object, e As EventArgs)
         Me.Close()
-
     End Sub
 
     Private Sub viewTransactions_Load(sender As Object, e As EventArgs) Handles MyBase.Load
-
+        ' Prevent multiple instances
+        isFormOpen = True
     End Sub
+
+    Private Sub viewTransactions_FormClosing(sender As Object, e As FormClosingEventArgs) Handles Me.FormClosing
+        isFormOpen = False
+    End Sub
+
+    ' Public method to check if form is already open
+    Public Shared Function IsInstanceOpen() As Boolean
+        For Each frm As Form In Application.OpenForms
+            If TypeOf frm Is viewTransactions Then
+                frm.BringToFront()
+                Return True
+            End If
+        Next
+        Return False
+    End Function
 End Class

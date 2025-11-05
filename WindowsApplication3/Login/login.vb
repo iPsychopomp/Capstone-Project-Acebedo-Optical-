@@ -18,8 +18,8 @@ Public Class Login
 
             'Dim isdebugging As Boolean = True
 
-            'Dim username As String = "admin"
-            'Dim password As String = "1234"
+            'Dim username As String = "sadmin"
+            'Dim password As String = "s1234"
 
             ' Try to login with isArchived check, fallback if column doesn't exist
             sql = "SELECT userID, username, role, CONCAT(fname, ' ', lname) AS fullName FROM tbl_users WHERE username= ? AND password= ?"
@@ -62,6 +62,20 @@ Public Class Login
                 GlobalVariables.LoggedInRole = dt.Rows(0)("role").ToString()
                 GlobalVariables.LoggedInUserID = Convert.ToInt32(dt.Rows(0)("userID"))
                 GlobalVariables.LoggedInFullName = dt.Rows(0)("fullName").ToString()
+
+                ' Show default-password notice upon login if applicable
+                Try
+                    Dim checkPwdSql As String = "SELECT Password FROM tbl_users WHERE userID = ?"
+                    Using pwdCmd As New Odbc.OdbcCommand(checkPwdSql, conn)
+                        pwdCmd.Parameters.AddWithValue("?", GlobalVariables.LoggedInUserID)
+                        Dim pwdObj = pwdCmd.ExecuteScalar()
+                        Dim pwd As String = If(pwdObj Is Nothing OrElse pwdObj Is DBNull.Value, String.Empty, pwdObj.ToString())
+                        If pwd = "1234" Then
+                            MessageBox.Show("This is new profile, please change your password", "Security Notice", MessageBoxButtons.OK, MessageBoxIcon.Information)
+                        End If
+                    End Using
+                Catch
+                End Try
 
 
                 InsertAuditTrail(GlobalVariables.LoggedInUserID, "Login", "User logged in")

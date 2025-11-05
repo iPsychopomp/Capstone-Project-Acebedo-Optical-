@@ -114,7 +114,7 @@ Public Class inventory
                     "SELECT p.productID, p.productName, p.category, p.stockQuantity, p.description, " & _
                     "p.unitPrice, CONCAT(ROUND(p.discount * 100, 2), '%') AS discount, " & _
                     "CASE WHEN p.discount > 0 THEN ROUND(p.unitPrice * (1 - p.discount), 2) ELSE NULL END AS discountedPrice, " & _
-                    "p.reorderLevel, s.supplierName, p.dateAdded, " & _
+                    "p.reorderLevel, s.supplierName, p.dateAdded, p.expirationDate, " & _
                     "CASE WHEN p.stockQuantity = 0 OR (p.reorderLevel > 0 AND p.stockQuantity > 0 AND p.stockQuantity <= p.reorderLevel) THEN 1 ELSE 0 END AS isLowStock " & _
                     "FROM tbl_products p LEFT JOIN tbl_suppliers s ON s.supplierID = p.supplierID " & _
                     "ORDER BY isLowStock DESC, p.stockQuantity ASC, p.productName ASC"
@@ -122,7 +122,7 @@ Public Class inventory
                 selectCore = _
                     "SELECT p.productID, p.productName, p.category, p.stockQuantity, p.description, " & _
                     "p.unitPrice, '0%' AS discount, NULL AS discountedPrice, " & _
-                    "p.reorderLevel, s.supplierName, p.dateAdded, " & _
+                    "p.reorderLevel, s.supplierName, p.dateAdded, p.expirationDate, " & _
                     "CASE WHEN p.stockQuantity = 0 OR (p.reorderLevel > 0 AND p.stockQuantity > 0 AND p.stockQuantity <= p.reorderLevel) THEN 1 ELSE 0 END AS isLowStock " & _
                     "FROM tbl_products p LEFT JOIN tbl_suppliers s ON s.supplierID = p.supplierID " & _
                     "ORDER BY isLowStock DESC, p.stockQuantity ASC, p.productName ASC"
@@ -190,20 +190,20 @@ Public Class inventory
 
             Dim hasDiscount As Boolean = ColumnExists("tbl_products", "discount")
 
-            ' SQL query in exact order: productID, productName, category, stockQuantity, description, unitPrice, discount, discountedPrice, reorderLevel, supplierName, dateAdded
+            ' SQL query in exact order: productID, productName, category, stockQuantity, description, unitPrice, discount, discountedPrice, reorderLevel, supplierName, dateAdded, expirationDate
             Dim selectCore As String
             If hasDiscount Then
                 selectCore = _
                     "SELECT p.productID, p.productName, p.category, p.stockQuantity, p.description, " & _
                     "p.unitPrice, CONCAT(ROUND(p.discount * 100, 2), '%') AS discount, " & _
                     "CASE WHEN p.discount > 0 THEN ROUND(p.unitPrice * (1 - p.discount), 2) ELSE NULL END AS discountedPrice, " & _
-                    "p.reorderLevel, s.supplierName, p.dateAdded " & _
+                    "p.reorderLevel, s.supplierName, p.dateAdded, p.expirationDate " & _
                     "FROM tbl_products p LEFT JOIN tbl_suppliers s ON s.supplierID = p.supplierID"
             Else
                 selectCore = _
                     "SELECT p.productID, p.productName, p.category, p.stockQuantity, p.description, " & _
                     "p.unitPrice, '0%' AS discount, NULL AS discountedPrice, " & _
-                    "p.reorderLevel, s.supplierName, p.dateAdded " & _
+                    "p.reorderLevel, s.supplierName, p.dateAdded, p.expirationDate " & _
                     "FROM tbl_products p LEFT JOIN tbl_suppliers s ON s.supplierID = p.supplierID "
             End If
 
@@ -278,9 +278,9 @@ Public Class inventory
 
                 ' Highlight row in red if stock is at or below reorder level
                 If stockQuantity > 0 AndAlso reorderLevel > 0 AndAlso stockQuantity <= reorderLevel Then
-                    row.DefaultCellStyle.BackColor = Color.LightCoral
-                    row.DefaultCellStyle.ForeColor = Color.DarkRed
-                    row.DefaultCellStyle.SelectionBackColor = Color.IndianRed
+                    'row.DefaultCellStyle.BackColor = Color.LightCoral
+                    'row.DefaultCellStyle.ForeColor = Color.DarkRed
+                    'row.DefaultCellStyle.SelectionBackColor = Color.IndianRed
                     row.DefaultCellStyle.SelectionForeColor = Color.White
                 Else
                     ' Reset to default colors for non-low-stock items
@@ -369,6 +369,12 @@ Public Class inventory
             If productDGV.Columns.Contains("reorderLevel") Then
                 productDGV.Columns("reorderLevel").HeaderText = "Re-order Level"
                 productDGV.Columns("reorderLevel").Width = 100
+                productDGV.Columns("reorderLevel").DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter
+            End If
+
+            ' Also check for Column8 (designer name for reorderLevel)
+            If productDGV.Columns.Contains("Column8") Then
+                productDGV.Columns("Column8").DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter
             End If
 
             If productDGV.Columns.Contains("supplierName") Then
@@ -382,6 +388,13 @@ Public Class inventory
                 productDGV.Columns("dateAdded").Width = 100
             End If
 
+            If productDGV.Columns.Contains("expirationDate") Then
+                productDGV.Columns("expirationDate").HeaderText = "Expiration Date"
+                productDGV.Columns("expirationDate").DefaultCellStyle.Format = "MM/dd/yyyy"
+                productDGV.Columns("expirationDate").DefaultCellStyle.NullValue = ""
+                productDGV.Columns("expirationDate").Width = 120
+            End If
+
         Catch ex As Exception
             ' Ignore formatting errors
         End Try
@@ -390,10 +403,10 @@ Public Class inventory
     ' Keep columns in a fixed order to avoid UI rearrangements when schema toggles
     Private Sub EnsureStableColumnOrder()
         Try
-            ' Order: productID, productName, category, stockQuantity, description, unitPrice, discount, discountedPrice, reorderLevel, supplierName, dateAdded
+            ' Order: productID, productName, category, stockQuantity, description, unitPrice, discount, discountedPrice, reorderLevel, supplierName, dateAdded, expirationDate
             Dim order As New List(Of String) From {
                 "productID", "productName", "category", "stockQuantity", "description", "unitPrice", "discount", "discountedPrice",
-                "reorderLevel", "supplierName", "dateAdded"
+                "reorderLevel", "supplierName", "dateAdded", "expirationDate"
             }
 
             ' Force the column order by setting DisplayIndex

@@ -112,11 +112,14 @@ Public Class Transaction
     End Sub
     Private Sub transactionDGV_CellDoubleClick(sender As Object, e As DataGridViewCellEventArgs) Handles transactionDGV.CellDoubleClick
         If e.RowIndex >= 0 Then
-            ' Open the transaction viewer by PATIENT ID (Column1)
-            Dim patientID As Integer = Convert.ToInt32(transactionDGV.Rows(e.RowIndex).Cells("Column1").Value)
-            Dim viewtransaction As New viewTransactions()
-            viewtransaction.LoadViewTransaction(patientID)
-            viewtransaction.Show()
+            ' Check if viewTransactions form is already open
+            If Not viewTransactions.IsInstanceOpen() Then
+                ' Open the transaction viewer by PATIENT ID (Column1)
+                Dim patientID As Integer = Convert.ToInt32(transactionDGV.Rows(e.RowIndex).Cells("Column1").Value)
+                Dim viewtransaction As New viewTransactions()
+                viewtransaction.LoadViewTransaction(patientID)
+                viewtransaction.Show()
+            End If
         End If
     End Sub
     Public Sub LoadTransactions(Optional statusFilter As String = "")

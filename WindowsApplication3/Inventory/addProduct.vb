@@ -32,11 +32,11 @@ Public Class addProduct
                     Date.TryParse(dtpDate.Text, dateVal)
 
                     If Len(pnlPrdct.Tag) = 0 Then
-                        ' Insert including discount and discount applied date (columns already exist in DB)
+                        ' Insert including discount, discount applied date, and expiration date
                         ' Stock quantity starts at 0, use stockIN form to add stock
 
-                        sql = "INSERT INTO tbl_products (productName, category, stockQuantity, unitPrice, description, reorderLevel, dateAdded, supplierID, discount, discountAppliedDate) " & _
-                              "VALUES (?,?,?,?,?,?,?,?,?,?)"
+                        sql = "INSERT INTO tbl_products (productName, category, stockQuantity, unitPrice, description, reorderLevel, dateAdded, supplierID, discount, discountAppliedDate, expirationDate) " & _
+                              "VALUES (?,?,?,?,?,?,?,?,?,?,?)"
                         cmd = New Odbc.OdbcCommand(sql, conn)
 
                         cmd.Parameters.AddWithValue("?", StrConv(Trim(cmbPrdctName.Text), VbStrConv.ProperCase))
@@ -67,6 +67,13 @@ Public Class addProduct
                             cmd.Parameters.AddWithValue("?", DBNull.Value)
                         End If
 
+                        ' Save expiration date from dtpEDate if visible (Contact Lens or Solution)
+                        If dtpEDate.Visible Then
+                            cmd.Parameters.AddWithValue("?", dtpEDate.Value.Date)
+                        Else
+                            cmd.Parameters.AddWithValue("?", DBNull.Value)
+                        End If
+
                         cmd.ExecuteNonQuery()
 
                         ' Get the last inserted productID
@@ -78,10 +85,10 @@ Public Class addProduct
 
                         MsgBox("Product saved successfully!", vbInformation, "Success")
                     Else
-                        ' Update including discount and discount applied date (columns already exist in DB)
+                        ' Update including discount, discount applied date, and expiration date
                         ' Stock quantity is not updated here, use stockIN/stockOut forms
 
-                        sql = "UPDATE tbl_products SET productName=?, category=?, unitPrice=?, description=?, reorderLevel=?, dateAdded=?, supplierID=?, discount=?, discountAppliedDate=? WHERE productID=?"
+                        sql = "UPDATE tbl_products SET productName=?, category=?, unitPrice=?, description=?, reorderLevel=?, dateAdded=?, supplierID=?, discount=?, discountAppliedDate=?, expirationDate=? WHERE productID=?"
                         cmd = New Odbc.OdbcCommand(sql, conn)
 
                         cmd.Parameters.AddWithValue("?", StrConv(Trim(cmbPrdctName.Text), VbStrConv.ProperCase))
@@ -101,6 +108,13 @@ Public Class addProduct
                         ' Update discount applied date only if discount > 0, otherwise set to NULL
                         If discountDecU > 0 Then
                             cmd.Parameters.AddWithValue("?", DateTime.Now.Date)
+                        Else
+                            cmd.Parameters.AddWithValue("?", DBNull.Value)
+                        End If
+
+                        ' Update expiration date from dtpEDate if visible (Contact Lens or Solution)
+                        If dtpEDate.Visible Then
+                            cmd.Parameters.AddWithValue("?", dtpEDate.Value.Date)
                         Else
                             cmd.Parameters.AddWithValue("?", DBNull.Value)
                         End If
@@ -257,11 +271,23 @@ Public Class addProduct
                 txtDescription.Text = desc
             End If
             txtDescription.ReadOnly = False
+
+            ' Show/hide expiration date based on category
+            ToggleExpirationDateVisibility()
         Catch
             ' Non-fatal binding
         Finally
             If conn IsNot Nothing AndAlso conn.State = ConnectionState.Open Then conn.Close()
         End Try
+    End Sub
+
+    Private Sub ToggleExpirationDateVisibility()
+        ' Show expiration date only for Contact Lens and Solution categories
+        Dim category As String = cmbCategory.Text.Trim().ToLower()
+        Dim showExpiration As Boolean = category.Contains("contact lens") OrElse category.Contains("solution")
+
+        dtpEDate.Visible = showExpiration
+        Label4.Visible = showExpiration
     End Sub
     Private Sub LoadSuppliers()
         Try
@@ -367,7 +393,7 @@ Public Class addProduct
         Dim cmd As Odbc.OdbcCommand
         Dim da As New Odbc.OdbcDataAdapter
         Dim dt As New DataTable
-        Dim sql As String = "SELECT productID, productName, category, stockQuantity, unitPrice, description, reorderLevel, dateAdded, supplierID, discount, discountAppliedDate FROM tbl_products WHERE productID=?"
+        Dim sql As String = "SELECT productID, productName, category, stockQuantity, unitPrice, description, reorderLevel, dateAdded, supplierID, discount, discountAppliedDate, expirationDate FROM tbl_products WHERE productID=?"
 
         Try
             Call dbConn()
@@ -400,6 +426,14 @@ Public Class addProduct
                 Else
                     txtDiscount.Text = "0"
                 End If
+
+                ' Load expiration date if exists
+                If dt.Columns.Contains("expirationDate") AndAlso Not IsDBNull(dt.Rows(0)("expirationDate")) Then
+                    dtpEDate.Value = Convert.ToDateTime(dt.Rows(0)("expirationDate"))
+                End If
+
+                ' Toggle expiration date visibility based on category
+                ToggleExpirationDateVisibility()
 
                 ' supplierID handled above
             Else
@@ -471,6 +505,10 @@ Public Class addProduct
         ' Initialize product names list as empty until supplier selected
         LoadSupplierProducts(-1)
         cmbCategory.Enabled = False
+
+        ' Hide expiration date by default
+        dtpEDate.Visible = False
+        Label4.Visible = False
     End Sub
 
     Private Sub cmbSuppliers_SelectionChangeCommitted(sender As Object, e As EventArgs) Handles cmbSuppliers.SelectionChangeCommitted
@@ -504,6 +542,14 @@ Public Class addProduct
         If cmbPrdctName.Focused Then
             ApplySelectedProductMeta()
         End If
+    End Sub
+
+    Private Sub cmbCategory_SelectedIndexChanged(sender As Object, e As EventArgs) Handles cmbCategory.SelectedIndexChanged
+        ToggleExpirationDateVisibility()
+    End Sub
+
+    Private Sub cmbCategory_TextChanged(sender As Object, e As EventArgs) Handles cmbCategory.TextChanged
+        ToggleExpirationDateVisibility()
     End Sub
 
     ' Removed EnsureDiscountColumn and CheckDiscountColumnExists: DB schema already contains discount

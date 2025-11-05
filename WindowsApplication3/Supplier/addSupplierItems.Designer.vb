@@ -94,7 +94,7 @@ Partial Class addSupplierItems
         '
         Me.Label12.AutoSize = True
         Me.Label12.ForeColor = System.Drawing.Color.Red
-        Me.Label12.Location = New System.Drawing.Point(444, 81)
+        Me.Label12.Location = New System.Drawing.Point(433, 81)
         Me.Label12.Name = "Label12"
         Me.Label12.Size = New System.Drawing.Size(20, 25)
         Me.Label12.TabIndex = 129
@@ -104,7 +104,7 @@ Partial Class addSupplierItems
         '
         Me.Label10.AutoSize = True
         Me.Label10.ForeColor = System.Drawing.Color.Red
-        Me.Label10.Location = New System.Drawing.Point(123, 81)
+        Me.Label10.Location = New System.Drawing.Point(107, 81)
         Me.Label10.Name = "Label10"
         Me.Label10.Size = New System.Drawing.Size(20, 25)
         Me.Label10.TabIndex = 127
@@ -115,7 +115,7 @@ Partial Class addSupplierItems
         Me.Label9.AutoSize = True
         Me.Label9.Font = New System.Drawing.Font("Segoe UI", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.Label9.ForeColor = System.Drawing.Color.Red
-        Me.Label9.Location = New System.Drawing.Point(168, 23)
+        Me.Label9.Location = New System.Drawing.Point(152, 23)
         Me.Label9.Name = "Label9"
         Me.Label9.Size = New System.Drawing.Size(20, 25)
         Me.Label9.TabIndex = 126
@@ -127,7 +127,7 @@ Partial Class addSupplierItems
         Me.txtUnitPrice.Location = New System.Drawing.Point(351, 109)
         Me.txtUnitPrice.Name = "txtUnitPrice"
         Me.txtUnitPrice.Size = New System.Drawing.Size(246, 32)
-        Me.txtUnitPrice.TabIndex = 123
+        Me.txtUnitPrice.TabIndex = 4
         '
         'Label5
         '
@@ -145,7 +145,7 @@ Partial Class addSupplierItems
         Me.txtDescription.Location = New System.Drawing.Point(349, 46)
         Me.txtDescription.Name = "txtDescription"
         Me.txtDescription.Size = New System.Drawing.Size(248, 32)
-        Me.txtDescription.TabIndex = 117
+        Me.txtDescription.TabIndex = 3
         '
         'txtPrdctName
         '
@@ -153,7 +153,7 @@ Partial Class addSupplierItems
         Me.txtPrdctName.Location = New System.Drawing.Point(30, 46)
         Me.txtPrdctName.Name = "txtPrdctName"
         Me.txtPrdctName.Size = New System.Drawing.Size(246, 32)
-        Me.txtPrdctName.TabIndex = 116
+        Me.txtPrdctName.TabIndex = 1
         '
         'Label6
         '
@@ -167,13 +167,14 @@ Partial Class addSupplierItems
         '
         'cmbCategory
         '
+        Me.cmbCategory.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
         Me.cmbCategory.Font = New System.Drawing.Font("Segoe UI", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.cmbCategory.FormattingEnabled = True
-        Me.cmbCategory.Items.AddRange(New Object() {"Reading Glasses", "Lens", "Frame", "Contact Lenses & Solution", "Accesories"})
+        Me.cmbCategory.Items.AddRange(New Object() {"Frame", "Contact Lens", "Lens", "Solution", "Accesories"})
         Me.cmbCategory.Location = New System.Drawing.Point(29, 109)
         Me.cmbCategory.Name = "cmbCategory"
         Me.cmbCategory.Size = New System.Drawing.Size(247, 33)
-        Me.cmbCategory.TabIndex = 113
+        Me.cmbCategory.TabIndex = 2
         '
         'Label3
         '
@@ -224,10 +225,10 @@ Partial Class addSupplierItems
         Me.btnCancel.Font = New System.Drawing.Font("Segoe UI", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.btnCancel.ForeColor = System.Drawing.Color.Black
         Me.btnCancel.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft
-        Me.btnCancel.Location = New System.Drawing.Point(550, 261)
+        Me.btnCancel.Location = New System.Drawing.Point(541, 245)
         Me.btnCancel.Name = "btnCancel"
         Me.btnCancel.Size = New System.Drawing.Size(100, 27)
-        Me.btnCancel.TabIndex = 107
+        Me.btnCancel.TabIndex = 6
         Me.btnCancel.Text = "Cancel"
         Me.btnCancel.UseVisualStyleBackColor = False
         '
@@ -237,10 +238,10 @@ Partial Class addSupplierItems
         Me.btnSave.FlatStyle = System.Windows.Forms.FlatStyle.System
         Me.btnSave.Font = New System.Drawing.Font("Segoe UI", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.btnSave.ForeColor = System.Drawing.Color.Black
-        Me.btnSave.Location = New System.Drawing.Point(41, 261)
+        Me.btnSave.Location = New System.Drawing.Point(39, 245)
         Me.btnSave.Name = "btnSave"
         Me.btnSave.Size = New System.Drawing.Size(100, 27)
-        Me.btnSave.TabIndex = 106
+        Me.btnSave.TabIndex = 5
         Me.btnSave.Text = "Save"
         Me.btnSave.UseVisualStyleBackColor = False
         '
@@ -254,14 +255,14 @@ Partial Class addSupplierItems
         Me.pnlPrdct.Dock = System.Windows.Forms.DockStyle.Fill
         Me.pnlPrdct.Location = New System.Drawing.Point(0, 0)
         Me.pnlPrdct.Name = "pnlPrdct"
-        Me.pnlPrdct.Size = New System.Drawing.Size(653, 312)
+        Me.pnlPrdct.Size = New System.Drawing.Size(653, 288)
         Me.pnlPrdct.TabIndex = 19
         '
         'addSupplierItems
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(10.0!, 25.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
-        Me.ClientSize = New System.Drawing.Size(653, 312)
+        Me.ClientSize = New System.Drawing.Size(653, 288)
         Me.Controls.Add(Me.pnlPrdct)
         Me.Font = New System.Drawing.Font("Segoe UI", 10.8!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.Icon = CType(resources.GetObject("$this.Icon"), System.Drawing.Icon)

@@ -200,6 +200,8 @@ Partial Class PatientToday
         Me.Controls.Add(Me.patientTDGV)
         Me.Controls.Add(Me.pnlBar)
         Me.Controls.Add(Me.Panel1)
+        Me.MaximizeBox = False
+        Me.MinimizeBox = False
         Me.Name = "PatientToday"
         Me.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen
         Me.Text = "PatientToday"

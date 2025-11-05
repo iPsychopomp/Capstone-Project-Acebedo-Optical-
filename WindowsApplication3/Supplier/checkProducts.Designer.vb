@@ -193,7 +193,7 @@ Partial Class checkProducts
         Me.btnOrderReceived.Location = New System.Drawing.Point(37, 495)
         Me.btnOrderReceived.Margin = New System.Windows.Forms.Padding(3, 2, 3, 2)
         Me.btnOrderReceived.Name = "btnOrderReceived"
-        Me.btnOrderReceived.Size = New System.Drawing.Size(150, 27)
+        Me.btnOrderReceived.Size = New System.Drawing.Size(120, 27)
         Me.btnOrderReceived.TabIndex = 238
         Me.btnOrderReceived.Text = "Received"
         Me.btnOrderReceived.UseVisualStyleBackColor = False
@@ -205,10 +205,10 @@ Partial Class checkProducts
         Me.btnClose.Font = New System.Drawing.Font("Segoe UI", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.btnClose.ForeColor = System.Drawing.Color.Black
         Me.btnClose.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft
-        Me.btnClose.Location = New System.Drawing.Point(857, 495)
+        Me.btnClose.Location = New System.Drawing.Point(878, 495)
         Me.btnClose.Margin = New System.Windows.Forms.Padding(3, 2, 3, 2)
         Me.btnClose.Name = "btnClose"
-        Me.btnClose.Size = New System.Drawing.Size(150, 27)
+        Me.btnClose.Size = New System.Drawing.Size(100, 27)
         Me.btnClose.TabIndex = 239
         Me.btnClose.Text = "Close"
         Me.btnClose.UseVisualStyleBackColor = False
@@ -250,7 +250,7 @@ Partial Class checkProducts
         Me.btnRemaining.Font = New System.Drawing.Font("Segoe UI", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.btnRemaining.ForeColor = System.Drawing.Color.Black
         Me.btnRemaining.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft
-        Me.btnRemaining.Location = New System.Drawing.Point(193, 495)
+        Me.btnRemaining.Location = New System.Drawing.Point(163, 495)
         Me.btnRemaining.Margin = New System.Windows.Forms.Padding(3, 2, 3, 2)
         Me.btnRemaining.Name = "btnRemaining"
         Me.btnRemaining.Size = New System.Drawing.Size(221, 27)

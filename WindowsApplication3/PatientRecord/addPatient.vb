@@ -56,6 +56,10 @@ Public Class addPatient
 
     Private Sub addPatient_Load(sender As Object, e As EventArgs) Handles MyBase.Load
         Try
+            ' Set minimum date to 120 years ago from today
+            dtpBday.MinDate = Date.Today.AddYears(-120)
+            dtpBday.MaxDate = Date.Today
+
             LoadAddressData()
             Call dbConn()
             addressDataLoaded = True
@@ -419,6 +423,13 @@ Public Class addPatient
         ' Validate age
         If Not Integer.TryParse(txtAge.Text, ageValue) Then
             MsgBox("Invalid age format. Please check the age value.", vbCritical, "Error")
+            Exit Sub
+        End If
+
+        ' Validate age is not more than 120 years old
+        If ageValue > 120 Then
+            MsgBox("Invalid age. Age cannot exceed 120 years old. Please check the birthdate.", vbCritical, "Invalid Age")
+            dtpBday.Focus()
             Exit Sub
         End If
 
@@ -1056,6 +1067,14 @@ Public Class addPatient
         If (birthDate > today.AddYears(-age)) Then
             age -= 1
         End If
+
+        ' Validate age is not more than 120 years old
+        If age > 120 Then
+            MessageBox.Show("Invalid birthdate. Age cannot exceed 120 years old.", "Invalid Age", MessageBoxButtons.OK, MessageBoxIcon.Warning)
+            dtpBday.Value = today.AddYears(-120)
+            age = 120
+        End If
+
         txtAge.Text = age.ToString()
     End Sub
 

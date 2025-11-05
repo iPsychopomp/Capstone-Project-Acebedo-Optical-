@@ -57,6 +57,7 @@ Partial Class MainForm
         Me.btnInventory = New System.Windows.Forms.ToolStripButton()
         Me.btnDoctors = New System.Windows.Forms.ToolStripButton()
         Me.pnlContainer = New System.Windows.Forms.Panel()
+        Me.ProfileToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.pnlFooter.SuspendLayout()
         Me.MenuStrip.SuspendLayout()
         Me.tsButtons.SuspendLayout()
@@ -83,7 +84,7 @@ Partial Class MainForm
         Me.lblDate.ForeColor = System.Drawing.Color.Black
         Me.lblDate.Location = New System.Drawing.Point(922, 9)
         Me.lblDate.Name = "lblDate"
-        Me.lblDate.Size = New System.Drawing.Size(27, 20)
+        Me.lblDate.Size = New System.Drawing.Size(36, 25)
         Me.lblDate.TabIndex = 3
         Me.lblDate.Text = "---"
         '
@@ -95,7 +96,7 @@ Partial Class MainForm
         Me.lblTime.ForeColor = System.Drawing.Color.Black
         Me.lblTime.Location = New System.Drawing.Point(1093, 9)
         Me.lblTime.Name = "lblTime"
-        Me.lblTime.Size = New System.Drawing.Size(27, 20)
+        Me.lblTime.Size = New System.Drawing.Size(36, 25)
         Me.lblTime.TabIndex = 2
         Me.lblTime.Text = "---"
         '
@@ -106,7 +107,7 @@ Partial Class MainForm
         Me.lblUser.ForeColor = System.Drawing.Color.Black
         Me.lblUser.Location = New System.Drawing.Point(26, 9)
         Me.lblUser.Name = "lblUser"
-        Me.lblUser.Size = New System.Drawing.Size(27, 20)
+        Me.lblUser.Size = New System.Drawing.Size(36, 25)
         Me.lblUser.TabIndex = 1
         Me.lblUser.Text = "---"
         '
@@ -121,115 +122,115 @@ Partial Class MainForm
         Me.MenuStrip.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.FileToolStripMenuItem, Me.ManageInventoryToolStripMenuItem, Me.ToolsToolStripMenuItem, Me.UserToolStripMenuItem})
         Me.MenuStrip.Location = New System.Drawing.Point(0, 0)
         Me.MenuStrip.Name = "MenuStrip"
-        Me.MenuStrip.Size = New System.Drawing.Size(1207, 28)
+        Me.MenuStrip.Size = New System.Drawing.Size(1207, 33)
         Me.MenuStrip.TabIndex = 1
         Me.MenuStrip.Text = "MenuStrip2"
         '
         'FileToolStripMenuItem
         '
-        Me.FileToolStripMenuItem.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.LogoutToolStripMenuItem, Me.ExitToolStripMenuItem})
+        Me.FileToolStripMenuItem.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.LogoutToolStripMenuItem, Me.ProfileToolStripMenuItem, Me.ExitToolStripMenuItem})
         Me.FileToolStripMenuItem.Name = "FileToolStripMenuItem"
-        Me.FileToolStripMenuItem.Size = New System.Drawing.Size(44, 24)
+        Me.FileToolStripMenuItem.Size = New System.Drawing.Size(53, 29)
         Me.FileToolStripMenuItem.Text = "File"
         '
         'LogoutToolStripMenuItem
         '
         Me.LogoutToolStripMenuItem.Name = "LogoutToolStripMenuItem"
-        Me.LogoutToolStripMenuItem.Size = New System.Drawing.Size(125, 24)
+        Me.LogoutToolStripMenuItem.Size = New System.Drawing.Size(181, 30)
         Me.LogoutToolStripMenuItem.Text = "Logout"
         '
         'ExitToolStripMenuItem
         '
         Me.ExitToolStripMenuItem.Name = "ExitToolStripMenuItem"
-        Me.ExitToolStripMenuItem.Size = New System.Drawing.Size(125, 24)
+        Me.ExitToolStripMenuItem.Size = New System.Drawing.Size(181, 30)
         Me.ExitToolStripMenuItem.Text = "Exit"
         '
         'ManageInventoryToolStripMenuItem
         '
         Me.ManageInventoryToolStripMenuItem.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.StockInToolStripMenuItem, Me.StockOutToolStripMenuItem, Me.SupplierToolStripMenuItem})
         Me.ManageInventoryToolStripMenuItem.Name = "ManageInventoryToolStripMenuItem"
-        Me.ManageInventoryToolStripMenuItem.Size = New System.Drawing.Size(140, 24)
+        Me.ManageInventoryToolStripMenuItem.Size = New System.Drawing.Size(177, 29)
         Me.ManageInventoryToolStripMenuItem.Text = "Manage Inventory"
         '
         'StockInToolStripMenuItem
         '
         Me.StockInToolStripMenuItem.Image = CType(resources.GetObject("StockInToolStripMenuItem.Image"), System.Drawing.Image)
         Me.StockInToolStripMenuItem.Name = "StockInToolStripMenuItem"
-        Me.StockInToolStripMenuItem.Size = New System.Drawing.Size(146, 26)
+        Me.StockInToolStripMenuItem.Size = New System.Drawing.Size(170, 30)
         Me.StockInToolStripMenuItem.Text = "Stock In"
         '
         'StockOutToolStripMenuItem
         '
         Me.StockOutToolStripMenuItem.Image = CType(resources.GetObject("StockOutToolStripMenuItem.Image"), System.Drawing.Image)
         Me.StockOutToolStripMenuItem.Name = "StockOutToolStripMenuItem"
-        Me.StockOutToolStripMenuItem.Size = New System.Drawing.Size(146, 26)
+        Me.StockOutToolStripMenuItem.Size = New System.Drawing.Size(170, 30)
         Me.StockOutToolStripMenuItem.Text = "Stock Out"
         '
         'SupplierToolStripMenuItem
         '
         Me.SupplierToolStripMenuItem.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.OrderProductToolStripMenuItem, Me.OrderHistoryToolStripMenuItem, Me.SupplierProductsToolStripMenuItem})
         Me.SupplierToolStripMenuItem.Name = "SupplierToolStripMenuItem"
-        Me.SupplierToolStripMenuItem.Size = New System.Drawing.Size(146, 26)
+        Me.SupplierToolStripMenuItem.Size = New System.Drawing.Size(170, 30)
         Me.SupplierToolStripMenuItem.Text = "Supplier"
         '
         'OrderProductToolStripMenuItem
         '
         Me.OrderProductToolStripMenuItem.Image = CType(resources.GetObject("OrderProductToolStripMenuItem.Image"), System.Drawing.Image)
         Me.OrderProductToolStripMenuItem.Name = "OrderProductToolStripMenuItem"
-        Me.OrderProductToolStripMenuItem.Size = New System.Drawing.Size(198, 26)
+        Me.OrderProductToolStripMenuItem.Size = New System.Drawing.Size(239, 30)
         Me.OrderProductToolStripMenuItem.Text = "Order Products"
         '
         'OrderHistoryToolStripMenuItem
         '
         Me.OrderHistoryToolStripMenuItem.Image = CType(resources.GetObject("OrderHistoryToolStripMenuItem.Image"), System.Drawing.Image)
         Me.OrderHistoryToolStripMenuItem.Name = "OrderHistoryToolStripMenuItem"
-        Me.OrderHistoryToolStripMenuItem.Size = New System.Drawing.Size(198, 26)
+        Me.OrderHistoryToolStripMenuItem.Size = New System.Drawing.Size(239, 30)
         Me.OrderHistoryToolStripMenuItem.Text = "Order History"
         '
         'SupplierProductsToolStripMenuItem
         '
         Me.SupplierProductsToolStripMenuItem.Image = CType(resources.GetObject("SupplierProductsToolStripMenuItem.Image"), System.Drawing.Image)
         Me.SupplierProductsToolStripMenuItem.Name = "SupplierProductsToolStripMenuItem"
-        Me.SupplierProductsToolStripMenuItem.Size = New System.Drawing.Size(198, 26)
+        Me.SupplierProductsToolStripMenuItem.Size = New System.Drawing.Size(239, 30)
         Me.SupplierProductsToolStripMenuItem.Text = "Supplier Products"
         '
         'ToolsToolStripMenuItem
         '
         Me.ToolsToolStripMenuItem.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.DataBackupRestoreToolStripMenuItem, Me.ReportsToolStripMenuItem1})
         Me.ToolsToolStripMenuItem.Name = "ToolsToolStripMenuItem"
-        Me.ToolsToolStripMenuItem.Size = New System.Drawing.Size(56, 24)
+        Me.ToolsToolStripMenuItem.Size = New System.Drawing.Size(67, 29)
         Me.ToolsToolStripMenuItem.Text = "Tools"
         '
         'DataBackupRestoreToolStripMenuItem
         '
         Me.DataBackupRestoreToolStripMenuItem.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.CreateBackupToolStripMenuItem, Me.RestoreDataToolStripMenuItem})
         Me.DataBackupRestoreToolStripMenuItem.Name = "DataBackupRestoreToolStripMenuItem"
-        Me.DataBackupRestoreToolStripMenuItem.Size = New System.Drawing.Size(245, 24)
+        Me.DataBackupRestoreToolStripMenuItem.Size = New System.Drawing.Size(299, 30)
         Me.DataBackupRestoreToolStripMenuItem.Text = "Data Backup and Restore"
         '
         'CreateBackupToolStripMenuItem
         '
         Me.CreateBackupToolStripMenuItem.Name = "CreateBackupToolStripMenuItem"
-        Me.CreateBackupToolStripMenuItem.Size = New System.Drawing.Size(173, 24)
+        Me.CreateBackupToolStripMenuItem.Size = New System.Drawing.Size(211, 30)
         Me.CreateBackupToolStripMenuItem.Text = "Create Backup"
         '
         'RestoreDataToolStripMenuItem
         '
         Me.RestoreDataToolStripMenuItem.Name = "RestoreDataToolStripMenuItem"
-        Me.RestoreDataToolStripMenuItem.Size = New System.Drawing.Size(173, 24)
+        Me.RestoreDataToolStripMenuItem.Size = New System.Drawing.Size(211, 30)
         Me.RestoreDataToolStripMenuItem.Text = "Restore Data"
         '
         'ReportsToolStripMenuItem1
         '
         Me.ReportsToolStripMenuItem1.Name = "ReportsToolStripMenuItem1"
-        Me.ReportsToolStripMenuItem1.Size = New System.Drawing.Size(245, 24)
+        Me.ReportsToolStripMenuItem1.Size = New System.Drawing.Size(299, 30)
         Me.ReportsToolStripMenuItem1.Text = "Reports"
         '
         'UserToolStripMenuItem
         '
         Me.UserToolStripMenuItem.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.ManageUsersToolStripMenuItem, Me.SystemLogsToolStripMenuItem})
         Me.UserToolStripMenuItem.Name = "UserToolStripMenuItem"
-        Me.UserToolStripMenuItem.Size = New System.Drawing.Size(142, 24)
+        Me.UserToolStripMenuItem.Size = New System.Drawing.Size(179, 29)
         Me.UserToolStripMenuItem.Text = "User Management"
         '
         'ManageUsersToolStripMenuItem
@@ -237,21 +238,21 @@ Partial Class MainForm
         Me.ManageUsersToolStripMenuItem.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.AddUserToolStripMenuItem})
         Me.ManageUsersToolStripMenuItem.Image = CType(resources.GetObject("ManageUsersToolStripMenuItem.Image"), System.Drawing.Image)
         Me.ManageUsersToolStripMenuItem.Name = "ManageUsersToolStripMenuItem"
-        Me.ManageUsersToolStripMenuItem.Size = New System.Drawing.Size(175, 26)
+        Me.ManageUsersToolStripMenuItem.Size = New System.Drawing.Size(210, 30)
         Me.ManageUsersToolStripMenuItem.Text = "Manage Users"
         '
         'AddUserToolStripMenuItem
         '
         Me.AddUserToolStripMenuItem.Image = CType(resources.GetObject("AddUserToolStripMenuItem.Image"), System.Drawing.Image)
         Me.AddUserToolStripMenuItem.Name = "AddUserToolStripMenuItem"
-        Me.AddUserToolStripMenuItem.Size = New System.Drawing.Size(143, 26)
+        Me.AddUserToolStripMenuItem.Size = New System.Drawing.Size(167, 30)
         Me.AddUserToolStripMenuItem.Text = "Add User"
         '
         'SystemLogsToolStripMenuItem
         '
         Me.SystemLogsToolStripMenuItem.Image = CType(resources.GetObject("SystemLogsToolStripMenuItem.Image"), System.Drawing.Image)
         Me.SystemLogsToolStripMenuItem.Name = "SystemLogsToolStripMenuItem"
-        Me.SystemLogsToolStripMenuItem.Size = New System.Drawing.Size(175, 26)
+        Me.SystemLogsToolStripMenuItem.Size = New System.Drawing.Size(210, 30)
         Me.SystemLogsToolStripMenuItem.Text = "System Logs"
         '
         'tsButtons
@@ -262,7 +263,7 @@ Partial Class MainForm
         Me.tsButtons.GripStyle = System.Windows.Forms.ToolStripGripStyle.Hidden
         Me.tsButtons.ImageScalingSize = New System.Drawing.Size(20, 20)
         Me.tsButtons.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.btnDashboard, Me.btnPatientRecord, Me.btnCheckUp, Me.btnTransactions, Me.btnInventory, Me.btnDoctors})
-        Me.tsButtons.Location = New System.Drawing.Point(0, 28)
+        Me.tsButtons.Location = New System.Drawing.Point(0, 33)
         Me.tsButtons.Name = "tsButtons"
         Me.tsButtons.RenderMode = System.Windows.Forms.ToolStripRenderMode.System
         Me.tsButtons.Size = New System.Drawing.Size(1207, 58)
@@ -368,14 +369,20 @@ Partial Class MainForm
         '
         Me.pnlContainer.BackColor = System.Drawing.SystemColors.ControlLight
         Me.pnlContainer.Dock = System.Windows.Forms.DockStyle.Fill
-        Me.pnlContainer.Location = New System.Drawing.Point(0, 86)
+        Me.pnlContainer.Location = New System.Drawing.Point(0, 91)
         Me.pnlContainer.Name = "pnlContainer"
-        Me.pnlContainer.Size = New System.Drawing.Size(1207, 668)
+        Me.pnlContainer.Size = New System.Drawing.Size(1207, 663)
         Me.pnlContainer.TabIndex = 13
+        '
+        'ProfileToolStripMenuItem
+        '
+        Me.ProfileToolStripMenuItem.Name = "ProfileToolStripMenuItem"
+        Me.ProfileToolStripMenuItem.Size = New System.Drawing.Size(181, 30)
+        Me.ProfileToolStripMenuItem.Text = "Profile"
         '
         'MainForm
         '
-        Me.AutoScaleDimensions = New System.Drawing.SizeF(9.0!, 21.0!)
+        Me.AutoScaleDimensions = New System.Drawing.SizeF(11.0!, 28.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.ClientSize = New System.Drawing.Size(1207, 794)
         Me.Controls.Add(Me.pnlContainer)
@@ -433,5 +440,6 @@ Partial Class MainForm
     Friend WithEvents AddUserToolStripMenuItem As System.Windows.Forms.ToolStripMenuItem
     Friend WithEvents SupplierProductsToolStripMenuItem As System.Windows.Forms.ToolStripMenuItem
     Friend WithEvents ReportsToolStripMenuItem1 As System.Windows.Forms.ToolStripMenuItem
+    Friend WithEvents ProfileToolStripMenuItem As System.Windows.Forms.ToolStripMenuItem
 
 End Class

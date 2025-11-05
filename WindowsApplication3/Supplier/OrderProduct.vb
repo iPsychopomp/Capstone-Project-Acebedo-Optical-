@@ -16,6 +16,8 @@ Public Class OrderProduct
         LoadOrders()
         txtTotal.Text = "0.00"
         DgvStyle(dgvSelectedProducts)
+        DgvStyle(dgvOrders)
+
         HideProductIDColumn()
 
         ' Removed in-tab delivery history grid
@@ -906,15 +908,6 @@ Public Class OrderProduct
         LoadProductsBySupplier(supplierID)
         DgvStyle(dgvSelectedProducts)
         HideProductIDColumn()
-    End Sub
-
-    ' Ensure filtering triggers only on user commit as well
-    Private Sub cmbSuppliers_SelectionChangeCommitted(sender As Object, e As EventArgs) Handles cmbSuppliers.SelectionChangeCommitted
-        Dim supplierID As Integer
-        If Not TryGetSelectedSupplierID(supplierID) Then Exit Sub
-        dgvSelectedProducts.Rows.Clear()
-        UpdateTotalAmount()
-        LoadProductsBySupplier(supplierID)
     End Sub
 
     Private Function TryGetSelectedSupplierID(ByRef supplierID As Integer) As Boolean

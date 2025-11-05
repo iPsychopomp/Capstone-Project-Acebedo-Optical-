@@ -37,6 +37,13 @@
         StockInDGV.RowTemplate.Height = 30
         StockInDGV.DefaultCellStyle.WrapMode = DataGridViewTriState.False
         StockInDGV.AutoSizeRowsMode = DataGridViewAutoSizeRowsMode.AllCells
+
+        ' Center align the Quantity column
+        For Each col As DataGridViewColumn In StockInDGV.Columns
+            If col.HeaderText = "Quantity" OrElse col.Name.ToLower().Contains("quantity") Then
+                col.DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter
+            End If
+        Next
     End Sub
 
     Private Sub ComputeTotalCost()
@@ -75,6 +82,7 @@
                 cmbPrdctName.DataSource = dt
                 cmbPrdctName.DisplayMember = "productName"
                 cmbPrdctName.ValueMember = "productID"
+                cmbPrdctName.SelectedIndex = -1
             Else
                 MsgBox("No products found.", vbExclamation, "Warning")
             End If
@@ -248,6 +256,11 @@
         'If patientRecord IsNot Nothing AndAlso patientRecord.patientDGV IsNot Nothing Then
         '    patientRecord.patientDGV.Tag = ""
         'End If
+    End Sub
+
+    Private Sub cmbPrdctName_DropDown(sender As Object, e As EventArgs) Handles cmbPrdctName.DropDown
+        ' Clear the selection before dropdown opens
+        cmbPrdctName.SelectedIndex = -1
     End Sub
 
     Private Sub cmbPrdctName_SelectedIndexChanged(sender As Object, e As EventArgs) Handles cmbPrdctName.SelectedIndexChanged

@@ -41,6 +41,7 @@ Partial Class checkUp
         Me.btnEdit = New System.Windows.Forms.Button()
         Me.pnlCheckUp = New System.Windows.Forms.Panel()
         Me.checkUpDGV = New System.Windows.Forms.DataGridView()
+        Me.ToolTip1 = New System.Windows.Forms.ToolTip(Me.components)
         Me.Column1 = New System.Windows.Forms.DataGridViewTextBoxColumn()
         Me.patientID = New System.Windows.Forms.DataGridViewTextBoxColumn()
         Me.PatientName = New System.Windows.Forms.DataGridViewTextBoxColumn()
@@ -48,7 +49,6 @@ Partial Class checkUp
         Me.Column5 = New System.Windows.Forms.DataGridViewTextBoxColumn()
         Me.Column4 = New System.Windows.Forms.DataGridViewTextBoxColumn()
         Me.Column2 = New System.Windows.Forms.DataGridViewTextBoxColumn()
-        Me.ToolTip1 = New System.Windows.Forms.ToolTip(Me.components)
         Me.pnlBar.SuspendLayout()
         Me.pnlCheckUp.SuspendLayout()
         CType(Me.checkUpDGV, System.ComponentModel.ISupportInitialize).BeginInit()
@@ -215,6 +215,7 @@ Partial Class checkUp
         Me.Column1.HeaderText = "ID"
         Me.Column1.Name = "Column1"
         Me.Column1.ReadOnly = True
+        Me.Column1.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable
         Me.Column1.Visible = False
         Me.Column1.Width = 40
         '
@@ -227,6 +228,7 @@ Partial Class checkUp
         Me.patientID.HeaderText = "ID"
         Me.patientID.Name = "patientID"
         Me.patientID.ReadOnly = True
+        Me.patientID.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable
         Me.patientID.Width = 40
         '
         'PatientName
@@ -237,6 +239,7 @@ Partial Class checkUp
         Me.PatientName.HeaderText = "Patient Name"
         Me.PatientName.Name = "PatientName"
         Me.PatientName.ReadOnly = True
+        Me.PatientName.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable
         Me.PatientName.Width = 436
         '
         'Column3
@@ -247,6 +250,7 @@ Partial Class checkUp
         Me.Column3.HeaderText = "Doctor's Name"
         Me.Column3.Name = "Column3"
         Me.Column3.ReadOnly = True
+        Me.Column3.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable
         Me.Column3.Width = 436
         '
         'Column5
@@ -258,6 +262,7 @@ Partial Class checkUp
         Me.Column5.HeaderText = "Check Up Date"
         Me.Column5.Name = "Column5"
         Me.Column5.ReadOnly = True
+        Me.Column5.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable
         '
         'Column4
         '
@@ -265,6 +270,7 @@ Partial Class checkUp
         Me.Column4.HeaderText = "Appointed Doctor"
         Me.Column4.Name = "Column4"
         Me.Column4.ReadOnly = True
+        Me.Column4.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable
         '
         'Column2
         '
@@ -274,6 +280,7 @@ Partial Class checkUp
         Me.Column2.HeaderText = "Next Appointment"
         Me.Column2.Name = "Column2"
         Me.Column2.ReadOnly = True
+        Me.Column2.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable
         '
         'checkUp
         '

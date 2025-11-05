@@ -276,6 +276,11 @@ Public Class CreateCheckUp
                 transactionForm.SelectedPatientName = txtPName.Text
                 transactionForm.IsCheckupPayment = True
 
+                ' Default PD fields to 0 if empty
+                If String.IsNullOrWhiteSpace(pdOD.Text) Then pdOD.Text = "0"
+                If String.IsNullOrWhiteSpace(pdOS.Text) Then pdOS.Text = "0"
+                If String.IsNullOrWhiteSpace(pdOU.Text) Then pdOU.Text = "0"
+
                 ' Pass checkup data to transaction form
                 transactionForm.CheckupRemarks = txtRemarks.Text
                 transactionForm.CheckupDoctorID = selectedDoctorID
@@ -288,6 +293,9 @@ Public Class CreateCheckUp
                 transactionForm.CheckupAddOD = txtAddOD.Text
                 transactionForm.CheckupAddOS = txtAddOS.Text
                 transactionForm.CheckupDate = dtpDate.Value
+                transactionForm.CheckupPDOD = pdOD.Text
+                transactionForm.CheckupPDOS = pdOS.Text
+                transactionForm.CheckupPDOU = pdOU.Text
 
                 'transactionForm.Text = "Settle Checkup Payment - " & txtPName.Text
                 transactionForm.TopMost = True
@@ -460,6 +468,12 @@ Public Class CreateCheckUp
 
     Private Sub btnClear_Click(sender As Object, e As EventArgs) Handles btnClear.Click
         Try
+            ' Clear patient name and doctor name textboxes
+            txtPName.Text = ""
+            txtPName.Tag = Nothing
+            txtDName.Text = ""
+            txtDName.Tag = Nothing
+
             ' Clear all inputs inside the group container
             For Each obj As Control In grpCheckUp.Controls
                 If TypeOf obj Is TextBox Then
@@ -474,6 +488,14 @@ Public Class CreateCheckUp
                     CType(obj, DateTimePicker).Value = DateTime.Now
                 End If
             Next
+
+            ' Clear PD fields
+            pdOD.Text = "0"
+            pdOS.Text = "0"
+            pdOU.Text = "0"
+
+            ' Reset date to today
+            dtpDate.Value = DateTime.Now
         Catch ex As Exception
             MsgBox("Failed to clear fields: " & ex.Message, vbCritical, "Error")
         End Try

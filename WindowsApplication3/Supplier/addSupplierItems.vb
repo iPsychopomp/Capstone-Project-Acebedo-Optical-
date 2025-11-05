@@ -14,6 +14,16 @@ Public Class addSupplierItems
                 MessageBox.Show("Error loading item for edit: " & ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error)
             End Try
         End If
+
+        ' Add Leave event handler for txtDescription to auto-fill "N/A"
+        AddHandler txtDescription.Leave, AddressOf txtDescription_Leave
+    End Sub
+
+    Private Sub txtDescription_Leave(sender As Object, e As EventArgs)
+        ' Auto-fill "N/A" if description is left empty
+        If String.IsNullOrWhiteSpace(txtDescription.Text) Then
+            txtDescription.Text = "N/A"
+        End If
     End Sub
 
     Private Sub WireUpEvents()
@@ -160,6 +170,32 @@ Public Class addSupplierItems
                     MessageBox.Show("No suppliers found in the system. Please add a supplier first before adding products.", "Validation Error", MessageBoxButtons.OK, MessageBoxIcon.Warning)
                     Return
                 End If
+            End If
+
+            ' Check for duplicate product name with same category (case-insensitive)
+            Call dbConn()
+            Dim checkDuplicateQuery As String
+            If EditingSProductID > 0 Then
+                ' When editing, exclude the current record from duplicate check
+                checkDuplicateQuery = "SELECT COUNT(*) FROM tbl_supplier_products WHERE LOWER(product_name) = ? AND LOWER(category) = ? AND sProductID <> ?"
+            Else
+                ' When adding new, check all records
+                checkDuplicateQuery = "SELECT COUNT(*) FROM tbl_supplier_products WHERE LOWER(product_name) = ? AND LOWER(category) = ?"
+            End If
+
+            Dim checkCmd As New Odbc.OdbcCommand(checkDuplicateQuery, conn)
+            checkCmd.Parameters.Add("?", Odbc.OdbcType.VarChar).Value = productName.ToLower()
+            checkCmd.Parameters.Add("?", Odbc.OdbcType.VarChar).Value = category.ToLower()
+            If EditingSProductID > 0 Then
+                checkCmd.Parameters.Add("?", Odbc.OdbcType.Int).Value = EditingSProductID
+            End If
+
+            Dim duplicateCount As Integer = Convert.ToInt32(checkCmd.ExecuteScalar())
+            conn.Close()
+
+            If duplicateCount > 0 Then
+                MessageBox.Show("A product with the same name and category already exists. Please use a different name or category.", "Duplicate Product", MessageBoxButtons.OK, MessageBoxIcon.Warning)
+                Return
             End If
 
             ' Insert or Update into tbl_supplier_products

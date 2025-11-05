@@ -364,6 +364,7 @@ Partial Class createTransactions
         '
         'cmbProducts
         '
+        Me.cmbProducts.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
         Me.cmbProducts.Font = New System.Drawing.Font("Segoe UI", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.cmbProducts.FormattingEnabled = True
         Me.cmbProducts.Location = New System.Drawing.Point(26, 143)

@@ -3,6 +3,8 @@ Imports System.Text.RegularExpressions
 Imports System.Data.Odbc
 Public Class addUsers
 
+    Public Property SuppressDefaultPasswordNotice As Boolean = False
+
     Public Sub loadRecord(ByVal productID As Integer)
         Dim cmd As Odbc.OdbcCommand
         Dim da As New Odbc.OdbcDataAdapter
@@ -27,6 +29,9 @@ Public Class addUsers
                 cmbRole.Text = dt.Rows(0)("Role").ToString()
                 txtUser.Text = dt.Rows(0)("Username").ToString()
                 txtPass.Text = dt.Rows(0)("Password").ToString()
+                If Not SuppressDefaultPasswordNotice AndAlso txtPass.Text = "1234" Then
+                    MessageBox.Show("This is new profile, please change your password", "Security Notice", MessageBoxButtons.OK, MessageBoxIcon.Information)
+                End If
                 txtMobile.Text = dt.Rows(0)("MobileNum").ToString()
                 txtEmail.Text = dt.Rows(0)("Email").ToString()
 
@@ -137,6 +142,11 @@ Public Class addUsers
 
             ' Setup Super Admin role visibility
             SetupSuperAdminRoleVisibility()
+
+            ' Set default password for new user records
+            If Len(pnlAddUser.Tag) = 0 Then
+                txtPass.Text = "1234"
+            End If
         Catch ex As Exception
             MessageBox.Show("Error loading data: " & ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error)
         End Try

@@ -4,9 +4,9 @@
     <ReportItems>
       <Line Name="Line5">
         <Top>0.3175cm</Top>
-        <Left>0.66097cm</Left>
+        <Left>0.922cm</Left>
         <Height>0cm</Height>
-        <Width>17.15643cm</Width>
+        <Width>17.83756cm</Width>
         <Style>
           <Border>
             <Style>Solid</Style>
@@ -33,9 +33,9 @@
         </Paragraphs>
         <rd:DefaultName>Textbox2</rd:DefaultName>
         <Top>0.355in</Top>
-        <Left>2.98672in</Left>
+        <Left>3.13261in</Left>
         <Height>0.425in</Height>
-        <Width>2.89317in</Width>
+        <Width>1.6515in</Width>
         <ZIndex>1</ZIndex>
         <Style>
           <Border>
@@ -51,22 +51,22 @@
         <TablixBody>
           <TablixColumns>
             <TablixColumn>
-              <Width>3.49945cm</Width>
+              <Width>3.61297cm</Width>
             </TablixColumn>
             <TablixColumn>
-              <Width>3.08696cm</Width>
+              <Width>3.20048cm</Width>
             </TablixColumn>
             <TablixColumn>
-              <Width>2.57913cm</Width>
+              <Width>2.69265cm</Width>
             </TablixColumn>
             <TablixColumn>
-              <Width>2.57913cm</Width>
+              <Width>2.69265cm</Width>
             </TablixColumn>
             <TablixColumn>
-              <Width>2.43063cm</Width>
+              <Width>2.54415cm</Width>
             </TablixColumn>
             <TablixColumn>
-              <Width>2.98113cm</Width>
+              <Width>3.09465cm</Width>
             </TablixColumn>
           </TablixColumns>
           <TablixRows>
@@ -335,7 +335,9 @@
                               <Style />
                             </TextRun>
                           </TextRuns>
-                          <Style />
+                          <Style>
+                            <TextAlign>Center</TextAlign>
+                          </Style>
                         </Paragraph>
                       </Paragraphs>
                       <rd:DefaultName>stockQuantity</rd:DefaultName>
@@ -364,7 +366,9 @@
                               <Style />
                             </TextRun>
                           </TextRuns>
-                          <Style />
+                          <Style>
+                            <TextAlign>Right</TextAlign>
+                          </Style>
                         </Paragraph>
                       </Paragraphs>
                       <rd:DefaultName>unitPrice</rd:DefaultName>
@@ -393,7 +397,9 @@
                               <Style />
                             </TextRun>
                           </TextRuns>
-                          <Style />
+                          <Style>
+                            <TextAlign>Center</TextAlign>
+                          </Style>
                         </Paragraph>
                       </Paragraphs>
                       <rd:DefaultName>reorderLevel</rd:DefaultName>
@@ -463,10 +469,10 @@
           </TablixMembers>
         </TablixRowHierarchy>
         <DataSetName>DataSet2</DataSetName>
-        <Top>4.1275cm</Top>
-        <Left>0.66097cm</Left>
+        <Top>3.51367cm</Top>
+        <Left>0.922cm</Left>
         <Height>1.2cm</Height>
-        <Width>17.15643cm</Width>
+        <Width>17.83756cm</Width>
         <ZIndex>2</ZIndex>
         <Style>
           <Border>
@@ -481,7 +487,7 @@
           <Paragraph>
             <TextRuns>
               <TextRun>
-                <Value>Date Generated:</Value>
+                <Value>Date:</Value>
                 <Style>
                   <FontFamily>Segoe UI</FontFamily>
                   <FontWeight>Bold</FontWeight>
@@ -492,10 +498,10 @@
           </Paragraph>
         </Paragraphs>
         <rd:DefaultName>Textbox6</rd:DefaultName>
-        <Top>1.02167in</Top>
-        <Left>0.26022in</Left>
+        <Top>0.89722in</Top>
+        <Left>0.36299in</Left>
         <Height>0.25in</Height>
-        <Width>1.24167in</Width>
+        <Width>0.45834in</Width>
         <ZIndex>3</ZIndex>
         <Style>
           <Border>
@@ -525,8 +531,8 @@
           </Paragraph>
         </Paragraphs>
         <rd:DefaultName>Textbox7</rd:DefaultName>
-        <Top>1.02167in</Top>
-        <Left>1.50189in</Left>
+        <Top>0.89722in</Top>
+        <Left>0.82133in</Left>
         <Height>0.25in</Height>
         <Width>1.71144in</Width>
         <ZIndex>4</ZIndex>
@@ -540,8 +546,99 @@
           <PaddingBottom>2pt</PaddingBottom>
         </Style>
       </Textbox>
+      <Rectangle Name="Rectangle6">
+        <ReportItems>
+          <Textbox Name="Textbox22">
+            <CanGrow>true</CanGrow>
+            <KeepTogether>true</KeepTogether>
+            <Paragraphs>
+              <Paragraph>
+                <TextRuns>
+                  <TextRun>
+                    <Value>Prepared by:</Value>
+                    <Style>
+                      <FontFamily>Segoe UI</FontFamily>
+                      <FontWeight>Bold</FontWeight>
+                    </Style>
+                  </TextRun>
+                </TextRuns>
+                <Style />
+              </Paragraph>
+            </Paragraphs>
+            <rd:DefaultName>Textbox22</rd:DefaultName>
+            <Height>0.25in</Height>
+            <Width>1in</Width>
+            <Style>
+              <Border>
+                <Style>None</Style>
+              </Border>
+              <PaddingLeft>2pt</PaddingLeft>
+              <PaddingRight>2pt</PaddingRight>
+              <PaddingTop>2pt</PaddingTop>
+              <PaddingBottom>2pt</PaddingBottom>
+            </Style>
+          </Textbox>
+          <Textbox Name="Textbox23">
+            <CanGrow>true</CanGrow>
+            <KeepTogether>true</KeepTogether>
+            <Paragraphs>
+              <Paragraph>
+                <TextRuns>
+                  <TextRun>
+                    <Value>=Parameters!PreparedBy.Value</Value>
+                    <Style>
+                      <FontFamily>Segoe UI</FontFamily>
+                      <FontWeight>Bold</FontWeight>
+                    </Style>
+                  </TextRun>
+                </TextRuns>
+                <Style>
+                  <TextAlign>Center</TextAlign>
+                </Style>
+              </Paragraph>
+            </Paragraphs>
+            <rd:DefaultName>Textbox22</rd:DefaultName>
+            <Left>1in</Left>
+            <Height>0.25in</Height>
+            <Width>2.26806in</Width>
+            <ZIndex>1</ZIndex>
+            <Style>
+              <Border>
+                <Style>None</Style>
+              </Border>
+              <PaddingLeft>2pt</PaddingLeft>
+              <PaddingRight>2pt</PaddingRight>
+              <PaddingTop>2pt</PaddingTop>
+              <PaddingBottom>2pt</PaddingBottom>
+            </Style>
+          </Textbox>
+        </ReportItems>
+        <KeepTogether>true</KeepTogether>
+        <Top>2.07695in</Top>
+        <Left>4.11759in</Left>
+        <Height>0.26389in</Height>
+        <Width>3.26807in</Width>
+        <ZIndex>5</ZIndex>
+        <Style>
+          <Border>
+            <Style>None</Style>
+          </Border>
+        </Style>
+      </Rectangle>
+      <Line Name="Line2">
+        <Top>2.36861in</Top>
+        <Left>5.11759in</Left>
+        <Height>0in</Height>
+        <Width>2.26806in</Width>
+        <ZIndex>6</ZIndex>
+        <Style>
+          <Border>
+            <Style>Solid</Style>
+          </Border>
+        </Style>
+      </Line>
     </ReportItems>
-    <Height>9.19in</Height>
+    <Height>9.415in</Height>
     <Style />
   </Body>
   <Width>7.65916in</Width>
@@ -593,8 +690,8 @@
             </Paragraph>
           </Paragraphs>
           <rd:DefaultName>Textbox1</rd:DefaultName>
-          <Top>0.41056in</Top>
-          <Left>3.2425in</Left>
+          <Top>0.39667in</Top>
+          <Left>3.45509in</Left>
           <Height>1.05833in</Height>
           <Width>2.46666in</Width>
           <Style>
@@ -611,8 +708,7 @@
           <Source>Embedded</Source>
           <Value>opticon</Value>
           <Sizing>FitProportional</Sizing>
-          <Top>0.01389in</Top>
-          <Left>1.46333in</Left>
+          <Left>1.67732in</Left>
           <Height>1.76111in</Height>
           <Width>1.75in</Width>
           <ZIndex>1</ZIndex>
@@ -644,10 +740,10 @@
     <PageWidth>8.27in</PageWidth>
     <InteractiveHeight>11.69in</InteractiveHeight>
     <InteractiveWidth>8.27in</InteractiveWidth>
-    <LeftMargin>0.5in</LeftMargin>
-    <RightMargin>0.5in</RightMargin>
-    <TopMargin>0.5in</TopMargin>
-    <BottomMargin>0.5in</BottomMargin>
+    <LeftMargin>0.25in</LeftMargin>
+    <RightMargin>0.25in</RightMargin>
+    <TopMargin>0.25in</TopMargin>
+    <BottomMargin>0.25in</BottomMargin>
     <ColumnSpacing>0.13cm</ColumnSpacing>
     <Style />
   </Page>
@@ -715,6 +811,12 @@
       </rd:DataSetInfo>
     </DataSet>
   </DataSets>
+  <ReportParameters>
+    <ReportParameter Name="PreparedBy">
+      <DataType>String</DataType>
+      <Prompt>ReportParameter1</Prompt>
+    </ReportParameter>
+  </ReportParameters>
   <EmbeddedImages>
     <EmbeddedImage Name="opticon">
       <MIMEType>image/png</MIMEType>

@@ -31,6 +31,8 @@ Partial Class addProduct
         Me.pbAdd = New System.Windows.Forms.PictureBox()
         Me.lblhead = New System.Windows.Forms.Label()
         Me.grpAddPrdct = New System.Windows.Forms.GroupBox()
+        Me.dtpEDate = New System.Windows.Forms.DateTimePicker()
+        Me.Label4 = New System.Windows.Forms.Label()
         Me.cmbPrdctName = New System.Windows.Forms.ComboBox()
         Me.txtDiscount = New System.Windows.Forms.TextBox()
         Me.Label15 = New System.Windows.Forms.Label()
@@ -61,14 +63,13 @@ Partial Class addProduct
         '
         'btnCancel
         '
-        Me.btnCancel.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
-            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.btnCancel.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.btnCancel.BackColor = System.Drawing.SystemColors.ControlLight
         Me.btnCancel.FlatStyle = System.Windows.Forms.FlatStyle.System
         Me.btnCancel.Font = New System.Drawing.Font("Segoe UI", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.btnCancel.ForeColor = System.Drawing.Color.Black
         Me.btnCancel.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft
-        Me.btnCancel.Location = New System.Drawing.Point(514, 311)
+        Me.btnCancel.Location = New System.Drawing.Point(421, 357)
         Me.btnCancel.Name = "btnCancel"
         Me.btnCancel.Size = New System.Drawing.Size(100, 27)
         Me.btnCancel.TabIndex = 107
@@ -81,7 +82,7 @@ Partial Class addProduct
         Me.btnSave.FlatStyle = System.Windows.Forms.FlatStyle.System
         Me.btnSave.Font = New System.Drawing.Font("Segoe UI", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.btnSave.ForeColor = System.Drawing.Color.Black
-        Me.btnSave.Location = New System.Drawing.Point(41, 311)
+        Me.btnSave.Location = New System.Drawing.Point(41, 357)
         Me.btnSave.Name = "btnSave"
         Me.btnSave.Size = New System.Drawing.Size(100, 27)
         Me.btnSave.TabIndex = 106
@@ -98,7 +99,7 @@ Partial Class addProduct
         Me.pnlPrdct.Dock = System.Windows.Forms.DockStyle.Fill
         Me.pnlPrdct.Location = New System.Drawing.Point(0, 0)
         Me.pnlPrdct.Name = "pnlPrdct"
-        Me.pnlPrdct.Size = New System.Drawing.Size(654, 350)
+        Me.pnlPrdct.Size = New System.Drawing.Size(558, 390)
         Me.pnlPrdct.TabIndex = 18
         '
         'Panel1
@@ -110,7 +111,7 @@ Partial Class addProduct
         Me.Panel1.Dock = System.Windows.Forms.DockStyle.Top
         Me.Panel1.Location = New System.Drawing.Point(0, 0)
         Me.Panel1.Name = "Panel1"
-        Me.Panel1.Size = New System.Drawing.Size(654, 49)
+        Me.Panel1.Size = New System.Drawing.Size(558, 49)
         Me.Panel1.TabIndex = 123
         '
         'pbEdit
@@ -145,6 +146,8 @@ Partial Class addProduct
         'grpAddPrdct
         '
         Me.grpAddPrdct.BackColor = System.Drawing.SystemColors.MenuBar
+        Me.grpAddPrdct.Controls.Add(Me.dtpEDate)
+        Me.grpAddPrdct.Controls.Add(Me.Label4)
         Me.grpAddPrdct.Controls.Add(Me.cmbPrdctName)
         Me.grpAddPrdct.Controls.Add(Me.txtDiscount)
         Me.grpAddPrdct.Controls.Add(Me.Label15)
@@ -168,31 +171,51 @@ Partial Class addProduct
         Me.grpAddPrdct.Controls.Add(Me.Label2)
         Me.grpAddPrdct.Location = New System.Drawing.Point(12, 53)
         Me.grpAddPrdct.Name = "grpAddPrdct"
-        Me.grpAddPrdct.Size = New System.Drawing.Size(631, 253)
+        Me.grpAddPrdct.Size = New System.Drawing.Size(536, 298)
         Me.grpAddPrdct.TabIndex = 110
         Me.grpAddPrdct.TabStop = False
+        '
+        'dtpEDate
+        '
+        Me.dtpEDate.CustomFormat = "yyyy-MM-dd"
+        Me.dtpEDate.Font = New System.Drawing.Font("Segoe UI", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.dtpEDate.Format = System.Windows.Forms.DateTimePickerFormat.Custom
+        Me.dtpEDate.Location = New System.Drawing.Point(359, 206)
+        Me.dtpEDate.Name = "dtpEDate"
+        Me.dtpEDate.Size = New System.Drawing.Size(150, 32)
+        Me.dtpEDate.TabIndex = 136
+        '
+        'Label4
+        '
+        Me.Label4.AutoSize = True
+        Me.Label4.Font = New System.Drawing.Font("Segoe UI", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label4.Location = New System.Drawing.Point(355, 183)
+        Me.Label4.Name = "Label4"
+        Me.Label4.Size = New System.Drawing.Size(145, 25)
+        Me.Label4.TabIndex = 135
+        Me.Label4.Text = "Expiration Date:"
         '
         'cmbPrdctName
         '
         Me.cmbPrdctName.FormattingEnabled = True
         Me.cmbPrdctName.Location = New System.Drawing.Point(30, 100)
         Me.cmbPrdctName.Name = "cmbPrdctName"
-        Me.cmbPrdctName.Size = New System.Drawing.Size(253, 36)
+        Me.cmbPrdctName.Size = New System.Drawing.Size(233, 36)
         Me.cmbPrdctName.TabIndex = 134
         '
         'txtDiscount
         '
         Me.txtDiscount.Font = New System.Drawing.Font("Segoe UI", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.txtDiscount.Location = New System.Drawing.Point(349, 99)
+        Me.txtDiscount.Location = New System.Drawing.Point(359, 41)
         Me.txtDiscount.Name = "txtDiscount"
-        Me.txtDiscount.Size = New System.Drawing.Size(253, 32)
+        Me.txtDiscount.Size = New System.Drawing.Size(150, 32)
         Me.txtDiscount.TabIndex = 133
         '
         'Label15
         '
         Me.Label15.AutoSize = True
         Me.Label15.Font = New System.Drawing.Font("Segoe UI", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Label15.Location = New System.Drawing.Point(345, 81)
+        Me.Label15.Location = New System.Drawing.Point(355, 23)
         Me.Label15.Name = "Label15"
         Me.Label15.Size = New System.Drawing.Size(90, 25)
         Me.Label15.TabIndex = 132
@@ -202,7 +225,7 @@ Partial Class addProduct
         '
         Me.Label14.AutoSize = True
         Me.Label14.ForeColor = System.Drawing.Color.Red
-        Me.Label14.Location = New System.Drawing.Point(454, 130)
+        Me.Label14.Location = New System.Drawing.Point(464, 72)
         Me.Label14.Name = "Label14"
         Me.Label14.Size = New System.Drawing.Size(20, 28)
         Me.Label14.TabIndex = 131
@@ -212,7 +235,7 @@ Partial Class addProduct
         '
         Me.Label13.AutoSize = True
         Me.Label13.ForeColor = System.Drawing.Color.Red
-        Me.Label13.Location = New System.Drawing.Point(155, 23)
+        Me.Label13.Location = New System.Drawing.Point(152, 23)
         Me.Label13.Name = "Label13"
         Me.Label13.Size = New System.Drawing.Size(20, 28)
         Me.Label13.TabIndex = 130
@@ -222,7 +245,7 @@ Partial Class addProduct
         '
         Me.Label12.AutoSize = True
         Me.Label12.ForeColor = System.Drawing.Color.Red
-        Me.Label12.Location = New System.Drawing.Point(106, 183)
+        Me.Label12.Location = New System.Drawing.Point(103, 183)
         Me.Label12.Name = "Label12"
         Me.Label12.Size = New System.Drawing.Size(20, 28)
         Me.Label12.TabIndex = 129
@@ -232,7 +255,7 @@ Partial Class addProduct
         '
         Me.Label10.AutoSize = True
         Me.Label10.ForeColor = System.Drawing.Color.Red
-        Me.Label10.Location = New System.Drawing.Point(103, 128)
+        Me.Label10.Location = New System.Drawing.Point(100, 128)
         Me.Label10.Name = "Label10"
         Me.Label10.Size = New System.Drawing.Size(20, 28)
         Me.Label10.TabIndex = 127
@@ -243,7 +266,7 @@ Partial Class addProduct
         Me.Label9.AutoSize = True
         Me.Label9.Font = New System.Drawing.Font("Segoe UI", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.Label9.ForeColor = System.Drawing.Color.Red
-        Me.Label9.Location = New System.Drawing.Point(152, 77)
+        Me.Label9.Location = New System.Drawing.Point(149, 77)
         Me.Label9.Name = "Label9"
         Me.Label9.Size = New System.Drawing.Size(20, 25)
         Me.Label9.TabIndex = 126
@@ -256,7 +279,7 @@ Partial Class addProduct
         Me.cmbSuppliers.FormattingEnabled = True
         Me.cmbSuppliers.Location = New System.Drawing.Point(30, 46)
         Me.cmbSuppliers.Name = "cmbSuppliers"
-        Me.cmbSuppliers.Size = New System.Drawing.Size(253, 33)
+        Me.cmbSuppliers.Size = New System.Drawing.Size(233, 33)
         Me.cmbSuppliers.TabIndex = 125
         '
         'Label1
@@ -274,7 +297,7 @@ Partial Class addProduct
         Me.txtUnitPrice.Font = New System.Drawing.Font("Segoe UI", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.txtUnitPrice.Location = New System.Drawing.Point(30, 206)
         Me.txtUnitPrice.Name = "txtUnitPrice"
-        Me.txtUnitPrice.Size = New System.Drawing.Size(253, 32)
+        Me.txtUnitPrice.Size = New System.Drawing.Size(233, 32)
         Me.txtUnitPrice.TabIndex = 123
         '
         'Label5
@@ -290,7 +313,7 @@ Partial Class addProduct
         'txtReorder
         '
         Me.txtReorder.Font = New System.Drawing.Font("Segoe UI", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.txtReorder.Location = New System.Drawing.Point(349, 153)
+        Me.txtReorder.Location = New System.Drawing.Point(359, 95)
         Me.txtReorder.Name = "txtReorder"
         Me.txtReorder.Size = New System.Drawing.Size(150, 32)
         Me.txtReorder.TabIndex = 121
@@ -299,7 +322,7 @@ Partial Class addProduct
         '
         Me.Label8.AutoSize = True
         Me.Label8.Font = New System.Drawing.Font("Segoe UI", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Label8.Location = New System.Drawing.Point(345, 130)
+        Me.Label8.Location = New System.Drawing.Point(355, 72)
         Me.Label8.Name = "Label8"
         Me.Label8.Size = New System.Drawing.Size(130, 25)
         Me.Label8.TabIndex = 120
@@ -310,7 +333,7 @@ Partial Class addProduct
         Me.dtpDate.CustomFormat = "yyyy-MM-dd"
         Me.dtpDate.Font = New System.Drawing.Font("Segoe UI", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.dtpDate.Format = System.Windows.Forms.DateTimePickerFormat.Custom
-        Me.dtpDate.Location = New System.Drawing.Point(349, 206)
+        Me.dtpDate.Location = New System.Drawing.Point(359, 148)
         Me.dtpDate.Name = "dtpDate"
         Me.dtpDate.Size = New System.Drawing.Size(150, 32)
         Me.dtpDate.TabIndex = 119
@@ -319,7 +342,7 @@ Partial Class addProduct
         '
         Me.Label7.AutoSize = True
         Me.Label7.Font = New System.Drawing.Font("Segoe UI", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Label7.Location = New System.Drawing.Point(345, 183)
+        Me.Label7.Location = New System.Drawing.Point(355, 125)
         Me.Label7.Name = "Label7"
         Me.Label7.Size = New System.Drawing.Size(115, 25)
         Me.Label7.TabIndex = 118
@@ -328,16 +351,16 @@ Partial Class addProduct
         'txtDescription
         '
         Me.txtDescription.Font = New System.Drawing.Font("Segoe UI", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.txtDescription.Location = New System.Drawing.Point(349, 46)
+        Me.txtDescription.Location = New System.Drawing.Point(29, 255)
         Me.txtDescription.Name = "txtDescription"
-        Me.txtDescription.Size = New System.Drawing.Size(253, 32)
+        Me.txtDescription.Size = New System.Drawing.Size(234, 32)
         Me.txtDescription.TabIndex = 117
         '
         'Label6
         '
         Me.Label6.AutoSize = True
         Me.Label6.Font = New System.Drawing.Font("Segoe UI", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Label6.Location = New System.Drawing.Point(345, 23)
+        Me.Label6.Location = New System.Drawing.Point(25, 233)
         Me.Label6.Name = "Label6"
         Me.Label6.Size = New System.Drawing.Size(112, 25)
         Me.Label6.TabIndex = 114
@@ -347,10 +370,10 @@ Partial Class addProduct
         '
         Me.cmbCategory.Font = New System.Drawing.Font("Segoe UI", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.cmbCategory.FormattingEnabled = True
-        Me.cmbCategory.Items.AddRange(New Object() {"Reading Glasses", "Sunglasses", "Frame", "Contact Lenses & Solution", "Accesories", "Lens"})
+        Me.cmbCategory.Items.AddRange(New Object() {"Frame", "Contact Lenses & Solution", "Accesories", "Lens"})
         Me.cmbCategory.Location = New System.Drawing.Point(30, 152)
         Me.cmbCategory.Name = "cmbCategory"
-        Me.cmbCategory.Size = New System.Drawing.Size(253, 33)
+        Me.cmbCategory.Size = New System.Drawing.Size(233, 33)
         Me.cmbCategory.TabIndex = 113
         '
         'Label3
@@ -378,7 +401,7 @@ Partial Class addProduct
         Me.AutoScaleDimensions = New System.Drawing.SizeF(11.0!, 28.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.BackColor = System.Drawing.SystemColors.ControlLight
-        Me.ClientSize = New System.Drawing.Size(654, 350)
+        Me.ClientSize = New System.Drawing.Size(558, 390)
         Me.Controls.Add(Me.pnlPrdct)
         Me.Font = New System.Drawing.Font("Segoe UI", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog
@@ -428,4 +451,6 @@ Partial Class addProduct
     Friend WithEvents pbAdd As System.Windows.Forms.PictureBox
     Friend WithEvents lblhead As System.Windows.Forms.Label
     Friend WithEvents cmbPrdctName As System.Windows.Forms.ComboBox
+    Friend WithEvents dtpEDate As System.Windows.Forms.DateTimePicker
+    Friend WithEvents Label4 As System.Windows.Forms.Label
 End Class

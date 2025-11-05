@@ -186,7 +186,7 @@ Partial Class Transaction
         Me.Label1.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.Label1.AutoSize = True
         Me.Label1.Font = New System.Drawing.Font("Segoe UI", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Label1.Location = New System.Drawing.Point(787, 655)
+        Me.Label1.Location = New System.Drawing.Point(771, 655)
         Me.Label1.Name = "Label1"
         Me.Label1.Size = New System.Drawing.Size(56, 25)
         Me.Label1.TabIndex = 14
@@ -196,8 +196,9 @@ Partial Class Transaction
         '
         Me.txtPending.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.txtPending.Font = New System.Drawing.Font("Segoe UI", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.txtPending.Location = New System.Drawing.Point(838, 651)
+        Me.txtPending.Location = New System.Drawing.Point(822, 651)
         Me.txtPending.Name = "txtPending"
+        Me.txtPending.ReadOnly = True
         Me.txtPending.Size = New System.Drawing.Size(151, 32)
         Me.txtPending.TabIndex = 13
         Me.txtPending.TextAlign = System.Windows.Forms.HorizontalAlignment.Right
@@ -207,7 +208,7 @@ Partial Class Transaction
         Me.Total.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.Total.AutoSize = True
         Me.Total.Font = New System.Drawing.Font("Segoe UI", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Total.Location = New System.Drawing.Point(1088, 655)
+        Me.Total.Location = New System.Drawing.Point(1072, 655)
         Me.Total.Name = "Total"
         Me.Total.Size = New System.Drawing.Size(56, 25)
         Me.Total.TabIndex = 12
@@ -217,8 +218,9 @@ Partial Class Transaction
         '
         Me.txtAmountTotal.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.txtAmountTotal.Font = New System.Drawing.Font("Segoe UI", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.txtAmountTotal.Location = New System.Drawing.Point(1138, 651)
+        Me.txtAmountTotal.Location = New System.Drawing.Point(1122, 651)
         Me.txtAmountTotal.Name = "txtAmountTotal"
+        Me.txtAmountTotal.ReadOnly = True
         Me.txtAmountTotal.Size = New System.Drawing.Size(151, 32)
         Me.txtAmountTotal.TabIndex = 11
         Me.txtAmountTotal.TextAlign = System.Windows.Forms.HorizontalAlignment.Right
@@ -273,6 +275,7 @@ Partial Class Transaction
         Me.Column0.HeaderText = "Transaction ID"
         Me.Column0.Name = "Column0"
         Me.Column0.ReadOnly = True
+        Me.Column0.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable
         Me.Column0.Visible = False
         '
         'Column1
@@ -285,6 +288,7 @@ Partial Class Transaction
         Me.Column1.HeaderText = "ID"
         Me.Column1.Name = "Column1"
         Me.Column1.ReadOnly = True
+        Me.Column1.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable
         Me.Column1.Width = 40
         '
         'Column2
@@ -295,6 +299,7 @@ Partial Class Transaction
         Me.Column2.HeaderText = "Patient Name"
         Me.Column2.Name = "Column2"
         Me.Column2.ReadOnly = True
+        Me.Column2.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable
         Me.Column2.Width = 420
         '
         'Column7
@@ -305,6 +310,7 @@ Partial Class Transaction
         Me.Column7.HeaderText = "Type of Payment"
         Me.Column7.Name = "Column7"
         Me.Column7.ReadOnly = True
+        Me.Column7.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable
         Me.Column7.Width = 150
         '
         'Column6
@@ -318,6 +324,7 @@ Partial Class Transaction
         Me.Column6.HeaderText = "Amount Paid"
         Me.Column6.Name = "Column6"
         Me.Column6.ReadOnly = True
+        Me.Column6.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable
         Me.Column6.Width = 150
         '
         'Column5
@@ -330,6 +337,7 @@ Partial Class Transaction
         Me.Column5.HeaderText = "Date"
         Me.Column5.Name = "Column5"
         Me.Column5.ReadOnly = True
+        Me.Column5.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable
         Me.Column5.Width = 150
         '
         'Column9
@@ -343,6 +351,7 @@ Partial Class Transaction
         Me.Column9.HeaderText = "Balance"
         Me.Column9.Name = "Column9"
         Me.Column9.ReadOnly = True
+        Me.Column9.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable
         Me.Column9.Width = 150
         '
         'Column8
@@ -354,6 +363,7 @@ Partial Class Transaction
         Me.Column8.HeaderText = "Settlement Date"
         Me.Column8.Name = "Column8"
         Me.Column8.ReadOnly = True
+        Me.Column8.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable
         Me.Column8.Width = 150
         '
         'Column3
@@ -367,6 +377,7 @@ Partial Class Transaction
         Me.Column3.HeaderText = "Total Amount"
         Me.Column3.Name = "Column3"
         Me.Column3.ReadOnly = True
+        Me.Column3.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable
         Me.Column3.Width = 150
         '
         'Column4
@@ -376,6 +387,7 @@ Partial Class Transaction
         Me.Column4.HeaderText = "Payment Status"
         Me.Column4.Name = "Column4"
         Me.Column4.ReadOnly = True
+        Me.Column4.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable
         Me.Column4.Width = 140
         '
         'Transaction

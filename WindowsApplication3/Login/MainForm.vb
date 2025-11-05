@@ -72,7 +72,7 @@ Public Class MainForm
             btnPatientRecord.Visible = False
             btnCheckUp.Visible = False
         End If
-        
+
         ' Super Admin has full access - no restrictions
 
     End Sub
@@ -363,5 +363,11 @@ Public Class MainForm
         Dim gReports As New Reports
         gReports.TopMost = True
         gReports.ShowDialog()
+    End Sub
+
+    Private Sub ProfileToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles ProfileToolStripMenuItem.Click
+        Dim prof As New Profile()
+        prof.TopMost = True
+        prof.ShowDialog()
     End Sub
 End Class

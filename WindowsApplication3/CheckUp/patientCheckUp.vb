@@ -172,6 +172,9 @@ Public Class patientCheckUp
                 transactionForm.CheckupAxisOS = txtAXOS.Text
                 transactionForm.CheckupAddOD = txtAddOD.Text
                 transactionForm.CheckupAddOS = txtAddOS.Text
+                transactionForm.CheckupPDOD = If(String.IsNullOrWhiteSpace(pdOD.Text), "0", pdOD.Text)
+                transactionForm.CheckupPDOS = If(String.IsNullOrWhiteSpace(pdOS.Text), "0", pdOS.Text)
+                transactionForm.CheckupPDOU = If(String.IsNullOrWhiteSpace(pdOU.Text), "0", pdOU.Text)
                 transactionForm.CheckupDate = dtpDate.Value
                 
                 ' Removed "Settle Checkup Payment" from title
@@ -470,6 +473,48 @@ Public Class patientCheckUp
 
     Private Sub btnCancel_Click(sender As Object, e As EventArgs) Handles btnCancel.Click
         Me.Close()
+    End Sub
+
+    Private Sub btnClear_Click(sender As Object, e As EventArgs) Handles btnClear.Click
+        ' Show confirmation that button was clicked
+        Debug.WriteLine("=== CLEAR BUTTON CLICKED ===")
+
+        ' Clear patient and doctor properties
+        SelectedPatientID = 0
+        SelectedPatientName = ""
+        Debug.WriteLine("Properties cleared")
+
+        ' Clear patient name (handle ReadOnly property)
+        txtPName.ReadOnly = False
+        txtPName.Text = ""
+        txtPName.ReadOnly = True
+        Debug.WriteLine("txtPName cleared: " & txtPName.Text)
+
+        ' Clear doctor name and tag
+        txtDName.Text = ""
+        txtDName.Tag = Nothing
+        Debug.WriteLine("txtDName cleared: " & txtDName.Text)
+
+        ' Clear all checkup fields
+        For Each ctrl As Control In grpCheckUp.Controls
+            If TypeOf ctrl Is TextBox Then
+                DirectCast(ctrl, TextBox).Text = ""
+            ElseIf TypeOf ctrl Is ComboBox Then
+                DirectCast(ctrl, ComboBox).SelectedIndex = -1
+            ElseIf TypeOf ctrl Is RichTextBox Then
+                DirectCast(ctrl, RichTextBox).Clear()
+            End If
+        Next
+
+        ' Reset PD fields
+        pdOD.Text = "0"
+        pdOS.Text = "0"
+        pdOU.Text = "0"
+
+        ' Reset date
+        dtpDate.Value = DateTime.Now
+
+        Debug.WriteLine("=== CLEAR COMPLETE ===")
     End Sub
 
     ' Ensure Remarks defaults to "N/A" on validation if left blank.

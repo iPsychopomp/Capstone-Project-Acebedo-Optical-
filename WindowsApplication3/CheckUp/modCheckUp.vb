@@ -137,4 +137,46 @@ Module modCheckUp
         Next
     End Sub
 
+    Public Sub LoadCheckUpPage(dgv As DataGridView, pageIndex As Integer, pageSize As Integer, ByRef totalCount As Integer)
+        Try
+            dgv.AutoGenerateColumns = False
+            Dim countSql As String = "SELECT COUNT(*) FROM db_viewcheckup"
+            Dim dataSql As String = _
+                "SELECT vc.*, ap.doctorName AS AppointedDoctor, ap.appointmentDate AS AppointmentDate " & _
+                "FROM db_viewcheckup vc " & _
+                "LEFT JOIN ( " & _
+                "  SELECT a.checkupID, a.doctorName, a.appointmentDate " & _
+                "  FROM tbl_appointments a " & _
+                "  JOIN (SELECT checkupID, MAX(appointmentDate) AS maxDate FROM tbl_appointments GROUP BY checkupID) mx " & _
+                "    ON mx.checkupID = a.checkupID AND mx.maxDate = a.appointmentDate " & _
+                ") ap ON ap.checkupID = vc.CheckupID " & _
+                "ORDER BY vc.CheckupID DESC " & _
+                "LIMIT ? OFFSET ?"
+
+            Using cn As New OdbcConnection(myDSN)
+                cn.Open()
+                Using cmdCount As New OdbcCommand(countSql, cn)
+                    Dim obj = cmdCount.ExecuteScalar()
+                    totalCount = 0
+                    If obj IsNot Nothing AndAlso obj IsNot DBNull.Value Then
+                        Integer.TryParse(obj.ToString(), totalCount)
+                    End If
+                End Using
+
+                Using cmd As New OdbcCommand(dataSql, cn)
+                    cmd.Parameters.AddWithValue("?", pageSize)
+                    cmd.Parameters.AddWithValue("?", pageIndex * pageSize)
+                    Dim da As New OdbcDataAdapter(cmd)
+                    Dim dt As New DataTable()
+                    da.Fill(dt)
+                    dgv.DataSource = dt
+                    dgv.ClearSelection()
+                End Using
+            End Using
+        Catch ex As Exception
+            MsgBox("Failed to load page: " & ex.Message, vbCritical, "Error")
+        End Try
+        DgvStyle(dgv)
+    End Sub
+
 End Module

@@ -635,7 +635,7 @@ Public Class checkProducts
                 e.Cancel = True ' User pressed OK, cancel closing so they can save
             End If
         End If
-        
+
         ' Show the parent form when this form closes
         If Not e.Cancel AndAlso _ParentForm IsNot Nothing AndAlso Not _ParentForm.IsDisposed Then
             _ParentForm.Show()

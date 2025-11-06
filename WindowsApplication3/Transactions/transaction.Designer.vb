@@ -24,16 +24,16 @@ Partial Class Transaction
     Private Sub InitializeComponent()
         Me.components = New System.ComponentModel.Container()
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(Transaction))
-        Dim DataGridViewCellStyle1 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
-        Dim DataGridViewCellStyle2 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
-        Dim DataGridViewCellStyle9 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
-        Dim DataGridViewCellStyle10 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
-        Dim DataGridViewCellStyle3 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
-        Dim DataGridViewCellStyle4 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
-        Dim DataGridViewCellStyle5 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
-        Dim DataGridViewCellStyle6 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
-        Dim DataGridViewCellStyle7 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
-        Dim DataGridViewCellStyle8 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
+        Dim DataGridViewCellStyle81 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
+        Dim DataGridViewCellStyle82 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
+        Dim DataGridViewCellStyle89 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
+        Dim DataGridViewCellStyle90 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
+        Dim DataGridViewCellStyle83 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
+        Dim DataGridViewCellStyle84 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
+        Dim DataGridViewCellStyle85 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
+        Dim DataGridViewCellStyle86 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
+        Dim DataGridViewCellStyle87 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
+        Dim DataGridViewCellStyle88 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
         Me.btnSearch = New System.Windows.Forms.Button()
         Me.txtSearch = New System.Windows.Forms.TextBox()
         Me.pnlBar = New System.Windows.Forms.Panel()
@@ -42,11 +42,15 @@ Partial Class Transaction
         Me.rbPaid = New System.Windows.Forms.RadioButton()
         Me.rbPending = New System.Windows.Forms.RadioButton()
         Me.pnlTrans = New System.Windows.Forms.Panel()
+        Me.txtPage = New System.Windows.Forms.Label()
+        Me.btnNext = New System.Windows.Forms.Button()
+        Me.btnBack = New System.Windows.Forms.Button()
         Me.Label1 = New System.Windows.Forms.Label()
         Me.txtPending = New System.Windows.Forms.TextBox()
         Me.Total = New System.Windows.Forms.Label()
         Me.txtAmountTotal = New System.Windows.Forms.TextBox()
         Me.transactionDGV = New System.Windows.Forms.DataGridView()
+        Me.ToolTip1 = New System.Windows.Forms.ToolTip(Me.components)
         Me.Column0 = New System.Windows.Forms.DataGridViewTextBoxColumn()
         Me.Column1 = New System.Windows.Forms.DataGridViewTextBoxColumn()
         Me.Column2 = New System.Windows.Forms.DataGridViewTextBoxColumn()
@@ -57,7 +61,6 @@ Partial Class Transaction
         Me.Column8 = New System.Windows.Forms.DataGridViewTextBoxColumn()
         Me.Column3 = New System.Windows.Forms.DataGridViewTextBoxColumn()
         Me.Column4 = New System.Windows.Forms.DataGridViewTextBoxColumn()
-        Me.ToolTip1 = New System.Windows.Forms.ToolTip(Me.components)
         Me.pnlBar.SuspendLayout()
         Me.pnlTrans.SuspendLayout()
         CType(Me.transactionDGV, System.ComponentModel.ISupportInitialize).BeginInit()
@@ -169,6 +172,10 @@ Partial Class Transaction
         '
         'pnlTrans
         '
+        Me.pnlTrans.BackColor = System.Drawing.Color.White
+        Me.pnlTrans.Controls.Add(Me.txtPage)
+        Me.pnlTrans.Controls.Add(Me.btnNext)
+        Me.pnlTrans.Controls.Add(Me.btnBack)
         Me.pnlTrans.Controls.Add(Me.Label1)
         Me.pnlTrans.Controls.Add(Me.txtPending)
         Me.pnlTrans.Controls.Add(Me.Total)
@@ -181,25 +188,70 @@ Partial Class Transaction
         Me.pnlTrans.Size = New System.Drawing.Size(1447, 678)
         Me.pnlTrans.TabIndex = 1
         '
+        'txtPage
+        '
+        Me.txtPage.Anchor = System.Windows.Forms.AnchorStyles.Bottom
+        Me.txtPage.AutoSize = True
+        Me.txtPage.Location = New System.Drawing.Point(676, 652)
+        Me.txtPage.Name = "txtPage"
+        Me.txtPage.Size = New System.Drawing.Size(70, 28)
+        Me.txtPage.TabIndex = 126
+        Me.txtPage.Text = "Page 1"
+        '
+        'btnNext
+        '
+        Me.btnNext.Anchor = System.Windows.Forms.AnchorStyles.Bottom
+        Me.btnNext.BackColor = System.Drawing.Color.Transparent
+        Me.btnNext.FlatAppearance.BorderSize = 0
+        Me.btnNext.FlatStyle = System.Windows.Forms.FlatStyle.Flat
+        Me.btnNext.Font = New System.Drawing.Font("Segoe UI", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.btnNext.ForeColor = System.Drawing.Color.Black
+        Me.btnNext.Image = CType(resources.GetObject("btnNext.Image"), System.Drawing.Image)
+        Me.btnNext.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft
+        Me.btnNext.Location = New System.Drawing.Point(781, 649)
+        Me.btnNext.Name = "btnNext"
+        Me.btnNext.Size = New System.Drawing.Size(37, 28)
+        Me.btnNext.TabIndex = 125
+        Me.btnNext.TextAlign = System.Drawing.ContentAlignment.MiddleRight
+        Me.ToolTip1.SetToolTip(Me.btnNext, "Next Page")
+        Me.btnNext.UseVisualStyleBackColor = False
+        '
+        'btnBack
+        '
+        Me.btnBack.Anchor = System.Windows.Forms.AnchorStyles.Bottom
+        Me.btnBack.BackColor = System.Drawing.Color.Transparent
+        Me.btnBack.FlatAppearance.BorderSize = 0
+        Me.btnBack.FlatStyle = System.Windows.Forms.FlatStyle.Flat
+        Me.btnBack.Font = New System.Drawing.Font("Segoe UI", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.btnBack.ForeColor = System.Drawing.Color.Black
+        Me.btnBack.Image = CType(resources.GetObject("btnBack.Image"), System.Drawing.Image)
+        Me.btnBack.Location = New System.Drawing.Point(631, 649)
+        Me.btnBack.Name = "btnBack"
+        Me.btnBack.Size = New System.Drawing.Size(37, 28)
+        Me.btnBack.TabIndex = 124
+        Me.btnBack.TextAlign = System.Drawing.ContentAlignment.MiddleRight
+        Me.ToolTip1.SetToolTip(Me.btnBack, "Previous Page")
+        Me.btnBack.UseVisualStyleBackColor = False
+        '
         'Label1
         '
         Me.Label1.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.Label1.AutoSize = True
-        Me.Label1.Font = New System.Drawing.Font("Segoe UI", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Label1.Location = New System.Drawing.Point(771, 655)
+        Me.Label1.Font = New System.Drawing.Font("Segoe UI", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label1.Location = New System.Drawing.Point(789, 652)
         Me.Label1.Name = "Label1"
-        Me.Label1.Size = New System.Drawing.Size(56, 25)
+        Me.Label1.Size = New System.Drawing.Size(58, 28)
         Me.Label1.TabIndex = 14
         Me.Label1.Text = "Total:"
         '
         'txtPending
         '
         Me.txtPending.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.txtPending.Font = New System.Drawing.Font("Segoe UI", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.txtPending.Location = New System.Drawing.Point(822, 651)
+        Me.txtPending.Font = New System.Drawing.Font("Segoe UI", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.txtPending.Location = New System.Drawing.Point(838, 648)
         Me.txtPending.Name = "txtPending"
         Me.txtPending.ReadOnly = True
-        Me.txtPending.Size = New System.Drawing.Size(151, 32)
+        Me.txtPending.Size = New System.Drawing.Size(151, 34)
         Me.txtPending.TabIndex = 13
         Me.txtPending.TextAlign = System.Windows.Forms.HorizontalAlignment.Right
         '
@@ -207,21 +259,21 @@ Partial Class Transaction
         '
         Me.Total.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.Total.AutoSize = True
-        Me.Total.Font = New System.Drawing.Font("Segoe UI", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Total.Location = New System.Drawing.Point(1072, 655)
+        Me.Total.Font = New System.Drawing.Font("Segoe UI", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Total.Location = New System.Drawing.Point(1089, 653)
         Me.Total.Name = "Total"
-        Me.Total.Size = New System.Drawing.Size(56, 25)
+        Me.Total.Size = New System.Drawing.Size(58, 28)
         Me.Total.TabIndex = 12
         Me.Total.Text = "Total:"
         '
         'txtAmountTotal
         '
         Me.txtAmountTotal.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.txtAmountTotal.Font = New System.Drawing.Font("Segoe UI", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.txtAmountTotal.Location = New System.Drawing.Point(1122, 651)
+        Me.txtAmountTotal.Font = New System.Drawing.Font("Segoe UI", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.txtAmountTotal.Location = New System.Drawing.Point(1138, 648)
         Me.txtAmountTotal.Name = "txtAmountTotal"
         Me.txtAmountTotal.ReadOnly = True
-        Me.txtAmountTotal.Size = New System.Drawing.Size(151, 32)
+        Me.txtAmountTotal.Size = New System.Drawing.Size(151, 34)
         Me.txtAmountTotal.TabIndex = 11
         Me.txtAmountTotal.TextAlign = System.Windows.Forms.HorizontalAlignment.Right
         '
@@ -229,21 +281,21 @@ Partial Class Transaction
         '
         Me.transactionDGV.AllowUserToAddRows = False
         Me.transactionDGV.AllowUserToDeleteRows = False
-        DataGridViewCellStyle1.BackColor = System.Drawing.Color.Gainsboro
-        Me.transactionDGV.AlternatingRowsDefaultCellStyle = DataGridViewCellStyle1
+        DataGridViewCellStyle81.BackColor = System.Drawing.Color.Gainsboro
+        Me.transactionDGV.AlternatingRowsDefaultCellStyle = DataGridViewCellStyle81
         Me.transactionDGV.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
             Or System.Windows.Forms.AnchorStyles.Left) _
             Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.transactionDGV.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill
         Me.transactionDGV.BackgroundColor = System.Drawing.Color.White
         Me.transactionDGV.CellBorderStyle = System.Windows.Forms.DataGridViewCellBorderStyle.Raised
-        DataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter
-        DataGridViewCellStyle2.BackColor = System.Drawing.SystemColors.Control
-        DataGridViewCellStyle2.Font = New System.Drawing.Font("Segoe UI", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        DataGridViewCellStyle2.ForeColor = System.Drawing.SystemColors.WindowText
-        DataGridViewCellStyle2.SelectionBackColor = System.Drawing.Color.SkyBlue
-        DataGridViewCellStyle2.SelectionForeColor = System.Drawing.SystemColors.HighlightText
-        Me.transactionDGV.ColumnHeadersDefaultCellStyle = DataGridViewCellStyle2
+        DataGridViewCellStyle82.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter
+        DataGridViewCellStyle82.BackColor = System.Drawing.SystemColors.Control
+        DataGridViewCellStyle82.Font = New System.Drawing.Font("Segoe UI", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        DataGridViewCellStyle82.ForeColor = System.Drawing.SystemColors.WindowText
+        DataGridViewCellStyle82.SelectionBackColor = System.Drawing.Color.SkyBlue
+        DataGridViewCellStyle82.SelectionForeColor = System.Drawing.SystemColors.HighlightText
+        Me.transactionDGV.ColumnHeadersDefaultCellStyle = DataGridViewCellStyle82
         Me.transactionDGV.ColumnHeadersHeight = 50
         Me.transactionDGV.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.DisableResizing
         Me.transactionDGV.Columns.AddRange(New System.Windows.Forms.DataGridViewColumn() {Me.Column0, Me.Column1, Me.Column2, Me.Column7, Me.Column6, Me.Column5, Me.Column9, Me.Column8, Me.Column3, Me.Column4})
@@ -252,21 +304,21 @@ Partial Class Transaction
         Me.transactionDGV.MultiSelect = False
         Me.transactionDGV.Name = "transactionDGV"
         Me.transactionDGV.ReadOnly = True
-        DataGridViewCellStyle9.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft
-        DataGridViewCellStyle9.BackColor = System.Drawing.SystemColors.Control
-        DataGridViewCellStyle9.Font = New System.Drawing.Font("Segoe UI", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        DataGridViewCellStyle9.ForeColor = System.Drawing.SystemColors.WindowText
-        DataGridViewCellStyle9.SelectionBackColor = System.Drawing.Color.SkyBlue
-        DataGridViewCellStyle9.SelectionForeColor = System.Drawing.SystemColors.HighlightText
-        Me.transactionDGV.RowHeadersDefaultCellStyle = DataGridViewCellStyle9
+        DataGridViewCellStyle89.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft
+        DataGridViewCellStyle89.BackColor = System.Drawing.SystemColors.Control
+        DataGridViewCellStyle89.Font = New System.Drawing.Font("Segoe UI", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        DataGridViewCellStyle89.ForeColor = System.Drawing.SystemColors.WindowText
+        DataGridViewCellStyle89.SelectionBackColor = System.Drawing.Color.SkyBlue
+        DataGridViewCellStyle89.SelectionForeColor = System.Drawing.SystemColors.HighlightText
+        Me.transactionDGV.RowHeadersDefaultCellStyle = DataGridViewCellStyle89
         Me.transactionDGV.RowHeadersVisible = False
         Me.transactionDGV.RowHeadersWidthSizeMode = System.Windows.Forms.DataGridViewRowHeadersWidthSizeMode.DisableResizing
-        DataGridViewCellStyle10.Font = New System.Drawing.Font("Segoe UI", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.transactionDGV.RowsDefaultCellStyle = DataGridViewCellStyle10
+        DataGridViewCellStyle90.Font = New System.Drawing.Font("Segoe UI", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.transactionDGV.RowsDefaultCellStyle = DataGridViewCellStyle90
         Me.transactionDGV.RowTemplate.Height = 30
         Me.transactionDGV.RowTemplate.Resizable = System.Windows.Forms.DataGridViewTriState.[False]
         Me.transactionDGV.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect
-        Me.transactionDGV.Size = New System.Drawing.Size(1447, 594)
+        Me.transactionDGV.Size = New System.Drawing.Size(1447, 590)
         Me.transactionDGV.TabIndex = 10
         '
         'Column0
@@ -282,8 +334,8 @@ Partial Class Transaction
         '
         Me.Column1.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None
         Me.Column1.DataPropertyName = "patientID"
-        DataGridViewCellStyle3.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter
-        Me.Column1.DefaultCellStyle = DataGridViewCellStyle3
+        DataGridViewCellStyle83.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter
+        Me.Column1.DefaultCellStyle = DataGridViewCellStyle83
         Me.Column1.FillWeight = 74.61929!
         Me.Column1.HeaderText = "ID"
         Me.Column1.Name = "Column1"
@@ -300,7 +352,7 @@ Partial Class Transaction
         Me.Column2.Name = "Column2"
         Me.Column2.ReadOnly = True
         Me.Column2.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable
-        Me.Column2.Width = 420
+        Me.Column2.Width = 436
         '
         'Column7
         '
@@ -317,9 +369,9 @@ Partial Class Transaction
         '
         Me.Column6.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None
         Me.Column6.DataPropertyName = "amountPaid"
-        DataGridViewCellStyle4.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight
-        DataGridViewCellStyle4.Font = New System.Drawing.Font("Segoe UI", 12.0!, System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Column6.DefaultCellStyle = DataGridViewCellStyle4
+        DataGridViewCellStyle84.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight
+        DataGridViewCellStyle84.Font = New System.Drawing.Font("Segoe UI", 12.0!, System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Column6.DefaultCellStyle = DataGridViewCellStyle84
         Me.Column6.FillWeight = 50.0!
         Me.Column6.HeaderText = "Amount Paid"
         Me.Column6.Name = "Column6"
@@ -331,8 +383,8 @@ Partial Class Transaction
         '
         Me.Column5.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None
         Me.Column5.DataPropertyName = "date"
-        DataGridViewCellStyle5.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight
-        Me.Column5.DefaultCellStyle = DataGridViewCellStyle5
+        DataGridViewCellStyle85.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight
+        Me.Column5.DefaultCellStyle = DataGridViewCellStyle85
         Me.Column5.FillWeight = 80.0!
         Me.Column5.HeaderText = "Date"
         Me.Column5.Name = "Column5"
@@ -344,9 +396,9 @@ Partial Class Transaction
         '
         Me.Column9.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None
         Me.Column9.DataPropertyName = "pendingBalance"
-        DataGridViewCellStyle6.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight
-        DataGridViewCellStyle6.Font = New System.Drawing.Font("Segoe UI", 12.0!, System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Column9.DefaultCellStyle = DataGridViewCellStyle6
+        DataGridViewCellStyle86.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight
+        DataGridViewCellStyle86.Font = New System.Drawing.Font("Segoe UI", 12.0!, System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Column9.DefaultCellStyle = DataGridViewCellStyle86
         Me.Column9.FillWeight = 140.0!
         Me.Column9.HeaderText = "Balance"
         Me.Column9.Name = "Column9"
@@ -358,8 +410,8 @@ Partial Class Transaction
         '
         Me.Column8.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None
         Me.Column8.DataPropertyName = "settlementDate"
-        DataGridViewCellStyle7.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight
-        Me.Column8.DefaultCellStyle = DataGridViewCellStyle7
+        DataGridViewCellStyle87.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight
+        Me.Column8.DefaultCellStyle = DataGridViewCellStyle87
         Me.Column8.HeaderText = "Settlement Date"
         Me.Column8.Name = "Column8"
         Me.Column8.ReadOnly = True
@@ -370,9 +422,9 @@ Partial Class Transaction
         '
         Me.Column3.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None
         Me.Column3.DataPropertyName = "totalPayment"
-        DataGridViewCellStyle8.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight
-        DataGridViewCellStyle8.Font = New System.Drawing.Font("Segoe UI", 12.0!, System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Column3.DefaultCellStyle = DataGridViewCellStyle8
+        DataGridViewCellStyle88.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight
+        DataGridViewCellStyle88.Font = New System.Drawing.Font("Segoe UI", 12.0!, System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Column3.DefaultCellStyle = DataGridViewCellStyle88
         Me.Column3.FillWeight = 42.15196!
         Me.Column3.HeaderText = "Total Amount"
         Me.Column3.Name = "Column3"
@@ -424,6 +476,9 @@ Partial Class Transaction
     Friend WithEvents btnSettle As System.Windows.Forms.Button
     Friend WithEvents btnEdit As System.Windows.Forms.Button
     Friend WithEvents ToolTip1 As System.Windows.Forms.ToolTip
+    Friend WithEvents txtPage As System.Windows.Forms.Label
+    Friend WithEvents btnNext As System.Windows.Forms.Button
+    Friend WithEvents btnBack As System.Windows.Forms.Button
     Friend WithEvents Column0 As System.Windows.Forms.DataGridViewTextBoxColumn
     Friend WithEvents Column1 As System.Windows.Forms.DataGridViewTextBoxColumn
     Friend WithEvents Column2 As System.Windows.Forms.DataGridViewTextBoxColumn

@@ -1,8 +1,12 @@
 Public Class OrderProduct
 
     Private Sub OrderProduct_Load(sender As Object, e As EventArgs) Handles MyBase.Load
-        cmbSuppliers.AutoCompleteMode = AutoCompleteMode.SuggestAppend
-        cmbSuppliers.AutoCompleteSource = AutoCompleteSource.ListItems
+        Try
+            cmbSuppliers.AutoCompleteSource = AutoCompleteSource.ListItems
+            cmbSuppliers.AutoCompleteMode = AutoCompleteMode.SuggestAppend
+        Catch
+            cmbSuppliers.AutoCompleteMode = AutoCompleteMode.None
+        End Try
 
         ' Ensure database schema is updated (runs once per session)
         EnsureOrderItemsProductIDNullable()
@@ -16,8 +20,6 @@ Public Class OrderProduct
         LoadOrders()
         txtTotal.Text = "0.00"
         DgvStyle(dgvSelectedProducts)
-        DgvStyle(dgvOrders)
-
         HideProductIDColumn()
 
         ' Removed in-tab delivery history grid
@@ -910,6 +912,15 @@ Public Class OrderProduct
         HideProductIDColumn()
     End Sub
 
+    ' Ensure filtering triggers only on user commit as well
+    Private Sub cmbSuppliers_SelectionChangeCommitted(sender As Object, e As EventArgs) Handles cmbSuppliers.SelectionChangeCommitted
+        Dim supplierID As Integer
+        If Not TryGetSelectedSupplierID(supplierID) Then Exit Sub
+        dgvSelectedProducts.Rows.Clear()
+        UpdateTotalAmount()
+        LoadProductsBySupplier(supplierID)
+    End Sub
+
     Private Function TryGetSelectedSupplierID(ByRef supplierID As Integer) As Boolean
         supplierID = 0
         If cmbSuppliers.SelectedValue Is Nothing Then Return False
@@ -966,9 +977,9 @@ Public Class OrderProduct
             cmbProducts.DisplayMember = "productName"
             cmbProducts.ValueMember = "productID"
             cmbProducts.SelectedIndex = -1
-            ' Make selection friendlier
-            cmbProducts.AutoCompleteMode = AutoCompleteMode.SuggestAppend
+            ' Safe autocomplete for DropDownList: use None to avoid NotSupportedException
             cmbProducts.AutoCompleteSource = AutoCompleteSource.ListItems
+            cmbProducts.AutoCompleteMode = AutoCompleteMode.None
             cmbProducts.Text = String.Empty
             cmbProducts.DropDownStyle = ComboBoxStyle.DropDownList
 

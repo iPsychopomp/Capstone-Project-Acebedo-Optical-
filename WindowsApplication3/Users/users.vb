@@ -1,6 +1,10 @@
 Public Class users
+    Private currentPage As Integer = 0
+    Private pageSize As Integer = 20
+    Private totalCount As Integer = 0
     Private Sub users_Load(sender As Object, e As EventArgs) Handles MyBase.Load
-        usersModule.users_Load(UserDGV)
+        currentPage = 0
+        LoadPage()
         txtSearch.Text = "Search by username"
         txtSearch.ForeColor = Color.Gray
     End Sub
@@ -23,6 +27,10 @@ Public Class users
         If UserDGV.Rows.Count = 0 Then
             MessageBox.Show("No matching records found.", "Search Results", MessageBoxButtons.OK, MessageBoxIcon.Information)
         End If
+        ' Disable paging while showing search results
+        txtPage.Text = "Search results"
+        btnBack.Enabled = False
+        btnNext.Enabled = False
     End Sub
 
     Private Sub btnDelete_Click(sender As Object, e As EventArgs) Handles btnDelete.Click
@@ -32,6 +40,7 @@ Public Class users
     Private Sub OnAddRecordClosed(ByVal sender As Object, ByVal e As FormClosedEventArgs)
         usersModule.OnAddRecordClosed(UserDGV)
     End Sub
+
     Public Sub DgvStyle(ByRef AuditDGV As DataGridView)
         ' Basic Grid Setup
         AuditDGV.AutoGenerateColumns = False
@@ -73,6 +82,40 @@ Public Class users
         If String.IsNullOrWhiteSpace(txtSearch.Text) Then
             txtSearch.Text = "Search by username"
             txtSearch.ForeColor = Color.Gray
+        End If
+    End Sub
+
+    Private Sub txtSearch_TextChanged(sender As Object, e As EventArgs) Handles txtSearch.TextChanged
+        If String.IsNullOrWhiteSpace(txtSearch.Text) Then
+            currentPage = 0
+            LoadPage()
+        End If
+    End Sub
+
+    Private Sub LoadPage()
+        usersModule.LoadUsersPage(UserDGV, currentPage, pageSize, totalCount)
+        Dim totalPages As Integer = 0
+        If pageSize > 0 Then
+            totalPages = If(totalCount Mod pageSize = 0, totalCount \ pageSize, (totalCount \ pageSize) + 1)
+        End If
+        If totalPages <= 0 Then totalPages = 1
+        txtPage.Text = "Page " & (currentPage + 1).ToString() & " of " & totalPages.ToString()
+        btnBack.Enabled = currentPage > 0
+        btnNext.Enabled = currentPage < (totalPages - 1)
+    End Sub
+
+    Private Sub btnBack_Click(sender As Object, e As EventArgs) Handles btnBack.Click
+        If currentPage > 0 Then
+            currentPage -= 1
+            LoadPage()
+        End If
+    End Sub
+
+    Private Sub btnNext_Click(sender As Object, e As EventArgs) Handles btnNext.Click
+        Dim totalPages As Integer = If(pageSize > 0, If(totalCount Mod pageSize = 0, totalCount \ pageSize, (totalCount \ pageSize) + 1), 1)
+        If currentPage < (totalPages - 1) Then
+            currentPage += 1
+            LoadPage()
         End If
     End Sub
 End Class

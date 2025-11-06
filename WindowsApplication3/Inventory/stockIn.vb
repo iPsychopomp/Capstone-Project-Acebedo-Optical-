@@ -1,8 +1,12 @@
-﻿Public Class stockIN
+Public Class stockIN
+    Private currentPage As Integer = 0
+    Private pageSize As Integer = 20
+    Private totalCount As Integer = 0
     Private Sub stockIN_Load(sender As Object, e As EventArgs) Handles MyBase.Load
         LoadProducts()
         ComputeTotalCost()
-        Call LoadDGV("SELECT * FROM db_viewstock", StockInDGV)
+        currentPage = 0
+        LoadPage()
         DgvStyle(StockInDGV)
 
         ' Set received by to logged in user's full name
@@ -121,6 +125,42 @@
         DgvStyle(StockInDGV)
     End Sub
 
+    Private Sub LoadPage()
+        Try
+            Dim countSql As String = "SELECT COUNT(*) FROM db_viewstock"
+            Dim dataSql As String = "SELECT * FROM db_viewstock LIMIT ? OFFSET ?"
+
+            Using cn As New Odbc.OdbcConnection(myDSN)
+                cn.Open()
+                Using cmdCount As New Odbc.OdbcCommand(countSql, cn)
+                    Dim obj = cmdCount.ExecuteScalar()
+                    totalCount = 0
+                    If obj IsNot Nothing AndAlso obj IsNot DBNull.Value Then
+                        Integer.TryParse(obj.ToString(), totalCount)
+                    End If
+                End Using
+
+                Using cmd As New Odbc.OdbcCommand(dataSql, cn)
+                    cmd.Parameters.AddWithValue("?", pageSize)
+                    cmd.Parameters.AddWithValue("?", currentPage * pageSize)
+                    Dim da As New Odbc.OdbcDataAdapter(cmd)
+                    Dim dt As New DataTable()
+                    da.Fill(dt)
+                    StockInDGV.AutoGenerateColumns = True
+                    StockInDGV.DataSource = dt
+                End Using
+            End Using
+
+            Dim totalPages As Integer = If(pageSize > 0, If(totalCount Mod pageSize = 0, totalCount \ pageSize, (totalCount \ pageSize) + 1), 1)
+            If totalPages <= 0 Then totalPages = 1
+            Label7.Text = "Page " & (currentPage + 1).ToString() & " of " & totalPages.ToString()
+            Button2.Enabled = currentPage > 0
+            Button1.Enabled = currentPage < (totalPages - 1)
+        Catch ex As Exception
+            MsgBox("Failed to load data: " & ex.Message, vbCritical, "Error")
+        End Try
+    End Sub
+
     Private Sub InsertAuditTrail(UserID As Integer, ActionType As String, ActionDetails As String)
         Try
             Using conn As New Odbc.OdbcConnection("DSN=dsnsystem")
@@ -180,9 +220,9 @@
 
                 MsgBox("Stock-in recorded successfully!", vbInformation, "Success")
 
-                ' Reload the stock in DGV
-                LoadDGV("SELECT * FROM db_viewstock", Me.StockInDGV)
-                
+                ' Reload the stock in DGV (paged)
+                LoadPage()
+
                 ' Refresh the inventory form if it's open
                 For Each frm As Form In Application.OpenForms
                     If TypeOf frm Is inventory Then
@@ -288,6 +328,25 @@
         Finally
             conn.Close()
         End Try
+    End Sub
+
+    Private Sub btnBack_Click(sender As Object, e As EventArgs) Handles Button2.Click
+        If currentPage > 0 Then
+            currentPage -= 1
+            LoadPage()
+        End If
+    End Sub
+
+    Private Sub btnNext_Click(sender As Object, e As EventArgs) Handles Button1.Click
+        Dim totalPages As Integer = If(pageSize > 0, If(totalCount Mod pageSize = 0, totalCount \ pageSize, (totalCount \ pageSize) + 1), 1)
+        If totalPages <= 0 Then totalPages = 1
+        Label7.Text = "Page " & (currentPage + 1).ToString() & " of " & totalPages.ToString()
+        Button2.Enabled = currentPage > 0
+        Button1.Enabled = currentPage < (totalPages - 1)
+        If currentPage < (totalPages - 1) Then
+            currentPage += 1
+            LoadPage()
+        End If
     End Sub
 
     Private Sub UpdateDashboardCriticalCount()

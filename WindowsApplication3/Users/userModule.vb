@@ -1,4 +1,4 @@
-﻿Imports System.ComponentModel
+Imports System.ComponentModel
 Imports System.Text.RegularExpressions
 Imports System.Data.Odbc
 
@@ -312,6 +312,72 @@ Module usersModule
 
         UserDGV.Refresh()
     End Sub
+
+    Public Sub LoadUsersPage(dgv As DataGridView, pageIndex As Integer, pageSize As Integer, ByRef totalCount As Integer, Optional searchUsername As String = Nothing)
+        Try
+            dgv.AutoGenerateColumns = False
+
+            Dim baseFrom As String = " FROM db_viewuser "
+            Dim whereParts As New List(Of String)()
+
+            ' Exclude archived by default
+            whereParts.Add("(isArchived = 0 OR isArchived IS NULL)")
+            ' Exclude Super Admin unless current is Super Admin
+            If LoggedInRole <> "Super Admin" Then
+                whereParts.Add("Role <> 'Super Admin'")
+            End If
+            ' Optional search by username
+            Dim hasSearch As Boolean = Not String.IsNullOrWhiteSpace(searchUsername)
+            If hasSearch Then
+                whereParts.Add("Username LIKE ?")
+            End If
+
+            Dim whereSql As String = If(whereParts.Count > 0, " WHERE " & String.Join(" AND ", whereParts), "")
+
+            Dim countSql As String = "SELECT COUNT(*)" & baseFrom & whereSql
+            Dim dataSql As String = _
+                "SELECT *" & baseFrom & whereSql & _
+                " ORDER BY UserID DESC " & _
+                "LIMIT ? OFFSET ?"
+
+            Using cn As New Odbc.OdbcConnection(myDSN)
+                cn.Open()
+                ' Count
+                Using cmdCount As New Odbc.OdbcCommand(countSql, cn)
+                    If hasSearch Then
+                        cmdCount.Parameters.AddWithValue("?", searchUsername)
+                    End If
+                    Dim obj = cmdCount.ExecuteScalar()
+                    totalCount = 0
+                    If obj IsNot Nothing AndAlso obj IsNot DBNull.Value Then
+                        Integer.TryParse(obj.ToString(), totalCount)
+                    End If
+                End Using
+
+                ' Page data
+                Using cmd As New Odbc.OdbcCommand(dataSql, cn)
+                    If hasSearch Then
+                        cmd.Parameters.AddWithValue("?", searchUsername)
+                    End If
+                    cmd.Parameters.AddWithValue("?", pageSize)
+                    cmd.Parameters.AddWithValue("?", pageIndex * pageSize)
+                    Dim da As New Odbc.OdbcDataAdapter(cmd)
+                    Dim dt As New DataTable()
+                    da.Fill(dt)
+                    dgv.DataSource = dt
+                    dgv.ClearSelection()
+                End Using
+            End Using
+        Catch ex As Exception
+            MsgBox("Failed to load users: " & ex.Message, vbCritical, "Error")
+        End Try
+        DgvStyle(dgv)
+        ' Hide isArchived column if present
+        If dgv.Columns.Contains("isArchived") Then
+            dgv.Columns("isArchived").Visible = False
+        End If
+    End Sub
+
     Public Sub DgvStyle(ByRef UserDGV As DataGridView)
         ' Basic Grid Setup
         UserDGV.AutoGenerateColumns = False

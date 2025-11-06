@@ -23,13 +23,23 @@ Partial Class Supplier
     <System.Diagnostics.DebuggerStepThrough()> _
     Private Sub InitializeComponent()
         Me.components = New System.ComponentModel.Container()
-        Dim DataGridViewCellStyle1 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
-        Dim DataGridViewCellStyle2 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
-        Dim DataGridViewCellStyle3 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
-        Dim DataGridViewCellStyle4 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(Supplier))
+        Dim DataGridViewCellStyle9 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
+        Dim DataGridViewCellStyle10 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
+        Dim DataGridViewCellStyle11 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
+        Dim DataGridViewCellStyle12 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
         Me.pnlUsers = New System.Windows.Forms.Panel()
+        Me.txtPage = New System.Windows.Forms.Label()
+        Me.btnNext = New System.Windows.Forms.Button()
+        Me.btnBack = New System.Windows.Forms.Button()
         Me.SupplierDGV = New System.Windows.Forms.DataGridView()
+        Me.Column1 = New System.Windows.Forms.DataGridViewTextBoxColumn()
+        Me.Column2 = New System.Windows.Forms.DataGridViewTextBoxColumn()
+        Me.Column3 = New System.Windows.Forms.DataGridViewTextBoxColumn()
+        Me.Column4 = New System.Windows.Forms.DataGridViewTextBoxColumn()
+        Me.Column5 = New System.Windows.Forms.DataGridViewTextBoxColumn()
+        Me.Column6 = New System.Windows.Forms.DataGridViewTextBoxColumn()
+        Me.Column7 = New System.Windows.Forms.DataGridViewTextBoxColumn()
         Me.btnAdd = New System.Windows.Forms.Button()
         Me.btnSearch = New System.Windows.Forms.Button()
         Me.txtSearch = New System.Windows.Forms.TextBox()
@@ -40,13 +50,6 @@ Partial Class Supplier
         Me.PictureBox1 = New System.Windows.Forms.PictureBox()
         Me.Label1 = New System.Windows.Forms.Label()
         Me.ToolTip1 = New System.Windows.Forms.ToolTip(Me.components)
-        Me.Column1 = New System.Windows.Forms.DataGridViewTextBoxColumn()
-        Me.Column2 = New System.Windows.Forms.DataGridViewTextBoxColumn()
-        Me.Column3 = New System.Windows.Forms.DataGridViewTextBoxColumn()
-        Me.Column4 = New System.Windows.Forms.DataGridViewTextBoxColumn()
-        Me.Column5 = New System.Windows.Forms.DataGridViewTextBoxColumn()
-        Me.Column6 = New System.Windows.Forms.DataGridViewTextBoxColumn()
-        Me.Column7 = New System.Windows.Forms.DataGridViewTextBoxColumn()
         Me.pnlUsers.SuspendLayout()
         CType(Me.SupplierDGV, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.pnlBar.SuspendLayout()
@@ -56,7 +59,10 @@ Partial Class Supplier
         '
         'pnlUsers
         '
-        Me.pnlUsers.BackColor = System.Drawing.SystemColors.ControlLight
+        Me.pnlUsers.BackColor = System.Drawing.Color.White
+        Me.pnlUsers.Controls.Add(Me.txtPage)
+        Me.pnlUsers.Controls.Add(Me.btnNext)
+        Me.pnlUsers.Controls.Add(Me.btnBack)
         Me.pnlUsers.Controls.Add(Me.SupplierDGV)
         Me.pnlUsers.Dock = System.Windows.Forms.DockStyle.Fill
         Me.pnlUsers.Location = New System.Drawing.Point(0, 106)
@@ -64,35 +70,81 @@ Partial Class Supplier
         Me.pnlUsers.Size = New System.Drawing.Size(1207, 529)
         Me.pnlUsers.TabIndex = 115
         '
+        'txtPage
+        '
+        Me.txtPage.Anchor = System.Windows.Forms.AnchorStyles.Bottom
+        Me.txtPage.AutoSize = True
+        Me.txtPage.Location = New System.Drawing.Point(554, 501)
+        Me.txtPage.Name = "txtPage"
+        Me.txtPage.Size = New System.Drawing.Size(70, 28)
+        Me.txtPage.TabIndex = 141
+        Me.txtPage.Text = "Page 1"
+        '
+        'btnNext
+        '
+        Me.btnNext.Anchor = System.Windows.Forms.AnchorStyles.Bottom
+        Me.btnNext.BackColor = System.Drawing.Color.Transparent
+        Me.btnNext.FlatAppearance.BorderSize = 0
+        Me.btnNext.FlatStyle = System.Windows.Forms.FlatStyle.Flat
+        Me.btnNext.Font = New System.Drawing.Font("Segoe UI", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.btnNext.ForeColor = System.Drawing.Color.Black
+        Me.btnNext.Image = CType(resources.GetObject("btnNext.Image"), System.Drawing.Image)
+        Me.btnNext.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft
+        Me.btnNext.Location = New System.Drawing.Point(661, 498)
+        Me.btnNext.Name = "btnNext"
+        Me.btnNext.Size = New System.Drawing.Size(37, 31)
+        Me.btnNext.TabIndex = 140
+        Me.btnNext.TextAlign = System.Drawing.ContentAlignment.MiddleRight
+        Me.ToolTip1.SetToolTip(Me.btnNext, "Next Page")
+        Me.btnNext.UseVisualStyleBackColor = False
+        '
+        'btnBack
+        '
+        Me.btnBack.Anchor = System.Windows.Forms.AnchorStyles.Bottom
+        Me.btnBack.BackColor = System.Drawing.Color.Transparent
+        Me.btnBack.FlatAppearance.BorderSize = 0
+        Me.btnBack.FlatStyle = System.Windows.Forms.FlatStyle.Flat
+        Me.btnBack.Font = New System.Drawing.Font("Segoe UI", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.btnBack.ForeColor = System.Drawing.Color.Black
+        Me.btnBack.Image = CType(resources.GetObject("btnBack.Image"), System.Drawing.Image)
+        Me.btnBack.Location = New System.Drawing.Point(511, 498)
+        Me.btnBack.Name = "btnBack"
+        Me.btnBack.Size = New System.Drawing.Size(37, 31)
+        Me.btnBack.TabIndex = 139
+        Me.btnBack.TextAlign = System.Drawing.ContentAlignment.MiddleRight
+        Me.ToolTip1.SetToolTip(Me.btnBack, "Previous Page")
+        Me.btnBack.UseVisualStyleBackColor = False
+        '
         'SupplierDGV
         '
         Me.SupplierDGV.AllowUserToAddRows = False
         Me.SupplierDGV.AllowUserToDeleteRows = False
-        DataGridViewCellStyle1.BackColor = System.Drawing.Color.Gainsboro
-        Me.SupplierDGV.AlternatingRowsDefaultCellStyle = DataGridViewCellStyle1
+        DataGridViewCellStyle9.BackColor = System.Drawing.Color.Gainsboro
+        Me.SupplierDGV.AlternatingRowsDefaultCellStyle = DataGridViewCellStyle9
+        Me.SupplierDGV.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
+            Or System.Windows.Forms.AnchorStyles.Left) _
+            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.SupplierDGV.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill
         Me.SupplierDGV.BackgroundColor = System.Drawing.Color.White
-        Me.SupplierDGV.BorderStyle = System.Windows.Forms.BorderStyle.None
         Me.SupplierDGV.CellBorderStyle = System.Windows.Forms.DataGridViewCellBorderStyle.Raised
-        DataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter
-        DataGridViewCellStyle2.BackColor = System.Drawing.SystemColors.Control
-        DataGridViewCellStyle2.Font = New System.Drawing.Font("Segoe UI", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        DataGridViewCellStyle2.ForeColor = System.Drawing.SystemColors.WindowText
-        DataGridViewCellStyle2.SelectionBackColor = System.Drawing.SystemColors.Highlight
-        DataGridViewCellStyle2.SelectionForeColor = System.Drawing.SystemColors.HighlightText
-        DataGridViewCellStyle2.WrapMode = System.Windows.Forms.DataGridViewTriState.[True]
-        Me.SupplierDGV.ColumnHeadersDefaultCellStyle = DataGridViewCellStyle2
+        DataGridViewCellStyle10.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter
+        DataGridViewCellStyle10.BackColor = System.Drawing.SystemColors.Control
+        DataGridViewCellStyle10.Font = New System.Drawing.Font("Segoe UI", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        DataGridViewCellStyle10.ForeColor = System.Drawing.SystemColors.WindowText
+        DataGridViewCellStyle10.SelectionBackColor = System.Drawing.SystemColors.Highlight
+        DataGridViewCellStyle10.SelectionForeColor = System.Drawing.SystemColors.HighlightText
+        DataGridViewCellStyle10.WrapMode = System.Windows.Forms.DataGridViewTriState.[True]
+        Me.SupplierDGV.ColumnHeadersDefaultCellStyle = DataGridViewCellStyle10
         Me.SupplierDGV.ColumnHeadersHeight = 50
         Me.SupplierDGV.Columns.AddRange(New System.Windows.Forms.DataGridViewColumn() {Me.Column1, Me.Column2, Me.Column3, Me.Column4, Me.Column5, Me.Column6, Me.Column7})
-        DataGridViewCellStyle3.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft
-        DataGridViewCellStyle3.BackColor = System.Drawing.SystemColors.Window
-        DataGridViewCellStyle3.Font = New System.Drawing.Font("Segoe UI", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        DataGridViewCellStyle3.ForeColor = System.Drawing.SystemColors.ControlText
-        DataGridViewCellStyle3.SelectionBackColor = System.Drawing.SystemColors.ActiveCaption
-        DataGridViewCellStyle3.SelectionForeColor = System.Drawing.Color.Black
-        DataGridViewCellStyle3.WrapMode = System.Windows.Forms.DataGridViewTriState.[False]
-        Me.SupplierDGV.DefaultCellStyle = DataGridViewCellStyle3
-        Me.SupplierDGV.Dock = System.Windows.Forms.DockStyle.Fill
+        DataGridViewCellStyle11.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft
+        DataGridViewCellStyle11.BackColor = System.Drawing.SystemColors.Window
+        DataGridViewCellStyle11.Font = New System.Drawing.Font("Segoe UI", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        DataGridViewCellStyle11.ForeColor = System.Drawing.SystemColors.ControlText
+        DataGridViewCellStyle11.SelectionBackColor = System.Drawing.SystemColors.ActiveCaption
+        DataGridViewCellStyle11.SelectionForeColor = System.Drawing.Color.Black
+        DataGridViewCellStyle11.WrapMode = System.Windows.Forms.DataGridViewTriState.[False]
+        Me.SupplierDGV.DefaultCellStyle = DataGridViewCellStyle11
         Me.SupplierDGV.GridColor = System.Drawing.Color.Black
         Me.SupplierDGV.Location = New System.Drawing.Point(0, 0)
         Me.SupplierDGV.MultiSelect = False
@@ -100,14 +152,70 @@ Partial Class Supplier
         Me.SupplierDGV.ReadOnly = True
         Me.SupplierDGV.RowHeadersVisible = False
         Me.SupplierDGV.RowHeadersWidthSizeMode = System.Windows.Forms.DataGridViewRowHeadersWidthSizeMode.DisableResizing
-        DataGridViewCellStyle4.Font = New System.Drawing.Font("Segoe UI", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.SupplierDGV.RowsDefaultCellStyle = DataGridViewCellStyle4
+        DataGridViewCellStyle12.Font = New System.Drawing.Font("Segoe UI", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.SupplierDGV.RowsDefaultCellStyle = DataGridViewCellStyle12
         Me.SupplierDGV.RowTemplate.DefaultCellStyle.Font = New System.Drawing.Font("Segoe UI", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.SupplierDGV.RowTemplate.Height = 30
         Me.SupplierDGV.RowTemplate.Resizable = System.Windows.Forms.DataGridViewTriState.[False]
         Me.SupplierDGV.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect
-        Me.SupplierDGV.Size = New System.Drawing.Size(1207, 529)
+        Me.SupplierDGV.Size = New System.Drawing.Size(1207, 498)
         Me.SupplierDGV.TabIndex = 115
+        '
+        'Column1
+        '
+        Me.Column1.DataPropertyName = "supplierID"
+        Me.Column1.HeaderText = "Supplier ID"
+        Me.Column1.Name = "Column1"
+        Me.Column1.ReadOnly = True
+        Me.Column1.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable
+        '
+        'Column2
+        '
+        Me.Column2.DataPropertyName = "supplierName"
+        Me.Column2.HeaderText = "Supplier Name"
+        Me.Column2.Name = "Column2"
+        Me.Column2.ReadOnly = True
+        Me.Column2.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable
+        '
+        'Column3
+        '
+        Me.Column3.DataPropertyName = "contactPerson"
+        Me.Column3.HeaderText = "Contact Person"
+        Me.Column3.Name = "Column3"
+        Me.Column3.ReadOnly = True
+        Me.Column3.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable
+        '
+        'Column4
+        '
+        Me.Column4.DataPropertyName = "contactNumber"
+        Me.Column4.HeaderText = "Contact Number"
+        Me.Column4.Name = "Column4"
+        Me.Column4.ReadOnly = True
+        Me.Column4.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable
+        '
+        'Column5
+        '
+        Me.Column5.DataPropertyName = "email"
+        Me.Column5.HeaderText = "Email"
+        Me.Column5.Name = "Column5"
+        Me.Column5.ReadOnly = True
+        Me.Column5.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable
+        '
+        'Column6
+        '
+        Me.Column6.DataPropertyName = "Address"
+        Me.Column6.HeaderText = "Address"
+        Me.Column6.Name = "Column6"
+        Me.Column6.ReadOnly = True
+        Me.Column6.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable
+        '
+        'Column7
+        '
+        Me.Column7.DataPropertyName = "dateAdded"
+        Me.Column7.HeaderText = "Date"
+        Me.Column7.Name = "Column7"
+        Me.Column7.ReadOnly = True
+        Me.Column7.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable
         '
         'btnAdd
         '
@@ -231,62 +339,6 @@ Partial Class Supplier
         Me.Label1.TabIndex = 113
         Me.Label1.Text = "Supplier"
         '
-        'Column1
-        '
-        Me.Column1.DataPropertyName = "supplierID"
-        Me.Column1.HeaderText = "Supplier ID"
-        Me.Column1.Name = "Column1"
-        Me.Column1.ReadOnly = True
-        Me.Column1.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable
-        '
-        'Column2
-        '
-        Me.Column2.DataPropertyName = "supplierName"
-        Me.Column2.HeaderText = "Supplier Name"
-        Me.Column2.Name = "Column2"
-        Me.Column2.ReadOnly = True
-        Me.Column2.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable
-        '
-        'Column3
-        '
-        Me.Column3.DataPropertyName = "contactPerson"
-        Me.Column3.HeaderText = "Contact Person"
-        Me.Column3.Name = "Column3"
-        Me.Column3.ReadOnly = True
-        Me.Column3.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable
-        '
-        'Column4
-        '
-        Me.Column4.DataPropertyName = "contactNumber"
-        Me.Column4.HeaderText = "Contact Number"
-        Me.Column4.Name = "Column4"
-        Me.Column4.ReadOnly = True
-        Me.Column4.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable
-        '
-        'Column5
-        '
-        Me.Column5.DataPropertyName = "email"
-        Me.Column5.HeaderText = "Email"
-        Me.Column5.Name = "Column5"
-        Me.Column5.ReadOnly = True
-        Me.Column5.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable
-        '
-        'Column6
-        '
-        Me.Column6.DataPropertyName = "Address"
-        Me.Column6.HeaderText = "Address"
-        Me.Column6.Name = "Column6"
-        Me.Column6.ReadOnly = True
-        Me.Column6.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable
-        '
-        'Column7
-        '
-        Me.Column7.DataPropertyName = "dateAdded"
-        Me.Column7.HeaderText = "Date"
-        Me.Column7.Name = "Column7"
-        Me.Column7.ReadOnly = True
-        Me.Column7.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable
-        '
         'Supplier
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(11.0!, 28.0!)
@@ -305,6 +357,7 @@ Partial Class Supplier
         Me.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen
         Me.Text = "Acebedo Optical"
         Me.pnlUsers.ResumeLayout(False)
+        Me.pnlUsers.PerformLayout()
         CType(Me.SupplierDGV, System.ComponentModel.ISupportInitialize).EndInit()
         Me.pnlBar.ResumeLayout(False)
         Me.pnlBar.PerformLayout()
@@ -333,4 +386,7 @@ Partial Class Supplier
     Friend WithEvents Column5 As System.Windows.Forms.DataGridViewTextBoxColumn
     Friend WithEvents Column6 As System.Windows.Forms.DataGridViewTextBoxColumn
     Friend WithEvents Column7 As System.Windows.Forms.DataGridViewTextBoxColumn
+    Friend WithEvents txtPage As System.Windows.Forms.Label
+    Friend WithEvents btnNext As System.Windows.Forms.Button
+    Friend WithEvents btnBack As System.Windows.Forms.Button
 End Class

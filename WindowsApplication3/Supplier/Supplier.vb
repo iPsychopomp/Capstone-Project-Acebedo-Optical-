@@ -1,8 +1,11 @@
 Public Class Supplier
+    Private currentPage As Integer = 0
+    Private pageSize As Integer = 20
+    Private totalCount As Integer = 0
 
     Private Sub Supplier_Load(sender As Object, e As EventArgs) Handles MyBase.Load
-        Call dbConn()
-        Call LoadDGV("SELECT * FROM tbl_suppliers", SupplierDGV)
+        currentPage = 0
+        LoadPage()
         DgvStyle(SupplierDGV)
     End Sub
     Public Sub DgvStyle(ByRef SupplierDGV As DataGridView)
@@ -41,8 +44,7 @@ Public Class Supplier
     End Sub
     Public Sub LoadSupplierData(SupplierDGV As DataGridView)
         Try
-            Call dbConn()
-            Call LoadDGV("SELECT * FROM tbl_suppliers", SupplierDGV)
+            LoadPage()
             SupplierDGV.ClearSelection()
         Catch ex As Exception
             MsgBox("Failed to load data: " & ex.Message, vbCritical, "Error")
@@ -54,20 +56,21 @@ Public Class Supplier
         DgvStyle(SupplierDGV)
     End Sub
     Public Sub OnAddRecordClosed(SupplierDGV As DataGridView)
-        Call dbConn()
-        Call LoadDGV("SELECT * FROM tbl_suppliers", SupplierDGV)
+        LoadPage()
         SupplierDGV.Refresh()
         DgvStyle(SupplierDGV)
     End Sub
     Private Sub btnSearch_Click(sender As Object, e As EventArgs) Handles btnSearch.Click
         Try
             Dim term As String = txtSearch.Text.Trim()
-            Call dbConn()
             If String.IsNullOrWhiteSpace(term) Then
-                ' Load all when search is empty
-                Call LoadDGV("SELECT * FROM tbl_suppliers", SupplierDGV)
+                ' Reset to paginated list when search is empty
+                currentPage = 0
+                LoadPage()
+                Return
             Else
                 ' Search by supplier name only (partial match)
+                Call dbConn()
                 Call LoadDGV("SELECT * FROM tbl_suppliers WHERE supplierName LIKE ?", SupplierDGV, "%" & term & "%")
             End If
             SupplierDGV.ClearSelection()
@@ -78,6 +81,10 @@ Public Class Supplier
         Catch ex As Exception
             MsgBox("Search failed: " & ex.Message, vbCritical, "Error")
         End Try
+        ' When filtered, disable paging controls
+        txtPage.Text = "Search results"
+        btnBack.Enabled = False
+        btnNext.Enabled = False
         DgvStyle(SupplierDGV)
     End Sub
 
@@ -87,6 +94,13 @@ Public Class Supplier
             btnSearch.PerformClick()
         End If
         DgvStyle(SupplierDGV)
+    End Sub
+
+    Private Sub txtSearch_TextChanged(sender As Object, e As EventArgs) Handles txtSearch.TextChanged
+        If String.IsNullOrWhiteSpace(txtSearch.Text) Then
+            currentPage = 0
+            LoadPage()
+        End If
     End Sub
 
     Private Sub SupplierDGV_CellClick(sender As Object, e As DataGridViewCellEventArgs) Handles SupplierDGV.CellContentClick
@@ -175,4 +189,58 @@ Public Class Supplier
 
     End Sub
 
+    Private Sub pnlUsers_Paint(sender As Object, e As PaintEventArgs) Handles pnlUsers.Paint
+
+    End Sub
+
+    Private Sub LoadPage()
+        Try
+            Dim countSql As String = "SELECT COUNT(*) FROM tbl_suppliers"
+            Dim dataSql As String = "SELECT * FROM tbl_suppliers ORDER BY supplierID DESC LIMIT ? OFFSET ?"
+
+            Using cn As New Odbc.OdbcConnection(myDSN)
+                cn.Open()
+                Using cmdCount As New Odbc.OdbcCommand(countSql, cn)
+                    Dim obj = cmdCount.ExecuteScalar()
+                    totalCount = 0
+                    If obj IsNot Nothing AndAlso obj IsNot DBNull.Value Then
+                        Integer.TryParse(obj.ToString(), totalCount)
+                    End If
+                End Using
+
+                Using cmd As New Odbc.OdbcCommand(dataSql, cn)
+                    cmd.Parameters.AddWithValue("?", pageSize)
+                    cmd.Parameters.AddWithValue("?", currentPage * pageSize)
+                    Dim da As New Odbc.OdbcDataAdapter(cmd)
+                    Dim dt As New DataTable()
+                    da.Fill(dt)
+                    SupplierDGV.AutoGenerateColumns = True
+                    SupplierDGV.DataSource = dt
+                End Using
+            End Using
+
+            Dim totalPages As Integer = If(pageSize > 0, If(totalCount Mod pageSize = 0, totalCount \ pageSize, (totalCount \ pageSize) + 1), 1)
+            If totalPages <= 0 Then totalPages = 1
+            txtPage.Text = "Page " & (currentPage + 1).ToString() & " of " & totalPages.ToString()
+            btnBack.Enabled = currentPage > 0
+            btnNext.Enabled = currentPage < (totalPages - 1)
+        Catch ex As Exception
+            MsgBox("Failed to load suppliers: " & ex.Message, vbCritical, "Error")
+        End Try
+    End Sub
+
+    Private Sub btnBack_Click(sender As Object, e As EventArgs) Handles btnBack.Click
+        If currentPage > 0 Then
+            currentPage -= 1
+            LoadPage()
+        End If
+    End Sub
+
+    Private Sub btnNext_Click(sender As Object, e As EventArgs) Handles btnNext.Click
+        Dim totalPages As Integer = If(pageSize > 0, If(totalCount Mod pageSize = 0, totalCount \ pageSize, (totalCount \ pageSize) + 1), 1)
+        If currentPage < (totalPages - 1) Then
+            currentPage += 1
+            LoadPage()
+        End If
+    End Sub
 End Class

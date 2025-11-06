@@ -22,9 +22,9 @@ Partial Class stockIN
     'Do not modify it using the code editor.
     <System.Diagnostics.DebuggerStepThrough()> _
     Private Sub InitializeComponent()
-        Dim DataGridViewCellStyle4 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
-        Dim DataGridViewCellStyle5 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
-        Dim DataGridViewCellStyle6 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
+        Dim DataGridViewCellStyle1 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
+        Dim DataGridViewCellStyle2 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
+        Dim DataGridViewCellStyle3 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(stockIN))
         Me.pnlStockIn = New System.Windows.Forms.Panel()
         Me.grpStockIn = New System.Windows.Forms.GroupBox()
@@ -53,6 +53,9 @@ Partial Class stockIN
         Me.pnlBar = New System.Windows.Forms.Panel()
         Me.PictureBox1 = New System.Windows.Forms.PictureBox()
         Me.Label1 = New System.Windows.Forms.Label()
+        Me.Label7 = New System.Windows.Forms.Label()
+        Me.Button1 = New System.Windows.Forms.Button()
+        Me.Button2 = New System.Windows.Forms.Button()
         Me.pnlStockIn.SuspendLayout()
         Me.grpStockIn.SuspendLayout()
         CType(Me.StockInDGV, System.ComponentModel.ISupportInitialize).BeginInit()
@@ -68,12 +71,15 @@ Partial Class stockIN
         Me.pnlStockIn.Dock = System.Windows.Forms.DockStyle.Fill
         Me.pnlStockIn.Location = New System.Drawing.Point(0, 0)
         Me.pnlStockIn.Name = "pnlStockIn"
-        Me.pnlStockIn.Size = New System.Drawing.Size(927, 587)
+        Me.pnlStockIn.Size = New System.Drawing.Size(927, 611)
         Me.pnlStockIn.TabIndex = 14
         '
         'grpStockIn
         '
         Me.grpStockIn.BackColor = System.Drawing.SystemColors.MenuBar
+        Me.grpStockIn.Controls.Add(Me.Label7)
+        Me.grpStockIn.Controls.Add(Me.Button1)
+        Me.grpStockIn.Controls.Add(Me.Button2)
         Me.grpStockIn.Controls.Add(Me.StockInDGV)
         Me.grpStockIn.Controls.Add(Me.txtReceivedBy)
         Me.grpStockIn.Controls.Add(Me.Label5)
@@ -92,7 +98,7 @@ Partial Class stockIN
         Me.grpStockIn.Dock = System.Windows.Forms.DockStyle.Fill
         Me.grpStockIn.Location = New System.Drawing.Point(0, 0)
         Me.grpStockIn.Name = "grpStockIn"
-        Me.grpStockIn.Size = New System.Drawing.Size(927, 587)
+        Me.grpStockIn.Size = New System.Drawing.Size(927, 611)
         Me.grpStockIn.TabIndex = 0
         Me.grpStockIn.TabStop = False
         '
@@ -100,8 +106,8 @@ Partial Class stockIN
         '
         Me.StockInDGV.AllowUserToAddRows = False
         Me.StockInDGV.AllowUserToDeleteRows = False
-        DataGridViewCellStyle4.BackColor = System.Drawing.Color.Gainsboro
-        Me.StockInDGV.AlternatingRowsDefaultCellStyle = DataGridViewCellStyle4
+        DataGridViewCellStyle1.BackColor = System.Drawing.Color.Gainsboro
+        Me.StockInDGV.AlternatingRowsDefaultCellStyle = DataGridViewCellStyle1
         Me.StockInDGV.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
             Or System.Windows.Forms.AnchorStyles.Left) _
             Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
@@ -109,24 +115,24 @@ Partial Class stockIN
         Me.StockInDGV.BackgroundColor = System.Drawing.Color.White
         Me.StockInDGV.CellBorderStyle = System.Windows.Forms.DataGridViewCellBorderStyle.Sunken
         Me.StockInDGV.ColumnHeadersBorderStyle = System.Windows.Forms.DataGridViewHeaderBorderStyle.Sunken
-        DataGridViewCellStyle5.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter
-        DataGridViewCellStyle5.BackColor = System.Drawing.SystemColors.Control
-        DataGridViewCellStyle5.Font = New System.Drawing.Font("Segoe UI", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        DataGridViewCellStyle5.ForeColor = System.Drawing.SystemColors.WindowText
-        DataGridViewCellStyle5.SelectionBackColor = System.Drawing.SystemColors.Highlight
-        DataGridViewCellStyle5.SelectionForeColor = System.Drawing.SystemColors.HighlightText
-        DataGridViewCellStyle5.WrapMode = System.Windows.Forms.DataGridViewTriState.[True]
-        Me.StockInDGV.ColumnHeadersDefaultCellStyle = DataGridViewCellStyle5
+        DataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter
+        DataGridViewCellStyle2.BackColor = System.Drawing.SystemColors.Control
+        DataGridViewCellStyle2.Font = New System.Drawing.Font("Segoe UI", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        DataGridViewCellStyle2.ForeColor = System.Drawing.SystemColors.WindowText
+        DataGridViewCellStyle2.SelectionBackColor = System.Drawing.SystemColors.Highlight
+        DataGridViewCellStyle2.SelectionForeColor = System.Drawing.SystemColors.HighlightText
+        DataGridViewCellStyle2.WrapMode = System.Windows.Forms.DataGridViewTriState.[True]
+        Me.StockInDGV.ColumnHeadersDefaultCellStyle = DataGridViewCellStyle2
         Me.StockInDGV.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize
         Me.StockInDGV.Columns.AddRange(New System.Windows.Forms.DataGridViewColumn() {Me.Column1, Me.Column2, Me.Column3, Me.Column4, Me.Column5, Me.Column6, Me.Column7})
-        DataGridViewCellStyle6.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft
-        DataGridViewCellStyle6.BackColor = System.Drawing.SystemColors.Window
-        DataGridViewCellStyle6.Font = New System.Drawing.Font("Segoe UI", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        DataGridViewCellStyle6.ForeColor = System.Drawing.SystemColors.ControlText
-        DataGridViewCellStyle6.SelectionBackColor = System.Drawing.SystemColors.ActiveCaption
-        DataGridViewCellStyle6.SelectionForeColor = System.Drawing.SystemColors.HighlightText
-        DataGridViewCellStyle6.WrapMode = System.Windows.Forms.DataGridViewTriState.[False]
-        Me.StockInDGV.DefaultCellStyle = DataGridViewCellStyle6
+        DataGridViewCellStyle3.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft
+        DataGridViewCellStyle3.BackColor = System.Drawing.SystemColors.Window
+        DataGridViewCellStyle3.Font = New System.Drawing.Font("Segoe UI", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        DataGridViewCellStyle3.ForeColor = System.Drawing.SystemColors.ControlText
+        DataGridViewCellStyle3.SelectionBackColor = System.Drawing.SystemColors.ActiveCaption
+        DataGridViewCellStyle3.SelectionForeColor = System.Drawing.SystemColors.HighlightText
+        DataGridViewCellStyle3.WrapMode = System.Windows.Forms.DataGridViewTriState.[False]
+        Me.StockInDGV.DefaultCellStyle = DataGridViewCellStyle3
         Me.StockInDGV.GridColor = System.Drawing.Color.Black
         Me.StockInDGV.Location = New System.Drawing.Point(0, 192)
         Me.StockInDGV.Name = "StockInDGV"
@@ -137,7 +143,7 @@ Partial Class stockIN
         Me.StockInDGV.RowTemplate.Height = 30
         Me.StockInDGV.RowTemplate.Resizable = System.Windows.Forms.DataGridViewTriState.[False]
         Me.StockInDGV.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect
-        Me.StockInDGV.Size = New System.Drawing.Size(927, 345)
+        Me.StockInDGV.Size = New System.Drawing.Size(927, 347)
         Me.StockInDGV.TabIndex = 127
         '
         'Column1
@@ -239,7 +245,7 @@ Partial Class stockIN
         Me.btnCancel.Font = New System.Drawing.Font("Segoe UI", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.btnCancel.ForeColor = System.Drawing.Color.Black
         Me.btnCancel.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft
-        Me.btnCancel.Location = New System.Drawing.Point(796, 546)
+        Me.btnCancel.Location = New System.Drawing.Point(785, 572)
         Me.btnCancel.Name = "btnCancel"
         Me.btnCancel.Size = New System.Drawing.Size(100, 27)
         Me.btnCancel.TabIndex = 122
@@ -253,7 +259,7 @@ Partial Class stockIN
         Me.btnSave.Font = New System.Drawing.Font("Segoe UI", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.btnSave.ForeColor = System.Drawing.Color.Black
         Me.btnSave.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft
-        Me.btnSave.Location = New System.Drawing.Point(34, 546)
+        Me.btnSave.Location = New System.Drawing.Point(34, 572)
         Me.btnSave.Name = "btnSave"
         Me.btnSave.Size = New System.Drawing.Size(100, 27)
         Me.btnSave.TabIndex = 121
@@ -368,11 +374,54 @@ Partial Class stockIN
         Me.Label1.TabIndex = 113
         Me.Label1.Text = "Stock In"
         '
+        'Label7
+        '
+        Me.Label7.Anchor = System.Windows.Forms.AnchorStyles.Bottom
+        Me.Label7.AutoSize = True
+        Me.Label7.Location = New System.Drawing.Point(423, 545)
+        Me.Label7.Name = "Label7"
+        Me.Label7.Size = New System.Drawing.Size(70, 28)
+        Me.Label7.TabIndex = 138
+        Me.Label7.Text = "Page 1"
+        '
+        'Button1
+        '
+        Me.Button1.Anchor = System.Windows.Forms.AnchorStyles.Bottom
+        Me.Button1.BackColor = System.Drawing.Color.Transparent
+        Me.Button1.FlatAppearance.BorderSize = 0
+        Me.Button1.FlatStyle = System.Windows.Forms.FlatStyle.Flat
+        Me.Button1.Font = New System.Drawing.Font("Segoe UI", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Button1.ForeColor = System.Drawing.Color.Black
+        Me.Button1.Image = CType(resources.GetObject("Button1.Image"), System.Drawing.Image)
+        Me.Button1.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft
+        Me.Button1.Location = New System.Drawing.Point(518, 542)
+        Me.Button1.Name = "Button1"
+        Me.Button1.Size = New System.Drawing.Size(37, 31)
+        Me.Button1.TabIndex = 137
+        Me.Button1.TextAlign = System.Drawing.ContentAlignment.MiddleRight
+        Me.Button1.UseVisualStyleBackColor = False
+        '
+        'Button2
+        '
+        Me.Button2.Anchor = System.Windows.Forms.AnchorStyles.Bottom
+        Me.Button2.BackColor = System.Drawing.Color.Transparent
+        Me.Button2.FlatAppearance.BorderSize = 0
+        Me.Button2.FlatStyle = System.Windows.Forms.FlatStyle.Flat
+        Me.Button2.Font = New System.Drawing.Font("Segoe UI", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Button2.ForeColor = System.Drawing.Color.Black
+        Me.Button2.Image = CType(resources.GetObject("Button2.Image"), System.Drawing.Image)
+        Me.Button2.Location = New System.Drawing.Point(368, 542)
+        Me.Button2.Name = "Button2"
+        Me.Button2.Size = New System.Drawing.Size(37, 31)
+        Me.Button2.TabIndex = 136
+        Me.Button2.TextAlign = System.Drawing.ContentAlignment.MiddleRight
+        Me.Button2.UseVisualStyleBackColor = False
+        '
         'stockIN
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(11.0!, 28.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
-        Me.ClientSize = New System.Drawing.Size(927, 587)
+        Me.ClientSize = New System.Drawing.Size(927, 611)
         Me.Controls.Add(Me.pnlBar)
         Me.Controls.Add(Me.pnlStockIn)
         Me.Font = New System.Drawing.Font("Segoe UI", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
@@ -422,4 +471,7 @@ Partial Class stockIN
     Friend WithEvents pnlBar As System.Windows.Forms.Panel
     Friend WithEvents PictureBox1 As System.Windows.Forms.PictureBox
     Friend WithEvents Label1 As System.Windows.Forms.Label
+    Friend WithEvents Label7 As System.Windows.Forms.Label
+    Friend WithEvents Button1 As System.Windows.Forms.Button
+    Friend WithEvents Button2 As System.Windows.Forms.Button
 End Class

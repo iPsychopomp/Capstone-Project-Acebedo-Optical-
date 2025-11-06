@@ -1,10 +1,16 @@
 Public Class inventory
+    Private currentPage As Integer = 0
+    Private pageSize As Integer = 20
+    Private totalCount As Integer = 0
+
     Private Sub inventory_Load(sender As Object, e As EventArgs) Handles MyBase.Load
         ' Allow columns to be auto-generated from data
         If productDGV IsNot Nothing Then
             productDGV.AllowUserToOrderColumns = False
         End If
-        LoadProductsWithDiscountCheck()
+        EnsureDiscountColumn()
+        currentPage = 0
+        LoadPage()
         DgvStyle(productDGV)
         txtSearch.Text = "Search by product name"
         txtSearch.ForeColor = Color.Gray
@@ -22,6 +28,7 @@ Public Class inventory
         EnsureDiscountColumn()
         SafeLoadProducts()
     End Sub
+
     Public Sub DgvStyle(ByRef productDGV As DataGridView)
         ' Basic Grid Setup
         productDGV.AutoGenerateColumns = False
@@ -55,6 +62,102 @@ Public Class inventory
         For Each col As DataGridViewColumn In productDGV.Columns
             col.HeaderCell.Style.Alignment = DataGridViewContentAlignment.MiddleCenter
         Next
+    End Sub
+
+    Private Sub LoadPage()
+        Try
+            ' Count total products
+            Dim countSql As String = "SELECT COUNT(*) FROM tbl_products"
+
+            ' Build the SELECT with discount handling similar to SafeLoadProducts
+            Dim dataSql As String
+            Using cn As New Odbc.OdbcConnection(myDSN)
+                cn.Open()
+
+                Dim hasDiscount As Boolean = False
+                Try
+                    Using testCmd As New Odbc.OdbcCommand("SHOW COLUMNS FROM tbl_products LIKE ?", cn)
+                        testCmd.Parameters.AddWithValue("?", "discount")
+                        Dim obj = testCmd.ExecuteScalar()
+                        hasDiscount = (obj IsNot Nothing)
+                    End Using
+                Catch
+                    hasDiscount = False
+                End Try
+
+                If hasDiscount Then
+                    dataSql = _
+                        "SELECT p.productID, p.productName, p.category, p.stockQuantity, p.description, " & _
+                        "p.unitPrice, CONCAT(ROUND(p.discount * 100, 2), '%') AS discount, " & _
+                        "CASE WHEN p.discount > 0 THEN ROUND(p.unitPrice * (1 - p.discount), 2) ELSE NULL END AS discountedPrice, " & _
+                        "p.reorderLevel, s.supplierName, p.dateAdded, p.expirationDate " & _
+                        "FROM tbl_products p LEFT JOIN tbl_suppliers s ON s.supplierID = p.supplierID " & _
+                        "ORDER BY p.productID DESC LIMIT ? OFFSET ?"
+                Else
+                    dataSql = _
+                        "SELECT p.productID, p.productName, p.category, p.stockQuantity, p.description, " & _
+                        "p.unitPrice, '0%' AS discount, NULL AS discountedPrice, " & _
+                        "p.reorderLevel, s.supplierName, p.dateAdded, p.expirationDate " & _
+                        "FROM tbl_products p LEFT JOIN tbl_suppliers s ON s.supplierID = p.supplierID " & _
+                        "ORDER BY p.productID DESC LIMIT ? OFFSET ?"
+                End If
+
+                ' Get total count
+                Using cmdCount As New Odbc.OdbcCommand(countSql, cn)
+                    Dim obj = cmdCount.ExecuteScalar()
+                    totalCount = 0
+                    If obj IsNot Nothing AndAlso obj IsNot DBNull.Value Then
+                        Integer.TryParse(obj.ToString(), totalCount)
+                    End If
+                End Using
+
+                ' Load paged data
+                Using cmd As New Odbc.OdbcCommand(dataSql, cn)
+                    cmd.Parameters.AddWithValue("?", pageSize)
+                    cmd.Parameters.AddWithValue("?", currentPage * pageSize)
+                    Dim da As New Odbc.OdbcDataAdapter(cmd)
+                    Dim dt As New DataTable()
+                    da.Fill(dt)
+                    productDGV.AutoGenerateColumns = True
+                    productDGV.DataSource = dt
+                End Using
+            End Using
+
+            ' Re-attach formatting/ordering similar to SafeLoadProducts
+            RemoveHandler productDGV.CellFormatting, AddressOf ProductDGV_CellFormatting
+            AddHandler productDGV.CellFormatting, AddressOf ProductDGV_CellFormatting
+            RemoveHandler productDGV.DataBindingComplete, AddressOf OnProductGridUpdated
+            AddHandler productDGV.DataBindingComplete, AddressOf OnProductGridUpdated
+            RemoveHandler productDGV.Sorted, AddressOf OnProductGridUpdated
+            AddHandler productDGV.Sorted, AddressOf OnProductGridUpdated
+
+            ' Apply column formatting and order after data binds
+            Dim timer As New Timer()
+            timer.Interval = 100
+            AddHandler timer.Tick, Sub()
+                                       FormatColumns()
+                                       EnsureStableColumnOrder()
+                                       timer.Stop()
+                                       timer.Dispose()
+                                   End Sub
+            timer.Start()
+
+            ' Update pagination controls
+            Dim totalPages As Integer = If(pageSize > 0, If(totalCount Mod pageSize = 0, totalCount \ pageSize, (totalCount \ pageSize) + 1), 1)
+            If totalPages <= 0 Then totalPages = 1
+            txtPage.Text = "Page " & (currentPage + 1).ToString() & " of " & totalPages.ToString()
+            btnBack.Enabled = currentPage > 0
+            btnNext.Enabled = currentPage < (totalPages - 1)
+
+        Catch ex As Exception
+            MsgBox("Failed to load data: " & ex.Message, vbCritical, "Error")
+        End Try
+    End Sub
+
+    ' Restore method used by other forms to refresh inventory grid
+    Public Sub LoadProductData()
+        SafeLoadProducts()
+        productDGV.ClearSelection()
     End Sub
 
     ' Helper method to ensure discount columns exist
@@ -101,73 +204,6 @@ Public Class inventory
         End Try
     End Sub
 
-    Public Sub ShowLowStockItems()
-        Try
-            Call dbConn()
-
-            Dim hasDiscount As Boolean = ColumnExists("tbl_products", "discount")
-
-            ' SQL query to get all products, with low-stock items first (including out of stock items)
-            Dim selectCore As String
-            If hasDiscount Then
-                selectCore = _
-                    "SELECT p.productID, p.productName, p.category, p.stockQuantity, p.description, " & _
-                    "p.unitPrice, CONCAT(ROUND(p.discount * 100, 2), '%') AS discount, " & _
-                    "CASE WHEN p.discount > 0 THEN ROUND(p.unitPrice * (1 - p.discount), 2) ELSE NULL END AS discountedPrice, " & _
-                    "p.reorderLevel, s.supplierName, p.dateAdded, p.expirationDate, " & _
-                    "CASE WHEN p.stockQuantity = 0 OR (p.reorderLevel > 0 AND p.stockQuantity > 0 AND p.stockQuantity <= p.reorderLevel) THEN 1 ELSE 0 END AS isLowStock " & _
-                    "FROM tbl_products p LEFT JOIN tbl_suppliers s ON s.supplierID = p.supplierID " & _
-                    "ORDER BY isLowStock DESC, p.stockQuantity ASC, p.productName ASC"
-            Else
-                selectCore = _
-                    "SELECT p.productID, p.productName, p.category, p.stockQuantity, p.description, " & _
-                    "p.unitPrice, '0%' AS discount, NULL AS discountedPrice, " & _
-                    "p.reorderLevel, s.supplierName, p.dateAdded, p.expirationDate, " & _
-                    "CASE WHEN p.stockQuantity = 0 OR (p.reorderLevel > 0 AND p.stockQuantity > 0 AND p.stockQuantity <= p.reorderLevel) THEN 1 ELSE 0 END AS isLowStock " & _
-                    "FROM tbl_products p LEFT JOIN tbl_suppliers s ON s.supplierID = p.supplierID " & _
-                    "ORDER BY isLowStock DESC, p.stockQuantity ASC, p.productName ASC"
-            End If
-
-            productDGV.AutoGenerateColumns = True
-            Call LoadDGV(selectCore, productDGV)
-
-            ' Remove the isLowStock column from display
-            If productDGV.Columns.Contains("isLowStock") Then
-                productDGV.Columns("isLowStock").Visible = False
-            End If
-
-            ' Add event handler for row formatting (remove first to avoid duplicates)
-            RemoveHandler productDGV.CellFormatting, AddressOf ProductDGV_CellFormatting
-            AddHandler productDGV.CellFormatting, AddressOf ProductDGV_CellFormatting
-
-            productDGV.AllowUserToOrderColumns = False
-
-            ' Ensure proper column order
-            Dim timer As New Timer()
-            timer.Interval = 100
-            AddHandler timer.Tick, Sub()
-                                       FormatColumns()
-                                       EnsureStableColumnOrder()
-                                       timer.Stop()
-                                       timer.Dispose()
-                                   End Sub
-            timer.Start()
-
-            ' Force refresh to trigger RowPrePaint events for red highlighting
-            productDGV.Refresh()
-
-            ' Focus on the first low-stock item if exists
-            If productDGV.Rows.Count > 0 Then
-                productDGV.FirstDisplayedScrollingRowIndex = 0
-                productDGV.Rows(0).Selected = True
-                productDGV.Focus()
-            End If
-
-        Catch ex As Exception
-            MsgBox("Error filtering low stock items: " & ex.Message, vbCritical, "Error")
-        End Try
-    End Sub
-
     ' Returns True if a column exists on the given table; works under MySQL/MariaDB via ODBC
     Private Function ColumnExists(tableName As String, columnName As String) As Boolean
         Try
@@ -207,7 +243,7 @@ Public Class inventory
                     "FROM tbl_products p LEFT JOIN tbl_suppliers s ON s.supplierID = p.supplierID "
             End If
 
-            Dim finalSql As String = selectCore & whereClause
+            Dim finalSql As String = selectCore & whereClause & " ORDER BY p.productID DESC"
 
             ' Enable auto-generation to show all columns from query
             productDGV.AutoGenerateColumns = True
@@ -426,282 +462,115 @@ Public Class inventory
         End Try
     End Sub
 
-    Private Sub btnStockIn_Click(sender As Object, e As EventArgs)
-        Dim stockInForm As New stockIN()
-        stockInForm.TopMost = True
-        stockInForm.Show()
-    End Sub
-
-    Private Sub btnStockOut_Click(sender As Object, e As EventArgs)
-        Dim stockOutForm As New stockOut()
-        stockOutForm.TopMost = True
-        stockOutForm.Show()
-    End Sub
-
-    Private Sub productDGV_CellClick(sender As Object, e As DataGridViewCellEventArgs)
+    Public Sub ShowLowStockItems()
         Try
-            If e.RowIndex >= 0 Then
+            Call dbConn()
 
-                productDGV.Rows(e.RowIndex).Selected = True
+            Dim hasDiscount As Boolean = ColumnExists("tbl_products", "discount")
+
+            ' SQL query to get all products, with low-stock items first (including out of stock items)
+            Dim selectCore As String
+            If hasDiscount Then
+                selectCore = _
+                    "SELECT p.productID, p.productName, p.category, p.stockQuantity, p.description, " & _
+                    "p.unitPrice, CONCAT(ROUND(p.discount * 100, 2), '%') AS discount, " & _
+                    "CASE WHEN p.discount > 0 THEN ROUND(p.unitPrice * (1 - p.discount), 2) ELSE NULL END AS discountedPrice, " & _
+                    "p.reorderLevel, s.supplierName, p.dateAdded, p.expirationDate, " & _
+                    "CASE WHEN p.stockQuantity = 0 OR (p.reorderLevel > 0 AND p.stockQuantity > 0 AND p.stockQuantity <= p.reorderLevel) THEN 1 ELSE 0 END AS isLowStock " & _
+                    "FROM tbl_products p LEFT JOIN tbl_suppliers s ON s.supplierID = p.supplierID " & _
+                    "ORDER BY isLowStock DESC, p.stockQuantity ASC, p.productName ASC"
+            Else
+                selectCore = _
+                    "SELECT p.productID, p.productName, p.category, p.stockQuantity, p.description, " & _
+                    "p.unitPrice, '0%' AS discount, NULL AS discountedPrice, " & _
+                    "p.reorderLevel, s.supplierName, p.dateAdded, p.expirationDate, " & _
+                    "CASE WHEN p.stockQuantity = 0 OR (p.reorderLevel > 0 AND p.stockQuantity > 0 AND p.stockQuantity <= p.reorderLevel) THEN 1 ELSE 0 END AS isLowStock " & _
+                    "FROM tbl_products p LEFT JOIN tbl_suppliers s ON s.supplierID = p.supplierID " & _
+                    "ORDER BY isLowStock DESC, p.stockQuantity ASC, p.productName ASC"
             End If
+
+            productDGV.AutoGenerateColumns = True
+            Call LoadDGV(selectCore, productDGV)
+
+            ' Remove the isLowStock column from display
+            If productDGV.Columns.Contains("isLowStock") Then
+                productDGV.Columns("isLowStock").Visible = False
+            End If
+
+            ' Add event handler for row formatting (remove first to avoid duplicates)
+            RemoveHandler productDGV.CellFormatting, AddressOf ProductDGV_CellFormatting
+            AddHandler productDGV.CellFormatting, AddressOf ProductDGV_CellFormatting
+
+            productDGV.AllowUserToOrderColumns = False
+
+            ' Ensure proper column order
+            Dim timer As New Timer()
+            timer.Interval = 100
+            AddHandler timer.Tick, Sub()
+                                       FormatColumns()
+                                       EnsureStableColumnOrder()
+                                       timer.Stop()
+                                       timer.Dispose()
+                                   End Sub
+            timer.Start()
+
+            ' Force refresh to trigger RowPrePaint events for red highlighting
+            productDGV.Refresh()
+
+            ' Focus on the first low-stock item if exists
+            If productDGV.Rows.Count > 0 Then
+                productDGV.FirstDisplayedScrollingRowIndex = 0
+                productDGV.Rows(0).Selected = True
+                productDGV.Focus()
+            End If
+
         Catch ex As Exception
-            MsgBox(ex.Message.ToString, vbCritical, "Error")
+            MsgBox("Error filtering low stock items: " & ex.Message, vbCritical, "Error")
         End Try
     End Sub
 
-    Private Sub btnEdit_Click(sender As Object, e As EventArgs)
-        If productDGV.SelectedRows.Count > 0 Then
-
-            Dim ProductID As Integer = Convert.ToInt32(productDGV.SelectedRows(0).Cells("Column1").Value)
-
-            If MsgBox("Are you sure you want to edit this record?", vbYesNo + vbQuestion, "Edit") = vbYes Then
-
-                Dim EditProduct As New addProduct()
-                AddHandler EditProduct.FormClosed, AddressOf OnAddRecordClosed
-                EditProduct.TopMost = True
-                EditProduct.ShowDialog()
-                EditProduct.pnlPrdct.Tag = ProductID
-                EditProduct.loadRecord(ProductID)
-
-            End If
-        Else
-            MessageBox.Show("Please select a row first.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error)
-        End If
-    End Sub
-
-    Private Sub btnAdd_Click(sender As Object, e As EventArgs)
-        Dim productAdd As New addProduct()
-        AddHandler productAdd.FormClosed, AddressOf OnAddRecordClosed
-        productAdd.TopMost = True
-        productAdd.ShowDialog()
-    End Sub
-    Private Sub btnSearch_Click(sender As Object, e As EventArgs)
-        SafeLoadProducts(" WHERE productName LIKE ?", txtSearch.Text)
-    End Sub
-    Public Sub LoadProductData()
-        SafeLoadProducts()
-        productDGV.ClearSelection()
-    End Sub
-
-    Private Sub OnAddRecordClosed(ByVal sender As Object, ByVal e As FormClosedEventArgs)
-        SafeLoadProducts()
-        productDGV.Refresh()
-    End Sub
-
-    Private Sub btnDelete_Click(sender As Object, e As EventArgs)
-        Dim cmd As Odbc.OdbcCommand
-        Dim sql As String
-        Dim productname As String = ""
-        Dim rowsAffected As Integer = 0 ' Declare rowsAffected at the method level
-
-
-
-        If productDGV.SelectedRows.Count > 0 Then
-            Dim productID As Integer = Convert.ToInt32(productDGV.SelectedRows(0).Cells("Column1").Value)
-
-
-            If MsgBox("Are you sure you want to delete this record?", vbYesNo + vbCritical, "Delete") = vbYes Then
-                Try
-                    Call dbConn()
-
-                    sql = "SELECT productName FROM tbl_products WHERE productID = ?"
-                    cmd = New Odbc.OdbcCommand(sql, conn)
-                    cmd.Parameters.AddWithValue("?", productID)
-                    Dim result As Object = cmd.ExecuteScalar()
-                    productname = If(result IsNot Nothing, result.ToString(), "Unknown Product")
-
-                    ' Delete from stock_out table
-                    sql = "DELETE FROM tbl_stock_out WHERE ProductID = ?"
-                    cmd = New Odbc.OdbcCommand(sql, conn)
-                    cmd.Parameters.AddWithValue("?", productID)
-                    cmd.ExecuteNonQuery()
-
-                    ' Delete from stock_in table (if exists)
-                    sql = "DELETE FROM tbl_stock_in WHERE ProductID = ?"
-                    cmd = New Odbc.OdbcCommand(sql, conn)
-                    cmd.Parameters.AddWithValue("?", productID)
-                    cmd.ExecuteNonQuery()
-
-                    sql = "DELETE FROM tbl_products WHERE productID = ?"
-                    cmd = New Odbc.OdbcCommand(sql, conn)
-                    cmd.Parameters.AddWithValue("?", productID)
-                    cmd.ExecuteNonQuery()
-                    rowsAffected = cmd.ExecuteNonQuery() ' Now this will work
-
-                    'InsertAuditTrail(GlobalVariables.LoggedInUserID, "Delete Product", "Deleted product: " & productname)
-
-                    'MsgBox("Product deleted successfully!", vbInformation, "Success")
-                    'Call LoadDGV("SELECT * FROM tbl_products", productDGV)
-
-                    If rowsAffected > 0 Then
-                        InsertAuditTrail(GlobalVariables.LoggedInUserID, "Delete Product", "Deleted product: " & productname)
-                        MsgBox("Product deleted successfully!", vbInformation, "Success")
-                        SafeLoadProducts()
-                    Else
-                        MsgBox("No product was deleted. The product may have already been removed.", vbExclamation, "Delete Failed")
-                    End If
-
-                Catch ex As Exception
-                    MsgBox("Error: " & ex.Message, vbCritical, "Delete Failed")
-                Finally
-                    conn.Close()
-                    conn.Dispose()
-                End Try
-            End If
-        Else
-            MsgBox("Please select a record to delete.", vbExclamation, "No Row Selected")
-        End If
-    End Sub
-
-    Sub InsertAuditTrail(UserID As Integer, ActionType As String, ActionDetails As String)
-        Dim connectionString As String = "DSN=dsnsystem"
-        Using conn As New Odbc.OdbcConnection(connectionString)
-            Try
-                conn.Open()
-                Dim query As String = "INSERT INTO tbl_audit_trail (UserID, Username, ActionType, ActionDetails, ActivityTime, ActivityDate) VALUES (?, ?, ?, ?, ?, ?)"
-                Using cmd As New Odbc.OdbcCommand(query, conn)
-                    cmd.Parameters.AddWithValue("?", UserID)
-                    cmd.Parameters.AddWithValue("?", GlobalVariables.LoggedInUser)
-                    cmd.Parameters.AddWithValue("?", ActionType)
-                    cmd.Parameters.AddWithValue("?", ActionDetails)
-                    cmd.Parameters.AddWithValue("?", DateTime.Now.ToString("HH:mm:ss"))
-                    cmd.Parameters.AddWithValue("?", DateTime.Now.Date)
-
-                    cmd.ExecuteNonQuery()
-                End Using
-            Catch ex As Exception
-                MsgBox("Audit Trail Error: " & ex.Message, vbCritical, "Error")
-            Finally
-                conn.Close()
-            End Try
-        End Using
-    End Sub
-
-    Private Sub btnEdit_Click_1(sender As Object, e As EventArgs) Handles btnEdit.Click
-        If productDGV.SelectedRows.Count > 0 Then
-
-            Dim ProductID As Integer = Convert.ToInt32(productDGV.SelectedRows(0).Cells("Column1").Value)
-
-            If MsgBox("Are you sure you want to edit this record?", vbYesNo + vbQuestion, "Edit") = vbYes Then
-
-                Dim EditProduct As New addProduct()
-                AddHandler EditProduct.FormClosed, AddressOf OnAddRecordClosed
-                EditProduct.TopMost = True
-                EditProduct.Show()
-                EditProduct.pnlPrdct.Tag = ProductID
-                EditProduct.lblhead.Text = "Edit Product"
-                EditProduct.pbAdd.Visible = False
-                EditProduct.pbEdit.Visible = True
-                EditProduct.loadRecord(ProductID)
-
-            End If
-        Else
-            MessageBox.Show("Please select a row first.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error)
-        End If
-    End Sub
-
-    Private Sub btnAdd_Click_1(sender As Object, e As EventArgs) Handles btnAdd.Click
-        Dim productAdd As New addProduct()
-        AddHandler productAdd.FormClosed, AddressOf OnAddRecordClosed
-        productAdd.TopMost = True
-        productAdd.Show()
-    End Sub
-
-    Private Sub btnDelete_Click_1(sender As Object, e As EventArgs) Handles btnDelete.Click
-        Dim cmd As Odbc.OdbcCommand
-        Dim sql As String
-        Dim productname As String = ""
-
-        If productDGV.SelectedRows.Count > 0 Then
-            Dim productID As Integer = Convert.ToInt32(productDGV.SelectedRows(0).Cells("Column1").Value)
-
-            If MsgBox("Are you sure you want to delete this record?", vbYesNo + vbCritical, "Delete") = vbYes Then
-                Try
-                    Call dbConn()
-
-                    ' Get Product Name (Optional, for logging)
-                    sql = "SELECT productName FROM tbl_products WHERE productID = ?"
-                    cmd = New Odbc.OdbcCommand(sql, conn)
-                    cmd.Parameters.AddWithValue("?", productID)
-                    Dim result As Object = cmd.ExecuteScalar()
-                    If result IsNot Nothing Then
-                        productname = result.ToString()
-                    Else
-                        productname = "Unknown Product"
-                    End If
-
-
-                    sql = "DELETE FROM tbl_stock_in WHERE ProductID = ?"
-                    cmd = New Odbc.OdbcCommand(sql, conn)
-                    cmd.Parameters.AddWithValue("?", productID)
-                    cmd.ExecuteNonQuery()
-
-                    sql = "DELETE FROM tbl_stock_out WHERE ProductID = ?"
-                    cmd = New Odbc.OdbcCommand(sql, conn)
-                    cmd.Parameters.AddWithValue("?", productID)
-                    cmd.ExecuteNonQuery()
-
-
-                    sql = "DELETE FROM tbl_products WHERE productID = ?"
-                    cmd = New Odbc.OdbcCommand(sql, conn)
-                    cmd.Parameters.AddWithValue("?", productID)
-                    cmd.ExecuteNonQuery()
-
-                    InsertAuditTrail(GlobalVariables.LoggedInUserID, "Delete Product", "Deleted product: " & productname)
-
-                    MsgBox("Product deleted successfully!", vbInformation, "Success")
-                    SafeLoadProducts()
-
-                Catch ex As Exception
-                    MsgBox("Error: " & ex.Message, vbCritical, "Delete Failed")
-                Finally
-                    conn.Close()
-                    conn.Dispose()
-                End Try
-            End If
-        Else
-            MsgBox("Please select a record to delete.", vbExclamation, "No Row Selected")
-        End If
-    End Sub
-
     Private Sub btnSearch_Click_1(sender As Object, e As EventArgs) Handles btnSearch.Click
+        If String.IsNullOrWhiteSpace(txtSearch.Text) OrElse txtSearch.Text = "Search by product name" Then
+            currentPage = 0
+            LoadPage()
+            Return
+        End If
+
         SafeLoadProducts(" WHERE productName LIKE ?", txtSearch.Text)
-        If productDGV IsNot Nothing AndAlso productDGV.Rows.Count = 0 Then
+        txtPage.Text = "Search results"
+        btnBack.Enabled = False
+        btnNext.Enabled = False
+        If (productDGV IsNot Nothing) AndAlso (productDGV.Rows.Count = 0) Then
             MessageBox.Show("No matching records found.", "Search Results", MessageBoxButtons.OK, MessageBoxIcon.Information)
         End If
     End Sub
 
+    Private Sub btnBack_Click(sender As Object, e As EventArgs) Handles btnBack.Click
+        If currentPage > 0 Then
+            currentPage -= 1
+            LoadPage()
+        End If
+    End Sub
+
+    Private Sub btnNext_Click(sender As Object, e As EventArgs) Handles btnNext.Click
+        Dim totalPages As Integer = If(pageSize > 0, If(totalCount Mod pageSize = 0, totalCount \ pageSize, (totalCount \ pageSize) + 1), 1)
+        If currentPage < (totalPages - 1) Then
+            currentPage += 1
+            LoadPage()
+        End If
+    End Sub
+
     Private Sub btnOrder_Click(sender As Object, e As EventArgs) Handles btnSupplier.Click
-        ' Get the parent MainForm
-        Dim mainForm As MainForm = Nothing
-        For Each form As Form In Application.OpenForms
-            If TypeOf form Is MainForm Then
-                mainForm = DirectCast(form, MainForm)
-                Exit For
-            End If
-        Next
-
-        If mainForm IsNot Nothing Then
+        Try
             Dim supply As New Supplier()
-
-            ' When Supplier closes, show MainForm again
             AddHandler supply.FormClosed, Sub(s, ev)
-                                              ' Refresh inventory if needed
-                                              Dim inv As inventory = Nothing
-                                              For Each ctrl As Control In mainForm.pnlContainer.Controls
-                                                  If TypeOf ctrl Is inventory Then
-                                                      inv = DirectCast(ctrl, inventory)
-                                                      Exit For
-                                                  End If
-                                              Next
-                                              If inv IsNot Nothing Then
-                                                  inv.SafeLoadProducts()
-                                              End If
+                                              SafeLoadProducts()
                                           End Sub
-
             supply.TopMost = True
             supply.ShowDialog()
-        End If
+        Catch ex As Exception
+            MsgBox("Error opening Supplier: " & ex.Message, vbCritical, "Error")
+        End Try
     End Sub
 
     ' Event handler to format price columns with peso sign
@@ -754,8 +623,14 @@ Public Class inventory
         End If
     End Sub
 
+    Private Sub txtSearch_TextChanged(sender As Object, e As EventArgs) Handles txtSearch.TextChanged
+        If String.IsNullOrWhiteSpace(txtSearch.Text) Then
+            currentPage = 0
+            LoadPage()
+        End If
+    End Sub
+
     Private Sub productDGV_CellContentClick(sender As Object, e As DataGridViewCellEventArgs) Handles productDGV.CellContentClick
 
     End Sub
-
 End Class

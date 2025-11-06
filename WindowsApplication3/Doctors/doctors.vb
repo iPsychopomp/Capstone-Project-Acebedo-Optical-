@@ -1,11 +1,49 @@
 Public Class doctors
+    Private currentPage As Integer = 0
+    Private pageSize As Integer = 20
+    Private totalCount As Integer = 0
     Private Sub doctors_Load(sender As Object, e As EventArgs) Handles MyBase.Load
         Call dbConn()
-        Call LoadDGV("SELECT * FROM db_viewdoctors", doctorsDGV)
-        NormalizeDoctorNames(doctorsDGV)
         DgvStyle(doctorsDGV)
+        currentPage = 0
+        LoadPage()
         txtSearch.Text = "Search by doctor's name"
         txtSearch.ForeColor = Color.Gray
+    End Sub
+    Private Sub LoadPage()
+        Try
+            Dim countSql As String = "SELECT COUNT(*) FROM db_viewdoctors"
+            Dim dataSql As String = "SELECT * FROM db_viewdoctors ORDER BY doctorID DESC LIMIT ? OFFSET ?"
+
+            Using cn As New Odbc.OdbcConnection(myDSN)
+                cn.Open()
+                Using cmdCount As New Odbc.OdbcCommand(countSql, cn)
+                    Dim obj = cmdCount.ExecuteScalar()
+                    totalCount = 0
+                    If obj IsNot Nothing AndAlso obj IsNot DBNull.Value Then
+                        Integer.TryParse(obj.ToString(), totalCount)
+                    End If
+                End Using
+
+                Using cmd As New Odbc.OdbcCommand(dataSql, cn)
+                    cmd.Parameters.AddWithValue("?", pageSize)
+                    cmd.Parameters.AddWithValue("?", currentPage * pageSize)
+                    Dim da As New Odbc.OdbcDataAdapter(cmd)
+                    Dim dt As New DataTable()
+                    da.Fill(dt)
+                    doctorsDGV.DataSource = dt
+                End Using
+            End Using
+
+            NormalizeDoctorNames(doctorsDGV)
+            Dim totalPages As Integer = If(pageSize > 0, If(totalCount Mod pageSize = 0, totalCount \ pageSize, (totalCount \ pageSize) + 1), 1)
+            If totalPages <= 0 Then totalPages = 1
+            txtPage.Text = "Page " & (currentPage + 1).ToString() & " of " & totalPages.ToString()
+            btnBack.Enabled = currentPage > 0
+            btnNext.Enabled = currentPage < (totalPages - 1)
+        Catch ex As Exception
+            MsgBox("Failed to load data: " & ex.Message, vbCritical, "Error")
+        End Try
     End Sub
     Private Sub txtSearch_GotFocus(sender As Object, e As EventArgs) Handles txtSearch.GotFocus
         If txtSearch.Text = "Search by doctor's name" Then
@@ -17,6 +55,13 @@ Public Class doctors
         If String.IsNullOrWhiteSpace(txtSearch.Text) Then
             txtSearch.Text = "Search by doctor's name"
             txtSearch.ForeColor = Color.Gray
+        End If
+    End Sub
+
+    Private Sub txtSearch_TextChanged(sender As Object, e As EventArgs) Handles txtSearch.TextChanged
+        If String.IsNullOrWhiteSpace(txtSearch.Text) Then
+            currentPage = 0
+            LoadPage()
         End If
     End Sub
     Public Sub DgvStyle(ByRef doctorsDGV As DataGridView)
@@ -55,10 +100,8 @@ Public Class doctors
     End Sub
     Public Sub LoadDoctors()
         Try
-            Call dbConn()
-            Call LoadDGV("SELECT * FROM db_viewdoctors", doctorsDGV)
-            doctorsDGV.ClearSelection()
-            NormalizeDoctorNames(doctorsDGV)
+            currentPage = 0
+            LoadPage()
         Catch ex As Exception
             MsgBox("Failed to load data: " & ex.Message, vbCritical, "Error")
         End Try
@@ -141,7 +184,7 @@ Public Class doctors
         Dim dr As DialogResult = editForm.ShowDialog()
         ' Always reload after dialog closes (save or update)
         Try
-            LoadDoctors()
+            LoadPage()
             NormalizeDoctorNames(doctorsDGV)
         Catch
         End Try
@@ -153,7 +196,7 @@ Public Class doctors
         End Using
         ' Always reload after dialog closes (save or cancel)
         Try
-            LoadDoctors()
+            LoadPage()
             NormalizeDoctorNames(doctorsDGV)
         Catch
         End Try
@@ -165,7 +208,7 @@ Public Class doctors
         End Using
         ' Always reload after dialog closes (save or cancel)
         Try
-            LoadDoctors()
+            LoadPage()
             NormalizeDoctorNames(doctorsDGV)
         Catch
         End Try
@@ -188,18 +231,43 @@ Public Class doctors
         Dim dr As DialogResult = editForm.ShowDialog()
         ' Always reload after dialog closes (save or update)
         Try
-            LoadDoctors()
+            LoadPage()
             NormalizeDoctorNames(doctorsDGV)
         Catch
         End Try
     End Sub
 
     Private Sub btnSearch_Click_1(sender As Object, e As EventArgs) Handles btnSearch.Click
+        If String.IsNullOrWhiteSpace(txtSearch.Text) OrElse txtSearch.Text = "Search by doctor's name" Then
+            currentPage = 0
+            LoadPage()
+            Return
+        End If
+
         Call dbConn()
         Call LoadDGV("SELECT * FROM db_viewdoctors WHERE fullname LIKE ?", doctorsDGV, txtSearch.Text)
         NormalizeDoctorNames(doctorsDGV)
-        If doctorsDGV IsNot Nothing AndAlso doctorsDGV.Rows.Count = 0 Then
+        ' Disable paging controls for filtered results
+        txtPage.Text = "Search results"
+        btnBack.Enabled = False
+        btnNext.Enabled = False
+        If (doctorsDGV IsNot Nothing) AndAlso (doctorsDGV.Rows.Count = 0) Then
             MessageBox.Show("No matching records found.", "Search Results", MessageBoxButtons.OK, MessageBoxIcon.Information)
+        End If
+    End Sub
+
+    Private Sub btnBack_Click(sender As Object, e As EventArgs) Handles btnBack.Click
+        If currentPage > 0 Then
+            currentPage -= 1
+            LoadPage()
+        End If
+    End Sub
+
+    Private Sub btnNext_Click(sender As Object, e As EventArgs) Handles btnNext.Click
+        Dim totalPages As Integer = If(pageSize > 0, If(totalCount Mod pageSize = 0, totalCount \ pageSize, (totalCount \ pageSize) + 1), 1)
+        If currentPage < (totalPages - 1) Then
+            currentPage += 1
+            LoadPage()
         End If
     End Sub
 End Class

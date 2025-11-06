@@ -5,7 +5,7 @@ Module patientMod
 
         Call dbConn()
         ' Load patient data with updated ages from existing age column
-        Call LoadDGV("SELECT * FROM db_viewpatient", patientDGV)
+        Call LoadDGV("SELECT * FROM db_viewpatient ORDER BY patientID DESC", patientDGV)
         patientDGV.ClearSelection()
         DgvStyle(patientDGV)
     End Sub
@@ -56,7 +56,7 @@ Module patientMod
         End If
 
         ' Validate filter
-        Dim validFilters As New List(Of String) From {"Patient Name", "Birthday", "Date Added"}
+        Dim validFilters As New List(Of String) From {"Patient Name", "Birthday"}
         If Not validFilters.Contains(filter) Then
             MessageBox.Show("Please select a valid search filter.", "Invalid Filter", MessageBoxButtons.OK, MessageBoxIcon.Exclamation)
             Return
@@ -70,24 +70,15 @@ Module patientMod
             Dim sql As String = ""
             Select Case filter
                 Case "Patient Name"
-                    sql = "SELECT * FROM db_viewpatient WHERE fullname LIKE ?"
+                    sql = "SELECT * FROM db_viewpatient WHERE fullname LIKE ? ORDER BY patientID DESC"
                     searchValue = "%" & searchValue & "%"
                 Case "Birthday"
-                    ' Validate date format if it's a date search
-                    If Not DateTime.TryParse(searchValue, Nothing) Then
-                        MessageBox.Show("Please enter a valid date format for birthday search.", "Invalid Date", MessageBoxButtons.OK, MessageBoxIcon.Exclamation)
-                        Return
+                    If isDateSearch Then
+                        sql = "SELECT * FROM db_viewpatient WHERE DATE(bday) = ? ORDER BY patientID DESC"
+                    Else
+                        sql = "SELECT * FROM db_viewpatient WHERE DATE_FORMAT(bday, '%Y-%m-%d') LIKE ? ORDER BY patientID DESC"
+                        searchValue = "%" & searchValue & "%"
                     End If
-                    sql = "SELECT * FROM db_viewpatient WHERE DATE_FORMAT(bday, '%Y-%m-%d') LIKE ?"
-                    searchValue = "%" & searchValue & "%"
-                Case "Date Added"
-                    ' Validate date format if it's a date search
-                    If Not DateTime.TryParse(searchValue, Nothing) Then
-                        MessageBox.Show("Please enter a valid date format for date search.", "Invalid Date", MessageBoxButtons.OK, MessageBoxIcon.Exclamation)
-                        Return
-                    End If
-                    sql = "SELECT * FROM db_viewpatient WHERE DATE_FORMAT(date, '%Y-%m-%d') LIKE ?"
-                    searchValue = "%" & searchValue & "%"
             End Select
 
             ' Execute the search
@@ -138,16 +129,16 @@ Module patientMod
             End If
         Next
 
-		' Also refresh Transactions list if it's open so name updates reflect immediately
-		For Each f As Form In Application.OpenForms
-			If TypeOf f Is Transaction Then
-				Try
-					CType(f, Transaction).LoadTransactions()
-				Catch ex As Exception
-					' Non-blocking
-				End Try
-			End If
-		Next
+        ' Also refresh Transactions list if it's open so name updates reflect immediately
+        For Each f As Form In Application.OpenForms
+            If TypeOf f Is Transaction Then
+                Try
+                    CType(f, Transaction).LoadTransactions()
+                Catch ex As Exception
+                    ' Non-blocking
+                End Try
+            End If
+        Next
     End Sub
     Public Sub DgvStyle(ByRef patientDGV As DataGridView)
         ' Basic Grid Setup

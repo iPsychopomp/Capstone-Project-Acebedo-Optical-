@@ -1,6 +1,9 @@
 Imports System.Data.Odbc
 Public Class patientRecord
     Private Const PatientIDColumnName As String = "Column1"
+    Private currentPage As Integer = 0
+    Private pageSize As Integer = 20
+    Private totalCount As Integer = 0
 
     Private Sub btnSearch_Click(sender As Object, e As EventArgs) Handles btnSearch.Click
         Try
@@ -15,27 +18,45 @@ Public Class patientRecord
             Dim filter As String = cmbSearch.Text
             Dim searchValue As String = txtSearch.Text.Trim()
 
-            If filter = "Date Added" OrElse filter = "Birthday" Then
+            ' If search is empty, go back to paginated list
+            If String.IsNullOrWhiteSpace(searchValue) Then
+                currentPage = 0
+                LoadPage()
+                Return
+            End If
+
+            ' Normalize filter to handle labels like "Birthday (DD/MM/YYYY)"
+            Dim normalized As String = filter
+            If normalized.StartsWith("Birthday") Then normalized = "Birthday"
+
+            If normalized = "Birthday" Then
 
                 Dim searchDate As Date
-                If Not Date.TryParse(searchValue, searchDate) Then
-                    MsgBox("Please enter a valid date format (MM/DD/YYYY)", vbExclamation, "Invalid Date")
-                    Return
+                ' Accept DD/MM/YYYY per label; fallback to system parse
+                If Not DateTime.TryParseExact(searchValue, "dd/MM/yyyy", Globalization.CultureInfo.InvariantCulture, Globalization.DateTimeStyles.None, searchDate) Then
+                    If Not Date.TryParse(searchValue, searchDate) Then
+                        MsgBox("Please enter a valid date format (DD/MM/YYYY)", vbExclamation, "Invalid Date")
+                        Return
+                    End If
                 End If
 
                 ' Format date for SQL (MariaDB format)
                 searchValue = searchDate.ToString("yyyy-MM-dd")
 
-                ' For date fields, we'll do exact match in the SearchPatients method
-                patientMod.SearchPatients(filter, searchValue, patientDGV, True)
+                ' Exact date match in the SearchPatients method
+                patientMod.SearchPatients("Birthday", searchValue, patientDGV, True)
             Else
                 ' For text fields, use regular search
-                patientMod.SearchPatients(filter, searchValue, patientDGV, False)
+                patientMod.SearchPatients(normalized, searchValue, patientDGV, False)
             End If
 
         Catch ex As Exception
             MsgBox("Search Error: " & ex.Message, vbCritical, "Error")
         End Try
+        ' When filtered, disable paging controls and show status
+        txtPage.Text = "Search results"
+        btnBack.Enabled = False
+        btnNext.Enabled = False
         DgvStyle(patientDGV)
     End Sub
 
@@ -153,13 +174,12 @@ Public Class patientRecord
             ' Initialize search filter ComboBox (no default selection)
             cmbSearch.Items.Clear()
             cmbSearch.Items.Add("Patient Name")
-            cmbSearch.Items.Add("Date Added")
-            cmbSearch.Items.Add("Birthday")
+            cmbSearch.Items.Add("Birthday (DD/MM/YYYY)")
             cmbSearch.SelectedIndex = -1
             btnSearch.Enabled = False
+            currentPage = 0
+            LoadPage()
 
-            patientMod.LoadPatientData(patientDGV)
-            
             ' Configure column visibility if needed
             'If patientDGV.Columns.Contains(PatientIDColumnName) Then
             '    patientDGV.Columns(PatientIDColumnName).Visible = False ' Hide ID column
@@ -215,13 +235,70 @@ Public Class patientRecord
     Public Sub ReloadPatientData()
         Try
             dbConn()
-            LoadDGV("SELECT * FROM db_viewpatient", patientDGV)
+            LoadPage()
             patientDGV.ClearSelection()
             ' Apply styling after data is reloaded
             DgvStyle(patientDGV)
         Catch ex As Exception
             MsgBox("Failed to load patient data: " & ex.Message, vbCritical, "Error")
         End Try
+    End Sub
+
+    Private Sub LoadPage()
+        Try
+            Dim countSql As String = "SELECT COUNT(*) FROM db_viewpatient"
+            Dim dataSql As String = "SELECT * FROM db_viewpatient ORDER BY patientID DESC LIMIT ? OFFSET ?"
+
+            Using cn As New OdbcConnection(myDSN)
+                cn.Open()
+                Using cmdCount As New OdbcCommand(countSql, cn)
+                    Dim obj = cmdCount.ExecuteScalar()
+                    totalCount = 0
+                    If obj IsNot Nothing AndAlso obj IsNot DBNull.Value Then
+                        Integer.TryParse(obj.ToString(), totalCount)
+                    End If
+                End Using
+
+                Using cmd As New OdbcCommand(dataSql, cn)
+                    cmd.Parameters.AddWithValue("?", pageSize)
+                    cmd.Parameters.AddWithValue("?", currentPage * pageSize)
+                    Dim da As New OdbcDataAdapter(cmd)
+                    Dim dt As New DataTable()
+                    da.Fill(dt)
+                    patientDGV.DataSource = dt
+                End Using
+            End Using
+
+            Dim totalPages As Integer = If(pageSize > 0, If(totalCount Mod pageSize = 0, totalCount \ pageSize, (totalCount \ pageSize) + 1), 1)
+            If totalPages <= 0 Then totalPages = 1
+            txtPage.Text = "Page " & (currentPage + 1).ToString() & " of " & totalPages.ToString()
+            btnBack.Enabled = currentPage > 0
+            btnNext.Enabled = currentPage < (totalPages - 1)
+        Catch ex As Exception
+            MsgBox("Failed to load patients: " & ex.Message, vbCritical, "Error")
+        End Try
+    End Sub
+
+    Private Sub btnBack_Click(sender As Object, e As EventArgs) Handles btnBack.Click
+        If currentPage > 0 Then
+            currentPage -= 1
+            LoadPage()
+        End If
+    End Sub
+
+    Private Sub btnNext_Click(sender As Object, e As EventArgs) Handles btnNext.Click
+        Dim totalPages As Integer = If(pageSize > 0, If(totalCount Mod pageSize = 0, totalCount \ pageSize, (totalCount \ pageSize) + 1), 1)
+        If currentPage < (totalPages - 1) Then
+            currentPage += 1
+            LoadPage()
+        End If
+    End Sub
+
+    Private Sub txtSearch_TextChanged(sender As Object, e As EventArgs) Handles txtSearch.TextChanged
+        If String.IsNullOrWhiteSpace(txtSearch.Text) Then
+            currentPage = 0
+            LoadPage()
+        End If
     End Sub
     Public Sub DgvStyle(ByRef patientDGV As DataGridView)
         ' Basic Grid Setup
@@ -268,6 +345,10 @@ Public Class patientRecord
 
         ' Force refresh to apply changes
         patientDGV.Refresh()
+    End Sub
+
+    Private Sub pnlPatientRecord_Paint(sender As Object, e As PaintEventArgs) Handles pnlPatientRecord.Paint
+
     End Sub
 End Class
 

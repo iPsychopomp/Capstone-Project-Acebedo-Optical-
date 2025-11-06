@@ -39,13 +39,16 @@ Partial Class supplierItems
         Me.btnSearch = New System.Windows.Forms.Button()
         Me.txtSearch = New System.Windows.Forms.TextBox()
         Me.supplierItemDGV = New System.Windows.Forms.DataGridView()
-        Me.Panel1 = New System.Windows.Forms.Panel()
         Me.Column1 = New System.Windows.Forms.DataGridViewTextBoxColumn()
         Me.Column2 = New System.Windows.Forms.DataGridViewTextBoxColumn()
         Me.Column6 = New System.Windows.Forms.DataGridViewTextBoxColumn()
         Me.Column5 = New System.Windows.Forms.DataGridViewTextBoxColumn()
         Me.Column3 = New System.Windows.Forms.DataGridViewTextBoxColumn()
         Me.Column4 = New System.Windows.Forms.DataGridViewTextBoxColumn()
+        Me.Panel1 = New System.Windows.Forms.Panel()
+        Me.txtPage = New System.Windows.Forms.Label()
+        Me.btnNext = New System.Windows.Forms.Button()
+        Me.btnBack = New System.Windows.Forms.Button()
         Me.pnlBar.SuspendLayout()
         CType(Me.PictureBox1, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.supplierItemDGV, System.ComponentModel.ISupportInitialize).BeginInit()
@@ -148,7 +151,6 @@ Partial Class supplierItems
         Me.supplierItemDGV.AlternatingRowsDefaultCellStyle = DataGridViewCellStyle1
         Me.supplierItemDGV.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill
         Me.supplierItemDGV.BackgroundColor = System.Drawing.Color.White
-        Me.supplierItemDGV.BorderStyle = System.Windows.Forms.BorderStyle.None
         Me.supplierItemDGV.CellBorderStyle = System.Windows.Forms.DataGridViewCellBorderStyle.Raised
         DataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter
         DataGridViewCellStyle2.BackColor = System.Drawing.SystemColors.Control
@@ -168,7 +170,6 @@ Partial Class supplierItems
         DataGridViewCellStyle7.SelectionForeColor = System.Drawing.Color.Black
         DataGridViewCellStyle7.WrapMode = System.Windows.Forms.DataGridViewTriState.[False]
         Me.supplierItemDGV.DefaultCellStyle = DataGridViewCellStyle7
-        Me.supplierItemDGV.Dock = System.Windows.Forms.DockStyle.Fill
         Me.supplierItemDGV.GridColor = System.Drawing.Color.Black
         Me.supplierItemDGV.Location = New System.Drawing.Point(0, 117)
         Me.supplierItemDGV.MultiSelect = False
@@ -182,21 +183,8 @@ Partial Class supplierItems
         Me.supplierItemDGV.RowTemplate.Height = 30
         Me.supplierItemDGV.RowTemplate.Resizable = System.Windows.Forms.DataGridViewTriState.[False]
         Me.supplierItemDGV.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect
-        Me.supplierItemDGV.Size = New System.Drawing.Size(1015, 372)
+        Me.supplierItemDGV.Size = New System.Drawing.Size(1015, 338)
         Me.supplierItemDGV.TabIndex = 122
-        '
-        'Panel1
-        '
-        Me.Panel1.BackColor = System.Drawing.SystemColors.Control
-        Me.Panel1.Controls.Add(Me.btnAdd)
-        Me.Panel1.Controls.Add(Me.btnEdit)
-        Me.Panel1.Controls.Add(Me.btnSearch)
-        Me.Panel1.Controls.Add(Me.txtSearch)
-        Me.Panel1.Dock = System.Windows.Forms.DockStyle.Top
-        Me.Panel1.Location = New System.Drawing.Point(0, 49)
-        Me.Panel1.Name = "Panel1"
-        Me.Panel1.Size = New System.Drawing.Size(1015, 68)
-        Me.Panel1.TabIndex = 121
         '
         'Column1
         '
@@ -262,11 +250,71 @@ Partial Class supplierItems
         Me.Column4.Name = "Column4"
         Me.Column4.ReadOnly = True
         '
+        'Panel1
+        '
+        Me.Panel1.BackColor = System.Drawing.SystemColors.Control
+        Me.Panel1.Controls.Add(Me.btnAdd)
+        Me.Panel1.Controls.Add(Me.btnEdit)
+        Me.Panel1.Controls.Add(Me.btnSearch)
+        Me.Panel1.Controls.Add(Me.txtSearch)
+        Me.Panel1.Dock = System.Windows.Forms.DockStyle.Top
+        Me.Panel1.Location = New System.Drawing.Point(0, 49)
+        Me.Panel1.Name = "Panel1"
+        Me.Panel1.Size = New System.Drawing.Size(1015, 68)
+        Me.Panel1.TabIndex = 121
+        '
+        'txtPage
+        '
+        Me.txtPage.Anchor = System.Windows.Forms.AnchorStyles.Bottom
+        Me.txtPage.AutoSize = True
+        Me.txtPage.Location = New System.Drawing.Point(455, 463)
+        Me.txtPage.Name = "txtPage"
+        Me.txtPage.Size = New System.Drawing.Size(61, 23)
+        Me.txtPage.TabIndex = 144
+        Me.txtPage.Text = "Page 1"
+        '
+        'btnNext
+        '
+        Me.btnNext.Anchor = System.Windows.Forms.AnchorStyles.Bottom
+        Me.btnNext.BackColor = System.Drawing.Color.Transparent
+        Me.btnNext.FlatAppearance.BorderSize = 0
+        Me.btnNext.FlatStyle = System.Windows.Forms.FlatStyle.Flat
+        Me.btnNext.Font = New System.Drawing.Font("Segoe UI", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.btnNext.ForeColor = System.Drawing.Color.Black
+        Me.btnNext.Image = CType(resources.GetObject("btnNext.Image"), System.Drawing.Image)
+        Me.btnNext.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft
+        Me.btnNext.Location = New System.Drawing.Point(562, 460)
+        Me.btnNext.Name = "btnNext"
+        Me.btnNext.Size = New System.Drawing.Size(37, 31)
+        Me.btnNext.TabIndex = 143
+        Me.btnNext.TextAlign = System.Drawing.ContentAlignment.MiddleRight
+        Me.btnNext.UseVisualStyleBackColor = False
+        '
+        'btnBack
+        '
+        Me.btnBack.Anchor = System.Windows.Forms.AnchorStyles.Bottom
+        Me.btnBack.BackColor = System.Drawing.Color.Transparent
+        Me.btnBack.FlatAppearance.BorderSize = 0
+        Me.btnBack.FlatStyle = System.Windows.Forms.FlatStyle.Flat
+        Me.btnBack.Font = New System.Drawing.Font("Segoe UI", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.btnBack.ForeColor = System.Drawing.Color.Black
+        Me.btnBack.Image = CType(resources.GetObject("btnBack.Image"), System.Drawing.Image)
+        Me.btnBack.Location = New System.Drawing.Point(412, 460)
+        Me.btnBack.Name = "btnBack"
+        Me.btnBack.Size = New System.Drawing.Size(37, 31)
+        Me.btnBack.TabIndex = 142
+        Me.btnBack.TextAlign = System.Drawing.ContentAlignment.MiddleRight
+        Me.btnBack.UseVisualStyleBackColor = False
+        '
         'supplierItems
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(9.0!, 23.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
+        Me.BackColor = System.Drawing.Color.White
         Me.ClientSize = New System.Drawing.Size(1015, 489)
+        Me.Controls.Add(Me.txtPage)
+        Me.Controls.Add(Me.btnNext)
+        Me.Controls.Add(Me.btnBack)
         Me.Controls.Add(Me.supplierItemDGV)
         Me.Controls.Add(Me.Panel1)
         Me.Controls.Add(Me.pnlBar)
@@ -286,6 +334,7 @@ Partial Class supplierItems
         Me.Panel1.ResumeLayout(False)
         Me.Panel1.PerformLayout()
         Me.ResumeLayout(False)
+        Me.PerformLayout()
 
     End Sub
     Friend WithEvents pnlBar As System.Windows.Forms.Panel
@@ -303,4 +352,7 @@ Partial Class supplierItems
     Friend WithEvents Column5 As System.Windows.Forms.DataGridViewTextBoxColumn
     Friend WithEvents Column3 As System.Windows.Forms.DataGridViewTextBoxColumn
     Friend WithEvents Column4 As System.Windows.Forms.DataGridViewTextBoxColumn
+    Friend WithEvents txtPage As System.Windows.Forms.Label
+    Friend WithEvents btnNext As System.Windows.Forms.Button
+    Friend WithEvents btnBack As System.Windows.Forms.Button
 End Class

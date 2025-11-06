@@ -1,4 +1,4 @@
-﻿Imports System.Drawing
+Imports System.Drawing
 Imports System.Drawing.Drawing2D
 Imports System.Windows.Forms
 
@@ -35,8 +35,11 @@ Public Class MainForm
     End Class
 
     Private Sub MainForm_Load(sender As Object, e As EventArgs) Handles MyBase.Load
-        Me.WindowState = FormWindowState.Maximized
+        Me.FormBorderStyle = FormBorderStyle.None
+        Me.WindowState = FormWindowState.Normal
         Me.Bounds = Screen.PrimaryScreen.Bounds
+        Me.TopMost = False
+        Me.ShowInTaskbar = True
         Me.KeyPreview = True
         tsButtons.Renderer = New CustomToolStripRenderer()
         lblTime.Text = DateTime.Now.ToString("hh:mm:ss tt")
@@ -122,7 +125,7 @@ Public Class MainForm
 
         Dim Patientform As New patientRecord()
         ShowFormControls(Patientform)
-        patientMod.LoadPatientData(Patientform.patientDGV)
+        Patientform.ReloadPatientData()
     End Sub
 
     Private Sub btnCheckUp_Click(sender As Object, e As EventArgs) Handles btnCheckUp.Click

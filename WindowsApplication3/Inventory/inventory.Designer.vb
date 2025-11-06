@@ -23,12 +23,12 @@ Partial Class inventory
     <System.Diagnostics.DebuggerStepThrough()> _
     Private Sub InitializeComponent()
         Me.components = New System.ComponentModel.Container()
+        Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(inventory))
         Dim DataGridViewCellStyle1 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
         Dim DataGridViewCellStyle2 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
         Dim DataGridViewCellStyle11 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
         Dim DataGridViewCellStyle12 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
         Dim DataGridViewCellStyle13 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
-        Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(inventory))
         Dim DataGridViewCellStyle3 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
         Dim DataGridViewCellStyle4 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
         Dim DataGridViewCellStyle5 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
@@ -38,15 +38,10 @@ Partial Class inventory
         Dim DataGridViewCellStyle9 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
         Dim DataGridViewCellStyle10 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
         Me.Panel1 = New System.Windows.Forms.Panel()
+        Me.txtPage = New System.Windows.Forms.Label()
+        Me.btnNext = New System.Windows.Forms.Button()
+        Me.btnBack = New System.Windows.Forms.Button()
         Me.productDGV = New System.Windows.Forms.DataGridView()
-        Me.pnlBar = New System.Windows.Forms.Panel()
-        Me.btnSupplier = New System.Windows.Forms.Button()
-        Me.btnSearch = New System.Windows.Forms.Button()
-        Me.btnDelete = New System.Windows.Forms.Button()
-        Me.btnEdit = New System.Windows.Forms.Button()
-        Me.btnAdd = New System.Windows.Forms.Button()
-        Me.txtSearch = New System.Windows.Forms.TextBox()
-        Me.ToolTip1 = New System.Windows.Forms.ToolTip(Me.components)
         Me.Column1 = New System.Windows.Forms.DataGridViewTextBoxColumn()
         Me.Column2 = New System.Windows.Forms.DataGridViewTextBoxColumn()
         Me.Column3 = New System.Windows.Forms.DataGridViewTextBoxColumn()
@@ -59,6 +54,14 @@ Partial Class inventory
         Me.Column6 = New System.Windows.Forms.DataGridViewTextBoxColumn()
         Me.Column8 = New System.Windows.Forms.DataGridViewTextBoxColumn()
         Me.Column9 = New System.Windows.Forms.DataGridViewTextBoxColumn()
+        Me.pnlBar = New System.Windows.Forms.Panel()
+        Me.btnSupplier = New System.Windows.Forms.Button()
+        Me.btnSearch = New System.Windows.Forms.Button()
+        Me.btnDelete = New System.Windows.Forms.Button()
+        Me.btnEdit = New System.Windows.Forms.Button()
+        Me.btnAdd = New System.Windows.Forms.Button()
+        Me.txtSearch = New System.Windows.Forms.TextBox()
+        Me.ToolTip1 = New System.Windows.Forms.ToolTip(Me.components)
         Me.Panel1.SuspendLayout()
         CType(Me.productDGV, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.pnlBar.SuspendLayout()
@@ -66,7 +69,10 @@ Partial Class inventory
         '
         'Panel1
         '
-        Me.Panel1.BackColor = System.Drawing.SystemColors.ControlLight
+        Me.Panel1.BackColor = System.Drawing.Color.White
+        Me.Panel1.Controls.Add(Me.txtPage)
+        Me.Panel1.Controls.Add(Me.btnNext)
+        Me.Panel1.Controls.Add(Me.btnBack)
         Me.Panel1.Controls.Add(Me.productDGV)
         Me.Panel1.Controls.Add(Me.pnlBar)
         Me.Panel1.Dock = System.Windows.Forms.DockStyle.Fill
@@ -75,12 +81,60 @@ Partial Class inventory
         Me.Panel1.Size = New System.Drawing.Size(1191, 596)
         Me.Panel1.TabIndex = 1
         '
+        'txtPage
+        '
+        Me.txtPage.Anchor = System.Windows.Forms.AnchorStyles.Bottom
+        Me.txtPage.AutoSize = True
+        Me.txtPage.Location = New System.Drawing.Point(546, 568)
+        Me.txtPage.Name = "txtPage"
+        Me.txtPage.Size = New System.Drawing.Size(70, 28)
+        Me.txtPage.TabIndex = 135
+        Me.txtPage.Text = "Page 1"
+        '
+        'btnNext
+        '
+        Me.btnNext.Anchor = System.Windows.Forms.AnchorStyles.Bottom
+        Me.btnNext.BackColor = System.Drawing.Color.Transparent
+        Me.btnNext.FlatAppearance.BorderSize = 0
+        Me.btnNext.FlatStyle = System.Windows.Forms.FlatStyle.Flat
+        Me.btnNext.Font = New System.Drawing.Font("Segoe UI", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.btnNext.ForeColor = System.Drawing.Color.Black
+        Me.btnNext.Image = CType(resources.GetObject("btnNext.Image"), System.Drawing.Image)
+        Me.btnNext.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft
+        Me.btnNext.Location = New System.Drawing.Point(653, 565)
+        Me.btnNext.Name = "btnNext"
+        Me.btnNext.Size = New System.Drawing.Size(37, 31)
+        Me.btnNext.TabIndex = 134
+        Me.btnNext.TextAlign = System.Drawing.ContentAlignment.MiddleRight
+        Me.ToolTip1.SetToolTip(Me.btnNext, "Next Page")
+        Me.btnNext.UseVisualStyleBackColor = False
+        '
+        'btnBack
+        '
+        Me.btnBack.Anchor = System.Windows.Forms.AnchorStyles.Bottom
+        Me.btnBack.BackColor = System.Drawing.Color.Transparent
+        Me.btnBack.FlatAppearance.BorderSize = 0
+        Me.btnBack.FlatStyle = System.Windows.Forms.FlatStyle.Flat
+        Me.btnBack.Font = New System.Drawing.Font("Segoe UI", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.btnBack.ForeColor = System.Drawing.Color.Black
+        Me.btnBack.Image = CType(resources.GetObject("btnBack.Image"), System.Drawing.Image)
+        Me.btnBack.Location = New System.Drawing.Point(503, 565)
+        Me.btnBack.Name = "btnBack"
+        Me.btnBack.Size = New System.Drawing.Size(37, 31)
+        Me.btnBack.TabIndex = 133
+        Me.btnBack.TextAlign = System.Drawing.ContentAlignment.MiddleRight
+        Me.ToolTip1.SetToolTip(Me.btnBack, "Previous Page")
+        Me.btnBack.UseVisualStyleBackColor = False
+        '
         'productDGV
         '
         Me.productDGV.AllowUserToAddRows = False
         Me.productDGV.AllowUserToDeleteRows = False
         DataGridViewCellStyle1.BackColor = System.Drawing.Color.Gainsboro
         Me.productDGV.AlternatingRowsDefaultCellStyle = DataGridViewCellStyle1
+        Me.productDGV.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
+            Or System.Windows.Forms.AnchorStyles.Left) _
+            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.productDGV.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill
         Me.productDGV.BackgroundColor = System.Drawing.Color.White
         Me.productDGV.CellBorderStyle = System.Windows.Forms.DataGridViewCellBorderStyle.Raised
@@ -102,7 +156,6 @@ Partial Class inventory
         DataGridViewCellStyle11.SelectionForeColor = System.Drawing.Color.Black
         DataGridViewCellStyle11.WrapMode = System.Windows.Forms.DataGridViewTriState.[False]
         Me.productDGV.DefaultCellStyle = DataGridViewCellStyle11
-        Me.productDGV.Dock = System.Windows.Forms.DockStyle.Fill
         Me.productDGV.GridColor = System.Drawing.SystemColors.ActiveBorder
         Me.productDGV.Location = New System.Drawing.Point(0, 57)
         Me.productDGV.MultiSelect = False
@@ -122,118 +175,8 @@ Partial Class inventory
         Me.productDGV.RowTemplate.Height = 30
         Me.productDGV.RowTemplate.Resizable = System.Windows.Forms.DataGridViewTriState.[False]
         Me.productDGV.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect
-        Me.productDGV.Size = New System.Drawing.Size(1191, 539)
+        Me.productDGV.Size = New System.Drawing.Size(1191, 508)
         Me.productDGV.TabIndex = 114
-        '
-        'pnlBar
-        '
-        Me.pnlBar.BackColor = System.Drawing.SystemColors.GradientActiveCaption
-        Me.pnlBar.Controls.Add(Me.btnSupplier)
-        Me.pnlBar.Controls.Add(Me.btnSearch)
-        Me.pnlBar.Controls.Add(Me.btnDelete)
-        Me.pnlBar.Controls.Add(Me.btnEdit)
-        Me.pnlBar.Controls.Add(Me.btnAdd)
-        Me.pnlBar.Controls.Add(Me.txtSearch)
-        Me.pnlBar.Dock = System.Windows.Forms.DockStyle.Top
-        Me.pnlBar.Location = New System.Drawing.Point(0, 0)
-        Me.pnlBar.Name = "pnlBar"
-        Me.pnlBar.Size = New System.Drawing.Size(1191, 57)
-        Me.pnlBar.TabIndex = 113
-        '
-        'btnSupplier
-        '
-        Me.btnSupplier.BackColor = System.Drawing.Color.White
-        Me.btnSupplier.FlatStyle = System.Windows.Forms.FlatStyle.Flat
-        Me.btnSupplier.Font = New System.Drawing.Font("Segoe UI", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.btnSupplier.ForeColor = System.Drawing.Color.Black
-        Me.btnSupplier.Image = CType(resources.GetObject("btnSupplier.Image"), System.Drawing.Image)
-        Me.btnSupplier.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft
-        Me.btnSupplier.Location = New System.Drawing.Point(99, 12)
-        Me.btnSupplier.Name = "btnSupplier"
-        Me.btnSupplier.Size = New System.Drawing.Size(112, 35)
-        Me.btnSupplier.TabIndex = 117
-        Me.btnSupplier.Text = "Supplier"
-        Me.btnSupplier.TextAlign = System.Drawing.ContentAlignment.MiddleRight
-        Me.ToolTip1.SetToolTip(Me.btnSupplier, "Suppliers")
-        Me.btnSupplier.UseVisualStyleBackColor = False
-        '
-        'btnSearch
-        '
-        Me.btnSearch.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.btnSearch.BackColor = System.Drawing.Color.White
-        Me.btnSearch.FlatStyle = System.Windows.Forms.FlatStyle.Flat
-        Me.btnSearch.Font = New System.Drawing.Font("Segoe UI", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.btnSearch.ForeColor = System.Drawing.Color.Black
-        Me.btnSearch.Image = CType(resources.GetObject("btnSearch.Image"), System.Drawing.Image)
-        Me.btnSearch.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft
-        Me.btnSearch.Location = New System.Drawing.Point(1082, 12)
-        Me.btnSearch.Name = "btnSearch"
-        Me.btnSearch.Size = New System.Drawing.Size(97, 35)
-        Me.btnSearch.TabIndex = 116
-        Me.btnSearch.Text = "Search"
-        Me.btnSearch.TextAlign = System.Drawing.ContentAlignment.MiddleRight
-        Me.ToolTip1.SetToolTip(Me.btnSearch, "Search")
-        Me.btnSearch.UseVisualStyleBackColor = False
-        '
-        'btnDelete
-        '
-        Me.btnDelete.BackColor = System.Drawing.Color.White
-        Me.btnDelete.FlatStyle = System.Windows.Forms.FlatStyle.Flat
-        Me.btnDelete.Font = New System.Drawing.Font("Segoe UI", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.btnDelete.ForeColor = System.Drawing.Color.Black
-        Me.btnDelete.Image = CType(resources.GetObject("btnDelete.Image"), System.Drawing.Image)
-        Me.btnDelete.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft
-        Me.btnDelete.Location = New System.Drawing.Point(354, 11)
-        Me.btnDelete.Name = "btnDelete"
-        Me.btnDelete.Size = New System.Drawing.Size(94, 40)
-        Me.btnDelete.TabIndex = 115
-        Me.btnDelete.Text = "Delete"
-        Me.btnDelete.TextAlign = System.Drawing.ContentAlignment.MiddleRight
-        Me.btnDelete.UseVisualStyleBackColor = False
-        Me.btnDelete.Visible = False
-        '
-        'btnEdit
-        '
-        Me.btnEdit.BackColor = System.Drawing.Color.White
-        Me.btnEdit.FlatStyle = System.Windows.Forms.FlatStyle.Flat
-        Me.btnEdit.Font = New System.Drawing.Font("Segoe UI", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.btnEdit.ForeColor = System.Drawing.Color.Black
-        Me.btnEdit.Image = CType(resources.GetObject("btnEdit.Image"), System.Drawing.Image)
-        Me.btnEdit.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft
-        Me.btnEdit.Location = New System.Drawing.Point(12, 12)
-        Me.btnEdit.Name = "btnEdit"
-        Me.btnEdit.Size = New System.Drawing.Size(81, 35)
-        Me.btnEdit.TabIndex = 114
-        Me.btnEdit.Text = "Edit"
-        Me.btnEdit.TextAlign = System.Drawing.ContentAlignment.MiddleRight
-        Me.ToolTip1.SetToolTip(Me.btnEdit, "Edit Product")
-        Me.btnEdit.UseVisualStyleBackColor = False
-        '
-        'btnAdd
-        '
-        Me.btnAdd.BackColor = System.Drawing.Color.White
-        Me.btnAdd.FlatStyle = System.Windows.Forms.FlatStyle.Flat
-        Me.btnAdd.Font = New System.Drawing.Font("Segoe UI", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.btnAdd.ForeColor = System.Drawing.Color.Black
-        Me.btnAdd.Image = CType(resources.GetObject("btnAdd.Image"), System.Drawing.Image)
-        Me.btnAdd.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft
-        Me.btnAdd.Location = New System.Drawing.Point(467, 15)
-        Me.btnAdd.Name = "btnAdd"
-        Me.btnAdd.Size = New System.Drawing.Size(81, 35)
-        Me.btnAdd.TabIndex = 113
-        Me.btnAdd.Text = "Add"
-        Me.btnAdd.TextAlign = System.Drawing.ContentAlignment.MiddleRight
-        Me.ToolTip1.SetToolTip(Me.btnAdd, "Add product")
-        Me.btnAdd.UseVisualStyleBackColor = False
-        Me.btnAdd.Visible = False
-        '
-        'txtSearch
-        '
-        Me.txtSearch.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.txtSearch.Location = New System.Drawing.Point(893, 16)
-        Me.txtSearch.Name = "txtSearch"
-        Me.txtSearch.Size = New System.Drawing.Size(183, 34)
-        Me.txtSearch.TabIndex = 112
         '
         'Column1
         '
@@ -377,6 +320,116 @@ Partial Class inventory
         Me.Column9.ReadOnly = True
         Me.Column9.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable
         '
+        'pnlBar
+        '
+        Me.pnlBar.BackColor = System.Drawing.SystemColors.GradientActiveCaption
+        Me.pnlBar.Controls.Add(Me.btnSupplier)
+        Me.pnlBar.Controls.Add(Me.btnSearch)
+        Me.pnlBar.Controls.Add(Me.btnDelete)
+        Me.pnlBar.Controls.Add(Me.btnEdit)
+        Me.pnlBar.Controls.Add(Me.btnAdd)
+        Me.pnlBar.Controls.Add(Me.txtSearch)
+        Me.pnlBar.Dock = System.Windows.Forms.DockStyle.Top
+        Me.pnlBar.Location = New System.Drawing.Point(0, 0)
+        Me.pnlBar.Name = "pnlBar"
+        Me.pnlBar.Size = New System.Drawing.Size(1191, 57)
+        Me.pnlBar.TabIndex = 113
+        '
+        'btnSupplier
+        '
+        Me.btnSupplier.BackColor = System.Drawing.Color.White
+        Me.btnSupplier.FlatStyle = System.Windows.Forms.FlatStyle.Flat
+        Me.btnSupplier.Font = New System.Drawing.Font("Segoe UI", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.btnSupplier.ForeColor = System.Drawing.Color.Black
+        Me.btnSupplier.Image = CType(resources.GetObject("btnSupplier.Image"), System.Drawing.Image)
+        Me.btnSupplier.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft
+        Me.btnSupplier.Location = New System.Drawing.Point(99, 12)
+        Me.btnSupplier.Name = "btnSupplier"
+        Me.btnSupplier.Size = New System.Drawing.Size(112, 35)
+        Me.btnSupplier.TabIndex = 117
+        Me.btnSupplier.Text = "Supplier"
+        Me.btnSupplier.TextAlign = System.Drawing.ContentAlignment.MiddleRight
+        Me.ToolTip1.SetToolTip(Me.btnSupplier, "Suppliers")
+        Me.btnSupplier.UseVisualStyleBackColor = False
+        '
+        'btnSearch
+        '
+        Me.btnSearch.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.btnSearch.BackColor = System.Drawing.Color.White
+        Me.btnSearch.FlatStyle = System.Windows.Forms.FlatStyle.Flat
+        Me.btnSearch.Font = New System.Drawing.Font("Segoe UI", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.btnSearch.ForeColor = System.Drawing.Color.Black
+        Me.btnSearch.Image = CType(resources.GetObject("btnSearch.Image"), System.Drawing.Image)
+        Me.btnSearch.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft
+        Me.btnSearch.Location = New System.Drawing.Point(1082, 12)
+        Me.btnSearch.Name = "btnSearch"
+        Me.btnSearch.Size = New System.Drawing.Size(97, 35)
+        Me.btnSearch.TabIndex = 116
+        Me.btnSearch.Text = "Search"
+        Me.btnSearch.TextAlign = System.Drawing.ContentAlignment.MiddleRight
+        Me.ToolTip1.SetToolTip(Me.btnSearch, "Search")
+        Me.btnSearch.UseVisualStyleBackColor = False
+        '
+        'btnDelete
+        '
+        Me.btnDelete.BackColor = System.Drawing.Color.White
+        Me.btnDelete.FlatStyle = System.Windows.Forms.FlatStyle.Flat
+        Me.btnDelete.Font = New System.Drawing.Font("Segoe UI", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.btnDelete.ForeColor = System.Drawing.Color.Black
+        Me.btnDelete.Image = CType(resources.GetObject("btnDelete.Image"), System.Drawing.Image)
+        Me.btnDelete.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft
+        Me.btnDelete.Location = New System.Drawing.Point(354, 11)
+        Me.btnDelete.Name = "btnDelete"
+        Me.btnDelete.Size = New System.Drawing.Size(94, 40)
+        Me.btnDelete.TabIndex = 115
+        Me.btnDelete.Text = "Delete"
+        Me.btnDelete.TextAlign = System.Drawing.ContentAlignment.MiddleRight
+        Me.btnDelete.UseVisualStyleBackColor = False
+        Me.btnDelete.Visible = False
+        '
+        'btnEdit
+        '
+        Me.btnEdit.BackColor = System.Drawing.Color.White
+        Me.btnEdit.FlatStyle = System.Windows.Forms.FlatStyle.Flat
+        Me.btnEdit.Font = New System.Drawing.Font("Segoe UI", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.btnEdit.ForeColor = System.Drawing.Color.Black
+        Me.btnEdit.Image = CType(resources.GetObject("btnEdit.Image"), System.Drawing.Image)
+        Me.btnEdit.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft
+        Me.btnEdit.Location = New System.Drawing.Point(12, 12)
+        Me.btnEdit.Name = "btnEdit"
+        Me.btnEdit.Size = New System.Drawing.Size(81, 35)
+        Me.btnEdit.TabIndex = 114
+        Me.btnEdit.Text = "Edit"
+        Me.btnEdit.TextAlign = System.Drawing.ContentAlignment.MiddleRight
+        Me.ToolTip1.SetToolTip(Me.btnEdit, "Edit Product")
+        Me.btnEdit.UseVisualStyleBackColor = False
+        '
+        'btnAdd
+        '
+        Me.btnAdd.BackColor = System.Drawing.Color.White
+        Me.btnAdd.FlatStyle = System.Windows.Forms.FlatStyle.Flat
+        Me.btnAdd.Font = New System.Drawing.Font("Segoe UI", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.btnAdd.ForeColor = System.Drawing.Color.Black
+        Me.btnAdd.Image = CType(resources.GetObject("btnAdd.Image"), System.Drawing.Image)
+        Me.btnAdd.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft
+        Me.btnAdd.Location = New System.Drawing.Point(467, 15)
+        Me.btnAdd.Name = "btnAdd"
+        Me.btnAdd.Size = New System.Drawing.Size(81, 35)
+        Me.btnAdd.TabIndex = 113
+        Me.btnAdd.Text = "Add"
+        Me.btnAdd.TextAlign = System.Drawing.ContentAlignment.MiddleRight
+        Me.ToolTip1.SetToolTip(Me.btnAdd, "Add product")
+        Me.btnAdd.UseVisualStyleBackColor = False
+        Me.btnAdd.Visible = False
+        '
+        'txtSearch
+        '
+        Me.txtSearch.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.txtSearch.Location = New System.Drawing.Point(893, 16)
+        Me.txtSearch.Name = "txtSearch"
+        Me.txtSearch.Size = New System.Drawing.Size(183, 34)
+        Me.txtSearch.TabIndex = 112
+        '
         'inventory
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(11.0!, 28.0!)
@@ -390,6 +443,7 @@ Partial Class inventory
         Me.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen
         Me.Text = "inventory"
         Me.Panel1.ResumeLayout(False)
+        Me.Panel1.PerformLayout()
         CType(Me.productDGV, System.ComponentModel.ISupportInitialize).EndInit()
         Me.pnlBar.ResumeLayout(False)
         Me.pnlBar.PerformLayout()
@@ -418,4 +472,7 @@ Partial Class inventory
     Friend WithEvents Column6 As System.Windows.Forms.DataGridViewTextBoxColumn
     Friend WithEvents Column8 As System.Windows.Forms.DataGridViewTextBoxColumn
     Friend WithEvents Column9 As System.Windows.Forms.DataGridViewTextBoxColumn
+    Friend WithEvents txtPage As System.Windows.Forms.Label
+    Friend WithEvents btnNext As System.Windows.Forms.Button
+    Friend WithEvents btnBack As System.Windows.Forms.Button
 End Class

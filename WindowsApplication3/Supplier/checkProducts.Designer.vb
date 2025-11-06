@@ -22,17 +22,17 @@ Partial Class checkProducts
     'Do not modify it using the code editor.
     <System.Diagnostics.DebuggerStepThrough()> _
     Private Sub InitializeComponent()
-        Dim DataGridViewCellStyle1 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
-        Dim DataGridViewCellStyle2 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
-        Dim DataGridViewCellStyle9 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
-        Dim DataGridViewCellStyle10 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
-        Dim DataGridViewCellStyle11 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
-        Dim DataGridViewCellStyle3 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
-        Dim DataGridViewCellStyle4 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
-        Dim DataGridViewCellStyle5 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
-        Dim DataGridViewCellStyle6 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
-        Dim DataGridViewCellStyle7 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
-        Dim DataGridViewCellStyle8 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
+        Dim DataGridViewCellStyle34 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
+        Dim DataGridViewCellStyle35 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
+        Dim DataGridViewCellStyle42 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
+        Dim DataGridViewCellStyle43 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
+        Dim DataGridViewCellStyle44 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
+        Dim DataGridViewCellStyle36 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
+        Dim DataGridViewCellStyle37 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
+        Dim DataGridViewCellStyle38 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
+        Dim DataGridViewCellStyle39 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
+        Dim DataGridViewCellStyle40 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
+        Dim DataGridViewCellStyle41 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(checkProducts))
         Me.dgvOrderItems = New System.Windows.Forms.DataGridView()
         Me.itemID = New System.Windows.Forms.DataGridViewTextBoxColumn()
@@ -50,6 +50,9 @@ Partial Class checkProducts
         Me.PictureBox1 = New System.Windows.Forms.PictureBox()
         Me.Label7 = New System.Windows.Forms.Label()
         Me.btnRemaining = New System.Windows.Forms.Button()
+        Me.txtPage = New System.Windows.Forms.Label()
+        Me.btnNext = New System.Windows.Forms.Button()
+        Me.btnBack = New System.Windows.Forms.Button()
         CType(Me.dgvOrderItems, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.pnlBar.SuspendLayout()
         CType(Me.PictureBox1, System.ComponentModel.ISupportInitialize).BeginInit()
@@ -59,43 +62,43 @@ Partial Class checkProducts
         '
         Me.dgvOrderItems.AllowUserToAddRows = False
         Me.dgvOrderItems.AllowUserToDeleteRows = False
-        DataGridViewCellStyle1.BackColor = System.Drawing.Color.Gainsboro
-        Me.dgvOrderItems.AlternatingRowsDefaultCellStyle = DataGridViewCellStyle1
+        DataGridViewCellStyle34.BackColor = System.Drawing.Color.Gainsboro
+        Me.dgvOrderItems.AlternatingRowsDefaultCellStyle = DataGridViewCellStyle34
         Me.dgvOrderItems.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill
         Me.dgvOrderItems.BackgroundColor = System.Drawing.Color.White
         Me.dgvOrderItems.CellBorderStyle = System.Windows.Forms.DataGridViewCellBorderStyle.Raised
-        DataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter
-        DataGridViewCellStyle2.BackColor = System.Drawing.SystemColors.Control
-        DataGridViewCellStyle2.Font = New System.Drawing.Font("Segoe UI", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        DataGridViewCellStyle2.ForeColor = System.Drawing.SystemColors.WindowText
-        DataGridViewCellStyle2.SelectionBackColor = System.Drawing.Color.SkyBlue
-        DataGridViewCellStyle2.SelectionForeColor = System.Drawing.SystemColors.HighlightText
-        Me.dgvOrderItems.ColumnHeadersDefaultCellStyle = DataGridViewCellStyle2
+        DataGridViewCellStyle35.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter
+        DataGridViewCellStyle35.BackColor = System.Drawing.SystemColors.Control
+        DataGridViewCellStyle35.Font = New System.Drawing.Font("Segoe UI", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        DataGridViewCellStyle35.ForeColor = System.Drawing.SystemColors.WindowText
+        DataGridViewCellStyle35.SelectionBackColor = System.Drawing.Color.SkyBlue
+        DataGridViewCellStyle35.SelectionForeColor = System.Drawing.SystemColors.HighlightText
+        Me.dgvOrderItems.ColumnHeadersDefaultCellStyle = DataGridViewCellStyle35
         Me.dgvOrderItems.ColumnHeadersHeight = 50
         Me.dgvOrderItems.Columns.AddRange(New System.Windows.Forms.DataGridViewColumn() {Me.itemID, Me.Column1, Me.productID, Me.productName, Me.quantity, Me.QuantityReceived, Me.QuantityDefective, Me.pendingQuantity, Me.remarks})
-        DataGridViewCellStyle9.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft
-        DataGridViewCellStyle9.BackColor = System.Drawing.SystemColors.Window
-        DataGridViewCellStyle9.Font = New System.Drawing.Font("Segoe UI", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        DataGridViewCellStyle9.ForeColor = System.Drawing.SystemColors.ControlText
-        DataGridViewCellStyle9.SelectionBackColor = System.Drawing.SystemColors.ActiveCaption
-        DataGridViewCellStyle9.SelectionForeColor = System.Drawing.Color.Black
-        DataGridViewCellStyle9.WrapMode = System.Windows.Forms.DataGridViewTriState.[False]
-        Me.dgvOrderItems.DefaultCellStyle = DataGridViewCellStyle9
+        DataGridViewCellStyle42.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft
+        DataGridViewCellStyle42.BackColor = System.Drawing.SystemColors.Window
+        DataGridViewCellStyle42.Font = New System.Drawing.Font("Segoe UI", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        DataGridViewCellStyle42.ForeColor = System.Drawing.SystemColors.ControlText
+        DataGridViewCellStyle42.SelectionBackColor = System.Drawing.SystemColors.ActiveCaption
+        DataGridViewCellStyle42.SelectionForeColor = System.Drawing.Color.Black
+        DataGridViewCellStyle42.WrapMode = System.Windows.Forms.DataGridViewTriState.[False]
+        Me.dgvOrderItems.DefaultCellStyle = DataGridViewCellStyle42
         Me.dgvOrderItems.GridColor = System.Drawing.Color.Black
         Me.dgvOrderItems.Location = New System.Drawing.Point(-3, 49)
         Me.dgvOrderItems.MultiSelect = False
         Me.dgvOrderItems.Name = "dgvOrderItems"
         Me.dgvOrderItems.ReadOnly = True
-        DataGridViewCellStyle10.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft
-        DataGridViewCellStyle10.BackColor = System.Drawing.SystemColors.Control
-        DataGridViewCellStyle10.Font = New System.Drawing.Font("Segoe UI", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        DataGridViewCellStyle10.ForeColor = System.Drawing.SystemColors.WindowText
-        DataGridViewCellStyle10.SelectionBackColor = System.Drawing.Color.SkyBlue
-        DataGridViewCellStyle10.SelectionForeColor = System.Drawing.SystemColors.HighlightText
-        Me.dgvOrderItems.RowHeadersDefaultCellStyle = DataGridViewCellStyle10
+        DataGridViewCellStyle43.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft
+        DataGridViewCellStyle43.BackColor = System.Drawing.SystemColors.Control
+        DataGridViewCellStyle43.Font = New System.Drawing.Font("Segoe UI", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        DataGridViewCellStyle43.ForeColor = System.Drawing.SystemColors.WindowText
+        DataGridViewCellStyle43.SelectionBackColor = System.Drawing.Color.SkyBlue
+        DataGridViewCellStyle43.SelectionForeColor = System.Drawing.SystemColors.HighlightText
+        Me.dgvOrderItems.RowHeadersDefaultCellStyle = DataGridViewCellStyle43
         Me.dgvOrderItems.RowHeadersVisible = False
-        DataGridViewCellStyle11.Font = New System.Drawing.Font("Segoe UI", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.dgvOrderItems.RowsDefaultCellStyle = DataGridViewCellStyle11
+        DataGridViewCellStyle44.Font = New System.Drawing.Font("Segoe UI", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.dgvOrderItems.RowsDefaultCellStyle = DataGridViewCellStyle44
         Me.dgvOrderItems.RowTemplate.Height = 40
         Me.dgvOrderItems.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect
         Me.dgvOrderItems.Size = New System.Drawing.Size(1023, 424)
@@ -120,8 +123,8 @@ Partial Class checkProducts
         'productID
         '
         Me.productID.DataPropertyName = "productID"
-        DataGridViewCellStyle3.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight
-        Me.productID.DefaultCellStyle = DataGridViewCellStyle3
+        DataGridViewCellStyle36.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight
+        Me.productID.DefaultCellStyle = DataGridViewCellStyle36
         Me.productID.FillWeight = 60.0!
         Me.productID.HeaderText = "Product ID"
         Me.productID.Name = "productID"
@@ -130,8 +133,8 @@ Partial Class checkProducts
         'productName
         '
         Me.productName.DataPropertyName = "productName"
-        DataGridViewCellStyle4.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter
-        Me.productName.DefaultCellStyle = DataGridViewCellStyle4
+        DataGridViewCellStyle37.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter
+        Me.productName.DefaultCellStyle = DataGridViewCellStyle37
         Me.productName.FillWeight = 120.0!
         Me.productName.HeaderText = "Product Name"
         Me.productName.Name = "productName"
@@ -140,8 +143,8 @@ Partial Class checkProducts
         'quantity
         '
         Me.quantity.DataPropertyName = "quantity"
-        DataGridViewCellStyle5.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight
-        Me.quantity.DefaultCellStyle = DataGridViewCellStyle5
+        DataGridViewCellStyle38.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight
+        Me.quantity.DefaultCellStyle = DataGridViewCellStyle38
         Me.quantity.FillWeight = 90.0!
         Me.quantity.HeaderText = "Quantity Ordered"
         Me.quantity.Name = "quantity"
@@ -150,8 +153,8 @@ Partial Class checkProducts
         'QuantityReceived
         '
         Me.QuantityReceived.DataPropertyName = "quantityReceived"
-        DataGridViewCellStyle6.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight
-        Me.QuantityReceived.DefaultCellStyle = DataGridViewCellStyle6
+        DataGridViewCellStyle39.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight
+        Me.QuantityReceived.DefaultCellStyle = DataGridViewCellStyle39
         Me.QuantityReceived.FillWeight = 90.0!
         Me.QuantityReceived.HeaderText = "Quantity Received"
         Me.QuantityReceived.Name = "QuantityReceived"
@@ -160,8 +163,8 @@ Partial Class checkProducts
         'QuantityDefective
         '
         Me.QuantityDefective.DataPropertyName = "quantityDefective"
-        DataGridViewCellStyle7.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight
-        Me.QuantityDefective.DefaultCellStyle = DataGridViewCellStyle7
+        DataGridViewCellStyle40.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight
+        Me.QuantityDefective.DefaultCellStyle = DataGridViewCellStyle40
         Me.QuantityDefective.FillWeight = 90.0!
         Me.QuantityDefective.HeaderText = "Quantity Defective"
         Me.QuantityDefective.Name = "QuantityDefective"
@@ -169,8 +172,8 @@ Partial Class checkProducts
         '
         'pendingQuantity
         '
-        DataGridViewCellStyle8.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight
-        Me.pendingQuantity.DefaultCellStyle = DataGridViewCellStyle8
+        DataGridViewCellStyle41.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight
+        Me.pendingQuantity.DefaultCellStyle = DataGridViewCellStyle41
         Me.pendingQuantity.FillWeight = 90.0!
         Me.pendingQuantity.HeaderText = "Pending Quantity"
         Me.pendingQuantity.Name = "pendingQuantity"
@@ -190,7 +193,7 @@ Partial Class checkProducts
         Me.btnOrderReceived.Font = New System.Drawing.Font("Segoe UI", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.btnOrderReceived.ForeColor = System.Drawing.Color.Black
         Me.btnOrderReceived.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft
-        Me.btnOrderReceived.Location = New System.Drawing.Point(37, 495)
+        Me.btnOrderReceived.Location = New System.Drawing.Point(37, 531)
         Me.btnOrderReceived.Margin = New System.Windows.Forms.Padding(3, 2, 3, 2)
         Me.btnOrderReceived.Name = "btnOrderReceived"
         Me.btnOrderReceived.Size = New System.Drawing.Size(120, 27)
@@ -205,7 +208,7 @@ Partial Class checkProducts
         Me.btnClose.Font = New System.Drawing.Font("Segoe UI", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.btnClose.ForeColor = System.Drawing.Color.Black
         Me.btnClose.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft
-        Me.btnClose.Location = New System.Drawing.Point(878, 495)
+        Me.btnClose.Location = New System.Drawing.Point(878, 531)
         Me.btnClose.Margin = New System.Windows.Forms.Padding(3, 2, 3, 2)
         Me.btnClose.Name = "btnClose"
         Me.btnClose.Size = New System.Drawing.Size(100, 27)
@@ -250,7 +253,7 @@ Partial Class checkProducts
         Me.btnRemaining.Font = New System.Drawing.Font("Segoe UI", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.btnRemaining.ForeColor = System.Drawing.Color.Black
         Me.btnRemaining.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft
-        Me.btnRemaining.Location = New System.Drawing.Point(163, 495)
+        Me.btnRemaining.Location = New System.Drawing.Point(163, 531)
         Me.btnRemaining.Margin = New System.Windows.Forms.Padding(3, 2, 3, 2)
         Me.btnRemaining.Name = "btnRemaining"
         Me.btnRemaining.Size = New System.Drawing.Size(221, 27)
@@ -258,11 +261,57 @@ Partial Class checkProducts
         Me.btnRemaining.Text = "Cancel Remaining Items"
         Me.btnRemaining.UseVisualStyleBackColor = False
         '
+        'txtPage
+        '
+        Me.txtPage.Anchor = System.Windows.Forms.AnchorStyles.Bottom
+        Me.txtPage.AutoSize = True
+        Me.txtPage.Location = New System.Drawing.Point(479, 476)
+        Me.txtPage.Name = "txtPage"
+        Me.txtPage.Size = New System.Drawing.Size(70, 28)
+        Me.txtPage.TabIndex = 247
+        Me.txtPage.Text = "Page 1"
+        '
+        'btnNext
+        '
+        Me.btnNext.Anchor = System.Windows.Forms.AnchorStyles.Bottom
+        Me.btnNext.BackColor = System.Drawing.Color.Transparent
+        Me.btnNext.FlatAppearance.BorderSize = 0
+        Me.btnNext.FlatStyle = System.Windows.Forms.FlatStyle.Flat
+        Me.btnNext.Font = New System.Drawing.Font("Segoe UI", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.btnNext.ForeColor = System.Drawing.Color.Black
+        Me.btnNext.Image = CType(resources.GetObject("btnNext.Image"), System.Drawing.Image)
+        Me.btnNext.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft
+        Me.btnNext.Location = New System.Drawing.Point(572, 473)
+        Me.btnNext.Name = "btnNext"
+        Me.btnNext.Size = New System.Drawing.Size(37, 31)
+        Me.btnNext.TabIndex = 246
+        Me.btnNext.TextAlign = System.Drawing.ContentAlignment.MiddleRight
+        Me.btnNext.UseVisualStyleBackColor = False
+        '
+        'btnBack
+        '
+        Me.btnBack.Anchor = System.Windows.Forms.AnchorStyles.Bottom
+        Me.btnBack.BackColor = System.Drawing.Color.Transparent
+        Me.btnBack.FlatAppearance.BorderSize = 0
+        Me.btnBack.FlatStyle = System.Windows.Forms.FlatStyle.Flat
+        Me.btnBack.Font = New System.Drawing.Font("Segoe UI", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.btnBack.ForeColor = System.Drawing.Color.Black
+        Me.btnBack.Image = CType(resources.GetObject("btnBack.Image"), System.Drawing.Image)
+        Me.btnBack.Location = New System.Drawing.Point(422, 473)
+        Me.btnBack.Name = "btnBack"
+        Me.btnBack.Size = New System.Drawing.Size(37, 31)
+        Me.btnBack.TabIndex = 245
+        Me.btnBack.TextAlign = System.Drawing.ContentAlignment.MiddleRight
+        Me.btnBack.UseVisualStyleBackColor = False
+        '
         'checkProducts
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(11.0!, 28.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
-        Me.ClientSize = New System.Drawing.Size(1019, 548)
+        Me.ClientSize = New System.Drawing.Size(1019, 580)
+        Me.Controls.Add(Me.txtPage)
+        Me.Controls.Add(Me.btnNext)
+        Me.Controls.Add(Me.btnBack)
         Me.Controls.Add(Me.btnRemaining)
         Me.Controls.Add(Me.pnlBar)
         Me.Controls.Add(Me.btnClose)
@@ -282,6 +331,7 @@ Partial Class checkProducts
         Me.pnlBar.PerformLayout()
         CType(Me.PictureBox1, System.ComponentModel.ISupportInitialize).EndInit()
         Me.ResumeLayout(False)
+        Me.PerformLayout()
 
     End Sub
     Friend WithEvents dgvOrderItems As System.Windows.Forms.DataGridView
@@ -300,4 +350,7 @@ Partial Class checkProducts
     Friend WithEvents PictureBox1 As System.Windows.Forms.PictureBox
     Friend WithEvents Label7 As System.Windows.Forms.Label
     Friend WithEvents btnRemaining As System.Windows.Forms.Button
+    Friend WithEvents txtPage As System.Windows.Forms.Label
+    Friend WithEvents btnNext As System.Windows.Forms.Button
+    Friend WithEvents btnBack As System.Windows.Forms.Button
 End Class

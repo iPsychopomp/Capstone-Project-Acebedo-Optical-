@@ -32,6 +32,7 @@ Partial Class MainForm
         Me.MenuStrip = New System.Windows.Forms.MenuStrip()
         Me.FileToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.LogoutToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
+        Me.ProfileToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.ExitToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.ManageInventoryToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.StockInToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
@@ -57,7 +58,6 @@ Partial Class MainForm
         Me.btnInventory = New System.Windows.Forms.ToolStripButton()
         Me.btnDoctors = New System.Windows.Forms.ToolStripButton()
         Me.pnlContainer = New System.Windows.Forms.Panel()
-        Me.ProfileToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.pnlFooter.SuspendLayout()
         Me.MenuStrip.SuspendLayout()
         Me.tsButtons.SuspendLayout()
@@ -136,13 +136,19 @@ Partial Class MainForm
         'LogoutToolStripMenuItem
         '
         Me.LogoutToolStripMenuItem.Name = "LogoutToolStripMenuItem"
-        Me.LogoutToolStripMenuItem.Size = New System.Drawing.Size(181, 30)
+        Me.LogoutToolStripMenuItem.Size = New System.Drawing.Size(149, 30)
         Me.LogoutToolStripMenuItem.Text = "Logout"
+        '
+        'ProfileToolStripMenuItem
+        '
+        Me.ProfileToolStripMenuItem.Name = "ProfileToolStripMenuItem"
+        Me.ProfileToolStripMenuItem.Size = New System.Drawing.Size(149, 30)
+        Me.ProfileToolStripMenuItem.Text = "Profile"
         '
         'ExitToolStripMenuItem
         '
         Me.ExitToolStripMenuItem.Name = "ExitToolStripMenuItem"
-        Me.ExitToolStripMenuItem.Size = New System.Drawing.Size(181, 30)
+        Me.ExitToolStripMenuItem.Size = New System.Drawing.Size(149, 30)
         Me.ExitToolStripMenuItem.Text = "Exit"
         '
         'ManageInventoryToolStripMenuItem
@@ -374,12 +380,6 @@ Partial Class MainForm
         Me.pnlContainer.Size = New System.Drawing.Size(1207, 663)
         Me.pnlContainer.TabIndex = 13
         '
-        'ProfileToolStripMenuItem
-        '
-        Me.ProfileToolStripMenuItem.Name = "ProfileToolStripMenuItem"
-        Me.ProfileToolStripMenuItem.Size = New System.Drawing.Size(181, 30)
-        Me.ProfileToolStripMenuItem.Text = "Profile"
-        '
         'MainForm
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(11.0!, 28.0!)
@@ -392,6 +392,8 @@ Partial Class MainForm
         Me.Font = New System.Drawing.Font("Segoe UI", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.Icon = CType(resources.GetObject("$this.Icon"), System.Drawing.Icon)
         Me.Margin = New System.Windows.Forms.Padding(4, 5, 4, 5)
+        Me.MaximizeBox = False
+        Me.MinimizeBox = False
         Me.Name = "MainForm"
         Me.SizeGripStyle = System.Windows.Forms.SizeGripStyle.Hide
         Me.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen

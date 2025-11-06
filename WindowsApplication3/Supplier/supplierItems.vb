@@ -1,6 +1,9 @@
 Public Class supplierItems
     ' Optional filter: when set (>0), only show items for this supplier ID
     Public Property SupplierIdFilter As Integer = 0
+    Private currentPage As Integer = 0
+    Private pageSize As Integer = 20
+    Private totalCount As Integer = 0
 
     Private dgvSupplierItems As DataGridView
     Private lblMessage As Label
@@ -15,7 +18,8 @@ Public Class supplierItems
             Dim dgv As DataGridView = FindDataGridView()
             If dgv IsNot Nothing Then
                 Me.DgvStyle(dgv)
-                LoadSupplierItems()
+                currentPage = 0
+                LoadPage()
             Else
                 ' If no DataGridView found, just show a message and continue
                 ' The form will still open, just without data loading
@@ -204,68 +208,8 @@ Public Class supplierItems
 
     Private Sub LoadSupplierItems()
         Try
-            Dim dgv As DataGridView = FindDataGridView()
-            If dgv Is Nothing Then
-                ' No DataGridView found, just return silently
-                Return
-            End If
-
-            Call dbConn()
-
-            ' Prepare unified table schema
-            Dim dt As New DataTable()
-            dt.Columns.Add("sProductID", GetType(Integer))
-            dt.Columns.Add("product_name", GetType(String))
-            dt.Columns.Add("category", GetType(String))
-            dt.Columns.Add("description", GetType(String))
-            dt.Columns.Add("product_price", GetType(Decimal))
-            dt.Columns.Add("status", GetType(String))
-            'dt.Columns.Add("supplierName", GetType(String))
-
-            ' 1) Load from tbl_supplier_products with inventory stock check
-            ' Join with tbl_products to check if item exists in inventory and its quantity
-            ' If quantity = 0, set status to "Inactive", otherwise keep original status
-            Dim q1 As String = "SELECT sp.sProductID, sp.product_name, sp.category, sp.description, sp.product_price, " & _
-                               "CASE " & _
-                               "  WHEN p.productID IS NOT NULL AND p.stockQuantity = 0 THEN 'Inactive' " & _
-                               "  ELSE COALESCE(sp.status, 'Active') " & _
-                               "END AS status " & _
-                               "FROM tbl_supplier_products sp " & _
-                               "LEFT JOIN tbl_products p ON UPPER(TRIM(p.productName)) = UPPER(TRIM(sp.product_name)) " & _
-                               If(SupplierIdFilter > 0, "WHERE sp.supplierID = ? ", "") & _
-                               "ORDER BY sp.product_name"
-
-            Using cmd1 As New Odbc.OdbcCommand(q1, conn)
-                If SupplierIdFilter > 0 Then cmd1.Parameters.AddWithValue("?", SupplierIdFilter)
-                Using r1 = cmd1.ExecuteReader()
-                    While r1.Read()
-                        Dim row = dt.NewRow()
-                        row("sProductID") = If(IsDBNull(r1("sProductID")), 0, Convert.ToInt32(r1("sProductID")))
-                        row("product_name") = r1("product_name").ToString()
-                        row("category") = r1("category").ToString()
-                        row("description") = r1("description").ToString()
-                        row("product_price") = If(IsDBNull(r1("product_price")), 0D, Convert.ToDecimal(r1("product_price")))
-                        row("status") = If(IsDBNull(r1("status")), "Active", r1("status").ToString())
-                        dt.Rows.Add(row)
-                    End While
-                End Using
-            End Using
-
-            ' Do NOT load from inventory tbl_products here. This view is strictly for supplier catalog items.
-
-            ' Bind merged results
-            dgv.AutoGenerateColumns = True
-            dgv.DataSource = dt
-
-            ' Format columns
-            If dgv.Columns.Contains("sProductID") Then dgv.Columns("sProductID").HeaderText = "Product ID"
-            If dgv.Columns.Contains("product_name") Then dgv.Columns("product_name").HeaderText = "Product Name"
-            If dgv.Columns.Contains("product_price") Then
-                dgv.Columns("product_price").HeaderText = "Product Price"
-                dgv.Columns("product_price").DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleRight
-            End If
-
-            If conn.State = ConnectionState.Open Then conn.Close()
+            ' Delegate to paginated loader
+            LoadPage()
 
         Catch ex As Exception
             ' Don't show error message, just fail silently
@@ -294,23 +238,24 @@ Public Class supplierItems
         End Try
     End Sub
 
-
     Private Sub btnSearch_Click(sender As Object, e As EventArgs) Handles btnSearch.Click
         Try
             Dim term As String = txtSearch.Text.Trim()
-            Call dbConn()
             If String.IsNullOrWhiteSpace(term) Then
-                ' Load all when search is empty
-                LoadSupplierItems()
+                ' Reset to paginated list
+                currentPage = 0
+                LoadPage()
             Else
                 ' Search by product name only (partial match)
                 Dim dgv As DataGridView = FindDataGridView()
                 If dgv Is Nothing Then Return
 
                 Dim sb As New System.Text.StringBuilder()
+
                 sb.Append("SELECT sp.sProductID, sp.product_name, sp.category, sp.description, sp.product_price, ")
                 sb.Append("CASE ")
-                sb.Append("  WHEN p.productID IS NOT NULL AND p.stockQuantity = 0 THEN 'Inactive' ")
+                sb.Append("  WHEN p.productID IS NULL THEN 'Inactive' ")
+                sb.Append("  WHEN p.stockQuantity <= 0 THEN 'Inactive' ")
                 sb.Append("  ELSE COALESCE(sp.status, 'Active') ")
                 sb.Append("END AS status ")
                 sb.Append("FROM tbl_supplier_products sp ")
@@ -321,6 +266,7 @@ Public Class supplierItems
                 End If
                 sb.Append("ORDER BY sp.product_name")
 
+                Call dbConn()
                 Using cmd As New Odbc.OdbcCommand(sb.ToString(), conn)
                     cmd.Parameters.AddWithValue("?", "%" & term & "%")
                     If SupplierIdFilter > 0 Then
@@ -354,7 +300,18 @@ Public Class supplierItems
             Catch
             End Try
         End Try
+        ' When filtered, disable paging controls
+        txtPage.Text = "Search results"
+        btnBack.Enabled = False
+        btnNext.Enabled = False
         DgvStyle(FindDataGridView())
+    End Sub
+
+    Private Sub txtSearch_TextChanged(sender As Object, e As EventArgs) Handles txtSearch.TextChanged
+        If String.IsNullOrWhiteSpace(txtSearch.Text) Then
+            currentPage = 0
+            LoadPage()
+        End If
     End Sub
 
     ' Event handler to format product price column with peso sign and status column with colors
@@ -395,4 +352,68 @@ Public Class supplierItems
         End Try
     End Sub
 
+    Private Sub LoadPage()
+        Try
+            Dim hasFilter As Boolean = SupplierIdFilter > 0
+            Dim countSql As String = "SELECT COUNT(*) FROM tbl_supplier_products" & If(hasFilter, " WHERE supplierID = ?", "")
+
+            Dim dataSql As New System.Text.StringBuilder()
+            dataSql.Append("SELECT sp.sProductID, sp.product_name, sp.category, sp.description, sp.product_price, ")
+            dataSql.Append("CASE ")
+            dataSql.Append("  WHEN p.productID IS NULL THEN 'Inactive' ")
+            dataSql.Append("  WHEN p.stockQuantity <= 0 THEN 'Inactive' ")
+            dataSql.Append("  ELSE COALESCE(sp.status, 'Active') ")
+            dataSql.Append("END AS status ")
+            dataSql.Append("FROM tbl_supplier_products sp ")
+            dataSql.Append("LEFT JOIN tbl_products p ON UPPER(TRIM(p.productName)) = UPPER(TRIM(sp.product_name)) ")
+            If hasFilter Then dataSql.Append("WHERE sp.supplierID = ? ")
+            dataSql.Append("ORDER BY sp.product_name LIMIT ? OFFSET ?")
+
+            Using cn As New Odbc.OdbcConnection(myDSN)
+                cn.Open()
+                Using cmdCount As New Odbc.OdbcCommand(countSql, cn)
+                    If hasFilter Then cmdCount.Parameters.AddWithValue("?", SupplierIdFilter)
+                    Dim obj = cmdCount.ExecuteScalar()
+                    totalCount = 0
+                    If obj IsNot Nothing AndAlso obj IsNot DBNull.Value Then
+                        Integer.TryParse(obj.ToString(), totalCount)
+                    End If
+                End Using
+
+                Using cmd As New Odbc.OdbcCommand(dataSql.ToString(), cn)
+                    If hasFilter Then cmd.Parameters.AddWithValue("?", SupplierIdFilter)
+                    cmd.Parameters.AddWithValue("?", pageSize)
+                    cmd.Parameters.AddWithValue("?", currentPage * pageSize)
+                    Dim da As New Odbc.OdbcDataAdapter(cmd)
+                    Dim dt As New DataTable()
+                    da.Fill(dt)
+                    supplierItemDGV.AutoGenerateColumns = True
+                    supplierItemDGV.DataSource = dt
+                End Using
+            End Using
+
+            Dim totalPages As Integer = If(pageSize > 0, If(totalCount Mod pageSize = 0, totalCount \ pageSize, (totalCount \ pageSize) + 1), 1)
+            If totalPages <= 0 Then totalPages = 1
+            txtPage.Text = "Page " & (currentPage + 1).ToString() & " of " & totalPages.ToString()
+            btnBack.Enabled = currentPage > 0
+            btnNext.Enabled = currentPage < (totalPages - 1)
+        Catch ex As Exception
+            ' non-blocking
+        End Try
+    End Sub
+
+    Private Sub btnBack_Click(sender As Object, e As EventArgs) Handles btnBack.Click
+        If currentPage > 0 Then
+            currentPage -= 1
+            LoadPage()
+        End If
+    End Sub
+
+    Private Sub btnNext_Click(sender As Object, e As EventArgs) Handles btnNext.Click
+        Dim totalPages As Integer = If(pageSize > 0, If(totalCount Mod pageSize = 0, totalCount \ pageSize, (totalCount \ pageSize) + 1), 1)
+        If currentPage < (totalPages - 1) Then
+            currentPage += 1
+            LoadPage()
+        End If
+    End Sub
 End Class

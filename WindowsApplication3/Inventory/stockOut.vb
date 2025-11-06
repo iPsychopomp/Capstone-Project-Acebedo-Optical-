@@ -1,5 +1,8 @@
 ﻿Imports System.Data.Odbc
 Public Class stockOUT
+    Private currentPage As Integer = 0
+    Private pageSize As Integer = 20
+    Private totalCount As Integer = 0
 
     Private Sub ComputeTotalCost()
         Dim costPerItem As Decimal
@@ -105,8 +108,8 @@ Public Class stockOUT
 
                 MsgBox("Stock-out recorded successfully!", vbInformation, "Success")
 
-                ' Reload the stock out DGV
-                LoadDGV("SELECT * FROM db_viewstockout", Me.StockOutDGV)
+                ' Reload the stock out DGV (paginated)
+                LoadPage()
 
                 ' Refresh the inventory form if it's open
                 For Each frm As Form In Application.OpenForms
@@ -239,7 +242,8 @@ Public Class stockOUT
     Private Sub stockOUT_Load(sender As Object, e As EventArgs) Handles MyBase.Load
         LoadProducts()
         ComputeTotalCost()
-        Call LoadDGV("SELECT * FROM db_viewstockout", StockOutDGV)
+        currentPage = 0
+        LoadPage()
         DgvStyle(StockOutDGV)
 
         ' Set issued by to logged in user's full name
@@ -303,5 +307,43 @@ Public Class stockOUT
         Catch ex As Exception
             ' Silently fail if dashboard is not open
         End Try
+    End Sub
+
+    Private Sub LoadPage()
+        Try
+            Call dbConn()
+            If conn Is Nothing OrElse conn.State <> ConnectionState.Open Then
+                MsgBox("Database connection is not open. Please check your connection.", vbCritical, "Connection Error")
+                Exit Sub
+            End If
+
+            Dim countSql As String = "SELECT COUNT(*) FROM db_viewstockout"
+            Using cmdCount As New Odbc.OdbcCommand(countSql, conn)
+                Dim obj = cmdCount.ExecuteScalar()
+                totalCount = 0
+                If obj IsNot Nothing AndAlso obj IsNot DBNull.Value Then Integer.TryParse(obj.ToString(), totalCount)
+            End Using
+
+            Dim dataSql As String = "SELECT * FROM db_viewstockout LIMIT ? OFFSET ?"
+            Dim dt As New DataTable()
+            Using cmd As New Odbc.OdbcCommand(dataSql, conn)
+                cmd.Parameters.AddWithValue("?", pageSize)
+                cmd.Parameters.AddWithValue("?", currentPage * pageSize)
+                Using da As New Odbc.OdbcDataAdapter(cmd)
+                    da.Fill(dt)
+                End Using
+            End Using
+
+            StockOutDGV.AutoGenerateColumns = False
+            StockOutDGV.DataSource = dt
+
+        Catch ex As Exception
+            MsgBox("Error loading stock-out items: " & ex.Message, vbCritical, "Error")
+        Finally
+            If conn IsNot Nothing AndAlso conn.State = ConnectionState.Open Then
+                conn.Close()
+            End If
+        End Try
+        DgvStyle(StockOutDGV)
     End Sub
 End Class

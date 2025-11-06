@@ -2,22 +2,37 @@ Public Class checkUp
     Private isEditing As Boolean = False
     Private currentCheckupID As Integer = 0
     Public DataSaved As Boolean = False
+    Private currentPage As Integer = 0
+    Private pageSize As Integer = 20
+    Private totalCount As Integer = 0
 
 
     Private Sub checkUp_Load(sender As Object, e As EventArgs) Handles MyBase.Load
         ' Ensure we always use the designed columns (headers/order) and not auto-generated ones
         DgvStyle(checkUpDGV)
         checkUpDGV.AutoGenerateColumns = False
-        modCheckUp.LoadCheckUpData(checkUpDGV)
+        currentPage = 0
+        LoadPage()
 
         ' Initialize the ComboBox items (no default selection)
         cmbFilter.Items.Clear()
         cmbFilter.Items.Add("Patient Name")
         cmbFilter.Items.Add("Doctor Name")
-        cmbFilter.Items.Add("All Records")
         cmbFilter.SelectedIndex = -1
         btnSearch.Enabled = False
     End Sub
+    Private Sub LoadPage()
+        modCheckUp.LoadCheckUpPage(checkUpDGV, currentPage, pageSize, totalCount)
+        Dim totalPages As Integer = 0
+        If pageSize > 0 Then
+            totalPages = If(totalCount Mod pageSize = 0, totalCount \ pageSize, (totalCount \ pageSize) + 1)
+        End If
+        If totalPages <= 0 Then totalPages = 1
+        txtPage.Text = "Page " & (currentPage + 1).ToString() & " of " & totalPages.ToString()
+        btnBack.Enabled = currentPage > 0
+        btnNext.Enabled = currentPage < (totalPages - 1)
+    End Sub
+
     Public Sub DgvStyle(ByRef checkUpDGV As DataGridView)
         ' Basic Grid Setup
         checkUpDGV.AutoGenerateColumns = False
@@ -56,7 +71,7 @@ Public Class checkUp
     Private Sub btnNew_Click(sender As Object, e As EventArgs) Handles btnNew.Click
         Using check As New CreateCheckUp
             If check.ShowDialog() = DialogResult.OK AndAlso check.DataSaved Then
-                modCheckUp.LoadCheckUpData(checkUpDGV)
+                LoadPage()
             End If
         End Using
 
@@ -107,7 +122,7 @@ Public Class checkUp
 
                     If editCheckup.ShowDialog() = DialogResult.OK AndAlso editCheckup.DataSaved Then
                         ' Refresh the DGV after successful update
-                        modCheckUp.LoadCheckUpData(checkUpDGV)
+                        LoadPage()
                     End If
                 End Using
             End If
@@ -129,16 +144,42 @@ Public Class checkUp
             Dim filter As String = cmbFilter.Text
             Dim searchValue As String = txtSearch.Text.Trim()
 
-            If String.IsNullOrEmpty(searchValue) OrElse filter = "All Records" Then
-                modCheckUp.LoadCheckUpData(checkUpDGV)
+            If String.IsNullOrEmpty(searchValue) Then
+                currentPage = 0
+                LoadPage()
                 Return
             End If
 
             ' Call the search method
             modCheckUp.SearchCheckUps(filter, searchValue, checkUpDGV)
+            ' Disable paging controls for filtered results
+            txtPage.Text = "Search results"
+            btnBack.Enabled = False
+            btnNext.Enabled = False
 
         Catch ex As Exception
             MsgBox("Search Error: " & ex.Message, vbCritical, "Error")
         End Try
+    End Sub
+
+    Private Sub btnBack_Click(sender As Object, e As EventArgs) Handles btnBack.Click
+        If currentPage > 0 Then
+            currentPage -= 1
+            LoadPage()
+        End If
+    End Sub
+
+    Private Sub btnNext_Click(sender As Object, e As EventArgs) Handles btnNext.Click
+        Dim totalPages As Integer = If(pageSize > 0, If(totalCount Mod pageSize = 0, totalCount \ pageSize, (totalCount \ pageSize) + 1), 1)
+        If currentPage < (totalPages - 1) Then
+            currentPage += 1
+            LoadPage()
+        End If
+    End Sub
+    Private Sub txtSearch_TextChanged(sender As Object, e As EventArgs) Handles txtSearch.TextChanged
+        If String.IsNullOrWhiteSpace(txtSearch.Text) Then
+            currentPage = 0
+            LoadPage()
+        End If
     End Sub
 End Class

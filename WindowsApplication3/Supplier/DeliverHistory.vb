@@ -2,10 +2,28 @@ Public Class DeliverHistory
     Private _NeworderID As Integer
     Private _FilterProductName As String = String.Empty
     Private _ParentForm As Form = Nothing
+    Private currentPage As Integer = 0
+    Private pageSize As Integer = 20
+    Private totalCount As Integer = 0
 
     Public Sub New(orderID As Integer)
         InitializeComponent()
         _NeworderID = orderID
+    End Sub
+
+    Private Sub btnBack_Click(sender As Object, e As EventArgs) Handles btnBack.Click
+        If currentPage > 0 Then
+            currentPage -= 1
+            LoadPage()
+        End If
+    End Sub
+
+    Private Sub btnNext_Click(sender As Object, e As EventArgs) Handles btnNext.Click
+        Dim totalPages As Integer = If(pageSize > 0, If(totalCount Mod pageSize = 0, totalCount \ pageSize, (totalCount \ pageSize) + 1), 1)
+        If currentPage < (totalPages - 1) Then
+            currentPage += 1
+            LoadPage()
+        End If
     End Sub
 
     Public Sub New(orderID As Integer, parentForm As Form)
@@ -50,54 +68,83 @@ Public Class DeliverHistory
     End Sub
 
     Private Sub DeliverHistory_Load(sender As Object, e As EventArgs) Handles MyBase.Load
-        LoadDeliveryHistory()
+        currentPage = 0
+        LoadPage()
     End Sub
 
     Private Sub LoadDeliveryHistory()
-        Call dbConn()
-        EnsureDeliveriesProductNameColumn()
+        LoadPage()
+    End Sub
 
-        Dim sql As String = "SELECT d.deliveryID, d.orderID, d.itemID, " & _
-                            "COALESCE(sp.sProductID, d.productID) AS productID, " & _
-                            "COALESCE(sp.product_name, p.productName, poi.productName, d.productName, '(Supplier Item)') AS productName, " & _
-                            "d.quantityReceived, d.quantityDefective, d.remarks, d.receivedBy, d.deliveryDate, " & _
-                            "COALESCE(d.deliveryStatus, 'Delivered') AS deliveryStatus " & _
-                            "FROM tbl_order_deliveries d " & _
-                            "LEFT JOIN tbl_productorder_items poi ON poi.orderID = d.orderID AND poi.itemID = d.itemID " & _
-                            "LEFT JOIN tbl_products p ON poi.productID = p.productID " & _
-                            "LEFT JOIN tbl_productOrders o ON o.orderID = d.orderID " & _
-                            "LEFT JOIN tbl_supplier_products sp ON sp.supplierID = o.supplierID " & _
-                            "    AND ( " & _
-                            "        UPPER(TRIM(sp.product_name)) = UPPER(TRIM(COALESCE(d.productName, poi.productName, p.productName))) " & _
-                            "     OR  UPPER(TRIM(sp.product_name)) LIKE CONCAT(UPPER(TRIM(COALESCE(d.productName, poi.productName, p.productName))), '%') " & _
-                            "     OR  UPPER(TRIM(COALESCE(d.productName, poi.productName, p.productName))) LIKE CONCAT(UPPER(TRIM(sp.product_name)), '%') " & _
-                            "    ) " & _
-                            "WHERE d.orderID = ? " & _
-                            If(String.IsNullOrWhiteSpace(_FilterProductName), "", " AND UPPER(TRIM(COALESCE(d.productName, poi.productName, p.productName))) = UPPER(TRIM(?)) ") & _
-                            "ORDER BY d.deliveryDate DESC, d.deliveryID DESC"
-
-        Dim cmd As New Odbc.OdbcCommand(sql, conn)
-        cmd.Parameters.AddWithValue("?", _NeworderID)
-        If Not String.IsNullOrWhiteSpace(_FilterProductName) Then
-            cmd.Parameters.AddWithValue("?", _FilterProductName)
-        End If
-
-        Dim dt As New DataTable()
-
+    Private Sub LoadPage()
         Try
-            Dim da As New Odbc.OdbcDataAdapter(cmd)
-            da.Fill(dt)
+            Call dbConn()
+            EnsureDeliveriesProductNameColumn()
+
+            Dim hasFilter As Boolean = Not String.IsNullOrWhiteSpace(_FilterProductName)
+
+            ' Base SELECT without ORDER to reuse for count
+            Dim baseSql As New System.Text.StringBuilder()
+            baseSql.Append("SELECT d.deliveryID, d.orderID, d.itemID, ")
+            baseSql.Append("COALESCE(sp.sProductID, d.productID) AS productID, ")
+            baseSql.Append("COALESCE(sp.product_name, p.productName, poi.productName, d.productName, '(Supplier Item)') AS productName, ")
+            baseSql.Append("d.quantityReceived, d.quantityDefective, d.remarks, d.receivedBy, d.deliveryDate, ")
+            baseSql.Append("COALESCE(d.deliveryStatus, 'Delivered') AS deliveryStatus ")
+            baseSql.Append("FROM tbl_order_deliveries d ")
+            baseSql.Append("LEFT JOIN tbl_productorder_items poi ON poi.orderID = d.orderID AND poi.itemID = d.itemID ")
+            baseSql.Append("LEFT JOIN tbl_products p ON poi.productID = p.productID ")
+            baseSql.Append("LEFT JOIN tbl_productOrders o ON o.orderID = d.orderID ")
+            baseSql.Append("LEFT JOIN tbl_supplier_products sp ON sp.supplierID = o.supplierID ")
+            baseSql.Append("    AND ( ")
+            baseSql.Append("        UPPER(TRIM(sp.product_name)) = UPPER(TRIM(COALESCE(d.productName, poi.productName, p.productName))) ")
+            baseSql.Append("     OR UPPER(TRIM(sp.product_name)) LIKE CONCAT(UPPER(TRIM(COALESCE(d.productName, poi.productName, p.productName))), '%') ")
+            baseSql.Append("     OR UPPER(TRIM(COALESCE(d.productName, poi.productName, p.productName))) LIKE CONCAT(UPPER(TRIM(sp.product_name)), '%') ")
+            baseSql.Append("    ) ")
+            baseSql.Append("WHERE d.orderID = ? ")
+            If hasFilter Then
+                baseSql.Append(" AND UPPER(TRIM(COALESCE(d.productName, poi.productName, p.productName))) = UPPER(TRIM(?)) ")
+            End If
+
+            ' Count total
+            Dim countSql As String = "SELECT COUNT(*) FROM (" & baseSql.ToString() & ") t"
+            Dim total As Integer = 0
+            Using cmdCount As New Odbc.OdbcCommand(countSql, conn)
+                cmdCount.Parameters.AddWithValue("?", _NeworderID)
+                If hasFilter Then cmdCount.Parameters.AddWithValue("?", _FilterProductName)
+                Dim obj = cmdCount.ExecuteScalar()
+                If obj IsNot Nothing AndAlso obj IsNot DBNull.Value Then Integer.TryParse(obj.ToString(), total)
+            End Using
+            totalCount = total
+
+            ' Paged data
+            Dim dataSql As String = baseSql.ToString() & " ORDER BY d.deliveryDate DESC, d.deliveryID DESC LIMIT ? OFFSET ?"
+            Dim dt As New DataTable()
+            Using cmd As New Odbc.OdbcCommand(dataSql, conn)
+                cmd.Parameters.AddWithValue("?", _NeworderID)
+                If hasFilter Then cmd.Parameters.AddWithValue("?", _FilterProductName)
+                cmd.Parameters.AddWithValue("?", pageSize)
+                cmd.Parameters.AddWithValue("?", currentPage * pageSize)
+                Using da As New Odbc.OdbcDataAdapter(cmd)
+                    da.Fill(dt)
+                End Using
+            End Using
 
             dgvDeliveryHistory.AutoGenerateColumns = False
             dgvDeliveryHistory.DataSource = dt
 
-            da.Dispose()
         Catch ex As Exception
             MsgBox("Error loading delivery history: " & ex.Message, vbCritical, "Error")
         Finally
-            cmd.Dispose()
-            conn.Close()
+            If conn IsNot Nothing AndAlso conn.State = ConnectionState.Open Then conn.Close()
         End Try
+
+        ' Update pagination UI
+        Dim totalPages As Integer = If(pageSize > 0, If(totalCount Mod pageSize = 0, totalCount \ pageSize, (totalCount \ pageSize) + 1), 1)
+        If totalPages <= 0 Then totalPages = 1
+        txtPage.Text = "Page " & (currentPage + 1).ToString() & " of " & totalPages.ToString()
+        btnBack.Enabled = currentPage > 0
+        btnNext.Enabled = currentPage < (totalPages - 1)
+
         DgvStyle(dgvDeliveryHistory)
     End Sub
 

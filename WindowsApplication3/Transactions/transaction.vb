@@ -1,10 +1,15 @@
 Public Class Transaction
     Private lastCheckedRadio As RadioButton = Nothing
+    Private currentPage As Integer = 0
+    Private pageSize As Integer = 20
+    Private totalCount As Integer = 0
+    Private currentStatusFilter As String = ""
 
     Public Sub New()
         InitializeComponent()
     End Sub
     Private Sub Transaction_Load(sender As Object, e As EventArgs) Handles MyBase.Load
+        currentPage = 0
         LoadTransactions()
         Call DgvStyle(transactionDGV)
 
@@ -123,41 +128,77 @@ Public Class Transaction
         End If
     End Sub
     Public Sub LoadTransactions(Optional statusFilter As String = "")
-        dbConn()
-        Dim query As String = _
-            "SELECT " & _
-            " t.transactionID, " & _
-            " t.patientID, " & _
-            " COALESCE(p.fullname, t.patientName) AS patientName, " & _
-            " t.paymentType AS typeOfPayment, " & _
-            " t.transactionDate AS date, " & _
-            " t.pendingBalance, " & _
-            " t.settlementDate, " & _
-            " t.amountPaid, " & _
-            " t.totalAmount AS totalPayment, " & _
-            " CASE WHEN t.pendingBalance <= 0 THEN 'Paid' ELSE 'Pending' END AS paymentStatus " & _
-            "FROM tbl_transactions t " & _
-            "LEFT JOIN db_viewpatient p ON p.patientID = t.patientID"
-
-        ' Check if a filter is applied, and add WHERE or AND accordingly
-        If statusFilter <> "" Then
-            Dim statusExpr As String = "CASE WHEN t.pendingBalance <= 0 THEN 'Paid' ELSE 'Pending' END"
-            If query.Contains("WHERE") Then
-                query &= " AND " & statusExpr & " = '" & statusFilter & "'"
-            Else
-                query &= " WHERE " & statusExpr & " = '" & statusFilter & "'"
-            End If
+        If statusFilter IsNot Nothing Then
+            currentStatusFilter = statusFilter
         End If
 
-        query &= " ORDER BY t.transactionID DESC;"
+        Try
+            Dim countSql As String = _
+                "SELECT COUNT(*) " & _
+                "FROM tbl_transactions t " & _
+                "LEFT JOIN db_viewpatient p ON p.patientID = t.patientID"
 
-        ' Load the data into DataGridView
-        LoadDGV(query, transactionDGV)
-        transactionDGV.ClearSelection()
-        conn.Close()
+            Dim whereClause As String = ""
+            If Not String.IsNullOrEmpty(currentStatusFilter) Then
+                Dim statusExpr As String = "CASE WHEN t.pendingBalance <= 0 THEN 'Paid' ELSE 'Pending' END"
+                whereClause = " WHERE " & statusExpr & " = '" & currentStatusFilter & "'"
+            End If
+
+            Dim dataSql As String = _
+                "SELECT " & _
+                " t.transactionID, " & _
+                " t.patientID, " & _
+                " COALESCE(p.fullname, t.patientName) AS patientName, " & _
+                " t.paymentType AS typeOfPayment, " & _
+                " t.transactionDate AS date, " & _
+                " t.pendingBalance, " & _
+                " t.settlementDate, " & _
+                " t.amountPaid, " & _
+                " t.totalAmount AS totalPayment, " & _
+                " CASE WHEN t.pendingBalance <= 0 THEN 'Paid' ELSE 'Pending' END AS paymentStatus " & _
+                "FROM tbl_transactions t " & _
+                "LEFT JOIN db_viewpatient p ON p.patientID = t.patientID" & _
+                whereClause & _
+                " ORDER BY t.transactionID DESC " & _
+                "LIMIT ? OFFSET ?"
+
+            Using cn As New Odbc.OdbcConnection(myDSN)
+                cn.Open()
+                ' total count
+                Using cmdCount As New Odbc.OdbcCommand(countSql & whereClause, cn)
+                    Dim obj = cmdCount.ExecuteScalar()
+                    totalCount = 0
+                    If obj IsNot Nothing AndAlso obj IsNot DBNull.Value Then
+                        Integer.TryParse(obj.ToString(), totalCount)
+                    End If
+                End Using
+
+                ' data page
+                Using cmd As New Odbc.OdbcCommand(dataSql, cn)
+                    cmd.Parameters.AddWithValue("?", pageSize)
+                    cmd.Parameters.AddWithValue("?", currentPage * pageSize)
+                    Dim da As New Odbc.OdbcDataAdapter(cmd)
+                    Dim dt As New DataTable()
+                    da.Fill(dt)
+                    transactionDGV.DataSource = dt
+                    transactionDGV.ClearSelection()
+                End Using
+            End Using
+        Catch ex As Exception
+            MsgBox("Failed to load transactions: " & ex.Message, vbCritical, "Error")
+        End Try
 
         ComputeTransactionTotals()
         DgvStyle(transactionDGV)
+
+        Dim totalPages As Integer = 0
+        If pageSize > 0 Then
+            totalPages = If(totalCount Mod pageSize = 0, totalCount \ pageSize, (totalCount \ pageSize) + 1)
+        End If
+        If totalPages <= 0 Then totalPages = 1
+        txtPage.Text = "Page " & (currentPage + 1).ToString() & " of " & totalPages.ToString()
+        btnBack.Enabled = currentPage > 0
+        btnNext.Enabled = currentPage < (totalPages - 1)
 
         ' UI adjustments based on user role
         If LoggedInRole = "Receptionist" OrElse LoggedInRole = "Doctor" Then
@@ -187,7 +228,7 @@ Public Class Transaction
 
                 Dim pendingStr As String = row.Cells("Column9").Value.ToString()
                 Dim totalStr As String = row.Cells("Column3").Value.ToString()
-                
+
                 ' Remove peso sign if present before parsing
                 pendingStr = pendingStr.Replace(pesoSign, "").Replace(",", "").Trim()
                 totalStr = totalStr.Replace(pesoSign, "").Replace(",", "").Trim()
@@ -262,9 +303,20 @@ Public Class Transaction
             transactionDGV.ClearSelection()
             conn.Close()
             ComputeTransactionTotals()
+            ' Disable paging for search results
+            txtPage.Text = "Search results"
+            btnBack.Enabled = False
+            btnNext.Enabled = False
         Catch ex As Exception
             MsgBox("Failed to search: " & ex.Message, vbCritical, "Error")
         End Try
+    End Sub
+
+    Private Sub txtSearch_TextChanged(sender As Object, e As EventArgs) Handles txtSearch.TextChanged
+        If String.IsNullOrWhiteSpace(txtSearch.Text) Then
+            currentPage = 0
+            LoadTransactions()
+        End If
     End Sub
 
     Private Sub HandleRadioButtonFilter(rb As RadioButton, filterValue As String)
@@ -277,6 +329,8 @@ Public Class Transaction
                 ' Apply search across all statuses
                 btnSearch_Click(Nothing, EventArgs.Empty)
             Else
+                currentPage = 0
+                currentStatusFilter = ""
                 LoadTransactions() ' Load all
             End If
         Else
@@ -285,6 +339,7 @@ Public Class Transaction
                 ' Apply search with the newly selected status filter
                 btnSearch_Click(Nothing, EventArgs.Empty)
             Else
+                currentPage = 0
                 LoadTransactions(filterValue)
             End If
         End If
@@ -454,5 +509,20 @@ Public Class Transaction
         Catch ex As Exception
             ' Ignore formatting errors
         End Try
+    End Sub
+
+    Private Sub btnBack_Click(sender As Object, e As EventArgs) Handles btnBack.Click
+        If currentPage > 0 Then
+            currentPage -= 1
+            LoadTransactions()
+        End If
+    End Sub
+
+    Private Sub btnNext_Click(sender As Object, e As EventArgs) Handles btnNext.Click
+        Dim totalPages As Integer = If(pageSize > 0, If(totalCount Mod pageSize = 0, totalCount \ pageSize, (totalCount \ pageSize) + 1), 1)
+        If currentPage < (totalPages - 1) Then
+            currentPage += 1
+            LoadTransactions()
+        End If
     End Sub
 End Class

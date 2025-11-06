@@ -285,9 +285,9 @@ Partial Class doctors
         '
         Me.txtSearch.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.txtSearch.Font = New System.Drawing.Font("Segoe UI", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.txtSearch.Location = New System.Drawing.Point(901, 16)
+        Me.txtSearch.Location = New System.Drawing.Point(893, 15)
         Me.txtSearch.Name = "txtSearch"
-        Me.txtSearch.Size = New System.Drawing.Size(175, 32)
+        Me.txtSearch.Size = New System.Drawing.Size(183, 32)
         Me.txtSearch.TabIndex = 7
         '
         'doctors

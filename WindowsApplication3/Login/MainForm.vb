@@ -35,9 +35,9 @@ Public Class MainForm
     End Class
 
     Private Sub MainForm_Load(sender As Object, e As EventArgs) Handles MyBase.Load
-        Me.FormBorderStyle = FormBorderStyle.None
-        Me.WindowState = FormWindowState.Normal
-        Me.Bounds = Screen.PrimaryScreen.Bounds
+        'Me.FormBorderStyle = FormBorderStyle.None
+        'Me.WindowState = FormWindowState.Normal
+        'Me.Bounds = Screen.PrimaryScreen.Bounds
         Me.TopMost = False
         Me.ShowInTaskbar = True
         Me.KeyPreview = True
@@ -211,7 +211,15 @@ Public Class MainForm
     End Sub
 
     Private Sub ExitToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles ExitToolStripMenuItem.Click
-        Application.Exit()
+        Dim result As DialogResult = MessageBox.Show(
+            "Are you sure you want to exit? This application will close, and you will be logged out.",
+            "Exit Application",
+            MessageBoxButtons.YesNo,
+            MessageBoxIcon.Question)
+
+        If result = DialogResult.Yes Then
+            Application.Exit()
+        End If
     End Sub
 
     Private Sub StockInToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles StockInToolStripMenuItem.Click

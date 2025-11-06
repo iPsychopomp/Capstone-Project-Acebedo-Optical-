@@ -20,6 +20,9 @@ Public Class checkUp
         cmbFilter.Items.Add("Doctor Name")
         cmbFilter.SelectedIndex = -1
         btnSearch.Enabled = False
+        ' Default placeholder when no filter selected
+        txtSearch.Text = "Choose filter"
+        txtSearch.ForeColor = Color.Gray
     End Sub
     Private Sub LoadPage()
         modCheckUp.LoadCheckUpPage(checkUpDGV, currentPage, pageSize, totalCount)
@@ -66,6 +69,23 @@ Public Class checkUp
     ' Enable the Search button only when a filter is selected
     Private Sub cmbFilter_SelectedIndexChanged(sender As Object, e As EventArgs) Handles cmbFilter.SelectedIndexChanged
         btnSearch.Enabled = (cmbFilter.SelectedIndex <> -1)
+        Dim placeholder As String = ""
+        If cmbFilter.SelectedIndex <> -1 Then
+            Select Case cmbFilter.Text
+                Case "Patient Name"
+                    placeholder = "Search by patient's name"
+                Case "Doctor Name"
+                    placeholder = "Search by doctor's name"
+            End Select
+        Else
+            placeholder = "Choose filter"
+        End If
+        If placeholder <> "" Then
+            If txtSearch.ForeColor = Color.Gray OrElse String.IsNullOrWhiteSpace(txtSearch.Text) Then
+                txtSearch.ForeColor = Color.Gray
+                txtSearch.Text = placeholder
+            End If
+        End If
     End Sub
 
     Private Sub btnNew_Click(sender As Object, e As EventArgs) Handles btnNew.Click
@@ -89,6 +109,16 @@ Public Class checkUp
 
     Private Sub checkUpDGV_CellDoubleClick(sender As Object, e As DataGridViewCellEventArgs) Handles checkUpDGV.CellDoubleClick
         If e.RowIndex >= 0 Then
+            ' Check if viewCheckUp form is already open
+            For Each frm As Form In Application.OpenForms
+                If TypeOf frm Is viewCheckUp Then
+                    ' Form is already open, bring it to front
+                    frm.BringToFront()
+                    frm.Focus()
+                    Return
+                End If
+            Next
+
             Dim patientID As String = checkUpDGV.Rows(e.RowIndex).Cells("patientID").Value.ToString()
             Dim patientName As String = String.Empty
             Try
@@ -182,4 +212,25 @@ Public Class checkUp
             LoadPage()
         End If
     End Sub
+    Private Sub txtSearch_LostFocus(sender As Object, e As EventArgs) Handles txtSearch.LostFocus
+        If String.IsNullOrWhiteSpace(txtSearch.Text) Then
+            Dim placeholder As String = "Choose filter"
+            If cmbFilter IsNot Nothing AndAlso cmbFilter.SelectedIndex <> -1 Then
+                If cmbFilter.Text = "Doctor Name" Then
+                    placeholder = "Search by doctor's name"
+                ElseIf cmbFilter.Text = "Patient Name" Then
+                    placeholder = "Search by patient's name"
+                End If
+            End If
+            txtSearch.Text = placeholder
+            txtSearch.ForeColor = Color.Gray
+        End If
+    End Sub
+    Private Sub txtSearch_GotFocus(sender As Object, e As EventArgs) Handles txtSearch.GotFocus
+        If txtSearch.ForeColor = Color.Gray Then
+            txtSearch.Text = ""
+            txtSearch.ForeColor = Color.Black
+        End If
+    End Sub
+
 End Class

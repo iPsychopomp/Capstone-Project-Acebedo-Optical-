@@ -116,23 +116,51 @@ Public Class addPatientTransaction
                 txtPatientName.Text = If(reader("patientName") Is DBNull.Value, "", reader("patientName").ToString())
                 txtTotal.Text = If(reader("totalAmount") Is DBNull.Value, "0.00", Convert.ToDecimal(reader("totalAmount")).ToString("N2"))
                 txtAmountPaid.Text = If(reader("amountPaid") Is DBNull.Value, "0.00", Convert.ToDecimal(reader("amountPaid")).ToString("N2"))
-                ' Select payment mode by matching against items (case-insensitive)
-                Dim pt As String = If(reader("paymentType") Is DBNull.Value, String.Empty, reader("paymentType").ToString())
+                ' Select payment mode by matching against items (case-insensitive and trim whitespace)
+                Dim pt As String = If(reader("paymentType") Is DBNull.Value, String.Empty, reader("paymentType").ToString().Trim())
+                Debug.WriteLine("Loading payment type: '" & pt & "'")
+
                 If String.IsNullOrWhiteSpace(pt) Then
                     cmbMode.SelectedIndex = -1
+                    Debug.WriteLine("Payment type is empty, setting SelectedIndex to -1")
                 Else
                     Dim foundIndex As Integer = -1
                     For i As Integer = 0 To cmbMode.Items.Count - 1
-                        If String.Equals(cmbMode.Items(i).ToString(), pt, StringComparison.OrdinalIgnoreCase) Then
+                        Dim itemText As String = cmbMode.Items(i).ToString().Trim()
+                        Debug.WriteLine("Comparing '" & pt & "' with '" & itemText & "'")
+                        If String.Equals(itemText, pt, StringComparison.OrdinalIgnoreCase) Then
                             foundIndex = i
                             Exit For
                         End If
                     Next
+
                     If foundIndex >= 0 Then
                         cmbMode.SelectedIndex = foundIndex
+                        Debug.WriteLine("Found payment type at index: " & foundIndex.ToString())
                     Else
-                        ' Fallback: set text if not found (will appear blank on DropDownList)
-                        cmbMode.SelectedIndex = -1
+                        ' Try partial match (e.g., "Gcash" matches "G-cash")
+                        For i As Integer = 0 To cmbMode.Items.Count - 1
+                            Dim itemText As String = cmbMode.Items(i).ToString().Trim().Replace("-", "").Replace(" ", "")
+                            Dim ptNormalized As String = pt.Replace("-", "").Replace(" ", "")
+                            If String.Equals(itemText, ptNormalized, StringComparison.OrdinalIgnoreCase) Then
+                                foundIndex = i
+                                Exit For
+                            End If
+                        Next
+
+                        If foundIndex >= 0 Then
+                            cmbMode.SelectedIndex = foundIndex
+                            Debug.WriteLine("Found payment type with partial match at index: " & foundIndex.ToString())
+                        Else
+                            ' Fallback: set to first item if available
+                            If cmbMode.Items.Count > 0 Then
+                                cmbMode.SelectedIndex = 0
+                                Debug.WriteLine("Payment type not found, defaulting to first item")
+                            Else
+                                cmbMode.SelectedIndex = -1
+                                Debug.WriteLine("Payment type not found and no items available")
+                            End If
+                        End If
                     End If
                 End If
                 dtpDate.Value = If(reader("transactionDate") Is DBNull.Value, DateTime.Now, Convert.ToDateTime(reader("transactionDate")))
@@ -144,29 +172,37 @@ Public Class addPatientTransaction
                         Decimal.TryParse(reader("discount").ToString(), disc)
                     End If
 
+                    Debug.WriteLine("Loading discount: " & disc.ToString())
+
                     If disc <= 0D Then
-                        cmbDiscount.Text = "N/A"
+                        ' Set to N/A
                         For i As Integer = 0 To cmbDiscount.Items.Count - 1
-                            If cmbDiscount.Items(i).ToString() = "N/A" Then
+                            If cmbDiscount.Items(i).ToString().Trim() = "N/A" Then
                                 cmbDiscount.SelectedIndex = i
+                                Debug.WriteLine("Set discount to N/A at index: " & i.ToString())
                                 Exit For
                             End If
                         Next
                     Else
                         Dim percText As String = (disc * 100D).ToString("0") & "%"
+                        Debug.WriteLine("Looking for discount: " & percText)
+
                         Dim foundDisc As Boolean = False
                         For i As Integer = 0 To cmbDiscount.Items.Count - 1
-                            If cmbDiscount.Items(i).ToString() = percText Then
+                            If cmbDiscount.Items(i).ToString().Trim() = percText Then
                                 cmbDiscount.SelectedIndex = i
                                 foundDisc = True
+                                Debug.WriteLine("Found discount at index: " & i.ToString())
                                 Exit For
                             End If
                         Next
+
                         If Not foundDisc Then
-                            cmbDiscount.Text = "N/A"
+                            ' If exact match not found, default to N/A
                             For i As Integer = 0 To cmbDiscount.Items.Count - 1
-                                If cmbDiscount.Items(i).ToString() = "N/A" Then
+                                If cmbDiscount.Items(i).ToString().Trim() = "N/A" Then
                                     cmbDiscount.SelectedIndex = i
+                                    Debug.WriteLine("Discount not found, defaulting to N/A at index: " & i.ToString())
                                     Exit For
                                 End If
                             Next
@@ -269,25 +305,34 @@ Public Class addPatientTransaction
             Dim hasODOSCosts As Boolean = (odCost > 0D OrElse osCost > 0D)
             Dim hasODOSGrades As Boolean = (Not String.IsNullOrWhiteSpace(cmbOD.Text) OrElse Not String.IsNullOrWhiteSpace(cmbOS.Text))
 
-            ' Determine transaction type with improved logic:
-            ' Priority 1: Check-up only - no items, but has checkup data (costs or grades) OR isCheckUp = True
-            ' Priority 2: With check-up - has items AND has checkup data (costs or grades)
-            ' Priority 3: Items only - has items but NO checkup data
+            ' Get the isCheckUp flag that was loaded from database
+            Dim wasCheckUpTransaction As Boolean = rbonly.Checked OrElse rbwith.Checked
 
-            If Not hasItems AndAlso (hasODOSCosts OrElse hasODOSGrades OrElse rbonly.Checked) Then
-                ' Check-up only mode: no items but has checkup-related data
+            ' Determine transaction type with improved logic:
+            ' Priority 1: Check-up only - no items AND isCheckUp = True
+            ' Priority 2: With check-up - has items AND isCheckUp = True
+            ' Priority 3: Items only - has items AND isCheckUp = False
+
+            Debug.WriteLine("=== DETERMINING TRANSACTION TYPE ===")
+            Debug.WriteLine("hasItems: " & hasItems.ToString())
+            Debug.WriteLine("hasODOSCosts: " & hasODOSCosts.ToString())
+            Debug.WriteLine("hasODOSGrades: " & hasODOSGrades.ToString())
+            Debug.WriteLine("wasCheckUpTransaction (from DB): " & wasCheckUpTransaction.ToString())
+
+            If Not hasItems AndAlso wasCheckUpTransaction Then
+                ' Check-up only mode: no items but isCheckUp flag is true
                 rbonly.Checked = True
                 rbwith.Checked = False
                 rbItems.Checked = False
                 Debug.WriteLine("Edit Mode: Detected Check-up Only")
-            ElseIf hasItems AndAlso (hasODOSCosts OrElse hasODOSGrades) Then
-                ' With check-up mode: has items AND checkup data
+            ElseIf hasItems AndAlso wasCheckUpTransaction Then
+                ' With check-up mode: has items AND isCheckUp flag is true
                 rbwith.Checked = True
                 rbonly.Checked = False
                 rbItems.Checked = False
                 Debug.WriteLine("Edit Mode: Detected With Check-up")
-            ElseIf hasItems AndAlso Not hasODOSCosts AndAlso Not hasODOSGrades Then
-                ' Items only mode: has items but no checkup data
+            ElseIf hasItems AndAlso Not wasCheckUpTransaction Then
+                ' Items only mode: has items AND isCheckUp flag is false
                 rbItems.Checked = True
                 rbwith.Checked = False
                 rbonly.Checked = False
@@ -299,6 +344,7 @@ Public Class addPatientTransaction
                 rbItems.Checked = False
                 Debug.WriteLine("Edit Mode: Fallback to Check-up Only")
             End If
+            Debug.WriteLine("====================================")
 
             ' Allow radio buttons to be changed in edit mode
             rbonly.Enabled = True
@@ -938,8 +984,19 @@ Public Class addPatientTransaction
         Dim amountPaid As Double
         Dim pendingBalance As Double
         Dim discount As Double
-        Dim isCheckUp As Integer = If(rbonly.Checked, 1, 0)
+        ' Set isCheckUp based on radio button state:
+        ' - rbonly.Checked = True → isCheckUp = 1 (check-up only)
+        ' - rbwith.Checked = True → isCheckUp = 1 (with check-up, has items + checkup)
+        ' - rbItems.Checked = True → isCheckUp = 0 (items only, no checkup)
+        Dim isCheckUp As Integer = If(rbonly.Checked OrElse rbwith.Checked, 1, 0)
         Dim paymentStatus As String
+
+        Debug.WriteLine("=== SAVING TRANSACTION ===")
+        Debug.WriteLine("rbonly.Checked: " & rbonly.Checked.ToString())
+        Debug.WriteLine("rbwith.Checked: " & rbwith.Checked.ToString())
+        Debug.WriteLine("rbItems.Checked: " & rbItems.Checked.ToString())
+        Debug.WriteLine("isCheckUp value: " & isCheckUp.ToString())
+        Debug.WriteLine("==========================")
 
         ' Required selections
         If String.IsNullOrWhiteSpace(cmbMode.Text) Then

@@ -17,6 +17,10 @@ Public Class addSupplierItems
 
         ' Add Leave event handler for txtDescription to auto-fill "N/A"
         AddHandler txtDescription.Leave, AddressOf txtDescription_Leave
+        Try
+            txtUnitPrice.ShortcutsEnabled = False
+        Catch
+        End Try
     End Sub
 
     Private Sub txtDescription_Leave(sender As Object, e As EventArgs)
@@ -395,6 +399,39 @@ Public Class addSupplierItems
     Private Sub btnCancel_Click(sender As Object, e As EventArgs) Handles btnCancel.Click
         ' Close the form without saving
         CancelForm()
+    End Sub
+
+    Private Sub txtUnitPrice_KeyPress(sender As Object, e As KeyPressEventArgs) Handles txtUnitPrice.KeyPress
+        Dim ch As Char = e.KeyChar
+        If Char.IsControl(ch) Then Return
+        If Char.IsDigit(ch) Then Return
+        Dim sep As Char = Globalization.CultureInfo.CurrentCulture.NumberFormat.NumberDecimalSeparator(0)
+        If ch = sep Then
+            If txtUnitPrice.Text.IndexOf(sep) >= 0 Then e.Handled = True
+            Return
+        End If
+        e.Handled = True
+    End Sub
+
+    Private Sub txtUnitPrice_TextChanged(sender As Object, e As EventArgs) Handles txtUnitPrice.TextChanged
+        Dim sep As Char = Globalization.CultureInfo.CurrentCulture.NumberFormat.NumberDecimalSeparator(0)
+        Dim t As String = txtUnitPrice.Text
+        Dim filtered As New System.Text.StringBuilder()
+        Dim hasSep As Boolean = False
+        For Each ch As Char In t
+            If Char.IsDigit(ch) Then
+                filtered.Append(ch)
+            ElseIf ch = sep AndAlso Not hasSep Then
+                filtered.Append(ch)
+                hasSep = True
+            End If
+        Next
+        If filtered.ToString() <> t Then
+            Dim pos As Integer = txtUnitPrice.SelectionStart
+            txtUnitPrice.Text = filtered.ToString()
+            If pos > txtUnitPrice.TextLength Then pos = txtUnitPrice.TextLength
+            txtUnitPrice.SelectionStart = pos
+        End If
     End Sub
 
 End Class

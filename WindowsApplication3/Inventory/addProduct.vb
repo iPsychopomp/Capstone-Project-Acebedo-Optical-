@@ -336,10 +336,13 @@ Public Class addProduct
             assignFirst(txtUnitPrice)
         End If
 
-        ' Required: Reorder Level (*)   - numeric TextBox
+        ' Required: Reorder Level (*)   - numeric TextBox, must be >= 5
         Dim reorder As Integer
         If String.IsNullOrWhiteSpace(txtReorder.Text) OrElse Not Integer.TryParse(txtReorder.Text.Trim(), reorder) Then
             missing.Add("Reorder Level (numeric)")
+            assignFirst(txtReorder)
+        ElseIf reorder < 5 Then
+            missing.Add("Reorder Level (must be at least 5)")
             assignFirst(txtReorder)
         End If
 

@@ -81,7 +81,7 @@ Public Class ImportData
                         If lineNumber Mod 100 = 0 Then
                             Dim progress As Integer = CInt((lineNumber / totalLines) * 100)
                             tspBar.Value = Math.Min(progress, 100)
-                            TSPLabel.Text = String.Format("Processing line {0}/{1} - {2} errors",
+                            TSPLabel.Text = String.Format("Processing line {0}/{1}",
                                                          lineNumber, totalLines, errorCount)
                             Application.DoEvents()
                         End If

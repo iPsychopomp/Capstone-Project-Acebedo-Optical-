@@ -226,30 +226,69 @@ Public Class viewTransactions
             Me.lblLensDiscount.Text = (lensDiscount * 100).ToString("F0") & "%"
             Me.lblLensTotal.Text = "₱" & lensDiscountTotal.ToString("F2")
 
-            ' Check-up Fee
-            Dim lblCheckupFee As New Label
-            lblCheckupFee.Text = "Check-up Fee:"
-            lblCheckupFee.Location = New Point(10, top)
-            lblCheckupFee.Font = labelFont
-            lblCheckupFee.AutoSize = True
-            card.Controls.Add(lblCheckupFee)
+            ' Calculate Check-up Fee
+            ' Check-up Fee = Total Amount - (Sum of all items after discount)
+            Dim totalAmount As Decimal = Convert.ToDecimal(reader("totalAmount"))
 
-            Dim lblCheckupFeeAmount As New Label
-            lblCheckupFeeAmount.Text = "₱300.00"
-            lblCheckupFeeAmount.Location = New Point(costX, top)
-            lblCheckupFeeAmount.Font = labelFont
-            lblCheckupFeeAmount.AutoSize = True
-            card.Controls.Add(lblCheckupFeeAmount)
-            top += 30
+            ' Calculate sum of all items (already includes discount in totalPrice from DB)
+            Dim itemsTotal As Decimal = 0D
+            Dim cmdSumItems As New Odbc.OdbcCommand(
+                "SELECT SUM(totalPrice) FROM tbl_transaction_items WHERE transactionID = ?", conn)
+            cmdSumItems.Parameters.Add(New Odbc.OdbcParameter("?", Odbc.OdbcType.Int)).Value = transactionID
+            Dim sumResult = cmdSumItems.ExecuteScalar()
+            If sumResult IsNot Nothing AndAlso Not IsDBNull(sumResult) Then
+                itemsTotal = Convert.ToDecimal(sumResult)
+            End If
 
-            ' Check-up Only flag
-            If Convert.ToBoolean(reader("isCheckUp")) Then
-                Dim lblCheckupOnly As New Label
-                lblCheckupOnly.Text = "Check-up Only"
-                lblCheckupOnly.Location = New Point(10, top)
-                lblCheckupOnly.Font = labelFont
-                lblCheckupOnly.AutoSize = True
-                card.Controls.Add(lblCheckupOnly)
+            ' Check-up fee is the difference
+            Dim checkupFeeTotal As Decimal = totalAmount - itemsTotal
+
+            ' Only display check-up fee if there is one (and it's positive)
+            If checkupFeeTotal > 0D Then
+                Dim lblCheckupFee As New Label
+                lblCheckupFee.Text = "Check-up Fee:"
+                lblCheckupFee.Location = New Point(10, top)
+                lblCheckupFee.Font = labelFont
+                lblCheckupFee.AutoSize = True
+                card.Controls.Add(lblCheckupFee)
+
+                Dim lblCheckupFeeAmount As New Label
+                lblCheckupFeeAmount.Text = "₱" & checkupFeeTotal.ToString("F2")
+                lblCheckupFeeAmount.Location = New Point(costX, top)
+                lblCheckupFeeAmount.Font = labelFont
+                lblCheckupFeeAmount.AutoSize = True
+                card.Controls.Add(lblCheckupFeeAmount)
+                top += 30
+            End If
+
+            ' Determine transaction type based on isCheckUp flag and presence of items
+            Dim isCheckUp As Boolean = Convert.ToBoolean(reader("isCheckUp"))
+            Dim hasItems As Boolean = False
+
+            ' Check if there are any product items (excluding OD/OS grades)
+            Dim cmdCheckItems As New Odbc.OdbcCommand(
+                "SELECT COUNT(*) FROM tbl_transaction_items WHERE transactionID = ? AND productName IS NOT NULL AND productName != ''", conn)
+            cmdCheckItems.Parameters.Add(New Odbc.OdbcParameter("?", Odbc.OdbcType.Int)).Value = transactionID
+            Dim itemCount As Integer = Convert.ToInt32(cmdCheckItems.ExecuteScalar())
+            hasItems = (itemCount > 0)
+
+            ' Display transaction type
+            Dim lblTransactionType As New Label
+            If isCheckUp AndAlso Not hasItems Then
+                lblTransactionType.Text = "Check-up Only"
+            ElseIf isCheckUp AndAlso hasItems Then
+                lblTransactionType.Text = "With Check-up"
+            ElseIf Not isCheckUp AndAlso hasItems Then
+                lblTransactionType.Text = "Items Only"
+            Else
+                lblTransactionType.Text = "" ' No label if unclear
+            End If
+
+            If Not String.IsNullOrEmpty(lblTransactionType.Text) Then
+                lblTransactionType.Location = New Point(10, top)
+                lblTransactionType.Font = labelFont
+                lblTransactionType.AutoSize = True
+                card.Controls.Add(lblTransactionType)
                 top += 30
             End If
 
@@ -307,6 +346,9 @@ Public Class viewTransactions
             lblPendingBalanceVal.Font = labelFont
             lblPendingBalanceVal.AutoSize = True
             card.Controls.Add(lblPendingBalanceVal)
+
+            ' Auto-expand card height based on content
+            card.Height = top + Math.Max(lblPendingBalanceVal.Height, 20) + 20
 
             yOffset += card.Height + 10
         End While

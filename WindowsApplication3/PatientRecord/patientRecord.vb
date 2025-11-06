@@ -25,12 +25,12 @@ Public Class patientRecord
                 Return
             End If
 
-            ' Normalize filter to handle labels like "Birthday (DD/MM/YYYY)"
+            ' Normalize filter to handle labels with format hints
             Dim normalized As String = filter
             If normalized.StartsWith("Birthday") Then normalized = "Birthday"
+            If normalized.StartsWith("Date Added") Then normalized = "Date Added"
 
-            If normalized = "Birthday" Then
-
+            If normalized = "Birthday" OrElse normalized = "Date Added" Then
                 Dim searchDate As Date
                 ' Accept DD/MM/YYYY per label; fallback to system parse
                 If Not DateTime.TryParseExact(searchValue, "dd/MM/yyyy", Globalization.CultureInfo.InvariantCulture, Globalization.DateTimeStyles.None, searchDate) Then
@@ -44,7 +44,7 @@ Public Class patientRecord
                 searchValue = searchDate.ToString("yyyy-MM-dd")
 
                 ' Exact date match in the SearchPatients method
-                patientMod.SearchPatients("Birthday", searchValue, patientDGV, True)
+                patientMod.SearchPatients(normalized, searchValue, patientDGV, True)
             Else
                 ' For text fields, use regular search
                 patientMod.SearchPatients(normalized, searchValue, patientDGV, False)
@@ -174,11 +174,15 @@ Public Class patientRecord
             ' Initialize search filter ComboBox (no default selection)
             cmbSearch.Items.Clear()
             cmbSearch.Items.Add("Patient Name")
-            cmbSearch.Items.Add("Birthday (DD/MM/YYYY)")
+            cmbSearch.Items.Add("Birthday (Day/Month/Year)")
+            cmbSearch.Items.Add("Date Added (Day/Month/Year)")
             cmbSearch.SelectedIndex = -1
             btnSearch.Enabled = False
             currentPage = 0
             LoadPage()
+            ' Default placeholder when no filter selected
+            txtSearch.Text = "Choose filter"
+            txtSearch.ForeColor = Color.Gray
 
             ' Configure column visibility if needed
             'If patientDGV.Columns.Contains(PatientIDColumnName) Then
@@ -198,6 +202,25 @@ Public Class patientRecord
     ' Enable Search only when a filter is selected
     Private Sub cmbSearch_SelectedIndexChanged(sender As Object, e As EventArgs) Handles cmbSearch.SelectedIndexChanged
         btnSearch.Enabled = (cmbSearch.SelectedIndex <> -1)
+        Dim placeholder As String = ""
+        If cmbSearch.SelectedIndex <> -1 Then
+            Select Case True
+                Case cmbSearch.Text.StartsWith("Patient Name")
+                    placeholder = "Search by patient's name"
+                Case cmbSearch.Text.StartsWith("Birthday")
+                    placeholder = "Search by birthday"
+                Case cmbSearch.Text.StartsWith("Date Added")
+                    placeholder = "Search by date added"
+            End Select
+        Else
+            placeholder = "Choose filter"
+        End If
+        If placeholder <> "" Then
+            If txtSearch.ForeColor = Color.Gray OrElse String.IsNullOrWhiteSpace(txtSearch.Text) Then
+                txtSearch.ForeColor = Color.Gray
+                txtSearch.Text = placeholder
+            End If
+        End If
         DgvStyle(patientDGV)
     End Sub
 
@@ -349,6 +372,28 @@ Public Class patientRecord
 
     Private Sub pnlPatientRecord_Paint(sender As Object, e As PaintEventArgs) Handles pnlPatientRecord.Paint
 
+    End Sub
+    Private Sub txtSearch_GotFocus(sender As Object, e As EventArgs) Handles txtSearch.GotFocus
+        If txtSearch.ForeColor = Color.Gray Then
+            txtSearch.Text = ""
+            txtSearch.ForeColor = Color.Black
+        End If
+    End Sub
+    Private Sub txtSearch_LostFocus(sender As Object, e As EventArgs) Handles txtSearch.LostFocus
+        If String.IsNullOrWhiteSpace(txtSearch.Text) Then
+            Dim placeholder As String = "Choose filter"
+            If cmbSearch IsNot Nothing AndAlso cmbSearch.SelectedIndex <> -1 Then
+                If cmbSearch.Text.StartsWith("Birthday") Then
+                    placeholder = "Search by birthday"
+                ElseIf cmbSearch.Text.StartsWith("Date Added") Then
+                    placeholder = "Search by date added"
+                ElseIf cmbSearch.Text.StartsWith("Patient Name") Then
+                    placeholder = "Search by patient's name"
+                End If
+            End If
+            txtSearch.Text = placeholder
+            txtSearch.ForeColor = Color.Gray
+        End If
     End Sub
 End Class
 

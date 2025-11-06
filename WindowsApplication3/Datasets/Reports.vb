@@ -1,15 +1,31 @@
-﻿Imports System.Data.Odbc
+Imports System.Data.Odbc
 Imports Microsoft.Reporting.WinForms
 Imports System.Linq
 
 Public Class Reports
     Private connectionString As String = "Dsn=dsnsystem;Uid=root;Pwd=;"
+    ' Flag to optionally hide filter controls when the form loads (for printing scenarios)
+    Public Property HideControlsOnLoad As Boolean = False
 
     Private Sub Reports_Load(sender As Object, e As EventArgs) Handles MyBase.Load
         cboReportType.SelectedIndex = 0
+        If HideControlsOnLoad Then
+            HideReportControls()
+        End If
         ReportViewer1.SetDisplayMode(DisplayMode.PrintLayout)
         ReportViewer1.ZoomMode = ZoomMode.PageWidth
         ReportViewer1.ZoomPercent = 100
+    End Sub
+
+    ' Call this to hide report filter controls when printing
+    Public Sub HideReportControls()
+        ' Hide the entire filter panel to remove the top bar
+        Panel1.Visible = False
+        cboReportType.Visible = False
+        btnGenerate.Visible = False
+        dtpYear.Visible = False
+        dtpTO.Visible = False
+        dtpFROM.Visible = False
     End Sub
 
     Private Sub btnGenerate_Click(sender As Object, e As EventArgs) Handles btnGenerate.Click
@@ -141,6 +157,28 @@ Public Class Reports
         End If
         Dim reportPath As String = IO.Path.Combine(Application.StartupPath, "RDLC", "printOrders.rdlc")
         SetupSingleReport(reportPath, "DataSet7", data)
+    End Sub
+
+    ' Exposed method to load Check-Up report (used by viewCheckUp)
+    Public Sub GenerateCheckUpReport(patientName As String)
+        Try
+            If String.IsNullOrWhiteSpace(patientName) Then
+                MessageBox.Show("Patient name is required.", "Report", MessageBoxButtons.OK, MessageBoxIcon.Warning)
+                Return
+            End If
+
+            Dim data = GetLatestCheckUpByPatientName(connectionString, patientName)
+            If data Is Nothing OrElse data.Rows.Count = 0 Then
+                MessageBox.Show("No check-up data found for: " & patientName, "Report", MessageBoxButtons.OK, MessageBoxIcon.Information)
+                Return
+            End If
+
+            Dim reportPath As String = IO.Path.Combine(Application.StartupPath, "RDLC", "checkUp.rdlc")
+            ' DataSet name must match the RDLC (DataSet8)
+            SetupSingleReport(reportPath, "DataSet8", data)
+        Catch ex As Exception
+            MessageBox.Show("Error generating check-up report: " & ex.Message, "Report Error", MessageBoxButtons.OK, MessageBoxIcon.Error)
+        End Try
     End Sub
 
 
@@ -301,6 +339,24 @@ Public Class Reports
             Using cmd As New OdbcCommand(query, conn)
                 cmd.Parameters.Add(New OdbcParameter("?", OdbcType.Date)).Value = fromDate
                 cmd.Parameters.Add(New OdbcParameter("?", OdbcType.Date)).Value = toDate
+                conn.Open()
+                Dim da As New OdbcDataAdapter(cmd)
+                da.Fill(dt)
+            End Using
+        End Using
+        Return dt
+    End Function
+
+    Private Function GetLatestCheckUpByPatientName(connString As String, patientName As String) As DataTable
+        Dim dt As New DataTable()
+        Using conn As New OdbcConnection(connString)
+            ' Fetch latest check-up via view aligned with checkUp.rdlc (DataSet8)
+            Dim query As String = _
+                "SELECT * FROM vw_checkup_report " & _
+                "WHERE patientFullName = ? " & _
+                "ORDER BY checkupID DESC LIMIT 1"
+            Using cmd As New OdbcCommand(query, conn)
+                cmd.Parameters.Add("?", OdbcType.VarChar).Value = patientName
                 conn.Open()
                 Dim da As New OdbcDataAdapter(cmd)
                 da.Fill(dt)

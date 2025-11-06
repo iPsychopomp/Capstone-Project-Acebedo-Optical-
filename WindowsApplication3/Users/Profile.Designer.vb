@@ -124,7 +124,7 @@ Partial Class Profile
         Me.Label16.AutoSize = True
         Me.Label16.Font = New System.Drawing.Font("Segoe UI", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.Label16.ForeColor = System.Drawing.Color.Red
-        Me.Label16.Location = New System.Drawing.Point(425, 206)
+        Me.Label16.Location = New System.Drawing.Point(429, 206)
         Me.Label16.Name = "Label16"
         Me.Label16.Size = New System.Drawing.Size(20, 25)
         Me.Label16.TabIndex = 63
@@ -135,7 +135,7 @@ Partial Class Profile
         Me.Label1.AutoSize = True
         Me.Label1.Font = New System.Drawing.Font("Segoe UI", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.Label1.ForeColor = System.Drawing.Color.Red
-        Me.Label1.Location = New System.Drawing.Point(519, 143)
+        Me.Label1.Location = New System.Drawing.Point(514, 144)
         Me.Label1.Name = "Label1"
         Me.Label1.Size = New System.Drawing.Size(20, 25)
         Me.Label1.TabIndex = 62
@@ -146,7 +146,7 @@ Partial Class Profile
         Me.Label14.AutoSize = True
         Me.Label14.Font = New System.Drawing.Font("Segoe UI", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.Label14.ForeColor = System.Drawing.Color.Red
-        Me.Label14.Location = New System.Drawing.Point(465, 80)
+        Me.Label14.Location = New System.Drawing.Point(464, 80)
         Me.Label14.Name = "Label14"
         Me.Label14.Size = New System.Drawing.Size(20, 25)
         Me.Label14.TabIndex = 61
@@ -157,7 +157,7 @@ Partial Class Profile
         Me.Label13.AutoSize = True
         Me.Label13.Font = New System.Drawing.Font("Segoe UI", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.Label13.ForeColor = System.Drawing.Color.Red
-        Me.Label13.Location = New System.Drawing.Point(465, 17)
+        Me.Label13.Location = New System.Drawing.Point(462, 17)
         Me.Label13.Name = "Label13"
         Me.Label13.Size = New System.Drawing.Size(20, 25)
         Me.Label13.TabIndex = 60

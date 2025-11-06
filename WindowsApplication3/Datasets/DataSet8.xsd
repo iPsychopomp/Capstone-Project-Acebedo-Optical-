@@ -1,0 +1,174 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xs:schema id="DataSet8" targetNamespace="http://tempuri.org/DataSet8.xsd" xmlns:mstns="http://tempuri.org/DataSet8.xsd" xmlns="http://tempuri.org/DataSet8.xsd" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata" xmlns:msprop="urn:schemas-microsoft-com:xml-msprop" attributeFormDefault="qualified" elementFormDefault="qualified">
+  <xs:annotation>
+    <xs:appinfo source="urn:schemas-microsoft-com:xml-msdatasource">
+      <DataSource DefaultConnectionIndex="0" FunctionsComponentName="QueriesTableAdapter" Modifier="AutoLayout, AnsiClass, Class, Public" SchemaSerializationMode="IncludeSchema" xmlns="urn:schemas-microsoft-com:xml-msdatasource">
+        <Connections>
+          <Connection AppSettingsObjectName="MySettings" AppSettingsPropertyName="acebedoConnectionString" ConnectionStringObject="" IsAppSettingsProperty="true" Modifier="Assembly" Name="acebedoConnectionString (MySettings)" PropertyReference="ApplicationSettings.WindowsApplication3.My.MySettings.GlobalReference.Default.acebedoConnectionString" Provider="System.Data.Odbc" />
+        </Connections>
+        <Tables>
+          <TableAdapter BaseClass="System.ComponentModel.Component" DataAccessorModifier="AutoLayout, AnsiClass, Class, Public" DataAccessorName="DataTable1TableAdapter" GeneratorDataComponentClassName="DataTable1TableAdapter" Name="DataTable1" UserDataComponentName="DataTable1TableAdapter">
+            <MainSource>
+              <DbSource ConnectionRef="acebedoConnectionString (MySettings)" DbObjectType="Unknown" FillMethodModifier="Public" FillMethodName="Fill" GenerateMethods="Both" GenerateShortCommands="false" GeneratorGetMethodName="GetData" GeneratorSourceName="Fill" GetMethodModifier="Public" GetMethodName="GetData" QueryType="Rowset" ScalarCallRetval="System.Object, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" UseOptimisticConcurrency="true" UserGetMethodName="GetData" UserSourceName="Fill">
+                <SelectCommand>
+                  <DbCommand CommandType="Text" ModifiedByUser="true">
+                    <CommandText>SELECT * FROM vw_checkup_report</CommandText>
+                    <Parameters />
+                  </DbCommand>
+                </SelectCommand>
+              </DbSource>
+            </MainSource>
+            <Mappings>
+              <Mapping SourceColumn="checkupID" DataSetColumn="checkupID" />
+              <Mapping SourceColumn="patientID" DataSetColumn="patientID" />
+              <Mapping SourceColumn="checkupDate" DataSetColumn="checkupDate" />
+              <Mapping SourceColumn="remarks" DataSetColumn="remarks" />
+              <Mapping SourceColumn="sphereOD" DataSetColumn="sphereOD" />
+              <Mapping SourceColumn="sphereOS" DataSetColumn="sphereOS" />
+              <Mapping SourceColumn="cylinderOD" DataSetColumn="cylinderOD" />
+              <Mapping SourceColumn="cylinderOS" DataSetColumn="cylinderOS" />
+              <Mapping SourceColumn="axisOD" DataSetColumn="axisOD" />
+              <Mapping SourceColumn="axisOS" DataSetColumn="axisOS" />
+              <Mapping SourceColumn="addOD" DataSetColumn="addOD" />
+              <Mapping SourceColumn="addOS" DataSetColumn="addOS" />
+              <Mapping SourceColumn="pdOD" DataSetColumn="pdOD" />
+              <Mapping SourceColumn="pdOS" DataSetColumn="pdOS" />
+              <Mapping SourceColumn="pdOU" DataSetColumn="pdOU" />
+              <Mapping SourceColumn="appointmentDate" DataSetColumn="appointmentDate" />
+              <Mapping SourceColumn="appointedDoctor" DataSetColumn="appointedDoctor" />
+              <Mapping SourceColumn="doctorFullName" DataSetColumn="doctorFullName" />
+              <Mapping SourceColumn="patientFullName" DataSetColumn="patientFullName" />
+            </Mappings>
+            <Sources />
+          </TableAdapter>
+        </Tables>
+        <Sources />
+      </DataSource>
+    </xs:appinfo>
+  </xs:annotation>
+  <xs:element name="DataSet8" msdata:IsDataSet="true" msdata:UseCurrentLocale="true" msprop:EnableTableAdapterManager="true" msprop:Generator_DataSetName="DataSet8" msprop:Generator_UserDSName="DataSet8">
+    <xs:complexType>
+      <xs:choice minOccurs="0" maxOccurs="unbounded">
+        <xs:element name="DataTable1" msprop:Generator_TableClassName="DataTable1DataTable" msprop:Generator_TableVarName="tableDataTable1" msprop:Generator_TablePropName="DataTable1" msprop:Generator_RowDeletingName="DataTable1RowDeleting" msprop:Generator_RowChangingName="DataTable1RowChanging" msprop:Generator_RowEvHandlerName="DataTable1RowChangeEventHandler" msprop:Generator_RowDeletedName="DataTable1RowDeleted" msprop:Generator_UserTableName="DataTable1" msprop:Generator_RowChangedName="DataTable1RowChanged" msprop:Generator_RowEvArgName="DataTable1RowChangeEvent" msprop:Generator_RowClassName="DataTable1Row">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="checkupID" msdata:AutoIncrement="true" msdata:AutoIncrementSeed="-1" msdata:AutoIncrementStep="-1" msprop:Generator_ColumnVarNameInTable="columncheckupID" msprop:Generator_ColumnPropNameInRow="checkupID" msprop:Generator_ColumnPropNameInTable="checkupIDColumn" msprop:Generator_UserColumnName="checkupID" type="xs:int" />
+              <xs:element name="patientID" msprop:Generator_ColumnVarNameInTable="columnpatientID" msprop:Generator_ColumnPropNameInRow="patientID" msprop:Generator_ColumnPropNameInTable="patientIDColumn" msprop:Generator_UserColumnName="patientID" type="xs:int" />
+              <xs:element name="checkupDate" msprop:Generator_ColumnVarNameInTable="columncheckupDate" msprop:Generator_ColumnPropNameInRow="checkupDate" msprop:Generator_ColumnPropNameInTable="checkupDateColumn" msprop:Generator_UserColumnName="checkupDate" type="xs:dateTime" />
+              <xs:element name="remarks" msprop:Generator_ColumnVarNameInTable="columnremarks" msprop:Generator_ColumnPropNameInRow="remarks" msprop:Generator_ColumnPropNameInTable="remarksColumn" msprop:Generator_UserColumnName="remarks">
+                <xs:simpleType>
+                  <xs:restriction base="xs:string">
+                    <xs:maxLength value="65535" />
+                  </xs:restriction>
+                </xs:simpleType>
+              </xs:element>
+              <xs:element name="sphereOD" msprop:Generator_ColumnVarNameInTable="columnsphereOD" msprop:Generator_ColumnPropNameInRow="sphereOD" msprop:Generator_ColumnPropNameInTable="sphereODColumn" msprop:Generator_UserColumnName="sphereOD" minOccurs="0">
+                <xs:simpleType>
+                  <xs:restriction base="xs:string">
+                    <xs:maxLength value="10" />
+                  </xs:restriction>
+                </xs:simpleType>
+              </xs:element>
+              <xs:element name="sphereOS" msprop:Generator_ColumnVarNameInTable="columnsphereOS" msprop:Generator_ColumnPropNameInRow="sphereOS" msprop:Generator_ColumnPropNameInTable="sphereOSColumn" msprop:Generator_UserColumnName="sphereOS" minOccurs="0">
+                <xs:simpleType>
+                  <xs:restriction base="xs:string">
+                    <xs:maxLength value="10" />
+                  </xs:restriction>
+                </xs:simpleType>
+              </xs:element>
+              <xs:element name="cylinderOD" msprop:Generator_ColumnVarNameInTable="columncylinderOD" msprop:Generator_ColumnPropNameInRow="cylinderOD" msprop:Generator_ColumnPropNameInTable="cylinderODColumn" msprop:Generator_UserColumnName="cylinderOD" minOccurs="0">
+                <xs:simpleType>
+                  <xs:restriction base="xs:string">
+                    <xs:maxLength value="10" />
+                  </xs:restriction>
+                </xs:simpleType>
+              </xs:element>
+              <xs:element name="cylinderOS" msprop:Generator_ColumnVarNameInTable="columncylinderOS" msprop:Generator_ColumnPropNameInRow="cylinderOS" msprop:Generator_ColumnPropNameInTable="cylinderOSColumn" msprop:Generator_UserColumnName="cylinderOS" minOccurs="0">
+                <xs:simpleType>
+                  <xs:restriction base="xs:string">
+                    <xs:maxLength value="10" />
+                  </xs:restriction>
+                </xs:simpleType>
+              </xs:element>
+              <xs:element name="axisOD" msprop:Generator_ColumnVarNameInTable="columnaxisOD" msprop:Generator_ColumnPropNameInRow="axisOD" msprop:Generator_ColumnPropNameInTable="axisODColumn" msprop:Generator_UserColumnName="axisOD" minOccurs="0">
+                <xs:simpleType>
+                  <xs:restriction base="xs:string">
+                    <xs:maxLength value="10" />
+                  </xs:restriction>
+                </xs:simpleType>
+              </xs:element>
+              <xs:element name="axisOS" msprop:Generator_ColumnVarNameInTable="columnaxisOS" msprop:Generator_ColumnPropNameInRow="axisOS" msprop:Generator_ColumnPropNameInTable="axisOSColumn" msprop:Generator_UserColumnName="axisOS" minOccurs="0">
+                <xs:simpleType>
+                  <xs:restriction base="xs:string">
+                    <xs:maxLength value="10" />
+                  </xs:restriction>
+                </xs:simpleType>
+              </xs:element>
+              <xs:element name="addOD" msprop:Generator_ColumnVarNameInTable="columnaddOD" msprop:Generator_ColumnPropNameInRow="addOD" msprop:Generator_ColumnPropNameInTable="addODColumn" msprop:Generator_UserColumnName="addOD" minOccurs="0">
+                <xs:simpleType>
+                  <xs:restriction base="xs:string">
+                    <xs:maxLength value="10" />
+                  </xs:restriction>
+                </xs:simpleType>
+              </xs:element>
+              <xs:element name="addOS" msprop:Generator_ColumnVarNameInTable="columnaddOS" msprop:Generator_ColumnPropNameInRow="addOS" msprop:Generator_ColumnPropNameInTable="addOSColumn" msprop:Generator_UserColumnName="addOS" minOccurs="0">
+                <xs:simpleType>
+                  <xs:restriction base="xs:string">
+                    <xs:maxLength value="10" />
+                  </xs:restriction>
+                </xs:simpleType>
+              </xs:element>
+              <xs:element name="pdOD" msprop:Generator_ColumnVarNameInTable="columnpdOD" msprop:Generator_ColumnPropNameInRow="pdOD" msprop:Generator_ColumnPropNameInTable="pdODColumn" msprop:Generator_UserColumnName="pdOD" minOccurs="0">
+                <xs:simpleType>
+                  <xs:restriction base="xs:string">
+                    <xs:maxLength value="10" />
+                  </xs:restriction>
+                </xs:simpleType>
+              </xs:element>
+              <xs:element name="pdOS" msprop:Generator_ColumnVarNameInTable="columnpdOS" msprop:Generator_ColumnPropNameInRow="pdOS" msprop:Generator_ColumnPropNameInTable="pdOSColumn" msprop:Generator_UserColumnName="pdOS" minOccurs="0">
+                <xs:simpleType>
+                  <xs:restriction base="xs:string">
+                    <xs:maxLength value="10" />
+                  </xs:restriction>
+                </xs:simpleType>
+              </xs:element>
+              <xs:element name="pdOU" msprop:Generator_ColumnVarNameInTable="columnpdOU" msprop:Generator_ColumnPropNameInRow="pdOU" msprop:Generator_ColumnPropNameInTable="pdOUColumn" msprop:Generator_UserColumnName="pdOU" minOccurs="0">
+                <xs:simpleType>
+                  <xs:restriction base="xs:string">
+                    <xs:maxLength value="10" />
+                  </xs:restriction>
+                </xs:simpleType>
+              </xs:element>
+              <xs:element name="appointmentDate" msprop:Generator_ColumnVarNameInTable="columnappointmentDate" msprop:Generator_ColumnPropNameInRow="appointmentDate" msprop:Generator_ColumnPropNameInTable="appointmentDateColumn" msprop:Generator_UserColumnName="appointmentDate" type="xs:dateTime" minOccurs="0" />
+              <xs:element name="appointedDoctor" msprop:Generator_ColumnVarNameInTable="columnappointedDoctor" msprop:Generator_ColumnPropNameInRow="appointedDoctor" msprop:Generator_ColumnPropNameInTable="appointedDoctorColumn" msprop:Generator_UserColumnName="appointedDoctor" minOccurs="0">
+                <xs:simpleType>
+                  <xs:restriction base="xs:string">
+                    <xs:maxLength value="255" />
+                  </xs:restriction>
+                </xs:simpleType>
+              </xs:element>
+              <xs:element name="doctorFullName" msprop:Generator_ColumnVarNameInTable="columndoctorFullName" msprop:Generator_ColumnPropNameInRow="doctorFullName" msprop:Generator_ColumnPropNameInTable="doctorFullNameColumn" msprop:Generator_UserColumnName="doctorFullName" minOccurs="0">
+                <xs:simpleType>
+                  <xs:restriction base="xs:string">
+                    <xs:maxLength value="302" />
+                  </xs:restriction>
+                </xs:simpleType>
+              </xs:element>
+              <xs:element name="patientFullName" msprop:Generator_ColumnVarNameInTable="columnpatientFullName" msprop:Generator_ColumnPropNameInRow="patientFullName" msprop:Generator_ColumnPropNameInTable="patientFullNameColumn" msprop:Generator_UserColumnName="patientFullName" minOccurs="0">
+                <xs:simpleType>
+                  <xs:restriction base="xs:string">
+                    <xs:maxLength value="62" />
+                  </xs:restriction>
+                </xs:simpleType>
+              </xs:element>
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+      </xs:choice>
+    </xs:complexType>
+    <xs:unique name="Constraint1" msdata:PrimaryKey="true">
+      <xs:selector xpath=".//mstns:DataTable1" />
+      <xs:field xpath="mstns:checkupID" />
+    </xs:unique>
+  </xs:element>
+</xs:schema>

@@ -193,6 +193,11 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>DataSet7.xsd</DependentUpon>
     </Compile>
+    <Compile Include="Datasets\DataSet8.Designer.vb">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>DataSet8.xsd</DependentUpon>
+    </Compile>
     <Compile Include="dgvDesign.vb" />
     <Compile Include="Doctors\addDoctors.Designer.vb">
       <DependentUpon>addDoctors.vb</DependentUpon>
@@ -462,6 +467,9 @@
     <EmbeddedResource Include="RDLC\annualSales.rdlc">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </EmbeddedResource>
+    <EmbeddedResource Include="RDLC\checkUp.rdlc">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </EmbeddedResource>
     <EmbeddedResource Include="RDLC\criticalStockReport.rdlc">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </EmbeddedResource>
@@ -670,6 +678,17 @@
     </None>
     <None Include="Datasets\DataSet7.xss">
       <DependentUpon>DataSet7.xsd</DependentUpon>
+    </None>
+    <None Include="Datasets\DataSet8.xsc">
+      <DependentUpon>DataSet8.xsd</DependentUpon>
+    </None>
+    <None Include="Datasets\DataSet8.xsd">
+      <SubType>Designer</SubType>
+      <Generator>MSDataSetGenerator</Generator>
+      <LastGenOutput>DataSet8.Designer.vb</LastGenOutput>
+    </None>
+    <None Include="Datasets\DataSet8.xss">
+      <DependentUpon>DataSet8.xsd</DependentUpon>
     </None>
     <None Include="My Project\Application.myapp">
       <Generator>MyApplicationCodeGenerator</Generator>

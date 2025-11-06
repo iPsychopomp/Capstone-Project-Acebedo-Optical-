@@ -22,6 +22,7 @@ Partial Class viewCheckUp
     'Do not modify it using the code editor.
     <System.Diagnostics.DebuggerStepThrough()> _
     Private Sub InitializeComponent()
+        Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(viewCheckUp))
         Me.lblDate = New System.Windows.Forms.Label()
         Me.Label8 = New System.Windows.Forms.Label()
         Me.lblSphereOD = New System.Windows.Forms.Label()
@@ -39,11 +40,15 @@ Partial Class viewCheckUp
         Me.lblRemarks = New System.Windows.Forms.Label()
         Me.lblDoctor = New System.Windows.Forms.Label()
         Me.pnlViewCheck = New System.Windows.Forms.Panel()
+        Me.lblPDou = New System.Windows.Forms.Label()
         Me.lblPDos = New System.Windows.Forms.Label()
         Me.lblPDod = New System.Windows.Forms.Label()
         Me.Label3 = New System.Windows.Forms.Label()
-        Me.lblPDou = New System.Windows.Forms.Label()
+        Me.btnPrint = New System.Windows.Forms.Button()
+        Me.Label10 = New System.Windows.Forms.Label()
+        Me.PictureBox1 = New System.Windows.Forms.PictureBox()
         Me.pnlViewCheck.SuspendLayout()
+        CType(Me.PictureBox1, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.SuspendLayout()
         '
         'lblDate
@@ -185,6 +190,7 @@ Partial Class viewCheckUp
         Me.lblPatientName.Size = New System.Drawing.Size(129, 25)
         Me.lblPatientName.TabIndex = 13
         Me.lblPatientName.Text = "Patient Name:"
+        Me.lblPatientName.Visible = False
         '
         'lblRemarks
         '
@@ -229,10 +235,20 @@ Partial Class viewCheckUp
         Me.pnlViewCheck.Controls.Add(Me.Label8)
         Me.pnlViewCheck.Controls.Add(Me.lblDate)
         Me.pnlViewCheck.Dock = System.Windows.Forms.DockStyle.Bottom
-        Me.pnlViewCheck.Location = New System.Drawing.Point(0, 44)
+        Me.pnlViewCheck.Location = New System.Drawing.Point(0, 43)
         Me.pnlViewCheck.Name = "pnlViewCheck"
-        Me.pnlViewCheck.Size = New System.Drawing.Size(643, 314)
+        Me.pnlViewCheck.Size = New System.Drawing.Size(643, 388)
         Me.pnlViewCheck.TabIndex = 3
+        '
+        'lblPDou
+        '
+        Me.lblPDou.AutoSize = True
+        Me.lblPDou.Font = New System.Drawing.Font("Segoe UI Semibold", 13.8!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.lblPDou.Location = New System.Drawing.Point(547, 166)
+        Me.lblPDou.Name = "lblPDou"
+        Me.lblPDou.Size = New System.Drawing.Size(56, 32)
+        Me.lblPDou.TabIndex = 19
+        Me.lblPDou.Text = "OU:"
         '
         'lblPDos
         '
@@ -264,34 +280,58 @@ Partial Class viewCheckUp
         Me.Label3.TabIndex = 16
         Me.Label3.Text = "PD:"
         '
-        'lblPDou
+        'btnPrint
         '
-        Me.lblPDou.AutoSize = True
-        Me.lblPDou.Font = New System.Drawing.Font("Segoe UI Semibold", 13.8!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.lblPDou.Location = New System.Drawing.Point(547, 166)
-        Me.lblPDou.Name = "lblPDou"
-        Me.lblPDou.Size = New System.Drawing.Size(56, 32)
-        Me.lblPDou.TabIndex = 19
-        Me.lblPDou.Text = "OU:"
+        Me.btnPrint.Font = New System.Drawing.Font("Segoe UI", 10.8!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.btnPrint.Location = New System.Drawing.Point(518, 8)
+        Me.btnPrint.Name = "btnPrint"
+        Me.btnPrint.Size = New System.Drawing.Size(100, 27)
+        Me.btnPrint.TabIndex = 14
+        Me.btnPrint.Text = "Print"
+        Me.btnPrint.UseVisualStyleBackColor = True
+        '
+        'Label10
+        '
+        Me.Label10.AutoSize = True
+        Me.Label10.Font = New System.Drawing.Font("Segoe UI Semibold", 12.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label10.Location = New System.Drawing.Point(49, 12)
+        Me.Label10.Name = "Label10"
+        Me.Label10.Size = New System.Drawing.Size(170, 28)
+        Me.Label10.TabIndex = 114
+        Me.Label10.Text = "Check-up History"
+        '
+        'PictureBox1
+        '
+        Me.PictureBox1.Image = CType(resources.GetObject("PictureBox1.Image"), System.Drawing.Image)
+        Me.PictureBox1.Location = New System.Drawing.Point(12, 8)
+        Me.PictureBox1.Name = "PictureBox1"
+        Me.PictureBox1.Size = New System.Drawing.Size(31, 29)
+        Me.PictureBox1.TabIndex = 115
+        Me.PictureBox1.TabStop = False
         '
         'viewCheckUp
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(11.0!, 28.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.BackColor = System.Drawing.SystemColors.GradientActiveCaption
-        Me.ClientSize = New System.Drawing.Size(643, 358)
+        Me.ClientSize = New System.Drawing.Size(643, 431)
+        Me.Controls.Add(Me.PictureBox1)
+        Me.Controls.Add(Me.Label10)
+        Me.Controls.Add(Me.btnPrint)
         Me.Controls.Add(Me.pnlViewCheck)
         Me.Controls.Add(Me.lblPatientName)
         Me.Font = New System.Drawing.Font("Segoe UI", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog
+        Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle
+        Me.Icon = CType(resources.GetObject("$this.Icon"), System.Drawing.Icon)
         Me.Margin = New System.Windows.Forms.Padding(4, 5, 4, 5)
         Me.MaximizeBox = False
         Me.MinimizeBox = False
         Me.Name = "viewCheckUp"
         Me.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen
-        Me.Text = "Check Up History"
+        Me.Text = "Acebedo Optical"
         Me.pnlViewCheck.ResumeLayout(False)
         Me.pnlViewCheck.PerformLayout()
+        CType(Me.PictureBox1, System.ComponentModel.ISupportInitialize).EndInit()
         Me.ResumeLayout(False)
         Me.PerformLayout()
 
@@ -317,4 +357,7 @@ Partial Class viewCheckUp
     Friend WithEvents lblPDos As System.Windows.Forms.Label
     Friend WithEvents lblPDod As System.Windows.Forms.Label
     Friend WithEvents Label3 As System.Windows.Forms.Label
+    Friend WithEvents btnPrint As System.Windows.Forms.Button
+    Friend WithEvents Label10 As System.Windows.Forms.Label
+    Friend WithEvents PictureBox1 As System.Windows.Forms.PictureBox
 End Class

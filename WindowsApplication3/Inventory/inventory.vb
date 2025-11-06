@@ -633,4 +633,47 @@ Public Class inventory
     Private Sub productDGV_CellContentClick(sender As Object, e As DataGridViewCellEventArgs) Handles productDGV.CellContentClick
 
     End Sub
+
+    Private Sub btnAdd_Click(sender As Object, e As EventArgs) Handles btnAdd.Click
+        Try
+            Dim addForm As New addProduct()
+            addForm.pnlPrdct.Tag = "" ' Empty tag means "Add" mode
+            addForm.Text = "Add Product"
+            AddHandler addForm.FormClosed, Sub(s, ev)
+                                               SafeLoadProducts()
+                                           End Sub
+            addForm.TopMost = True
+            addForm.ShowDialog()
+        Catch ex As Exception
+            MsgBox("Error opening Add Product form: " & ex.Message, vbCritical, "Error")
+        End Try
+    End Sub
+
+    Private Sub btnEdit_Click(sender As Object, e As EventArgs) Handles btnEdit.Click
+        Try
+            If productDGV.SelectedRows.Count > 0 Then
+                Dim ProductID As Integer = Convert.ToInt32(productDGV.SelectedRows(0).Cells("Column1").Value)
+
+                If MsgBox("Are you sure you want to edit this record?", vbYesNo + vbQuestion, "Edit") = vbYes Then
+                    Dim EditProduct As New addProduct()
+                    EditProduct.pnlPrdct.Tag = ProductID.ToString()
+                    EditProduct.Text = "Edit Product"
+
+                    ' Show the form first, then load the record
+                    EditProduct.Show()
+                    EditProduct.loadRecord(ProductID)
+
+                    AddHandler EditProduct.FormClosed, Sub(s, ev)
+                                                           SafeLoadProducts()
+                                                       End Sub
+                    EditProduct.TopMost = True
+                    EditProduct.BringToFront()
+                End If
+            Else
+                MessageBox.Show("Please select a row first.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error)
+            End If
+        Catch ex As Exception
+            MsgBox("Error: " & ex.Message, vbCritical, "Edit Error")
+        End Try
+    End Sub
 End Class

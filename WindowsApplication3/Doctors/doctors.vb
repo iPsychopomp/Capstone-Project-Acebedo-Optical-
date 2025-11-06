@@ -10,6 +10,7 @@ Public Class doctors
         txtSearch.Text = "Search by doctor's name"
         txtSearch.ForeColor = Color.Gray
     End Sub
+
     Private Sub LoadPage()
         Try
             Dim countSql As String = "SELECT COUNT(*) FROM db_viewdoctors"

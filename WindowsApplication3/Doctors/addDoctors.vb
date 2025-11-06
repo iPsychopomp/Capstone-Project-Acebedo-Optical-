@@ -157,22 +157,32 @@ Public Class addDoctors
             assignFirst(txtLname)
         End If
 
-        ' Required: Mobile Number (*) - must start with +63 and contain exactly 10 digits after +63 (total length 13)
+        ' Required: Mobile Number (*) - must start with +63 and contain exactly 10 digits after +63
         Dim mobile As String = If(txtMobile.Text, String.Empty).Trim()
-        Dim digitsOnly As String = New String(mobile.Where(Function(ch) Char.IsDigit(ch)).ToArray())
-        If mobile = String.Empty OrElse Not mobile.StartsWith("+63") OrElse digitsOnly.Length <> 12 Then
-            missing.Add("Valid Mobile Number (+63XXXXXXXXXX)")
+        If mobile = String.Empty OrElse Not mobile.StartsWith("+63") Then
+            missing.Add("Mobile Number (must start with +63)")
             assignFirst(txtMobile)
+        Else
+            ' Count digits after +63
+            Dim digitsAfter63 As String = mobile.Substring(3) ' Remove +63
+            Dim digitsOnly As String = New String(digitsAfter63.Where(Function(ch) Char.IsDigit(ch)).ToArray())
+            If digitsOnly.Length <> 10 Then
+                missing.Add("Mobile Number (must have exactly 10 digits after +63)")
+                assignFirst(txtMobile)
+            End If
         End If
 
-        ' Required: Email (*) - basic check
+        ' Required: Email (*) - must contain @ and end with .com
         Dim email As String = If(txtEmail.Text, String.Empty).Trim()
         If String.IsNullOrWhiteSpace(email) Then
             missing.Add("Email")
             assignFirst(txtEmail)
         Else
-            If Not (email.Contains("@") AndAlso email.Contains(".")) Then
-                missing.Add("Valid Email")
+            If Not email.Contains("@") Then
+                missing.Add("Email (must contain @)")
+                assignFirst(txtEmail)
+            ElseIf Not email.EndsWith(".com", StringComparison.OrdinalIgnoreCase) Then
+                missing.Add("Email (must end with .com)")
                 assignFirst(txtEmail)
             End If
         End If
@@ -259,10 +269,10 @@ Public Class addDoctors
             Return
         End If
 
-        ' Prevent typing beyond 13 characters (account for selected text)
+        ' Prevent typing beyond 13 characters total (+63 + 10 digits = 13)
         If Not Char.IsControl(e.KeyChar) Then
-            Dim remaining As Integer = 13 - (txtMobile.TextLength - txtMobile.SelectionLength)
-            If remaining <= 0 Then
+            Dim currentLength As Integer = txtMobile.TextLength - txtMobile.SelectionLength
+            If currentLength >= 13 Then
                 e.Handled = True
                 Return
             End If

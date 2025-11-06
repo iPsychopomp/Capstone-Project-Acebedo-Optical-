@@ -12,6 +12,9 @@ Public Class Transaction
         currentPage = 0
         LoadTransactions()
         Call DgvStyle(transactionDGV)
+        ' Default placeholder for search box
+        txtSearch.Text = "Search by patient's name"
+        txtSearch.ForeColor = Color.Gray
 
         ' Hide Settle Balance and Edit buttons for Admin/Administrator (but NOT for Super Admin)
         If (LoggedInRole = "Admin" OrElse LoggedInRole = "Administrator") AndAlso LoggedInRole <> "Super Admin" Then
@@ -53,6 +56,19 @@ Public Class Transaction
             col.HeaderCell.Style.Alignment = DataGridViewContentAlignment.MiddleCenter
         Next
     End Sub
+    Private Sub txtSearch_LostFocus(sender As Object, e As EventArgs) Handles txtSearch.LostFocus
+        If String.IsNullOrWhiteSpace(txtSearch.Text) Then
+            txtSearch.Text = "Search by patient's name"
+            txtSearch.ForeColor = Color.Gray
+        End If
+    End Sub
+    Private Sub txtSearch_GotFocus(sender As Object, e As EventArgs) Handles txtSearch.GotFocus
+        If txtSearch.ForeColor = Color.Gray Then
+            txtSearch.Text = ""
+            txtSearch.ForeColor = Color.Black
+        End If
+    End Sub
+
 
 
 
@@ -132,6 +148,10 @@ Public Class Transaction
             currentStatusFilter = statusFilter
         End If
 
+        Debug.WriteLine("=== LoadTransactions ===")
+        Debug.WriteLine("statusFilter: " & statusFilter)
+        Debug.WriteLine("currentStatusFilter: " & currentStatusFilter)
+
         Try
             Dim countSql As String = _
                 "SELECT COUNT(*) " & _
@@ -140,8 +160,9 @@ Public Class Transaction
 
             Dim whereClause As String = ""
             If Not String.IsNullOrEmpty(currentStatusFilter) Then
-                Dim statusExpr As String = "CASE WHEN t.pendingBalance <= 0 THEN 'Paid' ELSE 'Pending' END"
-                whereClause = " WHERE " & statusExpr & " = '" & currentStatusFilter & "'"
+                ' Use the actual paymentStatus column from database
+                whereClause = " WHERE t.paymentStatus = '" & currentStatusFilter & "'"
+                Debug.WriteLine("WHERE clause: " & whereClause)
             End If
 
             Dim dataSql As String = _
@@ -171,6 +192,7 @@ Public Class Transaction
                     If obj IsNot Nothing AndAlso obj IsNot DBNull.Value Then
                         Integer.TryParse(obj.ToString(), totalCount)
                     End If
+                    Debug.WriteLine("Total count: " & totalCount.ToString())
                 End Using
 
                 ' data page
@@ -320,9 +342,18 @@ Public Class Transaction
     End Sub
 
     Private Sub HandleRadioButtonFilter(rb As RadioButton, filterValue As String)
-        Dim hasSearch As Boolean = txtSearch.Text.Trim() <> ""
+        Debug.WriteLine("=== HandleRadioButtonFilter ===")
+        Debug.WriteLine("Radio button: " & rb.Name)
+        Debug.WriteLine("Filter value: " & filterValue)
+        Debug.WriteLine("rb.Checked: " & rb.Checked.ToString())
+
+        ' Check if there's actual search text (not placeholder)
+        Dim searchText As String = txtSearch.Text.Trim()
+        Dim hasSearch As Boolean = searchText <> "" AndAlso searchText <> "Search by patient's name"
+        Debug.WriteLine("hasSearch: " & hasSearch.ToString())
 
         If lastCheckedRadio Is rb AndAlso rb.Checked Then
+            Debug.WriteLine("Unchecking radio button")
             rb.Checked = False
             lastCheckedRadio = Nothing
             If hasSearch Then
@@ -334,6 +365,7 @@ Public Class Transaction
                 LoadTransactions() ' Load all
             End If
         Else
+            Debug.WriteLine("Checking radio button, calling LoadTransactions with: " & filterValue)
             lastCheckedRadio = rb
             If hasSearch Then
                 ' Apply search with the newly selected status filter

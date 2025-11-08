@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
   <PropertyGroup>
@@ -724,4 +724,11 @@
   <Target Name="AfterBuild">
   </Target>
   -->
+  <!-- Copy Data folder to output directory after build -->
+  <Target Name="CopyDataFolder" AfterTargets="Build">
+    <ItemGroup>
+      <DataFiles Include="Data\**\*.*" />
+    </ItemGroup>
+    <Copy SourceFiles="@(DataFiles)" DestinationFolder="$(OutputPath)\Data\%(RecursiveDir)" SkipUnchangedFiles="true" />
+  </Target>
 </Project>

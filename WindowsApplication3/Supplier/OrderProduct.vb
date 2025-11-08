@@ -20,6 +20,7 @@ Public Class OrderProduct
         LoadOrders()
         txtTotal.Text = "0.00"
         DgvStyle(dgvSelectedProducts)
+        DgvStyle(dgvOrders)
         HideProductIDColumn()
 
         ' Removed in-tab delivery history grid

@@ -82,17 +82,17 @@ Partial Class addPatient
         Me.btnCancel = New System.Windows.Forms.Button()
         Me.pnlDataEntry = New System.Windows.Forms.Panel()
         Me.Panel1 = New System.Windows.Forms.Panel()
+        Me.pbEdit = New System.Windows.Forms.PictureBox()
         Me.pbAdd = New System.Windows.Forms.PictureBox()
         Me.lblHead = New System.Windows.Forms.Label()
-        Me.pbEdit = New System.Windows.Forms.PictureBox()
         CType(Me.ErrorProvider1, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.grpPatient.SuspendLayout()
         Me.grpHighblood.SuspendLayout()
         Me.grpDiabetic.SuspendLayout()
         Me.pnlDataEntry.SuspendLayout()
         Me.Panel1.SuspendLayout()
-        CType(Me.pbAdd, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.pbEdit, System.ComponentModel.ISupportInitialize).BeginInit()
+        CType(Me.pbAdd, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.SuspendLayout()
         '
         'ErrorProvider1
@@ -682,7 +682,7 @@ Partial Class addPatient
         Me.btnSave.Font = New System.Drawing.Font("Segoe UI", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.btnSave.ForeColor = System.Drawing.Color.Black
         Me.btnSave.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft
-        Me.btnSave.Location = New System.Drawing.Point(56, 548)
+        Me.btnSave.Location = New System.Drawing.Point(806, 548)
         Me.btnSave.Margin = New System.Windows.Forms.Padding(3, 2, 3, 2)
         Me.btnSave.Name = "btnSave"
         Me.btnSave.Size = New System.Drawing.Size(133, 33)
@@ -697,7 +697,7 @@ Partial Class addPatient
         Me.btnClear.Font = New System.Drawing.Font("Segoe UI", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.btnClear.ForeColor = System.Drawing.Color.Black
         Me.btnClear.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft
-        Me.btnClear.Location = New System.Drawing.Point(195, 548)
+        Me.btnClear.Location = New System.Drawing.Point(660, 548)
         Me.btnClear.Margin = New System.Windows.Forms.Padding(3, 2, 3, 2)
         Me.btnClear.Name = "btnClear"
         Me.btnClear.Size = New System.Drawing.Size(133, 33)
@@ -713,7 +713,7 @@ Partial Class addPatient
         Me.btnCancel.Font = New System.Drawing.Font("Segoe UI", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.btnCancel.ForeColor = System.Drawing.Color.Black
         Me.btnCancel.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft
-        Me.btnCancel.Location = New System.Drawing.Point(807, 548)
+        Me.btnCancel.Location = New System.Drawing.Point(56, 548)
         Me.btnCancel.Margin = New System.Windows.Forms.Padding(3, 2, 3, 2)
         Me.btnCancel.Name = "btnCancel"
         Me.btnCancel.Size = New System.Drawing.Size(133, 33)
@@ -748,6 +748,16 @@ Partial Class addPatient
         Me.Panel1.Size = New System.Drawing.Size(1001, 49)
         Me.Panel1.TabIndex = 201
         '
+        'pbEdit
+        '
+        Me.pbEdit.Image = CType(resources.GetObject("pbEdit.Image"), System.Drawing.Image)
+        Me.pbEdit.Location = New System.Drawing.Point(21, 4)
+        Me.pbEdit.Name = "pbEdit"
+        Me.pbEdit.Size = New System.Drawing.Size(47, 43)
+        Me.pbEdit.TabIndex = 115
+        Me.pbEdit.TabStop = False
+        Me.pbEdit.Visible = False
+        '
         'pbAdd
         '
         Me.pbAdd.Image = CType(resources.GetObject("pbAdd.Image"), System.Drawing.Image)
@@ -766,16 +776,6 @@ Partial Class addPatient
         Me.lblHead.Size = New System.Drawing.Size(186, 28)
         Me.lblHead.TabIndex = 113
         Me.lblHead.Text = "Add Patient Record"
-        '
-        'pbEdit
-        '
-        Me.pbEdit.Image = CType(resources.GetObject("pbEdit.Image"), System.Drawing.Image)
-        Me.pbEdit.Location = New System.Drawing.Point(21, 4)
-        Me.pbEdit.Name = "pbEdit"
-        Me.pbEdit.Size = New System.Drawing.Size(47, 43)
-        Me.pbEdit.TabIndex = 115
-        Me.pbEdit.TabStop = False
-        Me.pbEdit.Visible = False
         '
         'addPatient
         '
@@ -802,8 +802,8 @@ Partial Class addPatient
         Me.pnlDataEntry.ResumeLayout(False)
         Me.Panel1.ResumeLayout(False)
         Me.Panel1.PerformLayout()
-        CType(Me.pbAdd, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.pbEdit, System.ComponentModel.ISupportInitialize).EndInit()
+        CType(Me.pbAdd, System.ComponentModel.ISupportInitialize).EndInit()
         Me.ResumeLayout(False)
 
     End Sub

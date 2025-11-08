@@ -290,7 +290,7 @@ Partial Class dashboard
         '
         Me.PictureBox2.BackColor = System.Drawing.Color.Transparent
         Me.PictureBox2.Image = CType(resources.GetObject("PictureBox2.Image"), System.Drawing.Image)
-        Me.PictureBox2.Location = New System.Drawing.Point(75, 22)
+        Me.PictureBox2.Location = New System.Drawing.Point(73, 22)
         Me.PictureBox2.Name = "PictureBox2"
         Me.PictureBox2.Size = New System.Drawing.Size(33, 32)
         Me.PictureBox2.TabIndex = 140
@@ -312,7 +312,7 @@ Partial Class dashboard
         Me.Label11.AutoSize = True
         Me.Label11.BackColor = System.Drawing.Color.Transparent
         Me.Label11.Font = New System.Drawing.Font("Segoe UI Semibold", 12.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Label11.Location = New System.Drawing.Point(103, 23)
+        Me.Label11.Location = New System.Drawing.Point(101, 23)
         Me.Label11.Name = "Label11"
         Me.Label11.Size = New System.Drawing.Size(138, 28)
         Me.Label11.TabIndex = 137
@@ -336,7 +336,7 @@ Partial Class dashboard
         '
         Me.PictureBox3.BackColor = System.Drawing.Color.Transparent
         Me.PictureBox3.Image = CType(resources.GetObject("PictureBox3.Image"), System.Drawing.Image)
-        Me.PictureBox3.Location = New System.Drawing.Point(105, 21)
+        Me.PictureBox3.Location = New System.Drawing.Point(103, 21)
         Me.PictureBox3.Name = "PictureBox3"
         Me.PictureBox3.Size = New System.Drawing.Size(29, 34)
         Me.PictureBox3.TabIndex = 141
@@ -358,7 +358,7 @@ Partial Class dashboard
         Me.Label9.AutoSize = True
         Me.Label9.BackColor = System.Drawing.Color.Transparent
         Me.Label9.Font = New System.Drawing.Font("Segoe UI Semibold", 12.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Label9.Location = New System.Drawing.Point(131, 23)
+        Me.Label9.Location = New System.Drawing.Point(129, 23)
         Me.Label9.Name = "Label9"
         Me.Label9.Size = New System.Drawing.Size(62, 28)
         Me.Label9.TabIndex = 137
@@ -382,7 +382,7 @@ Partial Class dashboard
         '
         Me.PictureBox4.BackColor = System.Drawing.Color.Transparent
         Me.PictureBox4.Image = CType(resources.GetObject("PictureBox4.Image"), System.Drawing.Image)
-        Me.PictureBox4.Location = New System.Drawing.Point(80, 20)
+        Me.PictureBox4.Location = New System.Drawing.Point(78, 20)
         Me.PictureBox4.Name = "PictureBox4"
         Me.PictureBox4.Size = New System.Drawing.Size(29, 38)
         Me.PictureBox4.TabIndex = 140
@@ -404,7 +404,7 @@ Partial Class dashboard
         Me.Label13.AutoSize = True
         Me.Label13.BackColor = System.Drawing.Color.Transparent
         Me.Label13.Font = New System.Drawing.Font("Segoe UI Semibold", 12.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Label13.Location = New System.Drawing.Point(108, 23)
+        Me.Label13.Location = New System.Drawing.Point(106, 23)
         Me.Label13.Name = "Label13"
         Me.Label13.Size = New System.Drawing.Size(143, 28)
         Me.Label13.TabIndex = 137
@@ -428,7 +428,7 @@ Partial Class dashboard
         '
         Me.PictureBox1.BackColor = System.Drawing.Color.Transparent
         Me.PictureBox1.Image = CType(resources.GetObject("PictureBox1.Image"), System.Drawing.Image)
-        Me.PictureBox1.Location = New System.Drawing.Point(77, 20)
+        Me.PictureBox1.Location = New System.Drawing.Point(75, 20)
         Me.PictureBox1.Name = "PictureBox1"
         Me.PictureBox1.Size = New System.Drawing.Size(25, 38)
         Me.PictureBox1.TabIndex = 139
@@ -450,7 +450,7 @@ Partial Class dashboard
         Me.Label5.AutoSize = True
         Me.Label5.BackColor = System.Drawing.Color.Transparent
         Me.Label5.Font = New System.Drawing.Font("Segoe UI Semibold", 12.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Label5.Location = New System.Drawing.Point(104, 23)
+        Me.Label5.Location = New System.Drawing.Point(102, 23)
         Me.Label5.Name = "Label5"
         Me.Label5.Size = New System.Drawing.Size(136, 28)
         Me.Label5.TabIndex = 137

@@ -708,29 +708,50 @@ Public Class addPatient
                 Return
             End If
 
-            ' First, find the region with null check
-            Dim region = regions.FirstOrDefault(Function(r) r IsNot Nothing AndAlso r.region_name = regionName)
+            ' First, find the region with null check (case-insensitive)
+            Dim region = regions.FirstOrDefault(Function(r) r IsNot Nothing AndAlso r.region_name.Equals(regionName, StringComparison.OrdinalIgnoreCase))
             If region IsNot Nothing Then
                 ' Set the region
                 cmbRegion.SelectedValue = region.region_code
+                Application.DoEvents() ' Allow UI to update
 
-                ' Find the province with null check
-                Dim province = provinces.FirstOrDefault(Function(p) p IsNot Nothing AndAlso p.province_name = provinceName AndAlso p.region_code = region.region_code)
+                ' Find the province with null check (case-insensitive)
+                Dim province = provinces.FirstOrDefault(Function(p) p IsNot Nothing AndAlso p.province_name.Equals(provinceName, StringComparison.OrdinalIgnoreCase) AndAlso p.region_code = region.region_code)
                 If province IsNot Nothing Then
-                    ' Set the province
+                    ' Filter and set province datasource
+                    Dim filteredProvinces = provinces.Where(Function(p) p.region_code = region.region_code).ToList()
+                    cmbProvince.DataSource = filteredProvinces
+                    cmbProvince.DisplayMember = "province_name"
+                    cmbProvince.ValueMember = "province_code"
                     cmbProvince.SelectedValue = province.province_code
+                    Application.DoEvents() ' Allow UI to update
 
-                    ' Find the city with null check
-                    Dim city = cities.FirstOrDefault(Function(c) c IsNot Nothing AndAlso c.city_name = cityName AndAlso c.province_code = province.province_code)
+                    ' Find the city with null check (case-insensitive)
+                    Dim city = cities.FirstOrDefault(Function(c) c IsNot Nothing AndAlso c.city_name.Equals(cityName, StringComparison.OrdinalIgnoreCase) AndAlso c.province_code = province.province_code)
                     If city IsNot Nothing Then
-                        ' Set the city
+                        ' Filter and set city datasource
+                        Dim filteredCities = cities.Where(Function(c) c.province_code = province.province_code).ToList()
+                        cmbCity.DataSource = filteredCities
+                        cmbCity.DisplayMember = "city_name"
+                        cmbCity.ValueMember = "city_code"
                         cmbCity.SelectedValue = city.city_code
+                        Application.DoEvents() ' Allow UI to update
 
-                        ' Find the barangay with null check
-                        Dim barangay = barangays.FirstOrDefault(Function(b) b IsNot Nothing AndAlso b.brgy_name = barangayName AndAlso b.city_code = city.city_code)
+                        ' Filter and set barangay datasource
+                        Dim filteredBarangays = barangays.Where(Function(b) b.city_code = city.city_code).ToList()
+                        cmbBgy.DataSource = filteredBarangays
+                        cmbBgy.DisplayMember = "brgy_name"
+                        cmbBgy.ValueMember = "brgy_code"
+
+                        ' Find the barangay with null check (case-insensitive and trimmed)
+                        Dim barangay = filteredBarangays.FirstOrDefault(Function(b) b IsNot Nothing AndAlso b.brgy_name.Trim().Equals(barangayName.Trim(), StringComparison.OrdinalIgnoreCase))
                         If barangay IsNot Nothing Then
                             ' Set the barangay
                             cmbBgy.SelectedValue = barangay.brgy_code
+                        Else
+                            ' Debug: Show what barangay we're looking for
+                            Debug.WriteLine("Barangay not found: '" & barangayName & "' in city: " & cityName)
+                            Debug.WriteLine("Available barangays: " & String.Join(", ", filteredBarangays.Select(Function(b) b.brgy_name)))
                         End If
                     End If
                 End If
@@ -741,21 +762,49 @@ Public Class addPatient
     End Sub
 
     Private Sub pnlDataEntry_Paint(sender As Object, e As PaintEventArgs) Handles pnlDataEntry.Paint
+        ' Set main panel tab order
+        pnlPI.TabIndex = 0
+        pnlAI.TabIndex = 1
+        pnlCAI.TabIndex = 2
+        pnlMI.TabIndex = 3
+        pnlDB.TabIndex = 4
+        pnlHB.TabIndex = 5
+
+        ' Personal Information Panel (pnlPI)
         txtFirst.TabIndex = 0
         txtMname.TabIndex = 1
         txtLname.TabIndex = 2
         dtpBday.TabIndex = 3
-        txtAge.TabIndex = 4
-        cmbGender.TabIndex = 5
-        cmbRegion.TabIndex = 6
-        cmbProvince.TabIndex = 7
-        cmbCity.TabIndex = 8
-        cmbBgy.TabIndex = 9
-        pnlMI.TabIndex = 10
-        txtOccu.TabIndex = 11
-        txtMobile.TabIndex = 12
-        txtSports.TabIndex = 13
-        txtHobbies.TabIndex = 14
+        txtAge.TabStop = False ' Disable tab for auto-calculated age
+        cmbGender.TabIndex = 4
+
+        ' Address Information Panel (pnlAI)
+        cmbRegion.TabIndex = 0
+        cmbProvince.TabIndex = 1
+        cmbCity.TabIndex = 2
+        cmbBgy.TabIndex = 3
+        txtStreet.TabIndex = 4
+
+        ' Contact & Additional Information Panel (pnlCAI)
+        txtMobile.TabIndex = 0
+        txtOccu.TabIndex = 1
+        txtSports.TabIndex = 2
+        txtHobbies.TabIndex = 3
+
+        ' Medical Information Panel (pnlMI) - set sub-panel order
+        pnlDB.TabIndex = 0
+        pnlHB.TabIndex = 1
+        txtOther.TabIndex = 2
+    End Sub
+
+    Private Sub pnlDB_Paint(sender As Object, e As PaintEventArgs) Handles pnlDB.Paint
+        dbYes.TabIndex = 0
+        dbNo.TabIndex = 1
+    End Sub
+
+    Private Sub pnlHB_Paint(sender As Object, e As PaintEventArgs) Handles pnlHB.Paint
+        hbYes.TabIndex = 0
+        hbNo.TabIndex = 1
     End Sub
 
     Public Sub New()
@@ -1092,6 +1141,12 @@ Public Class addPatient
             AddHandler txtHobbies.Validating, AddressOf TextBox_Validating
             AddHandler txtStreet.Validating, AddressOf TextBox_Validating
             AddHandler txtOther.Validating, AddressOf TextBox_Validating
+
+            ' Enable tab stop for all radio buttons
+            dbYes.TabStop = True
+            dbNo.TabStop = True
+            hbYes.TabStop = True
+            hbNo.TabStop = True
         Catch ex As Exception
             MessageBox.Show("Error loading data: " & ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error)
         End Try

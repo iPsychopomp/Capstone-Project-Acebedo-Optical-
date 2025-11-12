@@ -15,9 +15,21 @@ Public Class viewPatientRecord
                 Using reader As OdbcDataReader = cmd.ExecuteReader()
                     If reader.Read() Then
                         ' Personal Information
-                        lblFN.Text = reader("fname").ToString().Trim() & " " &
-                                    If(String.IsNullOrEmpty(reader("mname").ToString().Trim()), "", reader("mname").ToString().Trim() & ". ") &
-                                    reader("lname").ToString().Trim()
+                        Dim mname As String = reader("mname").ToString().Trim()
+                        Dim middlePart As String = ""
+
+                        ' Only include middle name if it's not empty and not "N/A"
+                        If Not String.IsNullOrEmpty(mname) AndAlso mname.ToUpper() <> "N/A" Then
+                            ' If it's just an initial (1 character), add period and space
+                            If mname.Length = 1 Then
+                                middlePart = mname & ". "
+                            Else
+                                ' If it's a full middle name, just add space
+                                middlePart = mname & " "
+                            End If
+                        End If
+
+                        lblFN.Text = reader("fname").ToString().Trim() & " " & middlePart & reader("lname").ToString().Trim()
 
                         ' Birthday
                         If Not IsDBNull(reader("bday")) Then

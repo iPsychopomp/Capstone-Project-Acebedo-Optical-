@@ -438,9 +438,9 @@ Partial Class viewPatientRecord
         Me.Label11.Font = New System.Drawing.Font("Segoe UI", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.Label11.Location = New System.Drawing.Point(25, 73)
         Me.Label11.Name = "Label11"
-        Me.Label11.Size = New System.Drawing.Size(246, 28)
+        Me.Label11.Size = New System.Drawing.Size(198, 28)
         Me.Label11.TabIndex = 89
-        Me.Label11.Text = "Highblood Pressure Status:"
+        Me.Label11.Text = "Is patient highblood?"
         '
         'Label10
         '
@@ -448,9 +448,9 @@ Partial Class viewPatientRecord
         Me.Label10.Font = New System.Drawing.Font("Segoe UI", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.Label10.Location = New System.Drawing.Point(24, 40)
         Me.Label10.Name = "Label10"
-        Me.Label10.Size = New System.Drawing.Size(150, 28)
+        Me.Label10.Size = New System.Drawing.Size(176, 28)
         Me.Label10.TabIndex = 88
-        Me.Label10.Text = "Diabetes Status:"
+        Me.Label10.Text = "Is patient diabetic?"
         '
         'viewPatientRecord
         '

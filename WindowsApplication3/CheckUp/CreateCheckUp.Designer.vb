@@ -60,11 +60,12 @@ Partial Class CreateCheckUp
         Me.Label18 = New System.Windows.Forms.Label()
         Me.pdOD = New System.Windows.Forms.TextBox()
         Me.Label19 = New System.Windows.Forms.Label()
-        Me.btnDSearch = New System.Windows.Forms.Button()
         Me.btnPSearch = New System.Windows.Forms.Button()
-        Me.txtDName = New System.Windows.Forms.TextBox()
         Me.txtPName = New System.Windows.Forms.TextBox()
         Me.pnlCheckUp = New System.Windows.Forms.Panel()
+        Me.cmbDoctors = New System.Windows.Forms.ComboBox()
+        Me.Label21 = New System.Windows.Forms.Label()
+        Me.dtpBday = New System.Windows.Forms.DateTimePicker()
         Me.Panel1 = New System.Windows.Forms.Panel()
         Me.pbAdd = New System.Windows.Forms.PictureBox()
         Me.lblhead = New System.Windows.Forms.Label()
@@ -78,22 +79,24 @@ Partial Class CreateCheckUp
         '
         Me.Label17.AutoSize = True
         Me.Label17.Font = New System.Drawing.Font("Segoe UI", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Label17.Location = New System.Drawing.Point(935, 67)
+        Me.Label17.Location = New System.Drawing.Point(600, 420)
         Me.Label17.Name = "Label17"
         Me.Label17.Size = New System.Drawing.Size(55, 25)
         Me.Label17.TabIndex = 141
         Me.Label17.Text = "Date:"
+        Me.Label17.Visible = False
         '
         'dtpDate
         '
         Me.dtpDate.CustomFormat = "yyyy-MM-dd"
         Me.dtpDate.Font = New System.Drawing.Font("Segoe UI", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.dtpDate.Format = System.Windows.Forms.DateTimePickerFormat.Custom
-        Me.dtpDate.Location = New System.Drawing.Point(940, 90)
+        Me.dtpDate.Location = New System.Drawing.Point(605, 443)
         Me.dtpDate.Margin = New System.Windows.Forms.Padding(3, 2, 3, 2)
         Me.dtpDate.Name = "dtpDate"
         Me.dtpDate.Size = New System.Drawing.Size(151, 32)
         Me.dtpDate.TabIndex = 140
+        Me.dtpDate.Visible = False
         '
         'txtRemarks
         '
@@ -311,7 +314,7 @@ Partial Class CreateCheckUp
         '
         Me.Label3.AutoSize = True
         Me.Label3.Font = New System.Drawing.Font("Segoe UI", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Label3.Location = New System.Drawing.Point(475, 67)
+        Me.Label3.Location = New System.Drawing.Point(741, 63)
         Me.Label3.Name = "Label3"
         Me.Label3.Size = New System.Drawing.Size(140, 25)
         Me.Label3.TabIndex = 116
@@ -321,7 +324,7 @@ Partial Class CreateCheckUp
         '
         Me.Label2.AutoSize = True
         Me.Label2.Font = New System.Drawing.Font("Segoe UI", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Label2.Location = New System.Drawing.Point(31, 67)
+        Me.Label2.Location = New System.Drawing.Point(31, 63)
         Me.Label2.Name = "Label2"
         Me.Label2.Size = New System.Drawing.Size(141, 25)
         Me.Label2.TabIndex = 79
@@ -479,21 +482,6 @@ Partial Class CreateCheckUp
         Me.Label19.TabIndex = 140
         Me.Label19.Text = "PD:"
         '
-        'btnDSearch
-        '
-        Me.btnDSearch.BackColor = System.Drawing.SystemColors.ControlLight
-        Me.btnDSearch.FlatStyle = System.Windows.Forms.FlatStyle.System
-        Me.btnDSearch.Font = New System.Drawing.Font("Segoe UI", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.btnDSearch.ForeColor = System.Drawing.Color.Black
-        Me.btnDSearch.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft
-        Me.btnDSearch.Location = New System.Drawing.Point(792, 95)
-        Me.btnDSearch.Margin = New System.Windows.Forms.Padding(3, 2, 3, 2)
-        Me.btnDSearch.Name = "btnDSearch"
-        Me.btnDSearch.Size = New System.Drawing.Size(87, 27)
-        Me.btnDSearch.TabIndex = 4
-        Me.btnDSearch.Text = "&Search"
-        Me.btnDSearch.UseVisualStyleBackColor = False
-        '
         'btnPSearch
         '
         Me.btnPSearch.BackColor = System.Drawing.SystemColors.ControlLight
@@ -501,38 +489,31 @@ Partial Class CreateCheckUp
         Me.btnPSearch.Font = New System.Drawing.Font("Segoe UI", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.btnPSearch.ForeColor = System.Drawing.Color.Black
         Me.btnPSearch.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft
-        Me.btnPSearch.Location = New System.Drawing.Point(347, 95)
+        Me.btnPSearch.Location = New System.Drawing.Point(378, 92)
         Me.btnPSearch.Margin = New System.Windows.Forms.Padding(3, 2, 3, 2)
         Me.btnPSearch.Name = "btnPSearch"
-        Me.btnPSearch.Size = New System.Drawing.Size(87, 27)
+        Me.btnPSearch.Size = New System.Drawing.Size(147, 27)
         Me.btnPSearch.TabIndex = 2
-        Me.btnPSearch.Text = "&Search"
+        Me.btnPSearch.Text = "Select patient"
         Me.btnPSearch.UseVisualStyleBackColor = False
-        '
-        'txtDName
-        '
-        Me.txtDName.Font = New System.Drawing.Font("Segoe UI", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.txtDName.Location = New System.Drawing.Point(480, 93)
-        Me.txtDName.Name = "txtDName"
-        Me.txtDName.Size = New System.Drawing.Size(306, 32)
-        Me.txtDName.TabIndex = 3
         '
         'txtPName
         '
         Me.txtPName.Font = New System.Drawing.Font("Segoe UI", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.txtPName.Location = New System.Drawing.Point(35, 93)
+        Me.txtPName.Location = New System.Drawing.Point(35, 90)
         Me.txtPName.Name = "txtPName"
-        Me.txtPName.Size = New System.Drawing.Size(306, 32)
+        Me.txtPName.Size = New System.Drawing.Size(337, 32)
         Me.txtPName.TabIndex = 1
         '
         'pnlCheckUp
         '
         Me.pnlCheckUp.BackColor = System.Drawing.SystemColors.MenuBar
-        Me.pnlCheckUp.Controls.Add(Me.btnDSearch)
+        Me.pnlCheckUp.Controls.Add(Me.cmbDoctors)
+        Me.pnlCheckUp.Controls.Add(Me.Label21)
+        Me.pnlCheckUp.Controls.Add(Me.dtpBday)
         Me.pnlCheckUp.Controls.Add(Me.Panel1)
         Me.pnlCheckUp.Controls.Add(Me.btnPSearch)
         Me.pnlCheckUp.Controls.Add(Me.btnCancel)
-        Me.pnlCheckUp.Controls.Add(Me.txtDName)
         Me.pnlCheckUp.Controls.Add(Me.btnClear)
         Me.pnlCheckUp.Controls.Add(Me.txtPName)
         Me.pnlCheckUp.Controls.Add(Me.Label17)
@@ -547,6 +528,36 @@ Partial Class CreateCheckUp
         Me.pnlCheckUp.Name = "pnlCheckUp"
         Me.pnlCheckUp.Size = New System.Drawing.Size(1137, 465)
         Me.pnlCheckUp.TabIndex = 25
+        '
+        'cmbDoctors
+        '
+        Me.cmbDoctors.Font = New System.Drawing.Font("Segoe UI", 10.8!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.cmbDoctors.FormattingEnabled = True
+        Me.cmbDoctors.Location = New System.Drawing.Point(746, 89)
+        Me.cmbDoctors.Name = "cmbDoctors"
+        Me.cmbDoctors.Size = New System.Drawing.Size(355, 33)
+        Me.cmbDoctors.TabIndex = 144
+        '
+        'Label21
+        '
+        Me.Label21.AutoSize = True
+        Me.Label21.Font = New System.Drawing.Font("Segoe UI", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label21.Location = New System.Drawing.Point(570, 63)
+        Me.Label21.Name = "Label21"
+        Me.Label21.Size = New System.Drawing.Size(122, 25)
+        Me.Label21.TabIndex = 143
+        Me.Label21.Text = "Date of birth:"
+        '
+        'dtpBday
+        '
+        Me.dtpBday.CustomFormat = "yyyy-MM-dd"
+        Me.dtpBday.Font = New System.Drawing.Font("Segoe UI", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.dtpBday.Format = System.Windows.Forms.DateTimePickerFormat.Custom
+        Me.dtpBday.Location = New System.Drawing.Point(575, 90)
+        Me.dtpBday.Margin = New System.Windows.Forms.Padding(3, 2, 3, 2)
+        Me.dtpBday.Name = "dtpBday"
+        Me.dtpBday.Size = New System.Drawing.Size(151, 32)
+        Me.dtpBday.TabIndex = 142
         '
         'Panel1
         '
@@ -635,8 +646,6 @@ Partial Class CreateCheckUp
     Friend WithEvents grpCheckUp As System.Windows.Forms.GroupBox
     Friend WithEvents txtPName As System.Windows.Forms.TextBox
     Friend WithEvents pnlCheckUp As System.Windows.Forms.Panel
-    Friend WithEvents txtDName As System.Windows.Forms.TextBox
-    Friend WithEvents btnDSearch As System.Windows.Forms.Button
     Friend WithEvents btnPSearch As System.Windows.Forms.Button
     Friend WithEvents Panel1 As System.Windows.Forms.Panel
     Friend WithEvents pbAdd As System.Windows.Forms.PictureBox
@@ -648,4 +657,7 @@ Partial Class CreateCheckUp
     Friend WithEvents Label18 As System.Windows.Forms.Label
     Friend WithEvents pdOD As System.Windows.Forms.TextBox
     Friend WithEvents Label19 As System.Windows.Forms.Label
+    Friend WithEvents Label21 As System.Windows.Forms.Label
+    Friend WithEvents dtpBday As System.Windows.Forms.DateTimePicker
+    Friend WithEvents cmbDoctors As System.Windows.Forms.ComboBox
 End Class

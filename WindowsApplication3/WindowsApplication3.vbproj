@@ -183,6 +183,12 @@
       <DependentUpon>PatientQueue.vb</DependentUpon>
     </Compile>
     <Compile Include="CheckUp\PatientQueue.vb" />
+    <Compile Include="CheckUp\searchPatient.Designer.vb">
+      <DependentUpon>searchPatient.vb</DependentUpon>
+    </Compile>
+    <Compile Include="CheckUp\searchPatient.vb">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="CheckUp\viewCheckUp.Designer.vb">
       <DependentUpon>viewCheckUp.vb</DependentUpon>
     </Compile>
@@ -497,6 +503,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="CheckUp\PatientQueue.resx">
       <DependentUpon>PatientQueue.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="CheckUp\searchPatient.resx">
+      <DependentUpon>searchPatient.vb</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="CheckUp\viewCheckUp.resx">
       <DependentUpon>viewCheckUp.vb</DependentUpon>

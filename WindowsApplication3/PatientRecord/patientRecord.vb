@@ -7,15 +7,6 @@ Public Class patientRecord
 
     Private Sub btnSearch_Click(sender As Object, e As EventArgs) Handles btnSearch.Click
         Try
-            ' Require a filter selection first
-            If cmbSearch.SelectedIndex = -1 OrElse String.IsNullOrWhiteSpace(cmbSearch.Text) Then
-                MessageBox.Show("Please select a filter in the dropdown first.", "Caution", MessageBoxButtons.OK, MessageBoxIcon.Warning)
-                cmbSearch.Focus()
-                cmbSearch.DroppedDown = True
-                Return
-            End If
-
-            Dim filter As String = cmbSearch.Text
             Dim searchValue As String = txtSearch.Text.Trim()
 
             ' If search is empty, go back to paginated list
@@ -25,30 +16,8 @@ Public Class patientRecord
                 Return
             End If
 
-            ' Normalize filter to handle labels with format hints
-            Dim normalized As String = filter
-            If normalized.StartsWith("Birthday") Then normalized = "Birthday"
-            If normalized.StartsWith("Date Added") Then normalized = "Date Added"
-
-            If normalized = "Birthday" OrElse normalized = "Date Added" Then
-                Dim searchDate As Date
-                ' Accept DD/MM/YYYY per label; fallback to system parse
-                If Not DateTime.TryParseExact(searchValue, "dd/MM/yyyy", Globalization.CultureInfo.InvariantCulture, Globalization.DateTimeStyles.None, searchDate) Then
-                    If Not Date.TryParse(searchValue, searchDate) Then
-                        MsgBox("Please enter a valid date format (DD/MM/YYYY)", vbExclamation, "Invalid Date")
-                        Return
-                    End If
-                End If
-
-                ' Format date for SQL (MariaDB format)
-                searchValue = searchDate.ToString("yyyy-MM-dd")
-
-                ' Exact date match in the SearchPatients method
-                patientMod.SearchPatients(normalized, searchValue, patientDGV, True)
-            Else
-                ' For text fields, use regular search
-                patientMod.SearchPatients(normalized, searchValue, patientDGV, False)
-            End If
+            ' Search by First Name or Full Name
+            SearchPatients(searchValue, patientDGV)
 
         Catch ex As Exception
             MsgBox("Search Error: " & ex.Message, vbCritical, "Error")
@@ -60,45 +29,17 @@ Public Class patientRecord
         DgvStyle(patientDGV)
     End Sub
 
-    Public Sub SearchPatients(filter As String, searchValue As String, dgv As DataGridView, isDateSearch As Boolean)
+    Public Sub SearchPatients(searchValue As String, dgv As DataGridView)
         Try
-            Dim sql As String = "SELECT * FROM db_viewpatient WHERE "
-            Dim paramValue As Object = searchValue
-
-            Select Case filter
-                Case "Patient Name"
-                    sql += "fullname LIKE ?"
-                    paramValue = "%" & searchValue & "%"
-
-                Case "Date Added"
-                    If isDateSearch Then
-                        sql += "DATE(date) = ?"  ' Exact date match
-                    Else
-                        sql += "DATE_FORMAT(date, '%Y-%m-%d') LIKE ?"
-                        paramValue = "%" & searchValue & "%"
-                    End If
-
-                Case "Birthday"
-                    If isDateSearch Then
-                        sql += "DATE(bday) = ?"  ' Exact date match
-                    Else
-                        sql += "DATE_FORMAT(bday, '%Y-%m-%d') LIKE ?"
-                        paramValue = "%" & searchValue & "%"
-                    End If
-
-                Case Else ' Default search (by name)
-                    sql += "fullname LIKE ?"
-                    paramValue = "%" & searchValue & "%"
-            End Select
-
-            sql += " ORDER BY fullname"
+            ' Search by Full Name only
+            Dim sql As String = "SELECT * FROM db_viewpatient WHERE fullname LIKE ? ORDER BY fullname"
 
             ' Clear previous data
             dgv.DataSource = Nothing
 
             Using conn As New OdbcConnection(myDSN)
                 Using cmd As New OdbcCommand(sql, conn)
-                    cmd.Parameters.AddWithValue("?", paramValue)
+                    cmd.Parameters.AddWithValue("?", "%" & searchValue & "%")
 
                     Dim da As New OdbcDataAdapter(cmd)
                     Dim dt As New DataTable()
@@ -171,17 +112,12 @@ Public Class patientRecord
 
     Private Sub patientRecord_Load(sender As Object, e As EventArgs) Handles MyBase.Load
         Try
-            ' Initialize search filter ComboBox (no default selection)
-            cmbSearch.Items.Clear()
-            cmbSearch.Items.Add("Patient Name")
-            cmbSearch.Items.Add("Birthday (Day/Month/Year)")
-            cmbSearch.Items.Add("Date Added (Day/Month/Year)")
-            cmbSearch.SelectedIndex = -1
-            btnSearch.Enabled = False
+            ' Remove cmbSearch functionality - direct search by name only
+            btnSearch.Enabled = True
             currentPage = 0
             LoadPage()
-            ' Default placeholder when no filter selected
-            txtSearch.Text = "Choose filter"
+            ' Default placeholder
+            txtSearch.Text = "Search by patient name"
             txtSearch.ForeColor = Color.Gray
 
             ' Configure column visibility if needed
@@ -199,30 +135,7 @@ Public Class patientRecord
         End Try
     End Sub
 
-    ' Enable Search only when a filter is selected
-    Private Sub cmbSearch_SelectedIndexChanged(sender As Object, e As EventArgs) Handles cmbSearch.SelectedIndexChanged
-        btnSearch.Enabled = (cmbSearch.SelectedIndex <> -1)
-        Dim placeholder As String = ""
-        If cmbSearch.SelectedIndex <> -1 Then
-            Select Case True
-                Case cmbSearch.Text.StartsWith("Patient Name")
-                    placeholder = "Search by patient's name"
-                Case cmbSearch.Text.StartsWith("Birthday")
-                    placeholder = "Search by birthday"
-                Case cmbSearch.Text.StartsWith("Date Added")
-                    placeholder = "Search by date added"
-            End Select
-        Else
-            placeholder = "Choose filter"
-        End If
-        If placeholder <> "" Then
-            If txtSearch.ForeColor = Color.Gray OrElse String.IsNullOrWhiteSpace(txtSearch.Text) Then
-                txtSearch.ForeColor = Color.Gray
-                txtSearch.Text = placeholder
-            End If
-        End If
-        DgvStyle(patientDGV)
-    End Sub
+
 
     Private Sub patientDGV_CellDoubleClick(sender As Object, e As DataGridViewCellEventArgs) Handles patientDGV.CellDoubleClick
         Try
@@ -381,19 +294,54 @@ Public Class patientRecord
     End Sub
     Private Sub txtSearch_LostFocus(sender As Object, e As EventArgs) Handles txtSearch.LostFocus
         If String.IsNullOrWhiteSpace(txtSearch.Text) Then
-            Dim placeholder As String = "Choose filter"
-            If cmbSearch IsNot Nothing AndAlso cmbSearch.SelectedIndex <> -1 Then
-                If cmbSearch.Text.StartsWith("Birthday") Then
-                    placeholder = "Search by birthday"
-                ElseIf cmbSearch.Text.StartsWith("Date Added") Then
-                    placeholder = "Search by date added"
-                ElseIf cmbSearch.Text.StartsWith("Patient Name") Then
-                    placeholder = "Search by patient's name"
-                End If
-            End If
-            txtSearch.Text = placeholder
+            txtSearch.Text = "Search by patient name"
             txtSearch.ForeColor = Color.Gray
         End If
+    End Sub
+
+    Private Sub ToolTip1_Popup(sender As Object, e As PopupEventArgs) Handles ToolTip1.Popup
+
+    End Sub
+
+    Private Sub pnlBar_Paint(sender As Object, e As PaintEventArgs) Handles pnlBar.Paint
+
+    End Sub
+
+    Private Sub txtPage_Click(sender As Object, e As EventArgs) Handles txtPage.Click
+
+    End Sub
+
+    Private Sub btnView_Click(sender As Object, e As EventArgs) Handles btnView.Click
+        Try
+            ' Check if a row is selected
+            If patientDGV.SelectedRows.Count = 0 Then
+                MessageBox.Show("Please select a patient record first.", "No Selection", MessageBoxButtons.OK, MessageBoxIcon.Information)
+                Return
+            End If
+
+            ' Get the selected patient ID
+            Dim selectedRow As DataGridViewRow = patientDGV.SelectedRows(0)
+            Dim cellValue As Object = selectedRow.Cells(PatientIDColumnName).Value
+
+            If cellValue Is Nothing OrElse cellValue Is DBNull.Value Then
+                MessageBox.Show("Invalid patient record selected.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error)
+                Return
+            End If
+
+            Dim patientID As Integer
+            If Not Integer.TryParse(cellValue.ToString(), patientID) Then
+                MessageBox.Show("Invalid patient ID.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error)
+                Return
+            End If
+
+            ' Open the view form with the selected patient ID
+            Dim viewForm As New viewPatientRecord()
+            viewForm.LoadPatientData(patientID)
+            viewForm.ShowDialog()
+
+        Catch ex As Exception
+            MessageBox.Show("Error opening patient record: " & ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error)
+        End Try
     End Sub
 End Class
 

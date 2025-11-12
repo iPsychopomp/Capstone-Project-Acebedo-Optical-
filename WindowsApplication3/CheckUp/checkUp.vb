@@ -14,14 +14,10 @@ Public Class checkUp
         currentPage = 0
         LoadPage()
 
-        ' Initialize the ComboBox items (no default selection)
-        cmbFilter.Items.Clear()
-        cmbFilter.Items.Add("Patient Name")
-        cmbFilter.Items.Add("Doctor Name")
-        cmbFilter.SelectedIndex = -1
-        btnSearch.Enabled = False
-        ' Default placeholder when no filter selected
-        txtSearch.Text = "Choose filter"
+        ' Remove cmbFilter functionality - direct search by patient name only
+        btnSearch.Enabled = True
+        ' Default placeholder
+        txtSearch.Text = "Search by patient name"
         txtSearch.ForeColor = Color.Gray
     End Sub
     Private Sub LoadPage()
@@ -66,27 +62,7 @@ Public Class checkUp
         checkUpDGV.AutoSizeRowsMode = DataGridViewAutoSizeRowsMode.AllCells
     End Sub
 
-    ' Enable the Search button only when a filter is selected
-    Private Sub cmbFilter_SelectedIndexChanged(sender As Object, e As EventArgs) Handles cmbFilter.SelectedIndexChanged
-        btnSearch.Enabled = (cmbFilter.SelectedIndex <> -1)
-        Dim placeholder As String = ""
-        If cmbFilter.SelectedIndex <> -1 Then
-            Select Case cmbFilter.Text
-                Case "Patient Name"
-                    placeholder = "Search by patient's name"
-                Case "Doctor Name"
-                    placeholder = "Search by doctor's name"
-            End Select
-        Else
-            placeholder = "Choose filter"
-        End If
-        If placeholder <> "" Then
-            If txtSearch.ForeColor = Color.Gray OrElse String.IsNullOrWhiteSpace(txtSearch.Text) Then
-                txtSearch.ForeColor = Color.Gray
-                txtSearch.Text = placeholder
-            End If
-        End If
-    End Sub
+
 
     Private Sub btnNew_Click(sender As Object, e As EventArgs) Handles btnNew.Click
         Using check As New CreateCheckUp
@@ -163,15 +139,6 @@ Public Class checkUp
 
     Private Sub btnSearch_Click(sender As Object, e As EventArgs) Handles btnSearch.Click
         Try
-            ' Require a filter selection first
-            If cmbFilter.SelectedIndex = -1 OrElse String.IsNullOrWhiteSpace(cmbFilter.Text) Then
-                MessageBox.Show("Please select a filter in the dropdown first.", "Caution", MessageBoxButtons.OK, MessageBoxIcon.Warning)
-                cmbFilter.Focus()
-                cmbFilter.DroppedDown = True
-                Return
-            End If
-
-            Dim filter As String = cmbFilter.Text
             Dim searchValue As String = txtSearch.Text.Trim()
 
             If String.IsNullOrEmpty(searchValue) Then
@@ -180,8 +147,8 @@ Public Class checkUp
                 Return
             End If
 
-            ' Call the search method
-            modCheckUp.SearchCheckUps(filter, searchValue, checkUpDGV)
+            ' Search by patient name only
+            modCheckUp.SearchCheckUps(searchValue, checkUpDGV)
             ' Disable paging controls for filtered results
             txtPage.Text = "Search results"
             btnBack.Enabled = False
@@ -214,15 +181,7 @@ Public Class checkUp
     End Sub
     Private Sub txtSearch_LostFocus(sender As Object, e As EventArgs) Handles txtSearch.LostFocus
         If String.IsNullOrWhiteSpace(txtSearch.Text) Then
-            Dim placeholder As String = "Choose filter"
-            If cmbFilter IsNot Nothing AndAlso cmbFilter.SelectedIndex <> -1 Then
-                If cmbFilter.Text = "Doctor Name" Then
-                    placeholder = "Search by doctor's name"
-                ElseIf cmbFilter.Text = "Patient Name" Then
-                    placeholder = "Search by patient's name"
-                End If
-            End If
-            txtSearch.Text = placeholder
+            txtSearch.Text = "Search by patient name"
             txtSearch.ForeColor = Color.Gray
         End If
     End Sub

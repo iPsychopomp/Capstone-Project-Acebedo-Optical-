@@ -36,8 +36,16 @@ Public Class patientActions
             lblMname.Text = reader("mname").ToString()
             lblLname.Text = reader("lname").ToString()
             lblDOB.Text = Convert.ToDateTime(reader("bday")).ToShortDateString()
-            ' Show stored age from database
-            lblAge.Text = reader("age").ToString()
+            
+            ' Compute age from birthday
+            Dim birthDate As Date = Convert.ToDateTime(reader("bday"))
+            Dim today As Date = Date.Today
+            Dim age As Integer = today.Year - birthDate.Year
+            If (birthDate > today.AddYears(-age)) Then
+                age -= 1
+            End If
+            lblAge.Text = age.ToString()
+            
             lblGender.Text = reader("gender").ToString()
             lblContact.Text = reader("mobilenum").ToString()
             lblOccupation.Text = reader("occupation").ToString()

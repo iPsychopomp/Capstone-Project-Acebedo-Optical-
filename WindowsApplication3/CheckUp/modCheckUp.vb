@@ -73,35 +73,19 @@ Module modCheckUp
         End Try
     End Sub
 
-    Public Sub SearchCheckUps(filter As String, searchValue As String, dgv As DataGridView)
+    Public Sub SearchCheckUps(searchValue As String, dgv As DataGridView)
         Try
             ' Always use designed columns
             dgv.AutoGenerateColumns = False
-            Dim sql As String = "SELECT * FROM db_viewcheckup WHERE "
-            Dim paramValue As Object = searchValue
-
-            Select Case filter
-                Case "Patient Name"
-                    sql += "patientName LIKE ?"
-                    paramValue = "%" & searchValue & "%"
-
-                Case "Doctor Name"
-                    sql += "CheckupDoctor LIKE ?"
-                    paramValue = "%" & searchValue & "%"
-
-                Case Else ' Default to patient name if invalid filter
-                    sql += "patientName LIKE ?"
-                    paramValue = "%" & searchValue & "%"
-            End Select
-
-            sql += " ORDER BY checkupID DESC"
+            ' Search by patient name only
+            Dim sql As String = "SELECT * FROM db_viewcheckup WHERE patientName LIKE ? ORDER BY checkupID DESC"
 
             ' Clear previous data
             dgv.DataSource = Nothing
 
             Using conn As New OdbcConnection(myDSN)
                 Using cmd As New OdbcCommand(sql, conn)
-                    cmd.Parameters.AddWithValue("?", paramValue)
+                    cmd.Parameters.AddWithValue("?", "%" & searchValue & "%")
 
                     Dim da As New OdbcDataAdapter(cmd)
                     Dim dt As New DataTable()

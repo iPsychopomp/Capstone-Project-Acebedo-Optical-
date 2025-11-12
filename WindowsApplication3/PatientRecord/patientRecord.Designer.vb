@@ -45,7 +45,8 @@ Partial Class patientRecord
         Me.Column6 = New System.Windows.Forms.DataGridViewTextBoxColumn()
         Me.Column8 = New System.Windows.Forms.DataGridViewTextBoxColumn()
         Me.pnlBar = New System.Windows.Forms.Panel()
-        Me.cmbSearch = New System.Windows.Forms.ComboBox()
+        Me.btnView = New System.Windows.Forms.Button()
+        Me.btnEdit = New System.Windows.Forms.Button()
         Me.btnNew = New System.Windows.Forms.Button()
         Me.btnSearch = New System.Windows.Forms.Button()
         Me.txtSearch = New System.Windows.Forms.TextBox()
@@ -252,7 +253,8 @@ Partial Class patientRecord
         'pnlBar
         '
         Me.pnlBar.BackColor = System.Drawing.SystemColors.GradientActiveCaption
-        Me.pnlBar.Controls.Add(Me.cmbSearch)
+        Me.pnlBar.Controls.Add(Me.btnView)
+        Me.pnlBar.Controls.Add(Me.btnEdit)
         Me.pnlBar.Controls.Add(Me.btnNew)
         Me.pnlBar.Controls.Add(Me.btnSearch)
         Me.pnlBar.Controls.Add(Me.txtSearch)
@@ -262,18 +264,39 @@ Partial Class patientRecord
         Me.pnlBar.Size = New System.Drawing.Size(1191, 57)
         Me.pnlBar.TabIndex = 8
         '
-        'cmbSearch
+        'btnView
         '
-        Me.cmbSearch.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.cmbSearch.AutoCompleteCustomSource.AddRange(New String() {"Patient Name", "Birthday", "Date"})
-        Me.cmbSearch.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
-        Me.cmbSearch.Font = New System.Drawing.Font("Segoe UI", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.cmbSearch.FormattingEnabled = True
-        Me.cmbSearch.Items.AddRange(New Object() {"Patient Name", "Birthday (Day/Month/Year)", "Date Added (Day/Month/Year)"})
-        Me.cmbSearch.Location = New System.Drawing.Point(687, 15)
-        Me.cmbSearch.Name = "cmbSearch"
-        Me.cmbSearch.Size = New System.Drawing.Size(200, 33)
-        Me.cmbSearch.TabIndex = 8
+        Me.btnView.BackColor = System.Drawing.Color.White
+        Me.btnView.FlatStyle = System.Windows.Forms.FlatStyle.Flat
+        Me.btnView.Font = New System.Drawing.Font("Segoe UI", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.btnView.ForeColor = System.Drawing.Color.Black
+        Me.btnView.Image = CType(resources.GetObject("btnView.Image"), System.Drawing.Image)
+        Me.btnView.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft
+        Me.btnView.Location = New System.Drawing.Point(186, 11)
+        Me.btnView.Name = "btnView"
+        Me.btnView.Size = New System.Drawing.Size(81, 35)
+        Me.btnView.TabIndex = 10
+        Me.btnView.Text = "View"
+        Me.btnView.TextAlign = System.Drawing.ContentAlignment.MiddleRight
+        Me.ToolTip1.SetToolTip(Me.btnView, "View Patient Information")
+        Me.btnView.UseVisualStyleBackColor = False
+        '
+        'btnEdit
+        '
+        Me.btnEdit.BackColor = System.Drawing.Color.White
+        Me.btnEdit.FlatStyle = System.Windows.Forms.FlatStyle.Flat
+        Me.btnEdit.Font = New System.Drawing.Font("Segoe UI", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.btnEdit.ForeColor = System.Drawing.Color.Black
+        Me.btnEdit.Image = CType(resources.GetObject("btnEdit.Image"), System.Drawing.Image)
+        Me.btnEdit.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft
+        Me.btnEdit.Location = New System.Drawing.Point(99, 11)
+        Me.btnEdit.Name = "btnEdit"
+        Me.btnEdit.Size = New System.Drawing.Size(81, 35)
+        Me.btnEdit.TabIndex = 9
+        Me.btnEdit.Text = "Edit"
+        Me.btnEdit.TextAlign = System.Drawing.ContentAlignment.MiddleRight
+        Me.ToolTip1.SetToolTip(Me.btnEdit, "Edit user information")
+        Me.btnEdit.UseVisualStyleBackColor = False
         '
         'btnNew
         '
@@ -319,6 +342,9 @@ Partial Class patientRecord
         Me.txtSearch.Size = New System.Drawing.Size(183, 32)
         Me.txtSearch.TabIndex = 7
         '
+        'ToolTip1
+        '
+        '
         'patientRecord
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(11.0!, 28.0!)
@@ -344,7 +370,6 @@ Partial Class patientRecord
     Friend WithEvents btnSearch As System.Windows.Forms.Button
     Friend WithEvents btnNew As System.Windows.Forms.Button
     Friend WithEvents pnlBar As System.Windows.Forms.Panel
-    Friend WithEvents cmbSearch As System.Windows.Forms.ComboBox
     Friend WithEvents ToolTip1 As System.Windows.Forms.ToolTip
     Friend WithEvents patientDGV As System.Windows.Forms.DataGridView
     Friend WithEvents Column1 As System.Windows.Forms.DataGridViewTextBoxColumn
@@ -358,4 +383,6 @@ Partial Class patientRecord
     Friend WithEvents txtPage As System.Windows.Forms.Label
     Friend WithEvents btnNext As System.Windows.Forms.Button
     Friend WithEvents btnBack As System.Windows.Forms.Button
+    Friend WithEvents btnView As System.Windows.Forms.Button
+    Friend WithEvents btnEdit As System.Windows.Forms.Button
 End Class

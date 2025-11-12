@@ -3,7 +3,7 @@ Imports System.Text.RegularExpressions
 Imports System.Data.Odbc
 
 Module AddUserModule
-    Public Sub LoadRecord(ByVal productID As Integer, ByVal conn As Odbc.OdbcConnection, ByRef txtFirst As TextBox, ByRef txtMname As TextBox, ByRef txtLname As TextBox, ByRef cmbRole As ComboBox, ByRef txtUser As TextBox, ByRef txtPass As TextBox, ByRef txtMobile As TextBox, ByRef txtEmail As TextBox)
+    Public Sub LoadRecord(ByVal productID As Integer, ByVal conn As Odbc.OdbcConnection, ByRef txtFirst As TextBox, ByRef txtMname As TextBox, ByRef txtLname As TextBox, ByRef txtSuffix As TextBox, ByRef dtpDOB As DateTimePicker, ByRef cmbRole As ComboBox, ByRef txtUser As TextBox, ByRef txtPass As TextBox, ByRef txtMobile As TextBox, ByRef txtEmail As TextBox)
         Dim cmd As Odbc.OdbcCommand
         Dim da As New Odbc.OdbcDataAdapter
         Dim dt As New DataTable
@@ -20,6 +20,10 @@ Module AddUserModule
                 txtFirst.Text = dt.Rows(0)("Fname").ToString()
                 txtMname.Text = dt.Rows(0)("Mname").ToString()
                 txtLname.Text = dt.Rows(0)("Lname").ToString()
+                txtSuffix.Text = dt.Rows(0)("Suffix").ToString()
+                If Not IsDBNull(dt.Rows(0)("dob")) Then
+                    dtpDOB.Value = Convert.ToDateTime(dt.Rows(0)("dob"))
+                End If
                 cmbRole.Text = dt.Rows(0)("Role").ToString()
                 txtUser.Text = dt.Rows(0)("Username").ToString()
                 txtPass.Text = dt.Rows(0)("Password").ToString()
@@ -29,6 +33,7 @@ Module AddUserModule
                 txtFirst.Text = ""
                 txtMname.Text = ""
                 txtLname.Text = ""
+                txtSuffix.Text = ""
                 cmbRole.Text = ""
                 txtUser.Text = ""
                 txtPass.Text = ""
@@ -154,7 +159,7 @@ Module AddUserModule
         End Try
     End Function
 
-    Public Sub SaveRecord(ByVal conn As Odbc.OdbcConnection, ByVal grpAddUser As GroupBox, ByVal pnlAddUser As Panel, ByVal txtUser As TextBox, ByVal txtPass As TextBox, ByVal txtFirst As TextBox, ByVal txtMname As TextBox, ByVal txtLname As TextBox, ByVal cmbRole As ComboBox, ByVal txtMobile As TextBox, ByVal txtEmail As TextBox, ByVal pnlAddUserTag As Object)
+    Public Sub SaveRecord(ByVal conn As Odbc.OdbcConnection, ByVal grpAddUser As GroupBox, ByVal pnlAddUser As Panel, ByVal txtUser As TextBox, ByVal txtPass As TextBox, ByVal txtFirst As TextBox, ByVal txtMname As TextBox, ByVal txtLname As TextBox, ByVal txtSuffix As TextBox, ByVal dtpDOB As DateTimePicker, ByVal cmbRole As ComboBox, ByVal txtMobile As TextBox, ByVal txtEmail As TextBox, ByVal pnlAddUserTag As Object)
         If Not CheckData(grpAddUser) Then Exit Sub
 
         Dim username As String = txtUser.Text.Trim().ToLower()
@@ -190,13 +195,15 @@ Module AddUserModule
 
                 If Len(pnlAddUserTag) = 0 Then
                     ' Insert new record
-                    cmd.CommandText = "INSERT INTO tbl_users (Username, Password, Role, Fname, Mname, Lname, MobileNum, Email) VALUES (?,?,?,?,?,?,?,?)"
+                    cmd.CommandText = "INSERT INTO tbl_users (Username, Password, Role, Fname, Mname, Lname, Suffix, dob, MobileNum, Email) VALUES (?,?,?,?,?,?,?,?,?,?)"
                     cmd.Parameters.AddWithValue("?", username)
                     cmd.Parameters.AddWithValue("?", txtPass.Text)
                     cmd.Parameters.AddWithValue("?", StrConv(Trim(cmbRole.Text), VbStrConv.ProperCase))
                     cmd.Parameters.AddWithValue("?", StrConv(Trim(txtFirst.Text), VbStrConv.ProperCase))
                     cmd.Parameters.AddWithValue("?", StrConv(Trim(txtMname.Text), VbStrConv.ProperCase))
                     cmd.Parameters.AddWithValue("?", StrConv(Trim(txtLname.Text), VbStrConv.ProperCase))
+                    cmd.Parameters.AddWithValue("?", StrConv(Trim(txtSuffix.Text), VbStrConv.ProperCase))
+                    cmd.Parameters.AddWithValue("?", dtpDOB.Value.Date)
                     cmd.Parameters.AddWithValue("?", txtMobile.Text)
                     cmd.Parameters.AddWithValue("?", Trim(txtEmail.Text))
 
@@ -215,13 +222,15 @@ Module AddUserModule
                     InsertAuditTrail(GlobalVariables.LoggedInUserID, "Add User", "Added user: " & txtUser.Text, conn)
                 Else
                     ' Update existing record
-                    cmd.CommandText = "UPDATE tbl_users SET Username=?, Password=?, Role=?, Fname=?, Mname=?, Lname=?, MobileNum=?, Email=? WHERE UserID=?"
+                    cmd.CommandText = "UPDATE tbl_users SET Username=?, Password=?, Role=?, Fname=?, Mname=?, Lname=?, Suffix=?, dob=?, MobileNum=?, Email=? WHERE UserID=?"
                     cmd.Parameters.AddWithValue("?", username)
                     cmd.Parameters.AddWithValue("?", txtPass.Text)
                     cmd.Parameters.AddWithValue("?", StrConv(Trim(cmbRole.Text), VbStrConv.ProperCase))
                     cmd.Parameters.AddWithValue("?", StrConv(Trim(txtFirst.Text), VbStrConv.ProperCase))
                     cmd.Parameters.AddWithValue("?", StrConv(Trim(txtMname.Text), VbStrConv.ProperCase))
                     cmd.Parameters.AddWithValue("?", StrConv(Trim(txtLname.Text), VbStrConv.ProperCase))
+                    cmd.Parameters.AddWithValue("?", StrConv(Trim(txtSuffix.Text), VbStrConv.ProperCase))
+                    cmd.Parameters.AddWithValue("?", dtpDOB.Value.Date)
                     cmd.Parameters.AddWithValue("?", txtMobile.Text)
                     cmd.Parameters.AddWithValue("?", Trim(txtEmail.Text))
                     cmd.Parameters.AddWithValue("?", pnlAddUserTag)

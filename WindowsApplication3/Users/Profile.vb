@@ -5,6 +5,15 @@ Public Class Profile
     Private Const MobilePrefix As String = "+63"
 
     Private Sub Profile_Load(sender As Object, e As EventArgs) Handles MyBase.Load
+        Try
+            ' Set date range for DOB
+            dtpDOB.MinDate = Date.Today.AddYears(-120)
+            dtpDOB.MaxDate = Date.Today
+            dtpDOB.Value = Date.Today
+        Catch ex As Exception
+            ' Silently handle initialization errors
+        End Try
+
         LoadCurrentUser()
         Try
             txtMobile.ShortcutsEnabled = False
@@ -24,7 +33,7 @@ Public Class Profile
 
             Using conn As New OdbcConnection("DSN=dsnsystem")
                 conn.Open()
-                Dim sql As String = "SELECT Username, Password, Role, Fname, Mname, Lname, MobileNum, Email FROM tbl_users WHERE UserID = ?"
+                Dim sql As String = "SELECT Username, Password, Role, Fname, Mname, Lname, Suffix, dob, MobileNum, Email FROM tbl_users WHERE UserID = ?"
                 Using cmd As New OdbcCommand(sql, conn)
                     cmd.Parameters.AddWithValue("?", userId)
                     Using rd = cmd.ExecuteReader()
@@ -35,8 +44,23 @@ Public Class Profile
                             If Not rd.IsDBNull(3) Then txtFirst.Text = rd.GetString(3) Else txtFirst.Text = ""
                             If Not rd.IsDBNull(4) Then txtMname.Text = rd.GetString(4) Else txtMname.Text = ""
                             If Not rd.IsDBNull(5) Then txtLname.Text = rd.GetString(5) Else txtLname.Text = ""
-                            If Not rd.IsDBNull(6) Then txtMobile.Text = rd.GetString(6) Else txtMobile.Text = ""
-                            If Not rd.IsDBNull(7) Then txtEmail.Text = rd.GetString(7) Else txtEmail.Text = ""
+                            If Not rd.IsDBNull(7) Then
+                                Dim dobValue As Date = rd.GetDateTime(7)
+                                ' Validate date is within acceptable range before setting
+                                If dobValue <= Date.Today AndAlso dobValue >= Date.Today.AddYears(-120) Then
+                                    dtpDOB.Value = dobValue
+                                    ' Calculate and display age
+                                    CalculateAge()
+                                Else
+                                    dtpDOB.Value = Date.Today
+                                    txtAge.Text = "0"
+                                End If
+                            Else
+                                dtpDOB.Value = Date.Today
+                                txtAge.Text = "0"
+                            End If
+                            If Not rd.IsDBNull(8) Then txtMobile.Text = rd.GetString(8) Else txtMobile.Text = ""
+                            If Not rd.IsDBNull(9) Then txtEmail.Text = rd.GetString(9) Else txtEmail.Text = ""
 
                             ' Removed: default-password notice now shows after login, not here
                         Else
@@ -52,26 +76,17 @@ Public Class Profile
     End Sub
 
     Private Sub btnSave_Click(sender As Object, e As EventArgs) Handles btnSave.Click
+        ' Normalize optional fields
+        If String.IsNullOrWhiteSpace(txtMname.Text) Then txtMname.Text = "N/A"
+
+        ' Unified validation
+        If Not ValidateAllRequiredFields() Then Exit Sub
+
         Try
             Dim userId As Integer = GlobalVariables.LoggedInUserID
             If userId <= 0 Then Return
 
-            If String.IsNullOrWhiteSpace(txtPass.Text) Then
-                MessageBox.Show("Password cannot be empty.", "Profile", MessageBoxButtons.OK, MessageBoxIcon.Exclamation)
-                txtPass.Focus()
-                Return
-            End If
-
-            ' Basic email validation: must contain '@' and '.com'
-            Dim email As String = txtEmail.Text.Trim()
-            If Not (email.Contains("@") AndAlso email.ToLower().Contains(".com")) Then
-                MessageBox.Show("Please enter a valid email that contains '@' and '.com'.", "Profile", MessageBoxButtons.OK, MessageBoxIcon.Warning)
-                txtEmail.Focus()
-                txtEmail.SelectAll()
-                Return
-            End If
-
-            ' Username duplicate check (copied pattern from addUsers.vb)
+            ' Username duplicate check
             Dim username As String = txtUser.Text.Trim().ToLower()
             Dim oldUser As String = ""
 
@@ -81,8 +96,13 @@ Public Class Profile
                 Dim oldPass As String = ""
                 Dim oldEmail As String = ""
                 Dim oldMobile As String = ""
+                Dim oldFname As String = ""
+                Dim oldMname As String = ""
+                Dim oldLname As String = ""
+                Dim oldSuffix As String = ""
+                Dim oldDob As String = ""
 
-                Using getCmd As New OdbcCommand("SELECT Username, Password, Email, MobileNum FROM tbl_users WHERE UserID= ?", conn)
+                Using getCmd As New OdbcCommand("SELECT Username, Password, Email, MobileNum, Fname, Mname, Lname, Suffix, dob FROM tbl_users WHERE UserID= ?", conn)
                     getCmd.Parameters.AddWithValue("?", userId)
                     Using rd = getCmd.ExecuteReader()
                         If rd.Read() Then
@@ -90,6 +110,11 @@ Public Class Profile
                             If Not rd.IsDBNull(1) Then oldPass = rd.GetString(1)
                             If Not rd.IsDBNull(2) Then oldEmail = rd.GetString(2)
                             If Not rd.IsDBNull(3) Then oldMobile = rd.GetString(3)
+                            If Not rd.IsDBNull(4) Then oldFname = rd.GetString(4)
+                            If Not rd.IsDBNull(5) Then oldMname = rd.GetString(5)
+                            If Not rd.IsDBNull(6) Then oldLname = rd.GetString(6)
+                            If Not rd.IsDBNull(7) Then oldSuffix = rd.GetString(7)
+                            If Not rd.IsDBNull(8) Then oldDob = rd.GetString(8)
                         End If
                     End Using
                 End Using
@@ -110,13 +135,23 @@ Public Class Profile
                     End If
                 End If
 
-                Dim newPass As String = txtPass.Text
-                Dim newEmail As String = txtEmail.Text
-                Dim newMobile As String = txtMobile.Text
+                If MsgBox("Do you want to save changes to your profile?", vbYesNo + vbQuestion, "Save Profile") <> vbYes Then Exit Sub
 
-                Using upd As New OdbcCommand("UPDATE tbl_users SET Username=?, Password=?, Email=?, MobileNum=? WHERE UserID= ?", conn)
+                Dim newPass As String = txtPass.Text
+                Dim newEmail As String = txtEmail.Text.Trim()
+                Dim newMobile As String = txtMobile.Text
+                Dim newFname As String = StrConv(Trim(txtFirst.Text), VbStrConv.ProperCase)
+                Dim newMname As String = StrConv(Trim(txtMname.Text), VbStrConv.ProperCase)
+                Dim newLname As String = StrConv(Trim(txtLname.Text), VbStrConv.ProperCase)
+                Dim newDob As String = dtpDOB.Value.Date.ToString("yyyy-MM-dd")
+
+                Using upd As New OdbcCommand("UPDATE tbl_users SET Username=?, Password=?, Fname=?, Mname=?, Lname=?, Suffix=?, dob=?, Email=?, MobileNum=? WHERE UserID= ?", conn)
                     upd.Parameters.AddWithValue("?", username)
                     upd.Parameters.AddWithValue("?", newPass)
+                    upd.Parameters.AddWithValue("?", newFname)
+                    upd.Parameters.AddWithValue("?", newMname)
+                    upd.Parameters.AddWithValue("?", newLname)
+                    upd.Parameters.AddWithValue("?", dtpDOB.Value.Date)
                     upd.Parameters.AddWithValue("?", newEmail)
                     upd.Parameters.AddWithValue("?", newMobile)
                     upd.Parameters.AddWithValue("?", userId)
@@ -125,6 +160,10 @@ Public Class Profile
 
                 Dim changes As New List(Of String)()
                 If oldUser <> username Then changes.Add("changed username from '" & oldUser & "' to '" & username & "'")
+                If oldFname <> newFname Then changes.Add("changed first name from '" & oldFname & "' to '" & newFname & "'")
+                If oldMname <> newMname Then changes.Add("changed middle name from '" & oldMname & "' to '" & newMname & "'")
+                If oldLname <> newLname Then changes.Add("changed last name from '" & oldLname & "' to '" & newLname & "'")
+                If oldDob <> newDob Then changes.Add("changed date of birth from '" & oldDob & "' to '" & newDob & "'")
                 If oldEmail <> newEmail Then changes.Add("changed email from '" & oldEmail & "' to '" & newEmail & "'")
                 If oldMobile <> newMobile Then changes.Add("changed mobile from '" & oldMobile & "' to '" & newMobile & "'")
                 If oldPass <> newPass Then changes.Add("changed password")
@@ -141,7 +180,83 @@ Public Class Profile
         End Try
     End Sub
 
-    Private Sub btnCancel_Click(sender As Object, e As EventArgs) Handles btnCancel.Click
+    Private Function ValidateAllRequiredFields() As Boolean
+        Dim missing As New List(Of String)
+        Dim firstInvalidControl As Control = Nothing
+
+        Dim assignFirst As Action(Of Control) = Sub(c As Control)
+                                                    If firstInvalidControl Is Nothing Then firstInvalidControl = c
+                                                End Sub
+
+        If String.IsNullOrWhiteSpace(txtFirst.Text) Then
+            missing.Add("First Name")
+            assignFirst(txtFirst)
+        End If
+
+        If String.IsNullOrWhiteSpace(txtLname.Text) Then
+            missing.Add("Last Name")
+            assignFirst(txtLname)
+        End If
+
+        If String.IsNullOrWhiteSpace(cmbRole.Text) Then
+            missing.Add("Role")
+            assignFirst(cmbRole)
+        End If
+
+        If String.IsNullOrWhiteSpace(txtUser.Text) Then
+            missing.Add("Username")
+            assignFirst(txtUser)
+        End If
+
+        If String.IsNullOrWhiteSpace(txtPass.Text) Then
+            missing.Add("Password")
+            assignFirst(txtPass)
+        End If
+
+        ' Validate Date of Birth and Age
+        Dim birthDate As Date = dtpDOB.Value
+        Dim today As Date = Date.Today
+        Dim ageValue As Integer = today.Year - birthDate.Year
+        If today.Month < birthDate.Month OrElse (today.Month = birthDate.Month AndAlso today.Day < birthDate.Day) Then
+            ageValue -= 1
+        End If
+
+        If ageValue <= 0 Then
+            missing.Add("Date of Birth (must be a valid past date)")
+            assignFirst(dtpDOB)
+        End If
+
+        If ageValue > 120 Then
+            missing.Add("Date of Birth (age cannot exceed 120 years)")
+            assignFirst(dtpDOB)
+        End If
+
+        ' Mobile required and basic validity (+63 and 10 digits after)
+        Dim mobileText As String = If(txtMobile.Text, String.Empty).Trim()
+        Dim digitsOnly As String = New String(mobileText.Where(Function(c) Char.IsDigit(c)).ToArray())
+        If mobileText = String.Empty OrElse Not mobileText.StartsWith("+63") OrElse digitsOnly.Length <> 12 Then
+            missing.Add("Valid Mobile Number (+63XXXXXXXXXX)")
+            assignFirst(txtMobile)
+        End If
+
+        ' Email required and simple format check
+        Dim email As String = If(txtEmail.Text, String.Empty).Trim().ToLower()
+        If email = String.Empty OrElse Not (email.Contains("@") AndAlso email.EndsWith(".com")) Then
+            missing.Add("Valid Email (must contain '@' and end with .com)")
+            assignFirst(txtEmail)
+        End If
+
+        If missing.Count > 0 Then
+            Dim message As String = "Please complete the required fields marked with (*):" & vbCrLf & " - " & String.Join(vbCrLf & " - ", missing)
+            MessageBox.Show(message, "Validation", MessageBoxButtons.OK, MessageBoxIcon.Exclamation)
+            If firstInvalidControl IsNot Nothing Then firstInvalidControl.Focus()
+            Return False
+        End If
+
+        Return True
+    End Function
+
+    Private Sub btnCancel_Click(sender As Object, e As EventArgs)
         Me.Close()
     End Sub
 
@@ -291,4 +406,34 @@ Public Class Profile
         End Try
     End Function
 
+    Private Sub dtpDOB_ValueChanged(sender As Object, e As EventArgs) Handles dtpDOB.ValueChanged
+        CalculateAge()
+    End Sub
+
+    Private Sub CalculateAge()
+        Try
+            Dim birthDate As Date = dtpDOB.Value
+            Dim today As Date = Date.Today
+            Dim age As Integer = today.Year - birthDate.Year
+
+            ' Adjust age if birthday hasn't occurred yet this year
+            If today.Month < birthDate.Month OrElse (today.Month = birthDate.Month AndAlso today.Day < birthDate.Day) Then
+                age -= 1
+            End If
+
+            If age > 120 Then
+                MessageBox.Show("Invalid date of birth. Age cannot exceed 120 years old.", "Invalid Age", MessageBoxButtons.OK, MessageBoxIcon.Warning)
+                dtpDOB.Value = today.AddYears(-120)
+                age = 120
+            End If
+
+            If age < 0 Then age = 0
+
+            txtAge.Text = age.ToString()
+        Catch ex As Exception
+            txtAge.Text = "0"
+        End Try
+    End Sub
+
+  
 End Class

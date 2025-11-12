@@ -397,41 +397,24 @@ Public Class addPatient
         Return JsonConvert.DeserializeObject(Of T)(json)
     End Function
 
-    Private Sub btnCancel_Click(sender As Object, e As EventArgs) Handles btnCancel.Click
-        Me.Close()
-    End Sub
-
     Private Sub btnSave_Click(sender As Object, e As EventArgs) Handles btnSave.Click
         ' Normalize optional fields to "N/A" if left blank before running validations
         If String.IsNullOrWhiteSpace(txtOccu.Text) Then txtOccu.Text = "N/A"
         If String.IsNullOrWhiteSpace(txtSports.Text) Then txtSports.Text = "N/A"
         If String.IsNullOrWhiteSpace(txtMname.Text) Then txtMname.Text = "N/A"
         If String.IsNullOrWhiteSpace(txtHobbies.Text) Then txtHobbies.Text = "N/A"
+        If String.IsNullOrWhiteSpace(txtOther.Text) Then txtOther.Text = "N/A"
 
         ' Validate all required fields in order and focus the first missing one
         If Not ValidateAllRequiredFieldsAndFocusFirst() Then Exit Sub
 
         If Not ValidateRequiredFields() Then Exit Sub
-        If Not checkData(grpPatient) Then Exit Sub
+        If Not checkData(pnlPI) Then Exit Sub
         If CheckForDuplicatePatient() Then Exit Sub ' duplicate check
 
         Dim cmd As Odbc.OdbcCommand
         Dim sql As String
         Dim patientID As Integer
-        Dim ageValue As Integer
-
-        ' Validate age
-        If Not Integer.TryParse(txtAge.Text, ageValue) Then
-            MsgBox("Invalid age format. Please check the age value.", vbCritical, "Error")
-            Exit Sub
-        End If
-
-        ' Validate age is not more than 120 years old
-        If ageValue > 120 Then
-            MsgBox("Invalid age. Age cannot exceed 120 years old. Please check the birthdate.", vbCritical, "Invalid Age")
-            dtpBday.Focus()
-            Exit Sub
-        End If
 
         ' Read Diabetic radios
         Dim diabeticVal As String
@@ -449,7 +432,7 @@ Public Class addPatient
             highbloodVal = "No"
         End If
 
-        If checkData(grpPatient) = True Then
+        If checkData(pnlPI) = True Then
             If MsgBox("Do you want to save this record?", vbYesNo + vbQuestion, "Save") = vbYes Then
                 Try
                     dbConn()
@@ -457,27 +440,28 @@ Public Class addPatient
                     If Len(pnlDataEntry.Tag) = 0 Then
                         ' INSERT NEW PATIENT
                         sql = "INSERT INTO patient_data " & _
-                              "(fname, mname, lname, bday, age, highblood, occupation, province, city, brgy, diabetic, sports, hobbies, mobilenum, gender, region, date) " & _
-                              "VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)"
+                              "(fname, mname, lname, bday, highblood, occupation, province, city, brgy, street, others, diabetic, sports, hobbies, mobilenum, gender, region, date) " & _
+                              "VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)"
                         cmd = New Odbc.OdbcCommand(sql, conn)
 
                         cmd.Parameters.AddWithValue("?", StrConv(Trim(txtFirst.Text), VbStrConv.ProperCase))
                         cmd.Parameters.AddWithValue("?", StrConv(Trim(txtMname.Text), VbStrConv.ProperCase))
                         cmd.Parameters.AddWithValue("?", StrConv(Trim(txtLname.Text), VbStrConv.ProperCase))
                         cmd.Parameters.AddWithValue("?", dtpBday.Text)
-                        cmd.Parameters.AddWithValue("?", txtAge.Text)
                         cmd.Parameters.AddWithValue("?", highbloodVal)
                         cmd.Parameters.AddWithValue("?", StrConv(Trim(txtOccu.Text), VbStrConv.ProperCase))
                         cmd.Parameters.AddWithValue("?", cmbProvince.Text)
                         cmd.Parameters.AddWithValue("?", cmbCity.Text)
                         cmd.Parameters.AddWithValue("?", cmbBgy.Text)
+                        cmd.Parameters.AddWithValue("?", StrConv(Trim(txtStreet.Text), VbStrConv.ProperCase))
+                        cmd.Parameters.AddWithValue("?", StrConv(Trim(txtOther.Text), VbStrConv.ProperCase))
                         cmd.Parameters.AddWithValue("?", diabeticVal)
                         cmd.Parameters.AddWithValue("?", StrConv(Trim(txtSports.Text), VbStrConv.ProperCase))
                         cmd.Parameters.AddWithValue("?", StrConv(Trim(txtHobbies.Text), VbStrConv.ProperCase))
                         cmd.Parameters.AddWithValue("?", txtMobile.Text)
                         cmd.Parameters.AddWithValue("?", cmbGender.Text)
                         cmd.Parameters.AddWithValue("?", cmbRegion.Text)
-                        cmd.Parameters.AddWithValue("?", dtpDate.Text)
+                        cmd.Parameters.AddWithValue("?", DateTime.Now.ToString("yyyy-MM-dd"))
 
                         cmd.ExecuteNonQuery()
 
@@ -505,11 +489,12 @@ Public Class addPatient
                             If reader("mname").ToString() <> txtMname.Text Then changes.Add("Middle Name: " & reader("mname") & " → " & txtMname.Text)
                             If reader("lname").ToString() <> txtLname.Text Then changes.Add("Last Name: " & reader("lname") & " → " & txtLname.Text)
                             If reader("bday").ToString() <> dtpBday.Text Then changes.Add("Birthday: " & reader("bday") & " → " & dtpBday.Text)
-                            If reader("age").ToString() <> txtAge.Text Then changes.Add("Age: " & reader("age") & " → " & txtAge.Text)
                             If reader("occupation").ToString() <> txtOccu.Text Then changes.Add("Occupation: " & reader("occupation") & " → " & txtOccu.Text)
                             If reader("province").ToString() <> cmbProvince.Text Then changes.Add("Province: " & reader("province") & " → " & cmbProvince.Text)
                             If reader("city").ToString() <> cmbCity.Text Then changes.Add("City: " & reader("city") & " → " & cmbCity.Text)
                             If reader("brgy").ToString() <> cmbBgy.Text Then changes.Add("Barangay: " & reader("brgy") & " → " & cmbBgy.Text)
+                            If reader("street").ToString() <> txtStreet.Text Then changes.Add("Street: " & reader("street") & " → " & txtStreet.Text)
+                            If reader("others").ToString() <> txtOther.Text Then changes.Add("Others: " & reader("others") & " → " & txtOther.Text)
                             If reader("highblood").ToString() <> highbloodVal Then changes.Add("Highblood: " & reader("highblood") & " → " & highbloodVal)
                             If reader("diabetic").ToString() <> diabeticVal Then changes.Add("Diabetic: " & reader("diabetic") & " → " & diabeticVal)
                             If reader("sports").ToString() <> txtSports.Text Then changes.Add("Sports: " & reader("sports") & " → " & txtSports.Text)
@@ -521,26 +506,27 @@ Public Class addPatient
 
                         reader.Close()
 
-                        sql = "UPDATE patient_data SET fname=?, mname=?, lname=?, bday=?, age=?, highblood=?, occupation=?, province=?, city=?, brgy=?, diabetic=?, sports=?, hobbies=?, mobilenum=?, gender=?, region=?, date=? WHERE patientID=?"
+                        sql = "UPDATE patient_data SET fname=?, mname=?, lname=?, bday=?, highblood=?, occupation=?, province=?, city=?, brgy=?, street=?, others=?, diabetic=?, sports=?, hobbies=?, mobilenum=?, gender=?, region=?, date=? WHERE patientID=?"
                         cmd = New Odbc.OdbcCommand(sql, conn)
 
                         cmd.Parameters.AddWithValue("?", StrConv(Trim(txtFirst.Text), VbStrConv.ProperCase))
                         cmd.Parameters.AddWithValue("?", StrConv(Trim(txtMname.Text), VbStrConv.ProperCase))
                         cmd.Parameters.AddWithValue("?", StrConv(Trim(txtLname.Text), VbStrConv.ProperCase))
                         cmd.Parameters.AddWithValue("?", dtpBday.Text)
-                        cmd.Parameters.AddWithValue("?", txtAge.Text)
                         cmd.Parameters.AddWithValue("?", highbloodVal)
                         cmd.Parameters.AddWithValue("?", StrConv(Trim(txtOccu.Text), VbStrConv.ProperCase))
                         cmd.Parameters.AddWithValue("?", cmbProvince.Text)
                         cmd.Parameters.AddWithValue("?", cmbCity.Text)
                         cmd.Parameters.AddWithValue("?", cmbBgy.Text)
+                        cmd.Parameters.AddWithValue("?", StrConv(Trim(txtStreet.Text), VbStrConv.ProperCase))
+                        cmd.Parameters.AddWithValue("?", StrConv(Trim(txtOther.Text), VbStrConv.ProperCase))
                         cmd.Parameters.AddWithValue("?", diabeticVal)
                         cmd.Parameters.AddWithValue("?", StrConv(Trim(txtSports.Text), VbStrConv.ProperCase))
                         cmd.Parameters.AddWithValue("?", StrConv(Trim(txtHobbies.Text), VbStrConv.ProperCase))
                         cmd.Parameters.AddWithValue("?", txtMobile.Text)
                         cmd.Parameters.AddWithValue("?", cmbGender.Text)
                         cmd.Parameters.AddWithValue("?", cmbRegion.Text)
-                        cmd.Parameters.AddWithValue("?", dtpDate.Text)
+                        cmd.Parameters.AddWithValue("?", DateTime.Now.ToString("yyyy-MM-dd"))
                         cmd.Parameters.AddWithValue("?", pnlDataEntry.Tag)
 
                         cmd.ExecuteNonQuery()
@@ -613,8 +599,19 @@ Public Class addPatient
                     txtMname.Text = .Item("mname").ToString()
                     txtLname.Text = .Item("lname").ToString()
                     dtpBday.Text = .Item("bday").ToString()
-                    txtAge.Text = .Item("age").ToString()
+
+                    ' Compute age from birthday
+                    Dim birthDate As Date = Date.Parse(.Item("bday").ToString())
+                    Dim today As Date = Date.Today
+                    Dim age As Integer = today.Year - birthDate.Year
+                    If (birthDate > today.AddYears(-age)) Then
+                        age -= 1
+                    End If
+                    txtAge.Text = age.ToString()
+
                     txtOccu.Text = .Item("occupation").ToString()
+                    txtStreet.Text = If(.Item("street") Is DBNull.Value, "", .Item("street").ToString())
+                    txtOther.Text = If(.Item("others") Is DBNull.Value, "N/A", .Item("others").ToString())
                     txtSports.Text = .Item("sports").ToString()
                     txtHobbies.Text = .Item("hobbies").ToString()
                     ' Format mobile number when loading
@@ -633,7 +630,6 @@ Public Class addPatient
                     End If
                     txtMobile.Text = mobileNum
                     cmbGender.Text = .Item("gender").ToString()
-                    dtpDate.Text = .Item("date").ToString()
 
                     ' Radio buttons handling with proper null checking
                     Dim diabeticValue As String = .Item("diabetic").ToString().Trim().ToLower()
@@ -668,12 +664,13 @@ Public Class addPatient
                 cmbProvince.Text = ""
                 cmbCity.Text = ""
                 cmbBgy.Text = ""
+                txtStreet.Text = ""
+                txtOther.Text = ""
                 txtSports.Text = ""
                 txtHobbies.Text = ""
                 txtMobile.Text = ""
                 cmbGender.Text = ""
                 cmbRegion.Text = ""
-                dtpDate.Text = ""
 
                 ' Reset radio buttons
                 dbYes.Checked = False
@@ -754,21 +751,19 @@ Public Class addPatient
         cmbProvince.TabIndex = 7
         cmbCity.TabIndex = 8
         cmbBgy.TabIndex = 9
-        grpDiabetic.TabIndex = 10
-        grpHighblood.TabIndex = 11
-        txtOccu.TabIndex = 12
-        txtMobile.TabIndex = 13
-        txtSports.TabIndex = 14
-        dtpDate.TabIndex = 15
-        txtHobbies.TabIndex = 16
+        pnlMI.TabIndex = 10
+        txtOccu.TabIndex = 11
+        txtMobile.TabIndex = 12
+        txtSports.TabIndex = 13
+        txtHobbies.TabIndex = 14
     End Sub
 
     Public Sub New()
         InitializeComponent()
     End Sub
 
-    Function checkData(ByVal gb As GroupBox) As Boolean
-        For Each obj As Object In gb.Controls
+    Function checkData(ByVal container As Control) As Boolean
+        For Each obj As Object In Container.Controls
             If TypeOf obj Is TextBox Then
                 If Len(obj.Text) = 0 Then
                     MsgBox("Please input data", vbCritical, "Save")
@@ -780,7 +775,7 @@ Public Class addPatient
     End Function
 
     Private Sub cleaner()
-        For Each obj As Control In grpPatient.Controls
+        For Each obj As Control In pnlPI.Controls
             If TypeOf obj Is TextBox Then
                 Dim txt As TextBox = CType(obj, TextBox)
                 txt.Text = "" ' Clear nang textbox
@@ -803,7 +798,7 @@ Public Class addPatient
         patientRecord.patientDGV.Tag = ""
     End Sub
 
-    Private Sub btnClear_Click(sender As Object, e As EventArgs) Handles btnClear.Click
+    Private Sub btnClear_Click(sender As Object, e As EventArgs)
         Call cleaner()
     End Sub
 
@@ -942,7 +937,13 @@ Public Class addPatient
             assignFirst(hbYes)
         End If
 
-        ' 7. Mobile Number (REQUIRED): must be provided and valid; "+63" is considered blank
+        ' 7. Street (REQUIRED)
+        If String.IsNullOrWhiteSpace(txtStreet.Text) Then
+            missing.Add("Street")
+            assignFirst(txtStreet)
+        End If
+
+        ' 8. Mobile Number (REQUIRED): must be provided and valid; "+63" is considered blank
         Dim mobileVal As String = If(txtMobile.Text, String.Empty).Trim()
         If mobileVal = String.Empty OrElse mobileVal = "+63" Then
             missing.Add("Mobile Number")
@@ -970,9 +971,9 @@ Public Class addPatient
         Dim textControl As Control = DirectCast(sender, Control)
 
         ' Skip validation if focus is moving to certain buttons
-        If ActiveControl Is btnCancel Or ActiveControl Is btnClear Then
-            Exit Sub
-        End If
+        'If ActiveControl Is btnCancel Or ActiveControl Is btnClear Then
+        '    Exit Sub
+        'End If
 
         ' Custom validation for specific TextBox fields
         Select Case textControl.Name
@@ -984,13 +985,17 @@ Public Class addPatient
                 If String.IsNullOrWhiteSpace(textControl.Text) Then
                     MsgBox("Don't leave the Last Name field blank.", vbExclamation, "Error")
                 End If
+            Case "txtStreet"
+                If String.IsNullOrWhiteSpace(textControl.Text) Then
+                    MsgBox("Don't leave the Street field blank.", vbExclamation, "Error")
+                End If
             Case "txtMobile"
                 ' Allow user to move past Mobile without blocking; saving enforces requirement
                 If String.IsNullOrWhiteSpace(textControl.Text) Then
                     ' Show a gentle alert but do not cancel or force focus here
                     'MsgBox("Mobile Number is currently blank. You can continue, but it is required before saving.", vbInformation, "Notice")
                 End If
-            Case "txtOccu", "txtSports", "txtMname", "txtHobbies"
+            Case "txtOccu", "txtSports", "txtMname", "txtHobbies", "txtOther"
                 ' Set N/A for these specific text boxes if empty
                 If String.IsNullOrWhiteSpace(textControl.Text) Then
                     textControl.Text = "N/A"
@@ -1002,9 +1007,9 @@ Public Class addPatient
         Dim cmb As ComboBox = CType(sender, ComboBox)
 
         ' Skip validation if focus is moving to certain buttons
-        If ActiveControl Is btnCancel Or ActiveControl Is btnClear Then
-            Exit Sub
-        End If
+        'If ActiveControl Is btnCancel Or ActiveControl Is btnClear Then
+        '    Exit Sub
+        'End If
 
         ' Custom validation for specific ComboBox fields
         Select Case cmb.Name
@@ -1034,9 +1039,9 @@ Public Class addPatient
     Private Sub DateTimePicker_Validating(sender As Object, e As CancelEventArgs)
         Dim dtp As DateTimePicker = CType(sender, DateTimePicker)
 
-        If ActiveControl Is btnCancel Or ActiveControl Is btnClear Then
-            Exit Sub
-        End If
+        'If ActiveControl Is btnCancel Or ActiveControl Is btnClear Then
+        '    Exit Sub
+        'End If
 
         ' Custom validation for DateTimePicker fields
         If dtp.Name = "dtpBday" Then
@@ -1085,6 +1090,8 @@ Public Class addPatient
             AddHandler txtSports.Validating, AddressOf TextBox_Validating
             AddHandler txtMname.Validating, AddressOf TextBox_Validating
             AddHandler txtHobbies.Validating, AddressOf TextBox_Validating
+            AddHandler txtStreet.Validating, AddressOf TextBox_Validating
+            AddHandler txtOther.Validating, AddressOf TextBox_Validating
         Catch ex As Exception
             MessageBox.Show("Error loading data: " & ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error)
         End Try
@@ -1172,10 +1179,10 @@ Public Class addPatient
 
     Private Sub txtMobile_Validating(sender As Object, e As System.ComponentModel.CancelEventArgs) Handles txtMobile.Validating
         ' Skip validation if moving to cancel/clear buttons
-        If ActiveControl Is btnCancel Or ActiveControl Is btnClear Then
-            ErrorProvider1.SetError(txtMobile, "")
-            Exit Sub
-        End If
+        'If ActiveControl Is btnCancel Or ActiveControl Is btnClear Then
+        '    ErrorProvider1.SetError(txtMobile, "")
+        '    Exit Sub
+        'End If
 
         Dim mobile As String = If(txtMobile.Text, String.Empty).Trim()
 
@@ -1228,6 +1235,4 @@ Public Class addPatient
             txtMobile.SelectionStart = txtMobile.Text.Length
         End If
     End Sub
-
-
 End Class

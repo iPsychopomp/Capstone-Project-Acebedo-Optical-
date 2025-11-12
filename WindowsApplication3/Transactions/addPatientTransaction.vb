@@ -12,6 +12,7 @@ Public Class addPatientTransaction
     ' Store lens discount value to set after form initialization
     Private loadedLensDiscount As String = ""
 
+#If False Then
     Private Sub addPatientTransaction_Load(sender As Object, e As EventArgs) Handles MyBase.Load
         isInitializing = True
         If dgvSelectedProducts.Columns.Count = 0 Then
@@ -724,7 +725,7 @@ Public Class addPatientTransaction
         e.Handled = True
     End Sub
 
-    Private Sub txtODCost_KeyPress(sender As Object, e As KeyPressEventArgs) Handles txtODCost.KeyPress
+    Private Sub txtODCost_KeyPress(sender As Object, e As KeyPressEventArgs)
         Dim isControl As Boolean = Char.IsControl(e.KeyChar)
         Dim isDigit As Boolean = Char.IsDigit(e.KeyChar)
         Dim isDot As Boolean = (e.KeyChar = "."c)
@@ -745,7 +746,7 @@ Public Class addPatientTransaction
         e.Handled = True
     End Sub
 
-    Private Sub txtOSCost_KeyPress(sender As Object, e As KeyPressEventArgs) Handles txtOSCost.KeyPress
+    Private Sub txtOSCost_KeyPress(sender As Object, e As KeyPressEventArgs)
         Dim isControl As Boolean = Char.IsControl(e.KeyChar)
         Dim isDigit As Boolean = Char.IsDigit(e.KeyChar)
         Dim isDot As Boolean = (e.KeyChar = "."c)
@@ -766,7 +767,7 @@ Public Class addPatientTransaction
         e.Handled = True
     End Sub
 
-    Private Sub rbwith_CheckedChanged(sender As Object, e As EventArgs) Handles rbwith.CheckedChanged
+    Private Sub rbwith_CheckedChanged(sender As Object, e As EventArgs)
         If suppressModePrompt OrElse isInitializing Then
             UpdateTotalLabel()
             UpdateControls()
@@ -791,7 +792,7 @@ Public Class addPatientTransaction
         UpdateControls()
     End Sub
 
-    Private Sub rbonly_CheckedChanged(sender As Object, e As EventArgs) Handles rbonly.CheckedChanged
+    Private Sub rbonly_CheckedChanged(sender As Object, e As EventArgs)
         If suppressModePrompt OrElse isInitializing Then
             If rbonly.Checked Then
                 UpdateTotalLabel()
@@ -955,11 +956,11 @@ Public Class addPatientTransaction
         Next
     End Sub
 
-    Private Sub txtODCost_TextChanged(sender As Object, e As EventArgs) Handles txtODCost.TextChanged
+    Private Sub txtODCost_TextChanged(sender As Object, e As EventArgs)
         UpdateTotalLabel()
     End Sub
 
-    Private Sub txtOSCost_TextChanged(sender As Object, e As EventArgs) Handles txtOSCost.TextChanged
+    Private Sub txtOSCost_TextChanged(sender As Object, e As EventArgs)
         UpdateTotalLabel()
     End Sub
 
@@ -1363,4 +1364,5 @@ Public Class addPatientTransaction
     Private Sub btnCancel_Click(sender As Object, e As EventArgs) Handles btnCancel.Click
         Me.Close()
     End Sub
+#End If
 End Class

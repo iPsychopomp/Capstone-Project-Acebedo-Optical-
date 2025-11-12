@@ -120,56 +120,16 @@ Public Class CreateCheckUp
     End Sub
 
     Private Sub btnPSearch_Click(sender As Object, e As EventArgs) Handles btnPSearch.Click
-        Try
-            Call dbConn()
-
-            Dim searchName As String = txtPName.Text.Trim()
-            If String.IsNullOrEmpty(searchName) Then
-                MessageBox.Show("Please enter a patient name to search.", "Search", MessageBoxButtons.OK, MessageBoxIcon.Information)
-                txtPName.Focus()
-                Return
-            End If
-
-            Dim query As String = _
-                "SELECT patientID, " & _
-                "CASE " & _
-                " WHEN mname IS NULL OR mname = '' OR mname = 'N/A' THEN CONCAT(fname, ' ', lname) " & _
-                " ELSE CONCAT(fname, ' ', mname, ' ', lname) " & _
-                "END AS fullName " & _
-                "FROM patient_data " & _
-                "WHERE (CASE " & _
-                "  WHEN mname IS NULL OR mname = '' OR mname = 'N/A' THEN CONCAT(fname, ' ', lname) " & _
-                "  ELSE CONCAT(fname, ' ', mname, ' ', lname) " & _
-                "END) LIKE ? " & _
-                "ORDER BY lname, fname LIMIT 1"
-
-            Dim cmd As New Odbc.OdbcCommand(query, conn)
-            cmd.Parameters.AddWithValue("?", "%" & searchName & "%")
-            Dim reader As Odbc.OdbcDataReader = cmd.ExecuteReader()
-
-            If reader.Read() Then
-                Dim fullName As String = reader("fullName").ToString()
-                Dim patientID As Integer = Convert.ToInt32(reader("patientID"))
-                txtPName.Text = fullName
-                ' Store the patient ID for later use
-                txtPName.Tag = patientID
-            Else
-                MessageBox.Show("No patient found with that name.", "Search Result", MessageBoxButtons.OK, MessageBoxIcon.Information)
-            End If
-
-            reader.Close()
-            conn.Close()
-
-        Catch ex As Exception
-            MessageBox.Show("Error searching for patient: " & ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error)
-        End Try
+        Using chooseP As New searchPatient
+            chooseP.ShowDialog()
+        End Using
     End Sub
 
     Private Sub CreateCheckUp_Load(sender As Object, e As EventArgs) Handles MyBase.Load
         LoadPatientNames()
         SetupPatientAutoComplete()
         LoadDoctorNames()
-        SetupDoctorAutoComplete()
+
 
         ' Ensure skipped fields default to 0 on leave
         AddHandler txtODSP.Leave, AddressOf MeasurementTextBox_Leave
@@ -182,44 +142,8 @@ Public Class CreateCheckUp
         AddHandler txtAddOS.Leave, AddressOf MeasurementTextBox_Leave
     End Sub
 
-    Private Sub SetupDoctorAutoComplete()
-        Try
-            ' Create autocomplete collection
-            Dim autoCompleteCollection As New AutoCompleteStringCollection()
 
-            ' Add all doctor names to the collection
-            For Each doctorName As String In doctorDict.Values
-                autoCompleteCollection.Add(doctorName)
-            Next
 
-            ' Configure txtDName for autocomplete
-            txtDName.AutoCompleteMode = AutoCompleteMode.SuggestAppend
-            txtDName.AutoCompleteSource = AutoCompleteSource.CustomSource
-            txtDName.AutoCompleteCustomSource = autoCompleteCollection
-
-            ' Add TextChanged event to auto-select doctor ID when name matches
-            AddHandler txtDName.TextChanged, AddressOf txtDName_TextChanged
-        Catch ex As Exception
-            ' Silently fail if autocomplete setup fails
-        End Try
-    End Sub
-
-    Private Sub txtDName_TextChanged(sender As Object, e As EventArgs)
-        Try
-            ' Check if the entered text matches any doctor name exactly
-            Dim enteredText As String = txtDName.Text.Trim()
-
-            For Each kvp As KeyValuePair(Of String, String) In doctorDict
-                If kvp.Value.Equals(enteredText, StringComparison.OrdinalIgnoreCase) Then
-                    ' Set the doctor ID in the Tag
-                    txtDName.Tag = kvp.Key
-                    Exit For
-                End If
-            Next
-        Catch ex As Exception
-            ' Silently handle any errors
-        End Try
-    End Sub
 
     Private Sub MeasurementTextBox_Leave(sender As Object, e As EventArgs)
         Dim txt As TextBox = DirectCast(sender, TextBox)
@@ -238,14 +162,14 @@ Public Class CreateCheckUp
             End If
 
             ' Check if doctor is selected
-            If String.IsNullOrEmpty(txtDName.Text) Or txtDName.Tag Is Nothing Then
+            If String.IsNullOrEmpty(cmbDoctors.Text) Or cmbDoctors.Tag Is Nothing Then
                 MsgBox("Please search and select a doctor.", vbCritical, "Error")
-                txtDName.Focus()
+                cmbDoctors.Focus()
                 Exit Sub
             End If
 
             ' Get the selected doctor's ID
-            Dim selectedDoctorID As String = txtDName.Tag.ToString()
+            Dim selectedDoctorID As String = cmbDoctors.Tag.ToString()
             Dim checkupFee As Double = 300
             Dim transactionDate As Date = Date.Now
             Dim transactionID As Integer = 0
@@ -266,58 +190,47 @@ Public Class CreateCheckUp
             ' Ensure remarks has a default value
             If String.IsNullOrWhiteSpace(txtRemarks.Text) Then txtRemarks.Text = "N/A"
 
-            conn.Close()
-
-            ' Open the transaction form for payment settlement FIRST
-            ' Checkup will only be saved if payment is completed
+            ' Insert checkup directly (no transaction form)
             Try
-                Dim transactionForm As New createTransactions()
-                transactionForm.SelectedPatientID = CInt(txtPName.Tag.ToString())
-                transactionForm.SelectedPatientName = txtPName.Text
-                transactionForm.IsCheckupPayment = True
+                Dim insertSql As String = _
+                    "INSERT INTO tbl_checkup (patientID, doctorID, remarks, CheckupDate, sphereOD, sphereOS, cylinderOD, cylinderOS, axisOD, axisOS, addOD, addOS) " & _
+                    "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)"
 
-                ' Default PD fields to 0 if empty
-                If String.IsNullOrWhiteSpace(pdOD.Text) Then pdOD.Text = "0"
-                If String.IsNullOrWhiteSpace(pdOS.Text) Then pdOS.Text = "0"
-                If String.IsNullOrWhiteSpace(pdOU.Text) Then pdOU.Text = "0"
+                Using cmd As New Odbc.OdbcCommand(insertSql, conn)
+                    cmd.Parameters.AddWithValue("?", CInt(txtPName.Tag.ToString()))
+                    cmd.Parameters.AddWithValue("?", selectedDoctorID)
+                    cmd.Parameters.AddWithValue("?", txtRemarks.Text)
+                    cmd.Parameters.AddWithValue("?", dtpDate.Value)
+                    cmd.Parameters.AddWithValue("?", txtODSP.Text)
+                    cmd.Parameters.AddWithValue("?", txtOSSP.Text)
+                    cmd.Parameters.AddWithValue("?", txtCYOD.Text)
+                    cmd.Parameters.AddWithValue("?", txtCYOS.Text)
+                    cmd.Parameters.AddWithValue("?", txtAXOD.Text)
+                    cmd.Parameters.AddWithValue("?", txtAXOS.Text)
+                    cmd.Parameters.AddWithValue("?", txtAddOD.Text)
+                    cmd.Parameters.AddWithValue("?", txtAddOS.Text)
+                    cmd.ExecuteNonQuery()
+                End Using
 
-                ' Pass checkup data to transaction form
-                transactionForm.CheckupRemarks = txtRemarks.Text
-                transactionForm.CheckupDoctorID = selectedDoctorID
-                transactionForm.CheckupSphereOD = txtODSP.Text
-                transactionForm.CheckupSphereOS = txtOSSP.Text
-                transactionForm.CheckupCylinderOD = txtCYOD.Text
-                transactionForm.CheckupCylinderOS = txtCYOS.Text
-                transactionForm.CheckupAxisOD = txtAXOD.Text
-                transactionForm.CheckupAxisOS = txtAXOS.Text
-                transactionForm.CheckupAddOD = txtAddOD.Text
-                transactionForm.CheckupAddOS = txtAddOS.Text
-                transactionForm.CheckupDate = dtpDate.Value
-                transactionForm.CheckupPDOD = pdOD.Text
-                transactionForm.CheckupPDOS = pdOS.Text
-                transactionForm.CheckupPDOU = pdOU.Text
-
-                'transactionForm.Text = "Settle Checkup Payment - " & txtPName.Text
-                transactionForm.TopMost = True
-
-                ' Show dialog and check if payment was completed
-                Dim result As DialogResult = transactionForm.ShowDialog()
-
-                ' Check if payment was completed successfully
-                If result = DialogResult.OK Then
-                    ' Payment and checkup were saved successfully by the transaction form
-                    DataSaved = True
-                    Try
-                        modCheckUp.RefreshCheckUpDGV()
-                    Catch
-                    End Try
-                Else
-                    ' Payment was canceled, so checkup was not saved - no message needed
-                End If
+                DataSaved = True
+                Try
+                    modCheckUp.RefreshCheckUpDGV()
+                Catch
+                End Try
             Catch ex As Exception
-                MessageBox.Show("Error opening transaction form: " & ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Warning)
+                MsgBox("Error saving checkup: " & ex.Message, vbCritical, "Save Error")
+            Finally
+                Try
+                    If conn IsNot Nothing Then
+                        conn.Close()
+                    End If
+                Catch
+                End Try
             End Try
 
+            If DataSaved Then
+                MessageBox.Show("The check-up record has been saved successfully.", "Save Successful", MessageBoxButtons.OK, MessageBoxIcon.Information)
+            End If
             Me.DialogResult = DialogResult.OK
             Me.Close()
 
@@ -350,66 +263,52 @@ Public Class CreateCheckUp
             ' Open connection
             Call dbConn()
 
-            ' Query to fetch doctor names and IDs
-            Dim sql As String = "SELECT doctorID, FullName FROM db_viewdoctors ORDER BY FullName"
+            ' Fetch doctor names and concatenate safely (omit empty or N/A middle names)
+            Dim sql As String = "SELECT doctorID, TRIM(CONCAT(fname, ' ', CASE WHEN mname IS NULL OR mname = '' OR mname = 'N/A' THEN '' ELSE CONCAT(mname, ' ') END, lname)) AS FullName FROM tbl_doctor ORDER BY lname, fname"
+
             Dim cmd As New Odbc.OdbcCommand(sql, conn)
             Dim reader As Odbc.OdbcDataReader = cmd.ExecuteReader()
 
-            ' Create a dictionary to hold the doctors
+            ' Build list and dictionary
+            Dim items As New List(Of KeyValuePair(Of String, String))()
             doctorDict.Clear()
 
             While reader.Read()
-                doctorDict.Add(reader("doctorID").ToString(), reader("FullName").ToString())
+                Dim id As String = reader("doctorID").ToString()
+                Dim name As String = reader("FullName").ToString()
+                doctorDict(id) = name
+                items.Add(New KeyValuePair(Of String, String)(id, name))
             End While
 
-            ' If doctorIDToSelect is provided, set the selected doctor
+            reader.Close()
+            conn.Close()
+
+            ' Insert default placeholder at the top
+            items.Insert(0, New KeyValuePair(Of String, String)(String.Empty, "--Select Doctor--"))
+
+            ' Bind to combobox
+            cmbDoctors.DisplayMember = "Value"
+            cmbDoctors.ValueMember = "Key"
+            cmbDoctors.DataSource = items
+
+            ' Preselect if provided
             If Not String.IsNullOrEmpty(doctorIDToSelect) Then
-                If doctorDict.ContainsKey(doctorIDToSelect) Then
-                    txtDName.Text = doctorDict(doctorIDToSelect)
-                    txtDName.Tag = doctorIDToSelect
+                cmbDoctors.SelectedValue = doctorIDToSelect
+                cmbDoctors.Tag = doctorIDToSelect
+            Else
+                ' Default to placeholder
+                If items.Count > 0 Then
+                    cmbDoctors.SelectedIndex = 0
+                    cmbDoctors.Tag = Nothing
                 End If
             End If
 
-            reader.Close()
-            conn.Close()
-
         Catch ex As Exception
-
+            ' swallow
         End Try
     End Sub
 
-    Private Sub btnDSearch_Click(sender As Object, e As EventArgs) Handles btnDSearch.Click
-        Try
-            Call dbConn()
 
-            Dim searchName As String = txtDName.Text.Trim()
-            If String.IsNullOrEmpty(searchName) Then
-                MessageBox.Show("Please enter a doctor name to search.", "Search", MessageBoxButtons.OK, MessageBoxIcon.Information)
-                txtDName.Focus()
-                Return
-            End If
-
-            Dim query As String = "SELECT doctorID, FullName FROM db_viewdoctors WHERE FullName LIKE ? ORDER BY FullName LIMIT 1"
-            Dim cmd As New Odbc.OdbcCommand(query, conn)
-            cmd.Parameters.AddWithValue("?", "%" & searchName & "%")
-            Dim reader As Odbc.OdbcDataReader = cmd.ExecuteReader()
-
-            If reader.Read() Then
-                Dim fullName As String = reader("FullName").ToString()
-                Dim doctorID As String = reader("doctorID").ToString()
-                txtDName.Text = fullName
-                txtDName.Tag = doctorID
-            Else
-                MessageBox.Show("No doctor found with that name.", "Search Result", MessageBoxButtons.OK, MessageBoxIcon.Information)
-            End If
-
-            reader.Close()
-            conn.Close()
-
-        Catch ex As Exception
-            MessageBox.Show("Error searching for doctor: " & ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error)
-        End Try
-    End Sub
 
     Private Sub SetComboValue(comboBox As ComboBox, displayValue As String)
         If String.IsNullOrEmpty(displayValue) Then
@@ -471,8 +370,8 @@ Public Class CreateCheckUp
             ' Clear patient name and doctor name textboxes
             txtPName.Text = ""
             txtPName.Tag = Nothing
-            txtDName.Text = ""
-            txtDName.Tag = Nothing
+            cmbDoctors.Text = ""
+            cmbDoctors.Tag = Nothing
 
             ' Clear all inputs inside the group container
             For Each obj As Control In grpCheckUp.Controls
@@ -571,8 +470,8 @@ Public Class CreateCheckUp
     Private Sub ClearFormFields()
         txtPName.Text = ""
         txtPName.Tag = Nothing
-        txtDName.Text = ""
-        txtDName.Tag = Nothing
+        cmbDoctors.Text = ""
+        cmbDoctors.Tag = Nothing
         txtRemarks.Text = ""
         dtpDate.Value = DateTime.Now
         txtODSP.Text = ""
@@ -626,5 +525,19 @@ Public Class CreateCheckUp
         If String.IsNullOrWhiteSpace(pdOU.Text) Then
             pdOU.Text = "0"
         End If
+    End Sub
+
+    Private Sub pnlCheckUp_Paint(sender As Object, e As PaintEventArgs) Handles pnlCheckUp.Paint
+
+    End Sub
+
+
+    Private Sub cmbDoctors_SelectedIndexChanged(sender As Object, e As EventArgs) Handles cmbDoctors.SelectedIndexChanged
+        Try
+            If cmbDoctors.DataSource IsNot Nothing AndAlso cmbDoctors.SelectedIndex >= 0 Then
+                cmbDoctors.Tag = cmbDoctors.SelectedValue
+            End If
+        Catch
+        End Try
     End Sub
 End Class

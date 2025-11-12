@@ -557,4 +557,37 @@ Public Class Transaction
             LoadTransactions()
         End If
     End Sub
+
+    Private Sub btnView_Click(sender As Object, e As EventArgs) Handles btnView.Click
+        Try
+            If transactionDGV.SelectedRows.Count <= 0 Then
+                MessageBox.Show("Please select a transaction first.", "No Selection", MessageBoxButtons.OK, MessageBoxIcon.Information)
+                Return
+            End If
+
+            If Not viewTransactions.IsInstanceOpen() Then
+                Dim patientID As Integer = Convert.ToInt32(transactionDGV.SelectedRows(0).Cells("Column1").Value)
+                Dim viewer As New viewTransactions()
+                viewer.LoadViewTransaction(patientID)
+                viewer.Show()
+            End If
+        Catch ex As Exception
+            MsgBox(ex.Message.ToString, vbCritical, "Error")
+        End Try
+    End Sub
+
+    Private Sub btnNew_Click(sender As Object, e As EventArgs) Handles btnNew.Click
+        Try
+            Dim frm As New addPatientTransaction()
+            frm.IsEditMode = False
+            frm.pbAdd.Visible = True
+            frm.pbEdit.Visible = False
+            frm.lblTitle.Text = "Add Transaction"
+            frm.TopMost = True
+            frm.ShowDialog()
+            LoadTransactions()
+        Catch ex As Exception
+            MsgBox("Failed to open Add Transaction: " & ex.Message, vbCritical, "Error")
+        End Try
+    End Sub
 End Class

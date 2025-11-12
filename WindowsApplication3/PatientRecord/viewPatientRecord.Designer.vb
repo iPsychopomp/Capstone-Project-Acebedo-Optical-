@@ -52,8 +52,8 @@ Partial Class viewPatientRecord
         Me.Label13 = New System.Windows.Forms.Label()
         Me.pnlMI = New System.Windows.Forms.Panel()
         Me.lblOthers = New System.Windows.Forms.Label()
-        Me.lblHPS = New System.Windows.Forms.Label()
-        Me.lblDS = New System.Windows.Forms.Label()
+        Me.lblHB = New System.Windows.Forms.Label()
+        Me.lblDB = New System.Windows.Forms.Label()
         Me.Label35 = New System.Windows.Forms.Label()
         Me.Label34 = New System.Windows.Forms.Label()
         Me.Label11 = New System.Windows.Forms.Label()
@@ -368,8 +368,8 @@ Partial Class viewPatientRecord
         '
         Me.pnlMI.BackColor = System.Drawing.SystemColors.HighlightText
         Me.pnlMI.Controls.Add(Me.lblOthers)
-        Me.pnlMI.Controls.Add(Me.lblHPS)
-        Me.pnlMI.Controls.Add(Me.lblDS)
+        Me.pnlMI.Controls.Add(Me.lblHB)
+        Me.pnlMI.Controls.Add(Me.lblDB)
         Me.pnlMI.Controls.Add(Me.Label35)
         Me.pnlMI.Controls.Add(Me.Label34)
         Me.pnlMI.Controls.Add(Me.Label11)
@@ -391,25 +391,25 @@ Partial Class viewPatientRecord
         Me.lblOthers.TabIndex = 130
         Me.lblOthers.Text = "--"
         '
-        'lblHPS
+        'lblHB
         '
-        Me.lblHPS.AutoSize = True
-        Me.lblHPS.Font = New System.Drawing.Font("Segoe UI Semibold", 12.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.lblHPS.Location = New System.Drawing.Point(348, 73)
-        Me.lblHPS.Name = "lblHPS"
-        Me.lblHPS.Size = New System.Drawing.Size(28, 28)
-        Me.lblHPS.TabIndex = 129
-        Me.lblHPS.Text = "--"
+        Me.lblHB.AutoSize = True
+        Me.lblHB.Font = New System.Drawing.Font("Segoe UI Semibold", 12.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.lblHB.Location = New System.Drawing.Point(348, 73)
+        Me.lblHB.Name = "lblHB"
+        Me.lblHB.Size = New System.Drawing.Size(28, 28)
+        Me.lblHB.TabIndex = 129
+        Me.lblHB.Text = "--"
         '
-        'lblDS
+        'lblDB
         '
-        Me.lblDS.AutoSize = True
-        Me.lblDS.Font = New System.Drawing.Font("Segoe UI Semibold", 12.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.lblDS.Location = New System.Drawing.Point(348, 40)
-        Me.lblDS.Name = "lblDS"
-        Me.lblDS.Size = New System.Drawing.Size(28, 28)
-        Me.lblDS.TabIndex = 126
-        Me.lblDS.Text = "--"
+        Me.lblDB.AutoSize = True
+        Me.lblDB.Font = New System.Drawing.Font("Segoe UI Semibold", 12.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.lblDB.Location = New System.Drawing.Point(348, 40)
+        Me.lblDB.Name = "lblDB"
+        Me.lblDB.Size = New System.Drawing.Size(28, 28)
+        Me.lblDB.TabIndex = 126
+        Me.lblDB.Text = "--"
         '
         'Label35
         '
@@ -517,7 +517,7 @@ Partial Class viewPatientRecord
     Friend WithEvents lblSports As System.Windows.Forms.Label
     Friend WithEvents lblOccu As System.Windows.Forms.Label
     Friend WithEvents lblOthers As System.Windows.Forms.Label
-    Friend WithEvents lblHPS As System.Windows.Forms.Label
-    Friend WithEvents lblDS As System.Windows.Forms.Label
+    Friend WithEvents lblHB As System.Windows.Forms.Label
+    Friend WithEvents lblDB As System.Windows.Forms.Label
     Friend WithEvents pbEdit As System.Windows.Forms.PictureBox
 End Class

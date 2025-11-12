@@ -69,8 +69,20 @@ Public Class viewPatientRecord
                         lblSports.Text = If(String.IsNullOrEmpty(reader("sports").ToString()), "--", reader("sports").ToString())
 
                         ' Medical Information
-                        lblDS.Text = If(reader("diabetic").ToString() = "1", "Yes", If(reader("diabetic").ToString() = "0", "No", "--"))
-                        lblHPS.Text = If(reader("highblood").ToString() = "1", "Yes", If(reader("highblood").ToString() = "0", "No", "--"))
+                        Dim diabeticValue As String = reader("diabetic").ToString()
+                        If diabeticValue = "1" Or diabeticValue.ToLower() = "yes" Then
+                            lblDB.Text = "☑ Yes    ☐ No"
+                        Else
+                            lblDB.Text = "☐ Yes    ☑ No"
+                        End If
+
+                        Dim highbloodValue As String = reader("highblood").ToString()
+                        If highbloodValue = "1" Or highbloodValue.ToLower() = "yes" Then
+                            lblHB.Text = "☑ Yes    ☐ No"
+                        Else
+                            lblHB.Text = "☐ Yes    ☑ No"
+                        End If
+
                         lblOthers.Text = If(String.IsNullOrEmpty(reader("others").ToString()), "--", reader("others").ToString())
 
                     Else

@@ -135,36 +135,36 @@ Public Class patientRecord
         End Try
     End Sub
 
-    Private Sub patientDGV_CellDoubleClick(sender As Object, e As DataGridViewCellEventArgs) Handles patientDGV.CellDoubleClick
-        Try
-            ' Validate row index
-            If e.RowIndex < 0 OrElse e.RowIndex >= patientDGV.Rows.Count OrElse
-               patientDGV.Rows(e.RowIndex).IsNewRow Then
-                Return
-            End If
+    'Private Sub patientDGV_CellDoubleClick(sender As Object, e As DataGridViewCellEventArgs) Handles patientDGV.CellDoubleClick
+    '    Try
+    '        ' Validate row index
+    '        If e.RowIndex < 0 OrElse e.RowIndex >= patientDGV.Rows.Count OrElse
+    '           patientDGV.Rows(e.RowIndex).IsNewRow Then
+    '            Return
+    '        End If
 
-            ' Get patient ID from the correct column
-            Dim cellValue As Object = patientDGV.Rows(e.RowIndex).Cells(PatientIDColumnName).Value
-            Dim patientID As Integer
+    '        ' Get patient ID from the correct column
+    '        Dim cellValue As Object = patientDGV.Rows(e.RowIndex).Cells(PatientIDColumnName).Value
+    '        Dim patientID As Integer
 
-            If cellValue Is Nothing OrElse Not Integer.TryParse(cellValue.ToString(), patientID) Then
-                MessageBox.Show("Invalid patient record selected.",
-                              "Error", MessageBoxButtons.OK, MessageBoxIcon.Error)
-                Return
-            End If
+    '        If cellValue Is Nothing OrElse Not Integer.TryParse(cellValue.ToString(), patientID) Then
+    '            MessageBox.Show("Invalid patient record selected.",
+    '                          "Error", MessageBoxButtons.OK, MessageBoxIcon.Error)
+    '            Return
+    '        End If
 
-            ' Open patient details
-            Using actionsForm As New patientActions()
-                actionsForm.InitializeForPatient(patientID)
-                actionsForm.ShowDialog()
-                ReloadPatientData() ' Refresh after closing
-            End Using
-        Catch ex As Exception
-            MessageBox.Show("Error opening record: " & ex.Message,
-                          "Error", MessageBoxButtons.OK, MessageBoxIcon.Error)
-        End Try
-        DgvStyle(patientDGV)
-    End Sub
+    '        ' Open patient details
+    '        Using actionsForm As New patientActions()
+    '            actionsForm.InitializeForPatient(patientID)
+    '            actionsForm.ShowDialog()
+    '            ReloadPatientData() ' Refresh after closing
+    '        End Using
+    '    Catch ex As Exception
+    '        MessageBox.Show("Error opening record: " & ex.Message,
+    '                      "Error", MessageBoxButtons.OK, MessageBoxIcon.Error)
+    '    End Try
+    '    DgvStyle(patientDGV)
+    'End Sub
 
     Public Sub ReloadPatientData()
         Try

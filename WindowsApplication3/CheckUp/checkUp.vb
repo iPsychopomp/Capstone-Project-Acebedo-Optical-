@@ -94,38 +94,38 @@ Public Class checkUp
         End Try
     End Sub
 
-    Private Sub checkUpDGV_CellDoubleClick(sender As Object, e As DataGridViewCellEventArgs) Handles checkUpDGV.CellDoubleClick
-        If e.RowIndex >= 0 Then
-            ' Check if viewCheckUp form is already open
-            For Each frm As Form In Application.OpenForms
-                If TypeOf frm Is viewCheckUp Then
-                    ' Form is already open, bring it to front
-                    frm.BringToFront()
-                    frm.Focus()
-                    Return
-                End If
-            Next
+    'Private Sub checkUpDGV_CellDoubleClick(sender As Object, e As DataGridViewCellEventArgs) Handles checkUpDGV.CellDoubleClick
+    '    If e.RowIndex >= 0 Then
+    '        ' Check if viewCheckUp form is already open
+    '        For Each frm As Form In Application.OpenForms
+    '            If TypeOf frm Is viewCheckUp Then
+    '                ' Form is already open, bring it to front
+    '                frm.BringToFront()
+    '                frm.Focus()
+    '                Return
+    '            End If
+    '        Next
 
-            Dim patientID As String = checkUpDGV.Rows(e.RowIndex).Cells("patientID").Value.ToString()
-            Dim patientName As String = String.Empty
-            Try
-                patientName = checkUpDGV.Rows(e.RowIndex).Cells("PatientName").Value.ToString()
-            Catch
-                ' Fallback: ignore if column not present
-            End Try
+    '        Dim patientID As String = checkUpDGV.Rows(e.RowIndex).Cells("patientID").Value.ToString()
+    '        Dim patientName As String = String.Empty
+    '        Try
+    '            patientName = checkUpDGV.Rows(e.RowIndex).Cells("PatientName").Value.ToString()
+    '        Catch
+    '            ' Fallback: ignore if column not present
+    '        End Try
 
-            Dim viewCheckUpForm As New viewCheckUp()
-            ' Bind the selected patient name to the label on the view form
-            Try
-                viewCheckUpForm.lblPatientName.Text = patientName
-            Catch
-                ' If label is not accessible, ignore
-            End Try
+    '        Dim viewCheckUpForm As New viewCheckUp()
+    '        ' Bind the selected patient name to the label on the view form
+    '        Try
+    '            viewCheckUpForm.lblPatientName.Text = patientName
+    '        Catch
+    '            ' If label is not accessible, ignore
+    '        End Try
 
-            viewCheckUpForm.ViewCheckup(patientID)
-            viewCheckUpForm.Show()
-        End If
-    End Sub
+    '        viewCheckUpForm.ViewCheckup(patientID)
+    '        viewCheckUpForm.Show()
+    '    End If
+    'End Sub
 
     Private Sub btnView_Click(sender As Object, e As EventArgs) Handles btnView.Click
         Try
@@ -279,6 +279,29 @@ Public Class checkUp
             End If
         Catch ex As Exception
             MessageBox.Show("Error opening database connection: " & ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error)
+            Exit Sub
+        End Try
+
+        ' First, check if patient has a checkup record TODAY
+        Dim checkTodaySql As String = "SELECT COUNT(*) FROM tbl_checkup WHERE patientID = ? AND DATE(checkupDate) = CURDATE()"
+        Try
+            Using checkCmd As New Odbc.OdbcCommand(checkTodaySql, conn)
+                checkCmd.Parameters.AddWithValue("?", patientID)
+                Dim todayCount As Integer = Convert.ToInt32(checkCmd.ExecuteScalar())
+
+                If todayCount = 0 Then
+                    MessageBox.Show("A checkup is required today before scheduling the next appointment.", "Caution", MessageBoxButtons.OK, MessageBoxIcon.Exclamation)
+                    If conn.State = ConnectionState.Open Then
+                        conn.Close()
+                    End If
+                    Exit Sub
+                End If
+            End Using
+        Catch ex As Exception
+            MessageBox.Show("Error checking today's checkup: " & ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error)
+            If conn.State = ConnectionState.Open Then
+                conn.Close()
+            End If
             Exit Sub
         End Try
 

@@ -2040,4 +2040,45 @@ AfterLoop:
         End Try
     End Sub
 
+    Private Sub addPatientTransaction_Load(sender As Object, e As EventArgs) Handles MyBase.Load
+        DgvStyle(dgvSelectedProducts)
+    End Sub
+
+    Public Sub DgvStyle(ByRef dgv As DataGridView)
+        Try
+            dgv.AutoGenerateColumns = False
+            dgv.AllowUserToAddRows = False
+            dgv.AllowUserToDeleteRows = False
+            dgv.BorderStyle = BorderStyle.FixedSingle
+            dgv.BackgroundColor = Color.White
+            dgv.AdvancedColumnHeadersBorderStyle.All = DataGridViewAdvancedCellBorderStyle.Single
+            dgv.CellBorderStyle = DataGridViewCellBorderStyle.Single
+            dgv.ColumnHeadersDefaultCellStyle.BackColor = Color.Gainsboro
+            dgv.ColumnHeadersDefaultCellStyle.ForeColor = Color.Black
+            dgv.ColumnHeadersDefaultCellStyle.Font = New Font("Segoe UI", 11, FontStyle.Regular)
+            dgv.ColumnHeadersDefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter
+            dgv.EnableHeadersVisualStyles = False
+            dgv.DefaultCellStyle.ForeColor = Color.Black
+            dgv.AlternatingRowsDefaultCellStyle.BackColor = SystemColors.Control
+            dgv.DefaultCellStyle.SelectionBackColor = SystemColors.ActiveCaption
+            dgv.DefaultCellStyle.SelectionForeColor = Color.Black
+            dgv.GridColor = Color.Silver
+            dgv.DefaultCellStyle.Padding = New Padding(5)
+            dgv.DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleLeft
+            dgv.ReadOnly = True
+            dgv.MultiSelect = False
+            dgv.AllowUserToResizeRows = False
+            dgv.RowTemplate.Height = 30
+            dgv.DefaultCellStyle.WrapMode = DataGridViewTriState.False
+            dgv.AutoSizeRowsMode = DataGridViewAutoSizeRowsMode.AllCells
+
+            For Each col As DataGridViewColumn In dgv.Columns
+                col.HeaderCell.Style.Alignment = DataGridViewContentAlignment.MiddleCenter
+                col.SortMode = DataGridViewColumnSortMode.NotSortable
+            Next
+            dgv.Refresh()
+        Catch
+        End Try
+    End Sub
+
 End Class

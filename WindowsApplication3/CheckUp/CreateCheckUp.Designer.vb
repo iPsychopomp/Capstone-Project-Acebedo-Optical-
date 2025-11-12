@@ -66,16 +66,16 @@ Partial Class CreateCheckUp
         Me.Label17 = New System.Windows.Forms.Label()
         Me.grpCheckUp = New System.Windows.Forms.Panel()
         Me.Panel1 = New System.Windows.Forms.Panel()
+        Me.pbAdd = New System.Windows.Forms.PictureBox()
         Me.lblhead = New System.Windows.Forms.Label()
         Me.Panel2 = New System.Windows.Forms.Panel()
         Me.Label21 = New System.Windows.Forms.Label()
-        Me.pbAdd = New System.Windows.Forms.PictureBox()
         Me.pnlCheckUp.SuspendLayout()
         Me.Panel3.SuspendLayout()
         Me.grpCheckUp.SuspendLayout()
         Me.Panel1.SuspendLayout()
-        Me.Panel2.SuspendLayout()
         CType(Me.pbAdd, System.ComponentModel.ISupportInitialize).BeginInit()
+        Me.Panel2.SuspendLayout()
         Me.SuspendLayout()
         '
         'txtRemarks
@@ -515,7 +515,7 @@ Partial Class CreateCheckUp
         Me.cmbDoctors.Location = New System.Drawing.Point(593, 61)
         Me.cmbDoctors.Name = "cmbDoctors"
         Me.cmbDoctors.Size = New System.Drawing.Size(474, 36)
-        Me.cmbDoctors.TabIndex = 144
+        Me.cmbDoctors.TabIndex = 3
         '
         'Label17
         '
@@ -551,6 +551,15 @@ Partial Class CreateCheckUp
         Me.Panel1.Name = "Panel1"
         Me.Panel1.Size = New System.Drawing.Size(1121, 49)
         Me.Panel1.TabIndex = 131
+        '
+        'pbAdd
+        '
+        Me.pbAdd.Image = CType(resources.GetObject("pbAdd.Image"), System.Drawing.Image)
+        Me.pbAdd.Location = New System.Drawing.Point(12, 6)
+        Me.pbAdd.Name = "pbAdd"
+        Me.pbAdd.Size = New System.Drawing.Size(34, 37)
+        Me.pbAdd.TabIndex = 114
+        Me.pbAdd.TabStop = False
         '
         'lblhead
         '
@@ -609,15 +618,6 @@ Partial Class CreateCheckUp
         Me.Label21.TabIndex = 149
         Me.Label21.Text = "Vision Measurements"
         '
-        'pbAdd
-        '
-        Me.pbAdd.Image = CType(resources.GetObject("pbAdd.Image"), System.Drawing.Image)
-        Me.pbAdd.Location = New System.Drawing.Point(12, 6)
-        Me.pbAdd.Name = "pbAdd"
-        Me.pbAdd.Size = New System.Drawing.Size(34, 37)
-        Me.pbAdd.TabIndex = 114
-        Me.pbAdd.TabStop = False
-        '
         'CreateCheckUp
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(11.0!, 28.0!)
@@ -641,9 +641,9 @@ Partial Class CreateCheckUp
         Me.grpCheckUp.PerformLayout()
         Me.Panel1.ResumeLayout(False)
         Me.Panel1.PerformLayout()
+        CType(Me.pbAdd, System.ComponentModel.ISupportInitialize).EndInit()
         Me.Panel2.ResumeLayout(False)
         Me.Panel2.PerformLayout()
-        CType(Me.pbAdd, System.ComponentModel.ISupportInitialize).EndInit()
         Me.ResumeLayout(False)
 
     End Sub

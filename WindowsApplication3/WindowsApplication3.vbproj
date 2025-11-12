@@ -771,6 +771,12 @@
       <Install>false</Install>
     </BootstrapperPackage>
   </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\c53d085e-047a-42bb-9293-f189f911dfd7.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\appointment %281%29.png" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.VisualBasic.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

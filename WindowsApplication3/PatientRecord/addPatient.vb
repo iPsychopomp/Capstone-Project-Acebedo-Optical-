@@ -767,8 +767,6 @@ Public Class addPatient
         pnlAI.TabIndex = 1
         pnlCAI.TabIndex = 2
         pnlMI.TabIndex = 3
-        pnlDB.TabIndex = 4
-        pnlHB.TabIndex = 5
 
         ' Personal Information Panel (pnlPI)
         txtFirst.TabIndex = 0
@@ -1035,9 +1033,7 @@ Public Class addPatient
                     MsgBox("Don't leave the Last Name field blank.", vbExclamation, "Error")
                 End If
             Case "txtStreet"
-                If String.IsNullOrWhiteSpace(textControl.Text) Then
-                    MsgBox("Don't leave the Street field blank.", vbExclamation, "Error")
-                End If
+                ' Street validation only happens on Save button, not on tab/skip
             Case "txtMobile"
                 ' Allow user to move past Mobile without blocking; saving enforces requirement
                 If String.IsNullOrWhiteSpace(textControl.Text) Then

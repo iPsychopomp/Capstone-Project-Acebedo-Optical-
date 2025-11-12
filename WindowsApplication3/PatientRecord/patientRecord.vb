@@ -121,9 +121,9 @@ Public Class patientRecord
             txtSearch.ForeColor = Color.Gray
 
             ' Configure column visibility if needed
-            'If patientDGV.Columns.Contains(PatientIDColumnName) Then
-            '    patientDGV.Columns(PatientIDColumnName).Visible = False ' Hide ID column
-            'End If
+            If patientDGV.Columns.Contains(PatientIDColumnName) Then
+                patientDGV.Columns(PatientIDColumnName).Visible = False ' Hide ID column
+            End If
 
             ' Apply styling after data is loaded
             DgvStyle(patientDGV)
@@ -181,7 +181,7 @@ Public Class patientRecord
     Private Sub LoadPage()
         Try
             Dim countSql As String = "SELECT COUNT(*) FROM db_viewpatient"
-            Dim dataSql As String = "SELECT * FROM db_viewpatient ORDER BY patientID DESC LIMIT ? OFFSET ?"
+            Dim dataSql As String = "SELECT * FROM db_viewpatient ORDER BY fullname ASC LIMIT ? OFFSET ?"
 
             Using cn As New OdbcConnection(myDSN)
                 cn.Open()
@@ -271,6 +271,11 @@ Public Class patientRecord
             col.HeaderCell.Style.Alignment = DataGridViewContentAlignment.MiddleCenter
             ' Disable sorting completely to remove sort arrows
             col.SortMode = DataGridViewColumnSortMode.NotSortable
+
+            ' Hide patient ID column
+            If col.Name = PatientIDColumnName Then
+                col.Visible = False
+            End If
 
             ' Center align the ID and Age column data
             If col.Name = "Column1" OrElse col.HeaderText = "ID" OrElse col.Name = "Column4" OrElse col.HeaderText = "Age" Then

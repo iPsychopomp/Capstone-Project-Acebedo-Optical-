@@ -22,7 +22,7 @@ Public Class patientCheckUp
                 ' Load checkup data
                 'lblPatientID.Text = dt.Rows(0)("patientID").ToString()
                 txtRemarks.Text = dt.Rows(0)("remarks").ToString()
-                dtpDate.Text = dt.Rows(0)("CheckupDate").ToString()
+                'dtpDate.Text = dt.Rows(0)("CheckupDate").ToString()
 
                 txtODSP.Text = dt.Rows(0)("sphereOD").ToString()
                 txtOSSP.Text = dt.Rows(0)("sphereOS").ToString()
@@ -68,7 +68,7 @@ Public Class patientCheckUp
                 txtDName.Text = ""
                 txtDName.Tag = Nothing
                 txtRemarks.Text = ""
-                dtpDate.Text = ""
+                'dtpDate.Text = ""
                 txtODSP.Text = ""
                 txtOSSP.Text = ""
                 txtCYOD.Text = ""
@@ -160,7 +160,7 @@ Public Class patientCheckUp
                 transactionForm.SelectedPatientID = selectedPatientID
                 transactionForm.SelectedPatientName = txtPName.Text
                 transactionForm.IsCheckupPayment = True
-                
+
                 ' Pass checkup data to transaction form
                 transactionForm.CheckupRemarks = txtRemarks.Text
                 transactionForm.CheckupDoctorID = selectedDoctorID
@@ -175,14 +175,14 @@ Public Class patientCheckUp
                 transactionForm.CheckupPDOD = If(String.IsNullOrWhiteSpace(pdOD.Text), "0", pdOD.Text)
                 transactionForm.CheckupPDOS = If(String.IsNullOrWhiteSpace(pdOS.Text), "0", pdOS.Text)
                 transactionForm.CheckupPDOU = If(String.IsNullOrWhiteSpace(pdOU.Text), "0", pdOU.Text)
-                transactionForm.CheckupDate = dtpDate.Value
-                
+                'transactionForm.CheckupDate = dtpDate.Value
+
                 ' Removed "Settle Checkup Payment" from title
                 transactionForm.TopMost = True
-                
+
                 ' Show dialog and check if payment was completed
                 Dim result As DialogResult = transactionForm.ShowDialog()
-                
+
                 ' Check if payment was completed successfully
                 If result = DialogResult.OK Then
                     ' Payment and checkup were saved successfully by the transaction form
@@ -201,7 +201,7 @@ Public Class patientCheckUp
             Catch ex As Exception
                 MessageBox.Show("Error opening transaction form: " & ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Warning)
             End Try
-            
+
             Me.Close()
 
         Catch ex As Exception
@@ -512,7 +512,7 @@ Public Class patientCheckUp
         pdOU.Text = "0"
 
         ' Reset date
-        dtpDate.Value = DateTime.Now
+        'dtpDate.Value = DateTime.Now
 
         Debug.WriteLine("=== CLEAR COMPLETE ===")
     End Sub

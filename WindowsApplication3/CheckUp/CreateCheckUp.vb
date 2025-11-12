@@ -119,6 +119,33 @@ Public Class CreateCheckUp
         End If
     End Sub
 
+    Private Sub GradeTextBox_Leave(sender As Object, e As EventArgs) Handles txtODSP.Leave, txtOSSP.Leave, txtCYOD.Leave, txtCYOS.Leave, txtAXOD.Leave, txtAXOS.Leave, txtAddOD.Leave, txtAddOS.Leave
+        Dim txt As TextBox = CType(sender, TextBox)
+
+        ' Skip validation if empty or just a sign
+        If String.IsNullOrWhiteSpace(txt.Text) OrElse txt.Text = "+" OrElse txt.Text = "-" Then
+            txt.Text = "0"
+            Return
+        End If
+
+        ' Try to parse the value
+        Dim value As Decimal
+        If Decimal.TryParse(txt.Text, value) Then
+            ' Check if value is within range -50 to +50
+            If value < -50 Then
+                MessageBox.Show("Value cannot be less than -50. Setting to -50.", "Invalid Input", MessageBoxButtons.OK, MessageBoxIcon.Warning)
+                txt.Text = "-50"
+            ElseIf value > 50 Then
+                MessageBox.Show("Value cannot be greater than +50. Setting to +50.", "Invalid Input", MessageBoxButtons.OK, MessageBoxIcon.Warning)
+                txt.Text = "50"
+            End If
+        Else
+            ' Invalid format, reset to 0
+            MessageBox.Show("Invalid number format. Setting to 0.", "Invalid Input", MessageBoxButtons.OK, MessageBoxIcon.Warning)
+            txt.Text = "0"
+        End If
+    End Sub
+
     Private Sub btnPSearch_Click(sender As Object, e As EventArgs) Handles btnPSearch.Click
         Using chooseP As New searchPatient
             chooseP.ShowDialog()
@@ -200,7 +227,7 @@ Public Class CreateCheckUp
                     cmd.Parameters.AddWithValue("?", CInt(txtPName.Tag.ToString()))
                     cmd.Parameters.AddWithValue("?", selectedDoctorID)
                     cmd.Parameters.AddWithValue("?", txtRemarks.Text)
-                    cmd.Parameters.AddWithValue("?", dtpDate.Value)
+                    cmd.Parameters.AddWithValue("?", Date.Now.ToString("yyyy-MM-dd"))
                     cmd.Parameters.AddWithValue("?", txtODSP.Text)
                     cmd.Parameters.AddWithValue("?", txtOSSP.Text)
                     cmd.Parameters.AddWithValue("?", txtCYOD.Text)
@@ -394,7 +421,7 @@ Public Class CreateCheckUp
             pdOU.Text = "0"
 
             ' Reset date to today
-            dtpDate.Value = DateTime.Now
+            'dtpDate.Value = DateTime.Now
         Catch ex As Exception
             MsgBox("Failed to clear fields: " & ex.Message, vbCritical, "Error")
         End Try
@@ -418,7 +445,7 @@ Public Class CreateCheckUp
                 ' Load all checkup data first
                 txtPName.Text = dt.Rows(0)("patientID").ToString()
                 txtRemarks.Text = dt.Rows(0)("remarks").ToString()
-                dtpDate.Text = dt.Rows(0)("CheckupDate").ToString()
+                'dtpDate.Text = dt.Rows(0)("CheckupDate").ToString()
 
 
                 ' Load vision data
@@ -473,7 +500,7 @@ Public Class CreateCheckUp
         cmbDoctors.Text = ""
         cmbDoctors.Tag = Nothing
         txtRemarks.Text = ""
-        dtpDate.Value = DateTime.Now
+        'dtpDate.Value = DateTime.Now
         txtODSP.Text = ""
         txtOSSP.Text = ""
         txtCYOD.Text = ""
@@ -539,5 +566,13 @@ Public Class CreateCheckUp
             End If
         Catch
         End Try
+    End Sub
+
+    Private Sub txtPName_TextChanged_1(sender As Object, e As EventArgs) Handles txtPName.TextChanged
+
+    End Sub
+
+    Private Sub Label21_Click(sender As Object, e As EventArgs) Handles Label21.Click
+
     End Sub
 End Class

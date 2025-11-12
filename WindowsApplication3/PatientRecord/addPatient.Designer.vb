@@ -90,9 +90,9 @@ Partial Class addPatient
         Me.pnlPI = New System.Windows.Forms.Panel()
         Me.Label29 = New System.Windows.Forms.Label()
         Me.Panel1 = New System.Windows.Forms.Panel()
+        Me.lblHead = New System.Windows.Forms.Label()
         Me.pbEdit = New System.Windows.Forms.PictureBox()
         Me.pbAdd = New System.Windows.Forms.PictureBox()
-        Me.lblHead = New System.Windows.Forms.Label()
         CType(Me.ErrorProvider1, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.pnlDataEntry.SuspendLayout()
         Me.pnlMI.SuspendLayout()
@@ -834,6 +834,16 @@ Partial Class addPatient
         Me.Panel1.Size = New System.Drawing.Size(916, 40)
         Me.Panel1.TabIndex = 201
         '
+        'lblHead
+        '
+        Me.lblHead.AutoSize = True
+        Me.lblHead.Font = New System.Drawing.Font("Segoe UI Semibold", 10.8!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.lblHead.Location = New System.Drawing.Point(50, 9)
+        Me.lblHead.Name = "lblHead"
+        Me.lblHead.Size = New System.Drawing.Size(176, 25)
+        Me.lblHead.TabIndex = 113
+        Me.lblHead.Text = "Add Patient Record"
+        '
         'pbEdit
         '
         Me.pbEdit.Image = CType(resources.GetObject("pbEdit.Image"), System.Drawing.Image)
@@ -854,16 +864,6 @@ Partial Class addPatient
         Me.pbAdd.Size = New System.Drawing.Size(43, 30)
         Me.pbAdd.TabIndex = 114
         Me.pbAdd.TabStop = False
-        '
-        'lblHead
-        '
-        Me.lblHead.AutoSize = True
-        Me.lblHead.Font = New System.Drawing.Font("Segoe UI Semibold", 10.8!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.lblHead.Location = New System.Drawing.Point(50, 9)
-        Me.lblHead.Name = "lblHead"
-        Me.lblHead.Size = New System.Drawing.Size(176, 25)
-        Me.lblHead.TabIndex = 113
-        Me.lblHead.Text = "Add Patient Record"
         '
         'addPatient
         '

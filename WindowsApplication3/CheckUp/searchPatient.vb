@@ -124,7 +124,7 @@ Public Class searchPatient
             Try
                 Dim parsed As DateTime
                 If DateTime.TryParse(bdayStr, parsed) Then
-                    targetForm.dtpBday.Value = parsed
+                    'targetForm.dtpBday.Value = parsed
                 End If
             Catch
             End Try

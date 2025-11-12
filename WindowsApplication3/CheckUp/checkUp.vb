@@ -20,7 +20,7 @@ Public Class checkUp
         txtSearch.Text = "Search by patient name"
         txtSearch.ForeColor = Color.Gray
     End Sub
-    Private Sub LoadPage()
+    Public Sub LoadPage()
         modCheckUp.LoadCheckUpPage(checkUpDGV, currentPage, pageSize, totalCount)
         Dim totalPages As Integer = 0
         If pageSize > 0 Then
@@ -57,9 +57,20 @@ Public Class checkUp
         checkUpDGV.ReadOnly = True
         checkUpDGV.MultiSelect = False
         checkUpDGV.AllowUserToResizeRows = False
-        checkUpDGV.RowTemplate.Height = 30
+        checkUpDGV.RowTemplate.Height = 25
         checkUpDGV.DefaultCellStyle.WrapMode = DataGridViewTriState.False
-        checkUpDGV.AutoSizeRowsMode = DataGridViewAutoSizeRowsMode.AllCells
+        checkUpDGV.AutoSizeRowsMode = DataGridViewAutoSizeRowsMode.None
+
+        ' Hide checkup ID column (Column1) and patientID column
+        For Each col As DataGridViewColumn In checkUpDGV.Columns
+            If col.Name = "Column1" OrElse col.Name = "patientID" Then
+                col.Visible = False
+            End If
+            ' Disable sorting to remove sort arrows
+            col.SortMode = DataGridViewColumnSortMode.NotSortable
+        Next
+
+        checkUpDGV.Refresh()
     End Sub
 
 
@@ -118,17 +129,13 @@ Public Class checkUp
 
     Private Sub btnView_Click(sender As Object, e As EventArgs) Handles btnView.Click
         Try
-            Dim row As DataGridViewRow = Nothing
-            If checkUpDGV.SelectedRows.Count > 0 Then
-                row = checkUpDGV.SelectedRows(0)
-            ElseIf checkUpDGV.CurrentRow IsNot Nothing AndAlso Not checkUpDGV.CurrentRow.IsNewRow Then
-                row = checkUpDGV.CurrentRow
-            End If
-
-            If row Is Nothing Then
-                MessageBox.Show("Please select a record to view.", "View", MessageBoxButtons.OK, MessageBoxIcon.Information)
+            ' Require explicit row selection
+            If checkUpDGV.SelectedRows.Count = 0 Then
+                MessageBox.Show("Please select a record to view.", "No Selection", MessageBoxButtons.OK, MessageBoxIcon.Information)
                 Return
             End If
+
+            Dim row As DataGridViewRow = checkUpDGV.SelectedRows(0)
 
             For Each frm As Form In Application.OpenForms
                 If TypeOf frm Is viewCheckUp Then
@@ -239,6 +246,80 @@ Public Class checkUp
             txtSearch.Text = ""
             txtSearch.ForeColor = Color.Black
         End If
+    End Sub
+
+    Private Sub btnAppointment_Click(sender As Object, e As EventArgs) Handles btnAppointment.Click
+        If checkUpDGV.SelectedRows.Count = 0 Then
+            MessageBox.Show("Please select a patient record first.", "No Selection", MessageBoxButtons.OK, MessageBoxIcon.Information)
+            Return
+        End If
+
+        Dim selectedRow As DataGridViewRow = checkUpDGV.SelectedRows(0)
+        Dim patientID As Integer = 0
+
+        Try
+            patientID = Convert.ToInt32(selectedRow.Cells("patientID").Value)
+        Catch
+            MessageBox.Show("Invalid Patient ID.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error)
+            Return
+        End Try
+
+        If patientID = 0 Then
+            MessageBox.Show("Invalid Patient ID.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error)
+            Exit Sub
+        End If
+
+        Dim latestCheckupID As Integer = 0
+        Dim patientName As String = ""
+
+        Try
+            Call dbConn()
+            If conn.State = ConnectionState.Closed Then
+                conn.Open()
+            End If
+        Catch ex As Exception
+            MessageBox.Show("Error opening database connection: " & ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error)
+            Exit Sub
+        End Try
+
+        ' Fetch the patient name and the latest check-up ID for the patient
+        Dim sql As String = "SELECT CONCAT(p.fname, ' ', p.mname, ' ', p.lname) AS fullName, c.checkupID " & _
+                    "FROM patient_data p " & _
+                    "LEFT JOIN tbl_checkup c ON p.patientID = c.patientID " & _
+                    "WHERE p.patientID = ? " & _
+                    "ORDER BY c.checkupDate DESC LIMIT 1"
+
+        Try
+            Using cmd As New Odbc.OdbcCommand(sql, conn)
+                cmd.Parameters.AddWithValue("?", patientID)
+                Dim reader As Odbc.OdbcDataReader = cmd.ExecuteReader()
+
+                If reader.Read() Then
+                    patientName = reader("fullName").ToString()
+                    latestCheckupID = If(IsDBNull(reader("checkupID")), 0, Convert.ToInt32(reader("checkupID")))
+                Else
+                    MessageBox.Show("No record found for this patient.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error)
+                    Exit Sub
+                End If
+
+                reader.Close()
+            End Using
+
+            ' Now open the PatientNextAppointment form and pass the patient info
+            Dim queue As New PatientNextAppointment()
+            queue.selectedPatientID = patientID
+            queue.latestCheckupID = latestCheckupID
+            queue.PatientName = patientName
+            queue.ParentCheckUpForm = Me
+            queue.ShowDialog()
+
+        Catch ex As Exception
+            MessageBox.Show("Error fetching patient or checkup data: " & ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error)
+        Finally
+            If conn.State = ConnectionState.Open Then
+                conn.Close()
+            End If
+        End Try
     End Sub
 
 End Class

@@ -583,7 +583,6 @@ Public Class Transaction
             frm.pbAdd.Visible = True
             frm.pbEdit.Visible = False
             frm.lblTitle.Text = "Add Transaction"
-            frm.TopMost = True
             frm.ShowDialog()
             LoadTransactions()
         Catch ex As Exception

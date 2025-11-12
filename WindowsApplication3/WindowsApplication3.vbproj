@@ -367,6 +367,12 @@
     <Compile Include="Transactions\Payment.vb">
       <SubType>Form</SubType>
     </Compile>
+    <Compile Include="Transactions\searchProducts.Designer.vb">
+      <DependentUpon>searchProducts.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Transactions\searchProducts.vb">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="Transactions\viewTransactions.Designer.vb">
       <DependentUpon>viewTransactions.vb</DependentUpon>
     </Compile>
@@ -596,6 +602,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Transactions\Payment.resx">
       <DependentUpon>Payment.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Transactions\searchProducts.resx">
+      <DependentUpon>searchProducts.vb</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Transactions\viewTransactions.resx">
       <DependentUpon>viewTransactions.vb</DependentUpon>

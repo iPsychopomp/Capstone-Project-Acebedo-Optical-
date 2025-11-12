@@ -71,16 +71,16 @@ Public Class viewPatientRecord
                         ' Medical Information
                         Dim diabeticValue As String = reader("diabetic").ToString()
                         If diabeticValue = "1" Or diabeticValue.ToLower() = "yes" Then
-                            lblDB.Text = "☑ Yes    ☐ No"
+                            lblDB.Text = "Yes"
                         Else
-                            lblDB.Text = "☐ Yes    ☑ No"
+                            lblDB.Text = "No"
                         End If
 
                         Dim highbloodValue As String = reader("highblood").ToString()
                         If highbloodValue = "1" Or highbloodValue.ToLower() = "yes" Then
-                            lblHB.Text = "☑ Yes    ☐ No"
+                            lblHB.Text = "Yes"
                         Else
-                            lblHB.Text = "☐ Yes    ☑ No"
+                            lblHB.Text = "No"
                         End If
 
                         lblOthers.Text = If(String.IsNullOrEmpty(reader("others").ToString()), "--", reader("others").ToString())
@@ -96,5 +96,9 @@ Public Class viewPatientRecord
             MessageBox.Show("Error loading patient data: " & ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error)
             Me.Close()
         End Try
+    End Sub
+
+    Private Sub viewPatientRecord_Load(sender As Object, e As EventArgs) Handles MyBase.Load
+
     End Sub
 End Class

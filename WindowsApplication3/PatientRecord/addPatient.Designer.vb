@@ -78,6 +78,8 @@ Partial Class addPatient
         Me.Label35 = New System.Windows.Forms.Label()
         Me.txtOther = New System.Windows.Forms.RichTextBox()
         Me.Label34 = New System.Windows.Forms.Label()
+        Me.pnlDB = New System.Windows.Forms.Panel()
+        Me.pnlHB = New System.Windows.Forms.Panel()
         Me.pnlCAI = New System.Windows.Forms.Panel()
         Me.Label33 = New System.Windows.Forms.Label()
         Me.pnlAI = New System.Windows.Forms.Panel()
@@ -91,19 +93,17 @@ Partial Class addPatient
         Me.pbEdit = New System.Windows.Forms.PictureBox()
         Me.pbAdd = New System.Windows.Forms.PictureBox()
         Me.lblHead = New System.Windows.Forms.Label()
-        Me.pnlDB = New System.Windows.Forms.Panel()
-        Me.pnlHB = New System.Windows.Forms.Panel()
         CType(Me.ErrorProvider1, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.pnlDataEntry.SuspendLayout()
         Me.pnlMI.SuspendLayout()
+        Me.pnlDB.SuspendLayout()
+        Me.pnlHB.SuspendLayout()
         Me.pnlCAI.SuspendLayout()
         Me.pnlAI.SuspendLayout()
         Me.pnlPI.SuspendLayout()
         Me.Panel1.SuspendLayout()
         CType(Me.pbEdit, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.pbAdd, System.ComponentModel.ISupportInitialize).BeginInit()
-        Me.pnlDB.SuspendLayout()
-        Me.pnlHB.SuspendLayout()
         Me.SuspendLayout()
         '
         'ErrorProvider1
@@ -662,6 +662,28 @@ Partial Class addPatient
         Me.Label34.TabIndex = 119
         Me.Label34.Text = "Medical Information"
         '
+        'pnlDB
+        '
+        Me.pnlDB.Controls.Add(Me.Label27)
+        Me.pnlDB.Controls.Add(Me.Label10)
+        Me.pnlDB.Controls.Add(Me.dbYes)
+        Me.pnlDB.Controls.Add(Me.dbNo)
+        Me.pnlDB.Location = New System.Drawing.Point(24, 31)
+        Me.pnlDB.Name = "pnlDB"
+        Me.pnlDB.Size = New System.Drawing.Size(243, 85)
+        Me.pnlDB.TabIndex = 207
+        '
+        'pnlHB
+        '
+        Me.pnlHB.Controls.Add(Me.Label28)
+        Me.pnlHB.Controls.Add(Me.Label11)
+        Me.pnlHB.Controls.Add(Me.hbYes)
+        Me.pnlHB.Controls.Add(Me.hbNo)
+        Me.pnlHB.Location = New System.Drawing.Point(325, 31)
+        Me.pnlHB.Name = "pnlHB"
+        Me.pnlHB.Size = New System.Drawing.Size(241, 85)
+        Me.pnlHB.TabIndex = 207
+        '
         'pnlCAI
         '
         Me.pnlCAI.BackColor = System.Drawing.SystemColors.HighlightText
@@ -843,28 +865,6 @@ Partial Class addPatient
         Me.lblHead.TabIndex = 113
         Me.lblHead.Text = "Add Patient Record"
         '
-        'pnlDB
-        '
-        Me.pnlDB.Controls.Add(Me.Label27)
-        Me.pnlDB.Controls.Add(Me.Label10)
-        Me.pnlDB.Controls.Add(Me.dbYes)
-        Me.pnlDB.Controls.Add(Me.dbNo)
-        Me.pnlDB.Location = New System.Drawing.Point(24, 31)
-        Me.pnlDB.Name = "pnlDB"
-        Me.pnlDB.Size = New System.Drawing.Size(243, 85)
-        Me.pnlDB.TabIndex = 207
-        '
-        'pnlHB
-        '
-        Me.pnlHB.Controls.Add(Me.Label28)
-        Me.pnlHB.Controls.Add(Me.Label11)
-        Me.pnlHB.Controls.Add(Me.hbYes)
-        Me.pnlHB.Controls.Add(Me.hbNo)
-        Me.pnlHB.Location = New System.Drawing.Point(325, 31)
-        Me.pnlHB.Name = "pnlHB"
-        Me.pnlHB.Size = New System.Drawing.Size(241, 85)
-        Me.pnlHB.TabIndex = 207
-        '
         'addPatient
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(11.0!, 28.0!)
@@ -884,6 +884,10 @@ Partial Class addPatient
         Me.pnlDataEntry.ResumeLayout(False)
         Me.pnlMI.ResumeLayout(False)
         Me.pnlMI.PerformLayout()
+        Me.pnlDB.ResumeLayout(False)
+        Me.pnlDB.PerformLayout()
+        Me.pnlHB.ResumeLayout(False)
+        Me.pnlHB.PerformLayout()
         Me.pnlCAI.ResumeLayout(False)
         Me.pnlCAI.PerformLayout()
         Me.pnlAI.ResumeLayout(False)
@@ -894,10 +898,6 @@ Partial Class addPatient
         Me.Panel1.PerformLayout()
         CType(Me.pbEdit, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.pbAdd, System.ComponentModel.ISupportInitialize).EndInit()
-        Me.pnlDB.ResumeLayout(False)
-        Me.pnlDB.PerformLayout()
-        Me.pnlHB.ResumeLayout(False)
-        Me.pnlHB.PerformLayout()
         Me.ResumeLayout(False)
 
     End Sub

@@ -135,8 +135,6 @@ Public Class patientRecord
         End Try
     End Sub
 
-
-
     Private Sub patientDGV_CellDoubleClick(sender As Object, e As DataGridViewCellEventArgs) Handles patientDGV.CellDoubleClick
         Try
             ' Validate row index
@@ -236,6 +234,7 @@ Public Class patientRecord
             LoadPage()
         End If
     End Sub
+
     Public Sub DgvStyle(ByRef patientDGV As DataGridView)
         ' Basic Grid Setup
         patientDGV.AutoGenerateColumns = False
@@ -283,32 +282,18 @@ Public Class patientRecord
         patientDGV.Refresh()
     End Sub
 
-    Private Sub pnlPatientRecord_Paint(sender As Object, e As PaintEventArgs) Handles pnlPatientRecord.Paint
-
-    End Sub
     Private Sub txtSearch_GotFocus(sender As Object, e As EventArgs) Handles txtSearch.GotFocus
         If txtSearch.ForeColor = Color.Gray Then
             txtSearch.Text = ""
             txtSearch.ForeColor = Color.Black
         End If
     End Sub
+
     Private Sub txtSearch_LostFocus(sender As Object, e As EventArgs) Handles txtSearch.LostFocus
         If String.IsNullOrWhiteSpace(txtSearch.Text) Then
             txtSearch.Text = "Search by patient name"
             txtSearch.ForeColor = Color.Gray
         End If
-    End Sub
-
-    Private Sub ToolTip1_Popup(sender As Object, e As PopupEventArgs) Handles ToolTip1.Popup
-
-    End Sub
-
-    Private Sub pnlBar_Paint(sender As Object, e As PaintEventArgs) Handles pnlBar.Paint
-
-    End Sub
-
-    Private Sub txtPage_Click(sender As Object, e As EventArgs) Handles txtPage.Click
-
     End Sub
 
     Private Sub btnView_Click(sender As Object, e As EventArgs) Handles btnView.Click
@@ -341,6 +326,117 @@ Public Class patientRecord
 
         Catch ex As Exception
             MessageBox.Show("Error opening patient record: " & ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error)
+        End Try
+    End Sub
+
+    Private Sub btnEdit_Click(sender As Object, e As EventArgs) Handles btnEdit.Click
+        Try
+            ' Check if a row is selected
+            If patientDGV.SelectedRows.Count = 0 Then
+                MessageBox.Show("Please select a patient record first.", "No Selection", MessageBoxButtons.OK, MessageBoxIcon.Information)
+                Return
+            End If
+
+            ' Get the selected patient ID
+            Dim selectedRow As DataGridViewRow = patientDGV.SelectedRows(0)
+            Dim cellValue As Object = selectedRow.Cells(PatientIDColumnName).Value
+
+            If cellValue Is Nothing OrElse cellValue Is DBNull.Value Then
+                MessageBox.Show("Invalid patient record selected.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error)
+                Return
+            End If
+
+            Dim patientID As Integer
+            If Not Integer.TryParse(cellValue.ToString(), patientID) Then
+                MessageBox.Show("Invalid patient ID.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error)
+                Return
+            End If
+
+            ' Confirm edit action
+            If MessageBox.Show("Are you sure you want to edit this patient?", "Confirm", MessageBoxButtons.YesNo, MessageBoxIcon.Question) = DialogResult.Yes Then
+                ' Create the edit form
+                Dim editForm As New addPatient()
+
+                ' Get address from selected row for pre-binding
+                Dim province As String = ""
+                Dim city As String = ""
+                Dim brgy As String = ""
+
+                ' Try to get province
+                Try
+                    If patientDGV.Columns.Contains("province") AndAlso selectedRow.Cells("province").Value IsNot Nothing Then
+                        province = selectedRow.Cells("province").Value.ToString()
+                    End If
+                Catch
+                    ' Column doesn't exist, leave empty
+                End Try
+
+                ' Try to get city
+                Try
+                    If patientDGV.Columns.Contains("city") AndAlso selectedRow.Cells("city").Value IsNot Nothing Then
+                        city = selectedRow.Cells("city").Value.ToString()
+                    End If
+                Catch
+                    ' Column doesn't exist, leave empty
+                End Try
+
+                ' Try to get brgy
+                Try
+                    If patientDGV.Columns.Contains("brgy") AndAlso selectedRow.Cells("brgy").Value IsNot Nothing Then
+                        brgy = selectedRow.Cells("brgy").Value.ToString()
+                    End If
+                Catch
+                    ' Column doesn't exist, leave empty
+                End Try
+
+                ' Pre-bind address
+                editForm.SelectedAddress = String.Format("{0}, {1}, {2}", province, city, brgy)
+
+                ' Store the original title
+                Dim originalTitle As String = editForm.Text
+
+                ' Show the form
+                editForm.Show()
+
+                ' Change the label text
+                editForm.lblHead.Text = "Edit Patient Information"
+                editForm.pbAdd.Visible = False
+                editForm.pbEdit.Visible = True
+
+                ' Keep overriding the form's title until it's closed
+                Dim titleFixer As New Timer() With {.Interval = 100}
+                AddHandler titleFixer.Tick,
+                    Sub()
+                        If editForm.IsDisposed OrElse Not editForm.Visible Then
+                            titleFixer.Stop()
+                            titleFixer.Dispose()
+                        ElseIf editForm.Text <> originalTitle Then
+                            editForm.Text = originalTitle
+                        End If
+                    End Sub
+                titleFixer.Start()
+
+                ' Load the record asynchronously
+                editForm.pnlDataEntry.Tag = patientID
+                editForm.BeginInvoke(CType(Sub()
+                                               editForm.loadRecord(patientID)
+                                           End Sub, Action))
+
+                editForm.Activate()
+                editForm.TopMost = True
+                editForm.TopMost = False
+
+                ' After closing, refresh the grid
+                AddHandler editForm.FormClosed,
+                    Sub(sender2, e2)
+                        titleFixer.Stop()
+                        titleFixer.Dispose()
+                        ReloadPatientData()
+                    End Sub
+            End If
+
+        Catch ex As Exception
+            MessageBox.Show("Error opening edit form: " & ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error)
         End Try
     End Sub
 End Class

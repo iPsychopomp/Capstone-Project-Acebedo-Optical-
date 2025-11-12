@@ -116,6 +116,55 @@ Public Class checkUp
         End If
     End Sub
 
+    Private Sub btnView_Click(sender As Object, e As EventArgs) Handles btnView.Click
+        Try
+            Dim row As DataGridViewRow = Nothing
+            If checkUpDGV.SelectedRows.Count > 0 Then
+                row = checkUpDGV.SelectedRows(0)
+            ElseIf checkUpDGV.CurrentRow IsNot Nothing AndAlso Not checkUpDGV.CurrentRow.IsNewRow Then
+                row = checkUpDGV.CurrentRow
+            End If
+
+            If row Is Nothing Then
+                MessageBox.Show("Please select a record to view.", "View", MessageBoxButtons.OK, MessageBoxIcon.Information)
+                Return
+            End If
+
+            For Each frm As Form In Application.OpenForms
+                If TypeOf frm Is viewCheckUp Then
+                    frm.BringToFront()
+                    frm.Focus()
+                    Return
+                End If
+            Next
+
+            Dim patientID As String = ""
+            Try
+                patientID = row.Cells("patientID").Value.ToString()
+            Catch
+                MessageBox.Show("Unable to determine Patient ID from the selected row.", "View", MessageBoxButtons.OK, MessageBoxIcon.Warning)
+                Return
+            End Try
+
+            Dim patientName As String = String.Empty
+            Try
+                patientName = row.Cells("PatientName").Value.ToString()
+            Catch
+            End Try
+
+            Dim viewCheckUpForm As New viewCheckUp()
+            Try
+                viewCheckUpForm.lblPatientName.Text = patientName
+            Catch
+            End Try
+
+            viewCheckUpForm.ViewCheckup(patientID)
+            viewCheckUpForm.Show()
+        Catch ex As Exception
+            MsgBox(ex.Message.ToString, vbCritical, "Error")
+        End Try
+    End Sub
+
     Private Sub btnEdit_Click(sender As Object, e As EventArgs) Handles btnEdit.Click
         If checkUpDGV.SelectedRows.Count > 0 Then
             Dim checkupID As Integer = Convert.ToInt32(checkUpDGV.SelectedRows(0).Cells("Column1").Value)

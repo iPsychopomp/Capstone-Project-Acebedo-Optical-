@@ -23,7 +23,6 @@ Partial Class checkUp
     <System.Diagnostics.DebuggerStepThrough()> _
     Private Sub InitializeComponent()
         Me.components = New System.ComponentModel.Container()
-        Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(checkUp))
         Dim DataGridViewCellStyle1 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
         Dim DataGridViewCellStyle2 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
         Dim DataGridViewCellStyle7 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
@@ -33,6 +32,7 @@ Partial Class checkUp
         Dim DataGridViewCellStyle4 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
         Dim DataGridViewCellStyle5 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
         Dim DataGridViewCellStyle6 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
+        Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(checkUp))
         Me.pnlBar = New System.Windows.Forms.Panel()
         Me.btnNew = New System.Windows.Forms.Button()
         Me.btnSearch = New System.Windows.Forms.Button()
@@ -51,6 +51,7 @@ Partial Class checkUp
         Me.Column4 = New System.Windows.Forms.DataGridViewTextBoxColumn()
         Me.Column2 = New System.Windows.Forms.DataGridViewTextBoxColumn()
         Me.ToolTip1 = New System.Windows.Forms.ToolTip(Me.components)
+        Me.btnView = New System.Windows.Forms.Button()
         Me.pnlBar.SuspendLayout()
         Me.pnlCheckUp.SuspendLayout()
         CType(Me.checkUpDGV, System.ComponentModel.ISupportInitialize).BeginInit()
@@ -59,6 +60,7 @@ Partial Class checkUp
         'pnlBar
         '
         Me.pnlBar.BackColor = System.Drawing.SystemColors.GradientActiveCaption
+        Me.pnlBar.Controls.Add(Me.btnView)
         Me.pnlBar.Controls.Add(Me.btnNew)
         Me.pnlBar.Controls.Add(Me.btnSearch)
         Me.pnlBar.Controls.Add(Me.txtSearch)
@@ -321,6 +323,23 @@ Partial Class checkUp
         Me.Column2.ReadOnly = True
         Me.Column2.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable
         '
+        'btnView
+        '
+        Me.btnView.BackColor = System.Drawing.Color.White
+        Me.btnView.FlatStyle = System.Windows.Forms.FlatStyle.Flat
+        Me.btnView.Font = New System.Drawing.Font("Segoe UI", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.btnView.ForeColor = System.Drawing.Color.Black
+        Me.btnView.Image = CType(resources.GetObject("btnView.Image"), System.Drawing.Image)
+        Me.btnView.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft
+        Me.btnView.Location = New System.Drawing.Point(99, 11)
+        Me.btnView.Name = "btnView"
+        Me.btnView.Size = New System.Drawing.Size(81, 35)
+        Me.btnView.TabIndex = 11
+        Me.btnView.Text = "View"
+        Me.btnView.TextAlign = System.Drawing.ContentAlignment.MiddleRight
+        Me.ToolTip1.SetToolTip(Me.btnView, "View Patient Information")
+        Me.btnView.UseVisualStyleBackColor = False
+        '
         'checkUp
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(11.0!, 28.0!)
@@ -359,4 +378,5 @@ Partial Class checkUp
     Friend WithEvents txtPage As System.Windows.Forms.Label
     Friend WithEvents btnNext As System.Windows.Forms.Button
     Friend WithEvents btnBack As System.Windows.Forms.Button
+    Friend WithEvents btnView As System.Windows.Forms.Button
 End Class

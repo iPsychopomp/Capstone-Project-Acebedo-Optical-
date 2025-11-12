@@ -1,4 +1,4 @@
-﻿Imports System.Data.Odbc
+Imports System.Data.Odbc
 
 Public Class searchPatient
 
@@ -102,6 +102,39 @@ Public Class searchPatient
             Catch
             End Try
 
+            ' Try addPatientTransaction first
+            Dim transForm As addPatientTransaction = Nothing
+            For Each frm As Form In Application.OpenForms
+                If TypeOf frm Is addPatientTransaction Then
+                    transForm = DirectCast(frm, addPatientTransaction)
+                    Exit For
+                End If
+            Next
+
+            If transForm IsNot Nothing Then
+                Try
+                    transForm.lblPatientID.Text = patientID
+                Catch
+                End Try
+                ' Try set a control named txtPname if it exists
+                Try
+                    Dim ctrl = transForm.Controls.Find("txtPname", True)
+                    If ctrl IsNot Nothing AndAlso ctrl.Length > 0 Then
+                        ctrl(0).Text = fullname
+                    End If
+                Catch
+                End Try
+                ' Also set txtPatientName if available (Designer shows this label exists)
+                Try
+                    transForm.txtPatientName.Text = fullname
+                Catch
+                End Try
+                Me.DialogResult = DialogResult.OK
+                Me.Close()
+                Return
+            End If
+
+            ' Fallback: CreateCheckUp
             Dim targetForm As CreateCheckUp = Nothing
             For Each frm As Form In Application.OpenForms
                 If TypeOf frm Is CreateCheckUp Then

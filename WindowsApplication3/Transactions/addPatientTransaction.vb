@@ -1030,6 +1030,18 @@ Public Class addPatientTransaction
             End If
         End If
 
+        ' If G-cash, require reference number
+        Try
+            If String.Equals(cmbMode.Text.Trim(), "G-cash", StringComparison.OrdinalIgnoreCase) Then
+                If txtReference IsNot Nothing AndAlso String.IsNullOrWhiteSpace(txtReference.Text) Then
+                    MsgBox("Reference Number is required for G-cash.", vbExclamation, "Caution")
+                    txtReference.Focus()
+                    Exit Sub
+                End If
+            End If
+        Catch
+        End Try
+
         ' Validate totals
         If Not Double.TryParse(txtTotal.Text, totalAmount) OrElse totalAmount <= 0 Then
             MsgBox("Total must be greater than 0.", vbCritical, "Error")
@@ -1108,7 +1120,7 @@ Public Class addPatientTransaction
                 ' Update existing transaction
                 Dim updateTrans As String =
                     "UPDATE tbl_transactions " &
-                    "SET patientID = ?, patientName = ?, totalAmount = ?, amountPaid = ?, pendingBalance = ?, settlementDate = ?, paymentType = ?, transactionDate = ?, paymentStatus = ?, isCheckUp = ?, discount = ?, lensDiscount = ? " &
+                    "SET patientID = ?, patientName = ?, totalAmount = ?, amountPaid = ?, pendingBalance = ?, settlementDate = ?, paymentType = ?, referenceNum = ?, transactionDate = ?, paymentStatus = ?, isCheckUp = ?, discount = ?, lensDiscount = ? " &
                     "WHERE transactionID = ?"
                 Using cmd As New Odbc.OdbcCommand(updateTrans, conn)
                     cmd.Parameters.AddWithValue("?", CInt(lblPatientID.Text))
@@ -1123,6 +1135,7 @@ Public Class addPatientTransaction
                         pSettleU.Value = DBNull.Value
                     End If
                     cmd.Parameters.AddWithValue("?", cmbMode.Text)
+                    cmd.Parameters.AddWithValue("?", If(txtReference IsNot Nothing, txtReference.Text, ""))
                     cmd.Parameters.AddWithValue("?", dtpDate.Value.Date)
                     cmd.Parameters.AddWithValue("?", paymentStatus)
                     cmd.Parameters.AddWithValue("?", isCheckUp)
@@ -1163,8 +1176,8 @@ Public Class addPatientTransaction
                 ' Insert new transaction
                 Dim insertTrans As String =
                     "INSERT INTO tbl_transactions " &
-                    "(patientID, patientName, totalAmount, amountPaid, pendingBalance, settlementDate, paymentType, transactionDate, paymentStatus, isCheckUp, discount, lensDiscount) " &
-                    "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)"
+                    "(patientID, patientName, totalAmount, amountPaid, pendingBalance, settlementDate, paymentType, referenceNum, transactionDate, paymentStatus, isCheckUp, discount, lensDiscount) " &
+                    "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)"
                 Using cmd As New Odbc.OdbcCommand(insertTrans, conn)
                     cmd.Parameters.AddWithValue("?", CInt(lblPatientID.Text))
                     cmd.Parameters.AddWithValue("?", txtPatientName.Text)
@@ -1178,6 +1191,7 @@ Public Class addPatientTransaction
                         pSettleI.Value = DBNull.Value
                     End If
                     cmd.Parameters.AddWithValue("?", cmbMode.Text)
+                    cmd.Parameters.AddWithValue("?", If(txtReference IsNot Nothing, txtReference.Text, ""))
                     cmd.Parameters.AddWithValue("?", dtpDate.Value.Date)
                     cmd.Parameters.AddWithValue("?", paymentStatus)
                     cmd.Parameters.AddWithValue("?", isCheckUp)
@@ -1247,13 +1261,19 @@ Public Class addPatientTransaction
                 conn.Open()
             End If
 
+            ' Resolve column indices once
+            Dim idxProdId As Integer = GetColumnIndexByKeys(dgvSelectedProducts, "productID", "Product ID", "ID")
+            Dim idxQty As Integer = GetColumnIndexByKeys(dgvSelectedProducts, "Quantity", "quantity", "Quatity")
+            Dim idxUnit As Integer = GetColumnIndexByKeys(dgvSelectedProducts, "unitPrice", "Price")
+            Dim idxName As Integer = GetColumnIndexByKeys(dgvSelectedProducts, "ProductName", "Product Name", "productName")
+            Dim idxCat As Integer = GetColumnIndexByKeys(dgvSelectedProducts, "Category", "category")
+            Dim idxTotal As Integer = GetColumnIndexByKeys(dgvSelectedProducts, "Total")
+
             For Each row As DataGridViewRow In dgvSelectedProducts.Rows
                 If row.IsNewRow Then Continue For
 
                 ' Validate required cells
-                If row.Cells("productID").Value Is Nothing OrElse
-                   row.Cells("quantity").Value Is Nothing OrElse
-                   row.Cells("unitPrice").Value Is Nothing Then
+                If idxProdId = -1 OrElse idxQty = -1 OrElse idxUnit = -1 Then
                     Continue For
                 End If
 
@@ -1261,9 +1281,9 @@ Public Class addPatientTransaction
                 Dim quantity As Integer = 0
                 Dim unitPrice As Double = 0
 
-                Integer.TryParse(row.Cells("productID").Value.ToString(), productID)
-                Integer.TryParse(row.Cells("quantity").Value.ToString(), quantity)
-                Double.TryParse(row.Cells("unitPrice").Value.ToString(), unitPrice)
+                Try : Integer.TryParse(If(row.Cells(idxProdId).Value, "0").ToString(), productID) : Catch : End Try
+                Try : Integer.TryParse(If(row.Cells(idxQty).Value, "0").ToString(), quantity) : Catch : End Try
+                Try : Double.TryParse(If(row.Cells(idxUnit).Value, "0").ToString(), unitPrice) : Catch : End Try
 
                 ' Step 1: Check available stock
                 Dim availableStock As Integer = 0
@@ -1285,8 +1305,16 @@ Public Class addPatientTransaction
                 End If
 
                 ' Step 2: Insert transaction item
-                Dim productName As String = row.Cells("productName").Value.ToString()
-                Dim category As String = row.Cells("category").Value.ToString()
+                Dim productName As String = ""
+                Dim category As String = ""
+                Try : If idxName <> -1 Then productName = If(row.Cells(idxName).Value, "").ToString() : Catch : End Try
+                Try : If idxCat <> -1 Then category = If(row.Cells(idxCat).Value, "").ToString() : Catch : End Try
+
+                ' Skip synthetic service row (Check-up)
+                If String.Equals(category, "Service", StringComparison.OrdinalIgnoreCase) _
+                   OrElse String.Equals(productName, "Check-up", StringComparison.OrdinalIgnoreCase) Then
+                    Continue For
+                End If
                 Dim odGrade As String = cmbOD.Text
                 Dim osGrade As String = cmbOS.Text
                 Dim priceOD As Double = 0
@@ -1295,7 +1323,7 @@ Public Class addPatientTransaction
                 Double.TryParse(txtOSCost.Text, priceOS)
                 ' Use the discounted total from the dgv Total column instead of recalculating
                 Dim totalPrice As Double = 0
-                Double.TryParse(row.Cells("Total").Value.ToString(), totalPrice)
+                Try : If idxTotal <> -1 Then Double.TryParse(If(row.Cells(idxTotal).Value, "0").ToString(), totalPrice) : Catch : End Try
                 Dim isCheckUpItem As Integer = If(rbwith.Checked, 1, 0)
                 Dim createdAt As DateTime = DateTime.Now
 
@@ -1365,4 +1393,651 @@ Public Class addPatientTransaction
         Me.Close()
     End Sub
 #End If
+
+    Private Sub btnPSearch_Click(sender As Object, e As EventArgs) Handles btnPSearch.Click
+        Try
+            Using frm As New searchPatient()
+                frm.ShowDialog()
+            End Using
+        Catch ex As Exception
+            MsgBox(ex.Message.ToString, vbCritical, "Error")
+        End Try
+    End Sub
+
+    Private Sub btnAdd_Click(sender As Object, e As EventArgs) Handles btnAdd.Click
+        Try
+            Using prodct As New searchProducts()
+                prodct.ShowDialog()
+            End Using
+        Catch ex As Exception
+            MsgBox(ex.Message.ToString, vbCritical, "Error")
+        End Try
+    End Sub
+
+    Private Sub btnRemove_Click(sender As Object, e As EventArgs) Handles btnRemove.Click
+        Try
+            Dim dgv As DataGridView = dgvSelectedProducts
+            If dgv Is Nothing Then Exit Sub
+
+            ' Unbind if needed to allow row removal
+            Try
+                If dgv.DataSource IsNot Nothing Then dgv.DataSource = Nothing
+            Catch
+            End Try
+
+            ' Remove selected rows (from bottom to top)
+            For i As Integer = dgv.SelectedRows.Count - 1 To 0 Step -1
+                Dim r As DataGridViewRow = dgv.SelectedRows(i)
+                If r IsNot Nothing AndAlso Not r.IsNewRow Then
+                    Try
+                        dgv.Rows.Remove(r)
+                    Catch
+                    End Try
+                End If
+            Next
+
+            Try
+                dgv.ClearSelection()
+            Catch
+            End Try
+
+            ' Refresh discounts and totals after removal
+            Try
+                RefreshDiscountEnableState()
+                RecomputeGridTotals()
+            Catch
+            End Try
+
+        Catch
+        End Try
+    End Sub
+
+    Private Function GetColumnIndexByKeys(dgv As DataGridView, ParamArray keys() As String) As Integer
+        Try
+            For Each col As DataGridViewColumn In dgv.Columns
+                Dim n As String = If(col.Name, "")
+                Dim h As String = If(col.HeaderText, "")
+                For Each k In keys
+                    If String.Equals(n, k, StringComparison.OrdinalIgnoreCase) OrElse _
+                       String.Equals(h, k, StringComparison.OrdinalIgnoreCase) Then
+                        Return col.Index
+                    End If
+                Next
+            Next
+        Catch
+        End Try
+        Return -1
+    End Function
+
+    Private Sub ApplyCheckUpRow(checkupOnly As Boolean)
+        Dim dgv As DataGridView = dgvSelectedProducts
+
+        ' Detach DataSource to allow direct row manipulation
+        Try
+            If dgv.DataSource IsNot Nothing Then dgv.DataSource = Nothing
+        Catch
+        End Try
+
+        ' Ensure columns exist (add if missing)
+        If dgv.Columns.Count = 0 Then
+            With dgv.Columns
+                .Add("productID", "Product ID")
+                .Add("ProductName", "Product Name")
+                .Add("Category", "Category")
+                .Add("Quantity", "Quantity")
+                .Add("unitPrice", "Price")
+                .Add("Total", "Total")
+            End With
+        Else
+            ' Add any missing expected columns
+            If GetColumnIndexByKeys(dgv, "productID", "Product ID", "ID") = -1 Then dgv.Columns.Add("productID", "Product ID")
+            If GetColumnIndexByKeys(dgv, "ProductName", "Product Name", "productName") = -1 Then dgv.Columns.Add("ProductName", "Product Name")
+            If GetColumnIndexByKeys(dgv, "Category", "category") = -1 Then dgv.Columns.Add("Category", "Category")
+            If GetColumnIndexByKeys(dgv, "Quantity", "Quatity") = -1 Then dgv.Columns.Add("Quantity", "Quantity")
+            If GetColumnIndexByKeys(dgv, "unitPrice", "Price") = -1 Then dgv.Columns.Add("unitPrice", "Price")
+            If GetColumnIndexByKeys(dgv, "Total") = -1 Then dgv.Columns.Add("Total", "Total")
+        End If
+        Try
+            Dim idxTmp = GetColumnIndexByKeys(dgv, "productID", "Product ID", "ID")
+            If idxTmp >= 0 Then dgv.Columns(idxTmp).Visible = False
+            idxTmp = GetColumnIndexByKeys(dgv, "Quantity", "Quatity")
+            If idxTmp >= 0 Then dgv.Columns(idxTmp).DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleRight
+            idxTmp = GetColumnIndexByKeys(dgv, "unitPrice", "Price")
+            If idxTmp >= 0 Then dgv.Columns(idxTmp).DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleRight
+            idxTmp = GetColumnIndexByKeys(dgv, "Total")
+            If idxTmp >= 0 Then dgv.Columns(idxTmp).DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleRight
+        Catch
+        End Try
+
+        ' Find existing "Check-up" row by Product Name
+        Dim checkRow As DataGridViewRow = Nothing
+        For Each r As DataGridViewRow In dgv.Rows
+            If r.IsNewRow Then Continue For
+            Dim nameVal As String = ""
+            Try
+                nameVal = If(r.Cells("ProductName").Value, "").ToString()
+            Catch
+                Try
+                    nameVal = If(r.Cells("Product Name").Value, "").ToString()
+                Catch
+                End Try
+            End Try
+            If String.Equals(nameVal, "Check-up", StringComparison.OrdinalIgnoreCase) Then
+                checkRow = r
+                Exit For
+            End If
+        Next
+
+        Dim qty As Integer = 1
+        Dim price As Decimal = 300D
+        Dim total As Decimal = price * qty
+
+        If checkRow Is Nothing Then
+            Dim idx As Integer = dgv.Rows.Add()
+            checkRow = dgv.Rows(idx)
+        End If
+
+        ' Resolve column indices and write values
+        Dim idxID As Integer = GetColumnIndexByKeys(dgv, "productID", "Product ID", "ID")
+        Dim idxName As Integer = GetColumnIndexByKeys(dgv, "ProductName", "Product Name", "productName")
+        Dim idxCat As Integer = GetColumnIndexByKeys(dgv, "Category", "category")
+        Dim idxQty As Integer = GetColumnIndexByKeys(dgv, "Quantity", "Quatity")
+        Dim idxPrice As Integer = GetColumnIndexByKeys(dgv, "unitPrice", "Price")
+        Dim idxTotal As Integer = GetColumnIndexByKeys(dgv, "Total")
+
+        If idxID >= 0 Then checkRow.Cells(idxID).Value = ""
+        If idxName >= 0 Then checkRow.Cells(idxName).Value = "Check-up"
+        If idxCat >= 0 Then checkRow.Cells(idxCat).Value = "Service"
+        If idxQty >= 0 Then checkRow.Cells(idxQty).Value = qty
+        If idxPrice >= 0 Then checkRow.Cells(idxPrice).Value = price.ToString("0.00")
+        If idxTotal >= 0 Then checkRow.Cells(idxTotal).Value = total.ToString("0.00")
+
+        ' Select and scroll to the check-up row
+        Try
+            dgv.ClearSelection()
+            checkRow.Selected = True
+            dgv.Refresh()
+        Catch
+        End Try
+    End Sub
+
+    Private Sub cmbType_SelectedIndexChanged(sender As Object, e As EventArgs) Handles cmbType.SelectedIndexChanged
+        Dim sel As String = ""
+        Try
+            sel = If(cmbType.SelectedItem, "").ToString().Trim()
+        Catch
+        End Try
+
+        ' Clear grid on any re-selection as requested
+        Try
+            If dgvSelectedProducts.DataSource IsNot Nothing Then dgvSelectedProducts.DataSource = Nothing
+            dgvSelectedProducts.Rows.Clear()
+        Catch
+        End Try
+
+        If sel.Equals("With check-up", StringComparison.OrdinalIgnoreCase) Then
+            ApplyCheckUpRow(False)
+            btnAdd.Enabled = True
+            btnRemove.Enabled = True
+        ElseIf sel.Equals("Check-up only", StringComparison.OrdinalIgnoreCase) Then
+            ApplyCheckUpRow(True)
+            btnAdd.Enabled = False
+            btnRemove.Enabled = False
+        End If
+
+        ' After changing type, refresh discounts/totals
+        Try
+            RefreshDiscountEnableState()
+            RecomputeGridTotals()
+        Catch
+        End Try
+    End Sub
+
+    ' ===================== Discounts, Totals, and Mode Visibility =====================
+    Private Function ParsePercentFromCombo(cmb As ComboBox) As Decimal
+        Try
+            If cmb Is Nothing OrElse cmb.SelectedItem Is Nothing Then Return 0D
+            Dim txt As String = cmb.SelectedItem.ToString().Trim()
+            If txt.EndsWith("%") Then txt = txt.Substring(0, txt.Length - 1)
+            Dim v As Decimal = 0D
+            If Decimal.TryParse(txt, v) Then
+                If v < 0D Then v = 0D
+                If v > 100D Then v = 100D
+                Return v / 100D
+            End If
+        Catch
+        End Try
+        Return 0D
+    End Function
+
+    Private Function HasCategoryInGrid(cat As String) As Boolean
+        Try
+            Dim idxCat As Integer = GetColumnIndexByKeys(dgvSelectedProducts, "Category", "category")
+            If idxCat = -1 Then Return False
+            For Each r As DataGridViewRow In dgvSelectedProducts.Rows
+                If r.IsNewRow Then Continue For
+                Dim v As String = If(r.Cells(idxCat).Value, "").ToString()
+                If String.Equals(v, cat, StringComparison.OrdinalIgnoreCase) Then Return True
+            Next
+        Catch
+        End Try
+        Return False
+    End Function
+
+    Private Sub RefreshDiscountEnableState()
+        Try
+            If cmbDiscount IsNot Nothing Then cmbDiscount.Enabled = HasCategoryInGrid("Frame")
+        Catch
+        End Try
+        Try
+            If cmbLensDisc IsNot Nothing Then cmbLensDisc.Enabled = HasCategoryInGrid("Lens")
+        Catch
+        End Try
+    End Sub
+
+    Private Sub RecomputeGridTotals()
+        Dim sumTotal As Decimal = 0D
+        Try
+            Dim idxQty As Integer = GetColumnIndexByKeys(dgvSelectedProducts, "Quantity", "Quatity")
+            Dim idxPrice As Integer = GetColumnIndexByKeys(dgvSelectedProducts, "unitPrice", "Price")
+            Dim idxTotal As Integer = GetColumnIndexByKeys(dgvSelectedProducts, "Total")
+            Dim idxCat As Integer = GetColumnIndexByKeys(dgvSelectedProducts, "Category", "category")
+            Dim idxOrig As Integer = GetColumnIndexByKeys(dgvSelectedProducts, "origPrice", "OriginalPrice", "Original Price")
+
+            If idxQty = -1 OrElse idxPrice = -1 OrElse idxTotal = -1 Then GoTo AfterLoop
+
+            ' Ensure original price column exists to avoid discount compounding
+            If idxOrig = -1 Then
+                idxOrig = dgvSelectedProducts.Columns.Add("origPrice", "origPrice")
+                Try
+                    dgvSelectedProducts.Columns(idxOrig).Visible = False
+                Catch
+                End Try
+            End If
+
+            Dim frameDisc As Decimal = ParsePercentFromCombo(cmbDiscount)
+            Dim lensDisc As Decimal = ParsePercentFromCombo(cmbLensDisc)
+
+            For Each r As DataGridViewRow In dgvSelectedProducts.Rows
+                If r.IsNewRow Then Continue For
+
+                Dim qty As Decimal = 0D
+                Dim effPrice As Decimal = 0D
+                Dim orig As Decimal = 0D
+                Dim cat As String = ""
+                Try : Decimal.TryParse(If(r.Cells(idxQty).Value, "0").ToString(), qty) : Catch : End Try
+                ' Get original price, initialize if needed from current price
+                Try : Decimal.TryParse(If(r.Cells(idxOrig).Value, "0").ToString(), orig) : Catch : End Try
+                If orig <= 0D Then
+                    Try
+                        Decimal.TryParse(If(r.Cells(idxPrice).Value, "0").ToString(), orig)
+                    Catch
+                    End Try
+                    Try
+                        r.Cells(idxOrig).Value = orig.ToString("0.00")
+                    Catch
+                    End Try
+                End If
+                Try
+                    If idxCat >= 0 Then cat = If(r.Cells(idxCat).Value, "").ToString()
+                Catch
+                End Try
+
+                ' Compute effective unit price based on category-specific discounts
+                effPrice = orig
+                If idxCat >= 0 Then
+                    If String.Equals(cat, "Frame", StringComparison.OrdinalIgnoreCase) AndAlso frameDisc > 0D Then
+                        effPrice = orig * (1D - frameDisc)
+                    ElseIf String.Equals(cat, "Lens", StringComparison.OrdinalIgnoreCase) AndAlso lensDisc > 0D Then
+                        effPrice = orig * (1D - lensDisc)
+                    End If
+                End If
+
+                ' Write back discounted price to the Price cell
+                Try
+                    r.Cells(idxPrice).Value = effPrice.ToString("0.00")
+                Catch
+                End Try
+
+                Dim line As Decimal = qty * effPrice
+                If idxCat >= 0 Then
+                    ' line already reflects category-specific discount via effPrice
+                End If
+
+                Try
+                    r.Cells(idxTotal).Value = line.ToString("0.00")
+                Catch
+                End Try
+                sumTotal += line
+            Next
+
+AfterLoop:
+            Try
+                If txtTotal IsNot Nothing Then txtTotal.Text = sumTotal.ToString("0.00")
+            Catch
+            End Try
+
+            ' Keep discount enable state in sync
+            RefreshDiscountEnableState()
+        Catch
+            Try
+                If txtTotal IsNot Nothing Then txtTotal.Text = sumTotal.ToString("0.00")
+            Catch
+            End Try
+        End Try
+    End Sub
+
+    ' Event wiring for recalculation and UI sync
+    Private Sub dgvSelectedProducts_RowsAdded(sender As Object, e As DataGridViewRowsAddedEventArgs) Handles dgvSelectedProducts.RowsAdded
+        Try
+            RefreshDiscountEnableState()
+            RecomputeGridTotals()
+        Catch
+        End Try
+    End Sub
+
+    Private Sub dgvSelectedProducts_RowsRemoved(sender As Object, e As DataGridViewRowsRemovedEventArgs) Handles dgvSelectedProducts.RowsRemoved
+        Try
+            RefreshDiscountEnableState()
+            RecomputeGridTotals()
+        Catch
+        End Try
+    End Sub
+
+    Private Sub dgvSelectedProducts_CellValueChanged(sender As Object, e As DataGridViewCellEventArgs) Handles dgvSelectedProducts.CellValueChanged
+        Try
+            If e.RowIndex >= 0 Then RecomputeGridTotals()
+        Catch
+        End Try
+    End Sub
+
+    Private Sub cmbDiscount_SelectedIndexChanged(sender As Object, e As EventArgs) Handles cmbDiscount.SelectedIndexChanged
+        Try
+            RecomputeGridTotals()
+        Catch
+        End Try
+    End Sub
+
+    Private Sub cmbLensDisc_SelectedIndexChanged(sender As Object, e As EventArgs) Handles cmbLensDisc.SelectedIndexChanged
+        Try
+            RecomputeGridTotals()
+        Catch
+        End Try
+    End Sub
+
+    Private Sub cmbMode_SelectedIndexChanged(sender As Object, e As EventArgs) Handles cmbMode.SelectedIndexChanged
+        Try
+            Dim isGcash As Boolean = False
+            isGcash = String.Equals(If(cmbMode.SelectedItem, "").ToString(), "G-cash", StringComparison.OrdinalIgnoreCase)
+            Try
+                If txtRefNum IsNot Nothing Then txtRefNum.Visible = isGcash
+            Catch
+            End Try
+            Try
+                If txtReference IsNot Nothing Then txtReference.Visible = isGcash
+            Catch
+            End Try
+        Catch
+        End Try
+    End Sub
+
+    ' ===================== NEW ACTIVE SAVE FLOW (outside #If False) =====================
+    Private Sub btnSave_Click(sender As Object, e As EventArgs) Handles btnSave.Click
+        SaveTransactionNew()
+    End Sub
+
+    Private Sub SaveTransactionNew()
+        Dim totalAmount As Double
+        Dim amountPaid As Double
+        Dim pendingBalance As Double
+        Dim discount As Double
+        ' Derive isCheckUp from grid: if a Service (Check-up) row exists
+        Dim isCheckUp As Integer = If(HasCategoryInGrid("Service"), 1, 0)
+        Dim paymentStatus As String
+
+        If String.IsNullOrWhiteSpace(cmbMode.Text) Then
+            MsgBox("Please select a Mode of Payment.", vbExclamation, "Caution")
+            Exit Sub
+        End If
+
+        ' No radio buttons or OD/OS fields anymore; rely solely on grid and total validations
+
+        If String.Equals(cmbMode.Text.Trim(), "G-cash", StringComparison.OrdinalIgnoreCase) Then
+            If txtReference IsNot Nothing AndAlso String.IsNullOrWhiteSpace(txtReference.Text) Then
+                MsgBox("Reference Number is required for G-cash.", vbExclamation, "Caution")
+                txtReference.Focus()
+                Exit Sub
+            End If
+        End If
+
+        If Not Double.TryParse(txtTotal.Text, totalAmount) OrElse totalAmount <= 0 Then
+            MsgBox("Total must be greater than 0.", vbCritical, "Error")
+            Exit Sub
+        End If
+
+        If Not Double.TryParse(txtAmountPaid.Text, amountPaid) Then
+            MsgBox("Amount Paid invalid. Please enter a valid number.", vbCritical, "Error")
+            txtAmountPaid.Focus()
+            Exit Sub
+        End If
+        If amountPaid < 0 Then amountPaid = 0
+
+        pendingBalance = totalAmount - amountPaid
+        If pendingBalance < 0 Then pendingBalance = 0
+        paymentStatus = If(amountPaid >= totalAmount, "Paid", "Pending")
+
+        Dim discText As String = cmbDiscount.Text.Replace("%", "").Trim()
+        Double.TryParse(discText, discount)
+        If cmbDiscount.Text.Contains("%") Then discount = discount / 100
+
+        Dim lensDiscount As Double = 0
+        Dim lensDiscText As String = cmbLensDisc.Text.Replace("%", "").Trim()
+        If Not String.IsNullOrEmpty(lensDiscText) AndAlso lensDiscText <> "N/A" Then
+            Double.TryParse(lensDiscText, lensDiscount)
+            If cmbLensDisc.Text.Contains("%") Then lensDiscount = lensDiscount / 100
+        End If
+
+        If MsgBox("Save this transaction?", vbYesNo + vbQuestion, "Confirm") = vbNo Then Exit Sub
+
+        Try
+            Call dbConn()
+
+            If IsEditMode AndAlso TransactionID > 0 Then
+                Dim updateTrans As String = _
+                    "UPDATE tbl_transactions SET patientID = ?, patientName = ?, totalAmount = ?, amountPaid = ?, pendingBalance = ?, settlementDate = ?, paymentType = ?, referenceNum = ?, transactionDate = ?, paymentStatus = ?, isCheckUp = ?, discount = ?, lensDiscount = ? WHERE transactionID = ?"
+                Using cmd As New Odbc.OdbcCommand(updateTrans, conn)
+                    cmd.Parameters.AddWithValue("?", CInt(lblPatientID.Text))
+                    cmd.Parameters.AddWithValue("?", txtPatientName.Text)
+                    cmd.Parameters.AddWithValue("?", totalAmount)
+                    cmd.Parameters.AddWithValue("?", amountPaid)
+                    cmd.Parameters.AddWithValue("?", pendingBalance)
+                    Dim pSettle As Odbc.OdbcParameter = cmd.Parameters.Add("?", Odbc.OdbcType.Date)
+                    pSettle.Value = If(paymentStatus = "Paid", dtpDate.Value.Date, CType(DBNull.Value, Object))
+                    cmd.Parameters.AddWithValue("?", cmbMode.Text)
+                    cmd.Parameters.AddWithValue("?", If(txtReference IsNot Nothing, txtReference.Text, ""))
+                    cmd.Parameters.AddWithValue("?", dtpDate.Value.Date)
+                    cmd.Parameters.AddWithValue("?", paymentStatus)
+                    cmd.Parameters.AddWithValue("?", isCheckUp)
+                    cmd.Parameters.AddWithValue("?", discount)
+                    cmd.Parameters.AddWithValue("?", lensDiscount)
+                    cmd.Parameters.AddWithValue("?", TransactionID)
+                    cmd.ExecuteNonQuery()
+                End Using
+
+                Using getItemsCmd As New Odbc.OdbcCommand("SELECT productID, quantity FROM tbl_transaction_items WHERE transactionID = ?", conn)
+                    getItemsCmd.Parameters.AddWithValue("?", TransactionID)
+                    Using itemsRdr = getItemsCmd.ExecuteReader()
+                        While itemsRdr.Read()
+                            Using restockCmd As New Odbc.OdbcCommand("UPDATE tbl_products SET stockQuantity = stockQuantity + ? WHERE productID = ?", conn)
+                                restockCmd.Parameters.AddWithValue("?", Convert.ToInt32(itemsRdr("quantity")))
+                                restockCmd.Parameters.AddWithValue("?", Convert.ToInt32(itemsRdr("productID")))
+                                restockCmd.ExecuteNonQuery()
+                            End Using
+                        End While
+                    End Using
+                End Using
+
+                Using delCmd As New Odbc.OdbcCommand("DELETE FROM tbl_transaction_items WHERE transactionID = ?", conn)
+                    delCmd.Parameters.AddWithValue("?", TransactionID)
+                    delCmd.ExecuteNonQuery()
+                End Using
+
+                SaveItemsNew(TransactionID)
+            Else
+                Dim insertTrans As String = _
+                    "INSERT INTO tbl_transactions (patientID, patientName, totalAmount, amountPaid, pendingBalance, settlementDate, paymentType, referenceNum, transactionDate, paymentStatus, isCheckUp, discount, lensDiscount) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)"
+                Using cmd As New Odbc.OdbcCommand(insertTrans, conn)
+                    cmd.Parameters.AddWithValue("?", CInt(lblPatientID.Text))
+                    cmd.Parameters.AddWithValue("?", txtPatientName.Text)
+                    cmd.Parameters.AddWithValue("?", totalAmount)
+                    cmd.Parameters.AddWithValue("?", amountPaid)
+                    cmd.Parameters.AddWithValue("?", pendingBalance)
+                    Dim pSettleI As Odbc.OdbcParameter = cmd.Parameters.Add("?", Odbc.OdbcType.Date)
+                    pSettleI.Value = If(paymentStatus = "Paid", dtpDate.Value.Date, CType(DBNull.Value, Object))
+                    cmd.Parameters.AddWithValue("?", cmbMode.Text)
+                    cmd.Parameters.AddWithValue("?", If(txtReference IsNot Nothing, txtReference.Text, ""))
+                    cmd.Parameters.AddWithValue("?", dtpDate.Value.Date)
+                    cmd.Parameters.AddWithValue("?", paymentStatus)
+                    cmd.Parameters.AddWithValue("?", isCheckUp)
+                    cmd.Parameters.AddWithValue("?", discount)
+                    cmd.Parameters.AddWithValue("?", lensDiscount)
+                    cmd.ExecuteNonQuery()
+                End Using
+
+                Using cmd As New Odbc.OdbcCommand("SELECT LAST_INSERT_ID()", conn)
+                    TransactionID = Convert.ToInt32(cmd.ExecuteScalar())
+                End Using
+
+                SaveItemsNew(TransactionID)
+            End If
+
+            conn.Close()
+            MsgBox("Transaction saved successfully.", vbInformation, "Success")
+            Me.Close()
+
+        Catch ex As Exception
+            MsgBox("Error: " & ex.Message, vbCritical, "Save Failed")
+        End Try
+    End Sub
+
+    Private Sub SaveItemsNew(transactionID As Integer)
+        If conn.State <> ConnectionState.Open Then conn.Open()
+
+        Dim idxProdId As Integer = GetColumnIndexByKeys(dgvSelectedProducts, "productID", "Product ID", "ID")
+        Dim idxQty As Integer = GetColumnIndexByKeys(dgvSelectedProducts, "Quantity", "quantity", "Quatity")
+        Dim idxUnit As Integer = GetColumnIndexByKeys(dgvSelectedProducts, "unitPrice", "Price")
+        Dim idxName As Integer = GetColumnIndexByKeys(dgvSelectedProducts, "ProductName", "Product Name", "productName")
+        Dim idxCat As Integer = GetColumnIndexByKeys(dgvSelectedProducts, "Category", "category")
+        Dim idxTotal As Integer = GetColumnIndexByKeys(dgvSelectedProducts, "Total")
+
+        Dim servicePresent As Boolean = HasCategoryInGrid("Service")
+
+        For Each r As DataGridViewRow In dgvSelectedProducts.Rows
+            If r.IsNewRow Then Continue For
+            If idxProdId = -1 OrElse idxQty = -1 OrElse idxUnit = -1 Then Continue For
+
+            Dim productID As Integer = 0, quantity As Integer = 0
+            Dim unitPrice As Double = 0, totalPrice As Double = 0
+            Dim productName As String = "", category As String = ""
+
+            Try
+                Integer.TryParse(If(r.Cells(idxProdId).Value, "0").ToString(), productID)
+            Catch
+            End Try
+            Try
+                Integer.TryParse(If(r.Cells(idxQty).Value, "0").ToString(), quantity)
+            Catch
+            End Try
+            Try
+                Double.TryParse(If(r.Cells(idxUnit).Value, "0").ToString(), unitPrice)
+            Catch
+            End Try
+            If idxName <> -1 Then
+                Try
+                    productName = If(r.Cells(idxName).Value, "").ToString()
+                Catch
+                End Try
+            End If
+            If idxCat <> -1 Then
+                Try
+                    category = If(r.Cells(idxCat).Value, "").ToString()
+                Catch
+                End Try
+            End If
+            If idxTotal <> -1 Then
+                Try
+                    Double.TryParse(If(r.Cells(idxTotal).Value, "0").ToString(), totalPrice)
+                Catch
+                End Try
+            End If
+
+            If String.Equals(category, "Service", StringComparison.OrdinalIgnoreCase) _
+               OrElse String.Equals(productName, "Check-up", StringComparison.OrdinalIgnoreCase) Then
+                Continue For
+            End If
+
+            Dim availableStock As Integer = 0
+            Using checkCmd As New Odbc.OdbcCommand("SELECT stockQuantity FROM tbl_products WHERE productID = ?", conn)
+                checkCmd.Parameters.AddWithValue("?", productID)
+                Dim res = checkCmd.ExecuteScalar()
+                If res Is Nothing OrElse Not IsNumeric(res) Then Continue For
+                availableStock = CInt(res)
+            End Using
+            If availableStock < quantity Then
+                MsgBox("Insufficient stock for product ID " & productID & ". Available: " & availableStock, vbCritical, "Stock Error")
+                Exit Sub
+            End If
+
+            Dim odGrade As String = ""
+            Dim osGrade As String = ""
+            Dim priceOD As Double = 0
+            Dim priceOS As Double = 0
+            Dim isCheckUpItem As Integer = If(servicePresent, 1, 0)
+            Dim createdAt As DateTime = DateTime.Now
+
+            Dim insertItemSql As String = _
+                "INSERT INTO tbl_transaction_items (transactionID, productID, productName, category, quantity, unitPrice, priceOD, priceOS, odGrade, osGrade, totalPrice, isCheckUpItem, createdAt) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)"
+            Using cmd As New Odbc.OdbcCommand(insertItemSql, conn)
+                cmd.Parameters.AddWithValue("?", transactionID)
+                cmd.Parameters.AddWithValue("?", productID)
+                cmd.Parameters.AddWithValue("?", productName)
+                cmd.Parameters.AddWithValue("?", category)
+                cmd.Parameters.AddWithValue("?", quantity)
+                cmd.Parameters.AddWithValue("?", unitPrice)
+                cmd.Parameters.AddWithValue("?", priceOD)
+                cmd.Parameters.AddWithValue("?", priceOS)
+                cmd.Parameters.AddWithValue("?", odGrade)
+                cmd.Parameters.AddWithValue("?", osGrade)
+                cmd.Parameters.AddWithValue("?", totalPrice)
+                cmd.Parameters.AddWithValue("?", isCheckUpItem)
+                cmd.Parameters.AddWithValue("?", createdAt)
+                cmd.ExecuteNonQuery()
+            End Using
+
+            Using stockCmd As New Odbc.OdbcCommand("UPDATE tbl_products SET stockQuantity = stockQuantity - ? WHERE productID = ?", conn)
+                stockCmd.Parameters.AddWithValue("?", quantity)
+                stockCmd.Parameters.AddWithValue("?", productID)
+                stockCmd.ExecuteNonQuery()
+            End Using
+        Next
+    End Sub
+
+    Private Sub InsertAuditTrail(actionType As String, actionDetails As String, tableName As String, recordID As Integer)
+        Try
+            Dim auditSql As String = "INSERT INTO tbl_audit_trail (UserID, Username, ActionType, ActionDetails, TableName, RecordID, ActivityTime, ActivityDate) VALUES (?, ?, ?, ?, ?, ?, ?, ?)"
+            Using auditCmd As New Odbc.OdbcCommand(auditSql, conn)
+                auditCmd.Parameters.AddWithValue("?", LoggedInUserID)
+                auditCmd.Parameters.AddWithValue("?", LoggedInUser)
+                auditCmd.Parameters.AddWithValue("?", actionType)
+                auditCmd.Parameters.AddWithValue("?", actionDetails)
+                auditCmd.Parameters.AddWithValue("?", tableName)
+                auditCmd.Parameters.AddWithValue("?", recordID)
+                auditCmd.Parameters.AddWithValue("?", DateTime.Now.ToString("HH:mm:ss"))
+                auditCmd.Parameters.AddWithValue("?", DateTime.Now.ToString("yyyy-MM-dd"))
+                auditCmd.ExecuteNonQuery()
+            End Using
+        Catch
+        End Try
+    End Sub
+
 End Class

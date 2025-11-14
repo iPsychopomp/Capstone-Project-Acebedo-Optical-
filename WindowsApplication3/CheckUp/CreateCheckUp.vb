@@ -569,4 +569,8 @@ Public Class CreateCheckUp
     Private Sub Label21_Click(sender As Object, e As EventArgs) Handles Label21.Click
 
     End Sub
+
+    Private Sub Panel2_Paint(sender As Object, e As PaintEventArgs) Handles Panel2.Paint
+
+    End Sub
 End Class

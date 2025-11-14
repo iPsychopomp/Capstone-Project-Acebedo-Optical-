@@ -14,11 +14,43 @@ Public Class users
     End Sub
 
     Private Sub btnAdd_Click(sender As Object, e As EventArgs) Handles btnAdd.Click
-        usersModule.btnAdd_Click(UserDGV, AddressOf OnAddRecordClosed)
+        Try
+            ' Store the current form's visibility state
+            Dim wasVisible As Boolean = Me.Visible
+
+            ' Hide this users form
+            Me.Visible = False
+
+            ' Call the module method which will show the addUsers form
+            usersModule.btnAdd_Click(UserDGV, AddressOf OnAddRecordClosed)
+
+            ' Restore this form's visibility
+            Me.Visible = wasVisible
+        Catch ex As Exception
+            ' Ensure this form is shown even if there's an error
+            Me.Visible = True
+            MessageBox.Show("Error: " & ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error)
+        End Try
     End Sub
 
     Private Sub btnEdit_Click(sender As Object, e As EventArgs) Handles btnEdit.Click
-        usersModule.btnEdit_Click(UserDGV, AddressOf OnAddRecordClosed)
+        Try
+            ' Store the current form's visibility state
+            Dim wasVisible As Boolean = Me.Visible
+
+            ' Hide this users form
+            Me.Visible = False
+
+            ' Call the module method which will show the addUsers form
+            usersModule.btnEdit_Click(UserDGV, AddressOf OnAddRecordClosed)
+
+            ' Restore this form's visibility
+            Me.Visible = wasVisible
+        Catch ex As Exception
+            ' Ensure this form is shown even if there's an error
+            Me.Visible = True
+            MessageBox.Show("Error: " & ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error)
+        End Try
     End Sub
 
     Private Sub btnSearch_Click(sender As Object, e As EventArgs) Handles btnSearch.Click

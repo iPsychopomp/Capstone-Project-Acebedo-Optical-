@@ -151,6 +151,31 @@ Public Class CreateCheckUp
         SetupPatientAutoComplete()
         LoadDoctorNames()
 
+        ' Set tab order for panels
+        pnlPD.TabIndex = 0
+        pnlVM.TabIndex = 1
+        pnlRemarks.TabIndex = 2
+
+        ' Patient & Doctor Information Panel (pnlPD)
+        txtPName.TabStop = False ' Skip read-only field
+        btnSPatient.TabIndex = 0
+        cmbDoctors.TabIndex = 1
+
+        ' Vision Measurements Panel (pnlVM)
+        txtODSP.TabIndex = 0
+        txtOSSP.TabIndex = 1
+        txtCYOD.TabIndex = 2
+        txtCYOS.TabIndex = 3
+        txtAXOD.TabIndex = 4
+        txtAXOS.TabIndex = 5
+        txtAddOD.TabIndex = 6
+        txtAddOS.TabIndex = 7
+        pdOD.TabIndex = 8
+        pdOS.TabIndex = 9
+        pdOU.TabIndex = 10
+
+        ' Remarks Panel (pnlRemarks)
+        txtRemarks.TabIndex = 0
 
         ' Ensure skipped fields default to 0 on leave
         AddHandler txtODSP.Leave, AddressOf MeasurementTextBox_Leave
@@ -570,7 +595,31 @@ Public Class CreateCheckUp
 
     End Sub
 
-    Private Sub Panel2_Paint(sender As Object, e As PaintEventArgs) Handles Panel2.Paint
+    Private Sub Panel2_Paint(sender As Object, e As PaintEventArgs) Handles pnlVM.Paint
 
+    End Sub
+
+    Private Sub btnSPatient_Click(sender As Object, e As EventArgs) Handles btnSPatient.Click
+        Try
+            ' Store the current form's visibility state
+            Dim wasVisible As Boolean = Me.Visible
+
+            ' Hide only this CreateCheckUp form (not MainForm)
+            Me.Visible = False
+
+            ' Show the search patient form with this form as owner
+            Using searchForm As New searchPatient()
+                ' Set owner to maintain proper form hierarchy
+                searchForm.StartPosition = FormStartPosition.CenterScreen
+                searchForm.ShowDialog(Me)
+            End Using
+
+            ' Restore only this CreateCheckUp form's visibility
+            Me.Visible = wasVisible
+        Catch ex As Exception
+            MsgBox("Error opening patient search: " & ex.Message, vbCritical, "Error")
+            ' Ensure this form is shown even if there's an error
+            Me.Visible = True
+        End Try
     End Sub
 End Class

@@ -126,10 +126,10 @@ Module modCheckUp
             dgv.AutoGenerateColumns = False
             Dim countSql As String = "SELECT COUNT(*) FROM db_viewcheckup"
             Dim dataSql As String = _
-                "SELECT vc.*, ap.doctorName AS AppointedDoctor, ap.appointmentDate AS AppointmentDate " & _
+                "SELECT vc.*, ap.doctorName AS AppointedDoctor, ap.appointmentDate AS AppointmentDate, ap.AppointmentType " & _
                 "FROM db_viewcheckup vc " & _
                 "LEFT JOIN ( " & _
-                "  SELECT a.checkupID, a.doctorName, a.appointmentDate " & _
+                "  SELECT a.checkupID, a.doctorName, a.appointmentDate, a.AppointmentType " & _
                 "  FROM tbl_appointments a " & _
                 "  JOIN (SELECT checkupID, MAX(appointmentDate) AS maxDate FROM tbl_appointments GROUP BY checkupID) mx " & _
                 "    ON mx.checkupID = a.checkupID AND mx.maxDate = a.appointmentDate " & _

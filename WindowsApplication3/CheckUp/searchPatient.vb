@@ -113,7 +113,11 @@ Public Class searchPatient
 
             If transForm IsNot Nothing Then
                 Try
-                    transForm.lblPatientID.Text = patientID
+                    ' Set the patient ID using reflection since it's a private field
+                    Dim patientIDField = transForm.GetType().GetField("currentPatientID", Reflection.BindingFlags.NonPublic Or Reflection.BindingFlags.Instance)
+                    If patientIDField IsNot Nothing Then
+                        patientIDField.SetValue(transForm, If(String.IsNullOrEmpty(patientID), 0, Convert.ToInt32(patientID)))
+                    End If
                 Catch
                 End Try
                 ' Try set a control named txtPname if it exists
@@ -126,7 +130,7 @@ Public Class searchPatient
                 End Try
                 ' Also set txtPatientName if available (Designer shows this label exists)
                 Try
-                    transForm.txtPatientName.Text = fullname
+                    'transForm.txtPatientName.Text = fullname
                 Catch
                 End Try
                 Me.DialogResult = DialogResult.OK
@@ -194,12 +198,44 @@ Public Class searchPatient
 
     Private Sub btnAddP_Click(sender As Object, e As EventArgs) Handles btnAddP.Click
         Try
+            ' Store references to parent forms that should be hidden
+            Dim formsToHide As New List(Of Form)()
+
+            ' Find and hide only CreateCheckUp forms (not searchPatient)
+            For Each frm As Form In Application.OpenForms
+                If TypeOf frm Is CreateCheckUp Then
+                    If frm.Visible Then
+                        formsToHide.Add(frm)
+                        frm.Hide()
+                    End If
+                End If
+                If TypeOf frm Is addPatientTransaction Then
+                    If frm.Visible Then
+                        formsToHide.Add(frm)
+                        frm.Hide()
+                    End If
+                End If
+                If TypeOf frm Is searchPatient Then
+                    If frm.Visible Then
+                        formsToHide.Add(frm)
+                        frm.Hide()
+                    End If
+                End If
+            Next
+
+            ' Show the addPatient form
             Using frm As New addPatient()
-                Dim result As DialogResult = frm.ShowDialog()
+                Dim result As DialogResult = frm.ShowDialog(Me)
                 If result = DialogResult.OK Then
                     LoadPatientSearch()
                 End If
             End Using
+
+            ' Restore visibility of hidden forms
+            For Each frm As Form In formsToHide
+                frm.Show()
+            Next
+
         Catch ex As Exception
             MsgBox(ex.Message.ToString, vbCritical, "Error")
         End Try

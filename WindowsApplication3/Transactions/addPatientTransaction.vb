@@ -11,6 +11,8 @@ Public Class addPatientTransaction
     Private lastModeIsCheckUpOnly As Boolean = True
     ' Store lens discount value to set after form initialization
     Private loadedLensDiscount As String = ""
+    ' Store the patient ID for the transaction
+    Private currentPatientID As Integer = 0
 
 #If False Then
     Private Sub addPatientTransaction_Load(sender As Object, e As EventArgs) Handles MyBase.Load
@@ -32,7 +34,7 @@ Public Class addPatientTransaction
 
         LoadProductSuggestions()
 
-        dtpDate.Value = DateTime.Now
+        ' Transaction date is automatically set to current date
         cmbDiscount.SelectedItem = "N/A"
         cmbLensDisc.SelectedItem = "N/A"
         numQuantity.Value = 1
@@ -113,7 +115,7 @@ Public Class addPatientTransaction
 
             If reader.Read() Then
                 ' Load basic transaction details
-                lblPatientID.Text = If(reader("patientID") Is DBNull.Value, "", reader("patientID").ToString())
+                currentPatientID = If(reader("patientID") Is DBNull.Value, 0, Convert.ToInt32(reader("patientID")))
                 txtPatientName.Text = If(reader("patientName") Is DBNull.Value, "", reader("patientName").ToString())
                 txtTotal.Text = If(reader("totalAmount") Is DBNull.Value, "0.00", Convert.ToDecimal(reader("totalAmount")).ToString("N2"))
                 txtAmountPaid.Text = If(reader("amountPaid") Is DBNull.Value, "0.00", Convert.ToDecimal(reader("amountPaid")).ToString("N2"))
@@ -164,7 +166,7 @@ Public Class addPatientTransaction
                         End If
                     End If
                 End If
-                dtpDate.Value = If(reader("transactionDate") Is DBNull.Value, DateTime.Now, Convert.ToDateTime(reader("transactionDate")))
+                ' Transaction date is loaded from database (stored in transactionDate field)
 
                 ' Handle discount
                 If columns.Contains("discount") Then
@@ -376,7 +378,7 @@ Public Class addPatientTransaction
             ' Check for pending balance in OTHER transactions (not the current one being edited)
             Dim sql As String = "SELECT SUM(pendingBalance) AS totalPending FROM tbl_transactions WHERE patientID = ? AND paymentStatus = 'Pending' AND transactionID != ?"
             Dim cmd As New Odbc.OdbcCommand(sql, conn)
-            cmd.Parameters.AddWithValue("?", CInt(lblPatientID.Text))
+            cmd.Parameters.AddWithValue("?", currentPatientID)
             cmd.Parameters.AddWithValue("?", currentTransactionID)
 
             Dim result = cmd.ExecuteScalar()
@@ -545,7 +547,7 @@ Public Class addPatientTransaction
                 ' This ensures historical accuracy - past transactions keep their original pricing
                 If discountDecimal > 0 AndAlso discountAppliedDate.HasValue Then
                     ' Check if the discount was active on the transaction date
-                    If dtpDate.Value.Date >= discountAppliedDate.Value.Date Then
+                    If DateTime.Now.Date >= discountAppliedDate.Value.Date Then
                         ' Discount was active on transaction date, apply it
                         effectivePrice = originalPrice * (1D - discountDecimal)
                     End If
@@ -1123,20 +1125,20 @@ Public Class addPatientTransaction
                     "SET patientID = ?, patientName = ?, totalAmount = ?, amountPaid = ?, pendingBalance = ?, settlementDate = ?, paymentType = ?, referenceNum = ?, transactionDate = ?, paymentStatus = ?, isCheckUp = ?, discount = ?, lensDiscount = ? " &
                     "WHERE transactionID = ?"
                 Using cmd As New Odbc.OdbcCommand(updateTrans, conn)
-                    cmd.Parameters.AddWithValue("?", CInt(lblPatientID.Text))
+                    cmd.Parameters.AddWithValue("?", currentPatientID)
                     cmd.Parameters.AddWithValue("?", txtPatientName.Text)
                     cmd.Parameters.AddWithValue("?", totalAmount)
                     cmd.Parameters.AddWithValue("?", amountPaid)
                     cmd.Parameters.AddWithValue("?", pendingBalance)
                     Dim pSettleU As Odbc.OdbcParameter = cmd.Parameters.Add("?", Odbc.OdbcType.Date)
-                    If paymentStatus = "Paid" Then
-                        pSettleU.Value = dtpDate.Value.Date
+                    If paymentStatus = "Paid" OrElse amountPaid > 0 Then
+                        pSettleU.Value = DateTime.Now.Date
                     Else
                         pSettleU.Value = DBNull.Value
                     End If
                     cmd.Parameters.AddWithValue("?", cmbMode.Text)
                     cmd.Parameters.AddWithValue("?", If(txtReference IsNot Nothing, txtReference.Text, ""))
-                    cmd.Parameters.AddWithValue("?", dtpDate.Value.Date)
+                    cmd.Parameters.AddWithValue("?", DateTime.Now.Date)
                     cmd.Parameters.AddWithValue("?", paymentStatus)
                     cmd.Parameters.AddWithValue("?", isCheckUp)
                     cmd.Parameters.AddWithValue("?", discount)
@@ -1170,7 +1172,7 @@ Public Class addPatientTransaction
                 ' Insert new transaction items
                 SaveTransactionItems(TransactionID)
 
-                InsertAuditTrail("Update", "Updated transaction for " & txtPatientName.Text & " with total of " & txtTotal.Text & " and paid" & txtAmountPaid.Text, "tbl_transactions" & "tbl_transaction_items", lblPatientID.Text)
+                InsertAuditTrail("Update", "Updated transaction for " & txtPatientName.Text & " with total of " & txtTotal.Text & " and paid" & txtAmountPaid.Text, "tbl_transactions" & "tbl_transaction_items", currentPatientID.ToString())
 
             Else
                 ' Insert new transaction
@@ -1179,20 +1181,20 @@ Public Class addPatientTransaction
                     "(patientID, patientName, totalAmount, amountPaid, pendingBalance, settlementDate, paymentType, referenceNum, transactionDate, paymentStatus, isCheckUp, discount, lensDiscount) " &
                     "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)"
                 Using cmd As New Odbc.OdbcCommand(insertTrans, conn)
-                    cmd.Parameters.AddWithValue("?", CInt(lblPatientID.Text))
+                    cmd.Parameters.AddWithValue("?", currentPatientID)
                     cmd.Parameters.AddWithValue("?", txtPatientName.Text)
                     cmd.Parameters.AddWithValue("?", totalAmount)
                     cmd.Parameters.AddWithValue("?", amountPaid)
                     cmd.Parameters.AddWithValue("?", pendingBalance)
                     Dim pSettleI As Odbc.OdbcParameter = cmd.Parameters.Add("?", Odbc.OdbcType.Date)
-                    If paymentStatus = "Paid" Then
-                        pSettleI.Value = dtpDate.Value.Date
+                    If paymentStatus = "Paid" OrElse amountPaid > 0 Then
+                        pSettleI.Value = DateTime.Now.Date
                     Else
                         pSettleI.Value = DBNull.Value
                     End If
                     cmd.Parameters.AddWithValue("?", cmbMode.Text)
                     cmd.Parameters.AddWithValue("?", If(txtReference IsNot Nothing, txtReference.Text, ""))
-                    cmd.Parameters.AddWithValue("?", dtpDate.Value.Date)
+                    cmd.Parameters.AddWithValue("?", DateTime.Now.Date)
                     cmd.Parameters.AddWithValue("?", paymentStatus)
                     cmd.Parameters.AddWithValue("?", isCheckUp)
                     cmd.Parameters.AddWithValue("?", discount)
@@ -1206,7 +1208,7 @@ Public Class addPatientTransaction
                 End Using
                 SaveTransactionItems(TransactionID)
 
-                InsertAuditTrail("Insert", "Added new transaction for " & txtPatientName.Text & " with total of " & txtTotal.Text & " and paid ₱" & txtAmountPaid.Text, "tbl_transactions" & "tbl_transaction_items", lblPatientID.Text)
+                InsertAuditTrail("Insert", "Added new transaction for " & txtPatientName.Text & " with total of " & txtTotal.Text & " and paid ₱" & txtAmountPaid.Text, "tbl_transactions" & "tbl_transaction_items", currentPatientID.ToString())
             End If
 
             ' Show success message for all transactions
@@ -1396,11 +1398,24 @@ Public Class addPatientTransaction
 
     Private Sub btnPSearch_Click(sender As Object, e As EventArgs) Handles btnPSearch.Click
         Try
+            ' Store the current form's visibility state
+            Dim wasVisible As Boolean = Me.Visible
+
+            ' Hide only this addPatientTransaction form
+            Me.Visible = False
+
+            ' Show the search patient form with this form as owner
             Using frm As New searchPatient()
-                frm.ShowDialog()
+                frm.StartPosition = FormStartPosition.CenterScreen
+                frm.ShowDialog(Me)
             End Using
+
+            ' Restore only this form's visibility
+            Me.Visible = wasVisible
         Catch ex As Exception
             MsgBox(ex.Message.ToString, vbCritical, "Error")
+            ' Ensure this form is shown even if there's an error
+            Me.Visible = True
         End Try
     End Sub
 
@@ -1865,16 +1880,16 @@ AfterLoop:
                 Dim updateTrans As String = _
                     "UPDATE tbl_transactions SET patientID = ?, patientName = ?, totalAmount = ?, amountPaid = ?, pendingBalance = ?, settlementDate = ?, paymentType = ?, referenceNum = ?, transactionDate = ?, paymentStatus = ?, isCheckUp = ?, discount = ?, lensDiscount = ? WHERE transactionID = ?"
                 Using cmd As New Odbc.OdbcCommand(updateTrans, conn)
-                    cmd.Parameters.AddWithValue("?", CInt(lblPatientID.Text))
+                    cmd.Parameters.AddWithValue("?", currentPatientID)
                     cmd.Parameters.AddWithValue("?", txtPatientName.Text)
                     cmd.Parameters.AddWithValue("?", totalAmount)
                     cmd.Parameters.AddWithValue("?", amountPaid)
                     cmd.Parameters.AddWithValue("?", pendingBalance)
                     Dim pSettle As Odbc.OdbcParameter = cmd.Parameters.Add("?", Odbc.OdbcType.Date)
-                    pSettle.Value = If(paymentStatus = "Paid", dtpDate.Value.Date, CType(DBNull.Value, Object))
+                    pSettle.Value = If(paymentStatus = "Paid" OrElse amountPaid > 0, DateTime.Now.Date, CType(DBNull.Value, Object))
                     cmd.Parameters.AddWithValue("?", cmbMode.Text)
                     cmd.Parameters.AddWithValue("?", If(txtReference IsNot Nothing, txtReference.Text, ""))
-                    cmd.Parameters.AddWithValue("?", dtpDate.Value.Date)
+                    cmd.Parameters.AddWithValue("?", DateTime.Now.Date)
                     cmd.Parameters.AddWithValue("?", paymentStatus)
                     cmd.Parameters.AddWithValue("?", isCheckUp)
                     cmd.Parameters.AddWithValue("?", discount)
@@ -1906,16 +1921,16 @@ AfterLoop:
                 Dim insertTrans As String = _
                     "INSERT INTO tbl_transactions (patientID, patientName, totalAmount, amountPaid, pendingBalance, settlementDate, paymentType, referenceNum, transactionDate, paymentStatus, isCheckUp, discount, lensDiscount) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)"
                 Using cmd As New Odbc.OdbcCommand(insertTrans, conn)
-                    cmd.Parameters.AddWithValue("?", CInt(lblPatientID.Text))
+                    cmd.Parameters.AddWithValue("?", currentPatientID)
                     cmd.Parameters.AddWithValue("?", txtPatientName.Text)
                     cmd.Parameters.AddWithValue("?", totalAmount)
                     cmd.Parameters.AddWithValue("?", amountPaid)
                     cmd.Parameters.AddWithValue("?", pendingBalance)
                     Dim pSettleI As Odbc.OdbcParameter = cmd.Parameters.Add("?", Odbc.OdbcType.Date)
-                    pSettleI.Value = If(paymentStatus = "Paid", dtpDate.Value.Date, CType(DBNull.Value, Object))
+                    pSettleI.Value = If(paymentStatus = "Paid" OrElse amountPaid > 0, DateTime.Now.Date, CType(DBNull.Value, Object))
                     cmd.Parameters.AddWithValue("?", cmbMode.Text)
                     cmd.Parameters.AddWithValue("?", If(txtReference IsNot Nothing, txtReference.Text, ""))
-                    cmd.Parameters.AddWithValue("?", dtpDate.Value.Date)
+                    cmd.Parameters.AddWithValue("?", DateTime.Now.Date)
                     cmd.Parameters.AddWithValue("?", paymentStatus)
                     cmd.Parameters.AddWithValue("?", isCheckUp)
                     cmd.Parameters.AddWithValue("?", discount)
@@ -2098,4 +2113,6 @@ AfterLoop:
         Catch
         End Try
     End Sub
+
+
 End Class

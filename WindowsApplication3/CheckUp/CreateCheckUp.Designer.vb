@@ -59,27 +59,27 @@ Partial Class CreateCheckUp
         Me.Label19 = New System.Windows.Forms.Label()
         Me.txtPName = New System.Windows.Forms.TextBox()
         Me.pnlCheckUp = New System.Windows.Forms.Panel()
-        Me.Panel2 = New System.Windows.Forms.Panel()
         Me.Label21 = New System.Windows.Forms.Label()
-        Me.Panel3 = New System.Windows.Forms.Panel()
+        Me.pnlPD = New System.Windows.Forms.Panel()
+        Me.btnSPatient = New System.Windows.Forms.Button()
         Me.Label22 = New System.Windows.Forms.Label()
         Me.cmbDoctors = New System.Windows.Forms.ComboBox()
-        Me.Panel1 = New System.Windows.Forms.Panel()
+        Me.pnlVM = New System.Windows.Forms.Panel()
+        Me.Label17 = New System.Windows.Forms.Label()
+        Me.pnlRemarks = New System.Windows.Forms.Panel()
+        Me.Panel4 = New System.Windows.Forms.Panel()
+        Me.PictureBox1 = New System.Windows.Forms.PictureBox()
+        Me.lblTitle = New System.Windows.Forms.Label()
         Me.dtpBday = New System.Windows.Forms.DateTimePicker()
         Me.pbAdd = New System.Windows.Forms.PictureBox()
         Me.lblhead = New System.Windows.Forms.Label()
-        Me.Panel4 = New System.Windows.Forms.Panel()
-        Me.lblTitle = New System.Windows.Forms.Label()
-        Me.Label17 = New System.Windows.Forms.Label()
-        Me.Button1 = New System.Windows.Forms.Button()
-        Me.PictureBox1 = New System.Windows.Forms.PictureBox()
         Me.pnlCheckUp.SuspendLayout()
-        Me.Panel2.SuspendLayout()
-        Me.Panel3.SuspendLayout()
-        Me.Panel1.SuspendLayout()
-        CType(Me.pbAdd, System.ComponentModel.ISupportInitialize).BeginInit()
+        Me.pnlPD.SuspendLayout()
+        Me.pnlVM.SuspendLayout()
+        Me.pnlRemarks.SuspendLayout()
         Me.Panel4.SuspendLayout()
         CType(Me.PictureBox1, System.ComponentModel.ISupportInitialize).BeginInit()
+        CType(Me.pbAdd, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.SuspendLayout()
         '
         'txtRemarks
@@ -432,6 +432,7 @@ Partial Class CreateCheckUp
         Me.txtPName.Font = New System.Drawing.Font("Segoe UI", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.txtPName.Location = New System.Drawing.Point(40, 58)
         Me.txtPName.Name = "txtPName"
+        Me.txtPName.ReadOnly = True
         Me.txtPName.Size = New System.Drawing.Size(371, 34)
         Me.txtPName.TabIndex = 1
         '
@@ -439,10 +440,10 @@ Partial Class CreateCheckUp
         '
         Me.pnlCheckUp.BackColor = System.Drawing.SystemColors.MenuBar
         Me.pnlCheckUp.Controls.Add(Me.Label21)
-        Me.pnlCheckUp.Controls.Add(Me.Panel3)
-        Me.pnlCheckUp.Controls.Add(Me.Panel2)
+        Me.pnlCheckUp.Controls.Add(Me.pnlPD)
+        Me.pnlCheckUp.Controls.Add(Me.pnlVM)
         Me.pnlCheckUp.Controls.Add(Me.btnSave)
-        Me.pnlCheckUp.Controls.Add(Me.Panel1)
+        Me.pnlCheckUp.Controls.Add(Me.pnlRemarks)
         Me.pnlCheckUp.Controls.Add(Me.Panel4)
         Me.pnlCheckUp.Dock = System.Windows.Forms.DockStyle.Fill
         Me.pnlCheckUp.Location = New System.Drawing.Point(0, 0)
@@ -450,42 +451,6 @@ Partial Class CreateCheckUp
         Me.pnlCheckUp.Name = "pnlCheckUp"
         Me.pnlCheckUp.Size = New System.Drawing.Size(1150, 545)
         Me.pnlCheckUp.TabIndex = 25
-        '
-        'Panel2
-        '
-        Me.Panel2.BackColor = System.Drawing.SystemColors.Window
-        Me.Panel2.Controls.Add(Me.Label17)
-        Me.Panel2.Controls.Add(Me.Label4)
-        Me.Panel2.Controls.Add(Me.Label20)
-        Me.Panel2.Controls.Add(Me.Label10)
-        Me.Panel2.Controls.Add(Me.txtAXOS)
-        Me.Panel2.Controls.Add(Me.pdOU)
-        Me.Panel2.Controls.Add(Me.Label15)
-        Me.Panel2.Controls.Add(Me.txtODSP)
-        Me.Panel2.Controls.Add(Me.Label11)
-        Me.Panel2.Controls.Add(Me.Label1)
-        Me.Panel2.Controls.Add(Me.txtAddOD)
-        Me.Panel2.Controls.Add(Me.Label5)
-        Me.Panel2.Controls.Add(Me.txtAXOD)
-        Me.Panel2.Controls.Add(Me.Label14)
-        Me.Panel2.Controls.Add(Me.txtOSSP)
-        Me.Panel2.Controls.Add(Me.Label12)
-        Me.Panel2.Controls.Add(Me.Label18)
-        Me.Panel2.Controls.Add(Me.txtAddOS)
-        Me.Panel2.Controls.Add(Me.Label6)
-        Me.Panel2.Controls.Add(Me.Label7)
-        Me.Panel2.Controls.Add(Me.pdOD)
-        Me.Panel2.Controls.Add(Me.Label13)
-        Me.Panel2.Controls.Add(Me.Label9)
-        Me.Panel2.Controls.Add(Me.txtCYOS)
-        Me.Panel2.Controls.Add(Me.Label19)
-        Me.Panel2.Controls.Add(Me.Label8)
-        Me.Panel2.Controls.Add(Me.txtCYOD)
-        Me.Panel2.Controls.Add(Me.pdOS)
-        Me.Panel2.Location = New System.Drawing.Point(12, 168)
-        Me.Panel2.Name = "Panel2"
-        Me.Panel2.Size = New System.Drawing.Size(1123, 165)
-        Me.Panel2.TabIndex = 148
         '
         'Label21
         '
@@ -499,19 +464,28 @@ Partial Class CreateCheckUp
         Me.Label21.Text = "Note: OD = Right Eye (Oculus Dexter), OS = Left Eye (Oculus Sinister), OU = Both " & _
     "Eyes (Oculus Uterque)"
         '
-        'Panel3
+        'pnlPD
         '
-        Me.Panel3.BackColor = System.Drawing.SystemColors.Window
-        Me.Panel3.Controls.Add(Me.Button1)
-        Me.Panel3.Controls.Add(Me.Label22)
-        Me.Panel3.Controls.Add(Me.Label2)
-        Me.Panel3.Controls.Add(Me.Label3)
-        Me.Panel3.Controls.Add(Me.txtPName)
-        Me.Panel3.Controls.Add(Me.cmbDoctors)
-        Me.Panel3.Location = New System.Drawing.Point(12, 55)
-        Me.Panel3.Name = "Panel3"
-        Me.Panel3.Size = New System.Drawing.Size(1123, 107)
-        Me.Panel3.TabIndex = 150
+        Me.pnlPD.BackColor = System.Drawing.SystemColors.Window
+        Me.pnlPD.Controls.Add(Me.btnSPatient)
+        Me.pnlPD.Controls.Add(Me.Label22)
+        Me.pnlPD.Controls.Add(Me.Label2)
+        Me.pnlPD.Controls.Add(Me.Label3)
+        Me.pnlPD.Controls.Add(Me.txtPName)
+        Me.pnlPD.Controls.Add(Me.cmbDoctors)
+        Me.pnlPD.Location = New System.Drawing.Point(12, 55)
+        Me.pnlPD.Name = "pnlPD"
+        Me.pnlPD.Size = New System.Drawing.Size(1123, 107)
+        Me.pnlPD.TabIndex = 0
+        '
+        'btnSPatient
+        '
+        Me.btnSPatient.Location = New System.Drawing.Point(417, 57)
+        Me.btnSPatient.Name = "btnSPatient"
+        Me.btnSPatient.Size = New System.Drawing.Size(164, 34)
+        Me.btnSPatient.TabIndex = 1
+        Me.btnSPatient.Text = "Select Patient"
+        Me.btnSPatient.UseVisualStyleBackColor = True
         '
         'Label22
         '
@@ -526,6 +500,7 @@ Partial Class CreateCheckUp
         '
         'cmbDoctors
         '
+        Me.cmbDoctors.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
         Me.cmbDoctors.Font = New System.Drawing.Font("Segoe UI", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.cmbDoctors.FormattingEnabled = True
         Me.cmbDoctors.Location = New System.Drawing.Point(626, 57)
@@ -533,15 +508,92 @@ Partial Class CreateCheckUp
         Me.cmbDoctors.Size = New System.Drawing.Size(449, 36)
         Me.cmbDoctors.TabIndex = 144
         '
-        'Panel1
+        'pnlVM
         '
-        Me.Panel1.BackColor = System.Drawing.SystemColors.Window
-        Me.Panel1.Controls.Add(Me.txtRemarks)
-        Me.Panel1.Controls.Add(Me.Label16)
-        Me.Panel1.Location = New System.Drawing.Point(12, 355)
-        Me.Panel1.Name = "Panel1"
-        Me.Panel1.Size = New System.Drawing.Size(1123, 147)
-        Me.Panel1.TabIndex = 151
+        Me.pnlVM.BackColor = System.Drawing.SystemColors.Window
+        Me.pnlVM.Controls.Add(Me.Label17)
+        Me.pnlVM.Controls.Add(Me.Label4)
+        Me.pnlVM.Controls.Add(Me.Label20)
+        Me.pnlVM.Controls.Add(Me.Label10)
+        Me.pnlVM.Controls.Add(Me.txtAXOS)
+        Me.pnlVM.Controls.Add(Me.pdOU)
+        Me.pnlVM.Controls.Add(Me.Label15)
+        Me.pnlVM.Controls.Add(Me.txtODSP)
+        Me.pnlVM.Controls.Add(Me.Label11)
+        Me.pnlVM.Controls.Add(Me.Label1)
+        Me.pnlVM.Controls.Add(Me.txtAddOD)
+        Me.pnlVM.Controls.Add(Me.Label5)
+        Me.pnlVM.Controls.Add(Me.txtAXOD)
+        Me.pnlVM.Controls.Add(Me.Label14)
+        Me.pnlVM.Controls.Add(Me.txtOSSP)
+        Me.pnlVM.Controls.Add(Me.Label12)
+        Me.pnlVM.Controls.Add(Me.Label18)
+        Me.pnlVM.Controls.Add(Me.txtAddOS)
+        Me.pnlVM.Controls.Add(Me.Label6)
+        Me.pnlVM.Controls.Add(Me.Label7)
+        Me.pnlVM.Controls.Add(Me.pdOD)
+        Me.pnlVM.Controls.Add(Me.Label13)
+        Me.pnlVM.Controls.Add(Me.Label9)
+        Me.pnlVM.Controls.Add(Me.txtCYOS)
+        Me.pnlVM.Controls.Add(Me.Label19)
+        Me.pnlVM.Controls.Add(Me.Label8)
+        Me.pnlVM.Controls.Add(Me.txtCYOD)
+        Me.pnlVM.Controls.Add(Me.pdOS)
+        Me.pnlVM.Location = New System.Drawing.Point(12, 168)
+        Me.pnlVM.Name = "pnlVM"
+        Me.pnlVM.Size = New System.Drawing.Size(1123, 165)
+        Me.pnlVM.TabIndex = 148
+        '
+        'Label17
+        '
+        Me.Label17.AutoSize = True
+        Me.Label17.Font = New System.Drawing.Font("Segoe UI Semibold", 12.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label17.ForeColor = System.Drawing.SystemColors.Highlight
+        Me.Label17.Location = New System.Drawing.Point(3, 3)
+        Me.Label17.Name = "Label17"
+        Me.Label17.Size = New System.Drawing.Size(209, 28)
+        Me.Label17.TabIndex = 151
+        Me.Label17.Text = "Vision Measurements"
+        '
+        'pnlRemarks
+        '
+        Me.pnlRemarks.BackColor = System.Drawing.SystemColors.Window
+        Me.pnlRemarks.Controls.Add(Me.txtRemarks)
+        Me.pnlRemarks.Controls.Add(Me.Label16)
+        Me.pnlRemarks.Location = New System.Drawing.Point(12, 355)
+        Me.pnlRemarks.Name = "pnlRemarks"
+        Me.pnlRemarks.Size = New System.Drawing.Size(1123, 147)
+        Me.pnlRemarks.TabIndex = 151
+        '
+        'Panel4
+        '
+        Me.Panel4.BackColor = System.Drawing.SystemColors.GradientActiveCaption
+        Me.Panel4.Controls.Add(Me.PictureBox1)
+        Me.Panel4.Controls.Add(Me.lblTitle)
+        Me.Panel4.Dock = System.Windows.Forms.DockStyle.Top
+        Me.Panel4.Location = New System.Drawing.Point(0, 0)
+        Me.Panel4.Name = "Panel4"
+        Me.Panel4.Size = New System.Drawing.Size(1150, 49)
+        Me.Panel4.TabIndex = 231
+        '
+        'PictureBox1
+        '
+        Me.PictureBox1.Image = CType(resources.GetObject("PictureBox1.Image"), System.Drawing.Image)
+        Me.PictureBox1.Location = New System.Drawing.Point(12, 9)
+        Me.PictureBox1.Name = "PictureBox1"
+        Me.PictureBox1.Size = New System.Drawing.Size(34, 37)
+        Me.PictureBox1.TabIndex = 234
+        Me.PictureBox1.TabStop = False
+        '
+        'lblTitle
+        '
+        Me.lblTitle.AutoSize = True
+        Me.lblTitle.Font = New System.Drawing.Font("Segoe UI Semibold", 12.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.lblTitle.Location = New System.Drawing.Point(44, 12)
+        Me.lblTitle.Name = "lblTitle"
+        Me.lblTitle.Size = New System.Drawing.Size(134, 28)
+        Me.lblTitle.TabIndex = 113
+        Me.lblTitle.Text = "Add Checkup"
         '
         'dtpBday
         '
@@ -569,56 +621,6 @@ Partial Class CreateCheckUp
         Me.lblhead.TabIndex = 113
         Me.lblhead.Text = "Add Checkup"
         '
-        'Panel4
-        '
-        Me.Panel4.BackColor = System.Drawing.SystemColors.GradientActiveCaption
-        Me.Panel4.Controls.Add(Me.PictureBox1)
-        Me.Panel4.Controls.Add(Me.lblTitle)
-        Me.Panel4.Dock = System.Windows.Forms.DockStyle.Top
-        Me.Panel4.Location = New System.Drawing.Point(0, 0)
-        Me.Panel4.Name = "Panel4"
-        Me.Panel4.Size = New System.Drawing.Size(1150, 49)
-        Me.Panel4.TabIndex = 231
-        '
-        'lblTitle
-        '
-        Me.lblTitle.AutoSize = True
-        Me.lblTitle.Font = New System.Drawing.Font("Segoe UI Semibold", 12.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.lblTitle.Location = New System.Drawing.Point(44, 12)
-        Me.lblTitle.Name = "lblTitle"
-        Me.lblTitle.Size = New System.Drawing.Size(134, 28)
-        Me.lblTitle.TabIndex = 113
-        Me.lblTitle.Text = "Add Checkup"
-        '
-        'Label17
-        '
-        Me.Label17.AutoSize = True
-        Me.Label17.Font = New System.Drawing.Font("Segoe UI Semibold", 12.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Label17.ForeColor = System.Drawing.SystemColors.Highlight
-        Me.Label17.Location = New System.Drawing.Point(3, 3)
-        Me.Label17.Name = "Label17"
-        Me.Label17.Size = New System.Drawing.Size(209, 28)
-        Me.Label17.TabIndex = 151
-        Me.Label17.Text = "Vision Measurements"
-        '
-        'Button1
-        '
-        Me.Button1.Location = New System.Drawing.Point(417, 58)
-        Me.Button1.Name = "Button1"
-        Me.Button1.Size = New System.Drawing.Size(164, 34)
-        Me.Button1.TabIndex = 151
-        Me.Button1.Text = "Select Patient"
-        Me.Button1.UseVisualStyleBackColor = True
-        '
-        'PictureBox1
-        '
-        Me.PictureBox1.Image = CType(resources.GetObject("PictureBox1.Image"), System.Drawing.Image)
-        Me.PictureBox1.Location = New System.Drawing.Point(12, 9)
-        Me.PictureBox1.Name = "PictureBox1"
-        Me.PictureBox1.Size = New System.Drawing.Size(34, 37)
-        Me.PictureBox1.TabIndex = 234
-        Me.PictureBox1.TabStop = False
-        '
         'CreateCheckUp
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(11.0!, 28.0!)
@@ -636,16 +638,16 @@ Partial Class CreateCheckUp
         Me.Text = "Acebedo Optical"
         Me.pnlCheckUp.ResumeLayout(False)
         Me.pnlCheckUp.PerformLayout()
-        Me.Panel2.ResumeLayout(False)
-        Me.Panel2.PerformLayout()
-        Me.Panel3.ResumeLayout(False)
-        Me.Panel3.PerformLayout()
-        Me.Panel1.ResumeLayout(False)
-        Me.Panel1.PerformLayout()
-        CType(Me.pbAdd, System.ComponentModel.ISupportInitialize).EndInit()
+        Me.pnlPD.ResumeLayout(False)
+        Me.pnlPD.PerformLayout()
+        Me.pnlVM.ResumeLayout(False)
+        Me.pnlVM.PerformLayout()
+        Me.pnlRemarks.ResumeLayout(False)
+        Me.pnlRemarks.PerformLayout()
         Me.Panel4.ResumeLayout(False)
         Me.Panel4.PerformLayout()
         CType(Me.PictureBox1, System.ComponentModel.ISupportInitialize).EndInit()
+        CType(Me.pbAdd, System.ComponentModel.ISupportInitialize).EndInit()
         Me.ResumeLayout(False)
 
     End Sub
@@ -678,7 +680,7 @@ Partial Class CreateCheckUp
     Friend WithEvents btnSave As System.Windows.Forms.Button
     Friend WithEvents txtPName As System.Windows.Forms.TextBox
     Friend WithEvents pnlCheckUp As System.Windows.Forms.Panel
-    Friend WithEvents Panel1 As System.Windows.Forms.Panel
+    Friend WithEvents pnlRemarks As System.Windows.Forms.Panel
     Friend WithEvents pbAdd As System.Windows.Forms.PictureBox
     Friend WithEvents lblhead As System.Windows.Forms.Label
     Friend WithEvents Label20 As System.Windows.Forms.Label
@@ -691,12 +693,12 @@ Partial Class CreateCheckUp
     Friend WithEvents Label21 As System.Windows.Forms.Label
     Friend WithEvents dtpBday As System.Windows.Forms.DateTimePicker
     Friend WithEvents cmbDoctors As System.Windows.Forms.ComboBox
-    Friend WithEvents Panel2 As System.Windows.Forms.Panel
-    Friend WithEvents Panel3 As System.Windows.Forms.Panel
+    Friend WithEvents pnlVM As System.Windows.Forms.Panel
+    Friend WithEvents pnlPD As System.Windows.Forms.Panel
     Friend WithEvents Label22 As System.Windows.Forms.Label
     Friend WithEvents Panel4 As System.Windows.Forms.Panel
     Friend WithEvents lblTitle As System.Windows.Forms.Label
-    Friend WithEvents Button1 As System.Windows.Forms.Button
+    Friend WithEvents btnSPatient As System.Windows.Forms.Button
     Friend WithEvents Label17 As System.Windows.Forms.Label
     Friend WithEvents PictureBox1 As System.Windows.Forms.PictureBox
 End Class

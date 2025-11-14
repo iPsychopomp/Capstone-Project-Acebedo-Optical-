@@ -11,8 +11,8 @@ Public Class PatientNextAppointment
                 Exit Sub
             End If
 
-            ' Check if patientType and patientName are available
-            If String.IsNullOrEmpty(cmbPatientType.Text) Then
+            ' Check if AppointmentType and patientName are available
+            If String.IsNullOrEmpty(cmbAppointmentType.Text) Then
                 MsgBox("Please select a patient type.", vbExclamation, "Missing Patient Type")
                 Exit Sub
             End If
@@ -46,18 +46,22 @@ Public Class PatientNextAppointment
             Dim selectedDoctorID As String = selectedDoctor.Key
             Dim selectedDoctorName As String = selectedDoctor.Value
 
-            ' Insert SQL with patientType and patientName
-            Dim insertSql As String = "INSERT INTO tbl_appointments (patientID, doctorID, doctorName, patientName, patientType, appointmentDate, checkupID) " & _
-                                      "VALUES (?, ?, ?, ?, ?, ?, ?)"
+            ' Get reason text, default to empty string if null or whitespace
+            Dim reason As String = If(String.IsNullOrWhiteSpace(txtReason.Text), "", txtReason.Text.Trim())
+
+            ' Insert SQL with patientType, patientName, and reason
+            Dim insertSql As String = "INSERT INTO tbl_appointments (patientID, doctorID, doctorName, patientName, AppointmentType, appointmentDate, checkupID, reason) " & _
+                                      "VALUES (?, ?, ?, ?, ?, ?, ?, ?)"
 
             Using insertCmd As New Odbc.OdbcCommand(insertSql, conn)
                 insertCmd.Parameters.AddWithValue("?", selectedPatientID)
                 insertCmd.Parameters.AddWithValue("?", selectedDoctorID)
                 insertCmd.Parameters.AddWithValue("?", selectedDoctorName)
                 insertCmd.Parameters.AddWithValue("?", lblPatientName.Text)
-                insertCmd.Parameters.AddWithValue("?", cmbPatientType.Text)
+                insertCmd.Parameters.AddWithValue("?", cmbAppointmentType.Text)
                 insertCmd.Parameters.AddWithValue("?", dtpDate.Value.ToString("yyyy-MM-dd HH:mm:ss"))
                 insertCmd.Parameters.AddWithValue("?", latestCheckupID)
+                insertCmd.Parameters.AddWithValue("?", reason)
                 insertCmd.ExecuteNonQuery()
             End Using
 
@@ -168,6 +172,13 @@ Public Class PatientNextAppointment
         Catch ex As Exception
             MessageBox.Show("Error fetching patient name: " & ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error)
         End Try
+
+        pnlAppointment.TabIndex = 0
+        cmbDoctors.TabIndex = 1
+        cmbAppointmentType.TabIndex = 2
+        dtpDate.TabIndex = 3
+        txtReason.TabIndex = 4
+        btnSave.TabIndex = 5
     End Sub
 
     '' Removed queue auto-add: appointments are saved to tbl_appointments only
@@ -205,4 +216,6 @@ Public Class PatientNextAppointment
             Return False
         End Try
     End Function
+
+
 End Class

@@ -23,6 +23,8 @@ Partial Class CreateCheckUp
     <System.Diagnostics.DebuggerStepThrough()> _
     Private Sub InitializeComponent()
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(CreateCheckUp))
+        Me.Label17 = New System.Windows.Forms.Label()
+        Me.dtpDate = New System.Windows.Forms.DateTimePicker()
         Me.txtRemarks = New System.Windows.Forms.RichTextBox()
         Me.Label16 = New System.Windows.Forms.Label()
         Me.Label13 = New System.Windows.Forms.Label()
@@ -50,6 +52,7 @@ Partial Class CreateCheckUp
         Me.btnCancel = New System.Windows.Forms.Button()
         Me.btnClear = New System.Windows.Forms.Button()
         Me.btnSave = New System.Windows.Forms.Button()
+        Me.grpCheckUp = New System.Windows.Forms.GroupBox()
         Me.Label20 = New System.Windows.Forms.Label()
         Me.pdOU = New System.Windows.Forms.TextBox()
         Me.Label1 = New System.Windows.Forms.Label()
@@ -57,269 +60,278 @@ Partial Class CreateCheckUp
         Me.Label18 = New System.Windows.Forms.Label()
         Me.pdOD = New System.Windows.Forms.TextBox()
         Me.Label19 = New System.Windows.Forms.Label()
-        Me.btnPSearch = New System.Windows.Forms.Button()
         Me.txtPName = New System.Windows.Forms.TextBox()
         Me.pnlCheckUp = New System.Windows.Forms.Panel()
-        Me.pnlNames = New System.Windows.Forms.Panel()
+        Me.Panel3 = New System.Windows.Forms.Panel()
         Me.Label22 = New System.Windows.Forms.Label()
         Me.cmbDoctors = New System.Windows.Forms.ComboBox()
-        Me.Label17 = New System.Windows.Forms.Label()
-        Me.grpCheckUp = New System.Windows.Forms.Panel()
+        Me.Label21 = New System.Windows.Forms.Label()
+        Me.dtpBday = New System.Windows.Forms.DateTimePicker()
         Me.Panel1 = New System.Windows.Forms.Panel()
         Me.pbAdd = New System.Windows.Forms.PictureBox()
         Me.lblhead = New System.Windows.Forms.Label()
-        Me.pnlMeasurement = New System.Windows.Forms.Panel()
+        Me.Panel2 = New System.Windows.Forms.Panel()
         Me.Label21 = New System.Windows.Forms.Label()
         Me.pnlCheckUp.SuspendLayout()
-        Me.pnlNames.SuspendLayout()
+        Me.Panel3.SuspendLayout()
         Me.grpCheckUp.SuspendLayout()
         Me.Panel1.SuspendLayout()
         CType(Me.pbAdd, System.ComponentModel.ISupportInitialize).BeginInit()
-        Me.pnlMeasurement.SuspendLayout()
+        Me.Panel2.SuspendLayout()
         Me.SuspendLayout()
+        '
+        'Label17
+        '
+        Me.Label17.AutoSize = True
+        Me.Label17.Font = New System.Drawing.Font("Segoe UI", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label17.Location = New System.Drawing.Point(600, 420)
+        Me.Label17.Name = "Label17"
+        Me.Label17.Size = New System.Drawing.Size(55, 25)
+        Me.Label17.TabIndex = 141
+        Me.Label17.Text = "Date:"
+        Me.Label17.Visible = False
+        '
+        'dtpDate
+        '
+        Me.dtpDate.CustomFormat = "yyyy-MM-dd"
+        Me.dtpDate.Font = New System.Drawing.Font("Segoe UI", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.dtpDate.Format = System.Windows.Forms.DateTimePickerFormat.Custom
+        Me.dtpDate.Location = New System.Drawing.Point(605, 443)
+        Me.dtpDate.Margin = New System.Windows.Forms.Padding(3, 2, 3, 2)
+        Me.dtpDate.Name = "dtpDate"
+        Me.dtpDate.Size = New System.Drawing.Size(151, 32)
+        Me.dtpDate.TabIndex = 140
+        Me.dtpDate.Visible = False
         '
         'txtRemarks
         '
-        Me.txtRemarks.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.txtRemarks.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
-        Me.txtRemarks.Font = New System.Drawing.Font("Segoe UI", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.txtRemarks.Location = New System.Drawing.Point(33, 39)
+        Me.txtRemarks.Font = New System.Drawing.Font("Segoe UI", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.txtRemarks.Location = New System.Drawing.Point(24, 169)
         Me.txtRemarks.Name = "txtRemarks"
         Me.txtRemarks.Size = New System.Drawing.Size(1034, 97)
-        Me.txtRemarks.TabIndex = 1
+        Me.txtRemarks.TabIndex = 16
         Me.txtRemarks.Text = ""
         '
         'Label16
         '
         Me.Label16.AutoSize = True
-        Me.Label16.Font = New System.Drawing.Font("Segoe UI", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Label16.Location = New System.Drawing.Point(27, 11)
+        Me.Label16.Font = New System.Drawing.Font("Segoe UI", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label16.Location = New System.Drawing.Point(20, 141)
         Me.Label16.Name = "Label16"
-        Me.Label16.Size = New System.Drawing.Size(89, 28)
+        Me.Label16.Size = New System.Drawing.Size(86, 25)
         Me.Label16.TabIndex = 138
         Me.Label16.Text = "Remarks:"
         '
         'Label13
         '
         Me.Label13.AutoSize = True
-        Me.Label13.BackColor = System.Drawing.SystemColors.Window
-        Me.Label13.Font = New System.Drawing.Font("Segoe UI", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Label13.Location = New System.Drawing.Point(668, 92)
+        Me.Label13.Font = New System.Drawing.Font("Segoe UI", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label13.Location = New System.Drawing.Point(683, 92)
         Me.Label13.Name = "Label13"
-        Me.Label13.Size = New System.Drawing.Size(42, 28)
+        Me.Label13.Size = New System.Drawing.Size(40, 25)
         Me.Label13.TabIndex = 137
         Me.Label13.Text = "OS:"
         '
         'txtAddOS
         '
-        Me.txtAddOS.Font = New System.Drawing.Font("Segoe UI", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.txtAddOS.Location = New System.Drawing.Point(720, 89)
+        Me.txtAddOS.Font = New System.Drawing.Font("Segoe UI", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.txtAddOS.Location = New System.Drawing.Point(735, 89)
         Me.txtAddOS.Margin = New System.Windows.Forms.Padding(3, 2, 3, 2)
         Me.txtAddOS.Name = "txtAddOS"
         Me.txtAddOS.Size = New System.Drawing.Size(138, 34)
-        Me.txtAddOS.TabIndex = 8
+        Me.txtAddOS.TabIndex = 12
         '
         'Label14
         '
         Me.Label14.AutoSize = True
-        Me.Label14.BackColor = System.Drawing.SystemColors.Window
-        Me.Label14.Font = New System.Drawing.Font("Segoe UI", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Label14.Location = New System.Drawing.Point(668, 61)
+        Me.Label14.Font = New System.Drawing.Font("Segoe UI", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label14.Location = New System.Drawing.Point(683, 61)
         Me.Label14.Name = "Label14"
-        Me.Label14.Size = New System.Drawing.Size(45, 28)
+        Me.Label14.Size = New System.Drawing.Size(43, 25)
         Me.Label14.TabIndex = 135
         Me.Label14.Text = "OD:"
         '
         'txtAddOD
         '
-        Me.txtAddOD.Font = New System.Drawing.Font("Segoe UI", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.txtAddOD.Location = New System.Drawing.Point(720, 58)
+        Me.txtAddOD.Font = New System.Drawing.Font("Segoe UI", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.txtAddOD.Location = New System.Drawing.Point(735, 58)
         Me.txtAddOD.Margin = New System.Windows.Forms.Padding(3, 2, 3, 2)
         Me.txtAddOD.Name = "txtAddOD"
         Me.txtAddOD.Size = New System.Drawing.Size(138, 34)
-        Me.txtAddOD.TabIndex = 7
+        Me.txtAddOD.TabIndex = 11
         '
         'Label15
         '
         Me.Label15.AutoSize = True
-        Me.Label15.BackColor = System.Drawing.SystemColors.Window
-        Me.Label15.Font = New System.Drawing.Font("Segoe UI", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Label15.Location = New System.Drawing.Point(668, 34)
+        Me.Label15.Font = New System.Drawing.Font("Segoe UI", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label15.Location = New System.Drawing.Point(683, 29)
         Me.Label15.Name = "Label15"
-        Me.Label15.Size = New System.Drawing.Size(53, 28)
+        Me.Label15.Size = New System.Drawing.Size(50, 25)
         Me.Label15.TabIndex = 133
         Me.Label15.Text = "Add:"
         '
         'Label10
         '
         Me.Label10.AutoSize = True
-        Me.Label10.BackColor = System.Drawing.SystemColors.Window
-        Me.Label10.Font = New System.Drawing.Font("Segoe UI", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Label10.Location = New System.Drawing.Point(449, 91)
+        Me.Label10.Font = New System.Drawing.Font("Segoe UI", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label10.Location = New System.Drawing.Point(464, 91)
         Me.Label10.Name = "Label10"
-        Me.Label10.Size = New System.Drawing.Size(42, 28)
+        Me.Label10.Size = New System.Drawing.Size(40, 25)
         Me.Label10.TabIndex = 132
         Me.Label10.Text = "OS:"
         '
         'txtAXOS
         '
-        Me.txtAXOS.Font = New System.Drawing.Font("Segoe UI", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.txtAXOS.Location = New System.Drawing.Point(501, 88)
+        Me.txtAXOS.Font = New System.Drawing.Font("Segoe UI", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.txtAXOS.Location = New System.Drawing.Point(516, 88)
         Me.txtAXOS.Margin = New System.Windows.Forms.Padding(3, 2, 3, 2)
         Me.txtAXOS.Name = "txtAXOS"
         Me.txtAXOS.Size = New System.Drawing.Size(138, 34)
-        Me.txtAXOS.TabIndex = 6
+        Me.txtAXOS.TabIndex = 10
         '
         'Label11
         '
         Me.Label11.AutoSize = True
-        Me.Label11.BackColor = System.Drawing.SystemColors.Window
-        Me.Label11.Font = New System.Drawing.Font("Segoe UI", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Label11.Location = New System.Drawing.Point(449, 60)
+        Me.Label11.Font = New System.Drawing.Font("Segoe UI", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label11.Location = New System.Drawing.Point(464, 60)
         Me.Label11.Name = "Label11"
-        Me.Label11.Size = New System.Drawing.Size(45, 28)
+        Me.Label11.Size = New System.Drawing.Size(43, 25)
         Me.Label11.TabIndex = 130
         Me.Label11.Text = "OD:"
         '
         'txtAXOD
         '
-        Me.txtAXOD.Font = New System.Drawing.Font("Segoe UI", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.txtAXOD.Location = New System.Drawing.Point(501, 57)
+        Me.txtAXOD.Font = New System.Drawing.Font("Segoe UI", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.txtAXOD.Location = New System.Drawing.Point(516, 57)
         Me.txtAXOD.Margin = New System.Windows.Forms.Padding(3, 2, 3, 2)
         Me.txtAXOD.Name = "txtAXOD"
         Me.txtAXOD.Size = New System.Drawing.Size(138, 34)
-        Me.txtAXOD.TabIndex = 5
+        Me.txtAXOD.TabIndex = 9
         '
         'Label12
         '
         Me.Label12.AutoSize = True
-        Me.Label12.BackColor = System.Drawing.SystemColors.Window
-        Me.Label12.Font = New System.Drawing.Font("Segoe UI", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Label12.Location = New System.Drawing.Point(449, 34)
+        Me.Label12.Font = New System.Drawing.Font("Segoe UI", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label12.Location = New System.Drawing.Point(464, 29)
         Me.Label12.Name = "Label12"
-        Me.Label12.Size = New System.Drawing.Size(51, 28)
+        Me.Label12.Size = New System.Drawing.Size(50, 25)
         Me.Label12.TabIndex = 128
         Me.Label12.Text = "Axis:"
         '
         'Label7
         '
         Me.Label7.AutoSize = True
-        Me.Label7.BackColor = System.Drawing.SystemColors.Window
-        Me.Label7.Font = New System.Drawing.Font("Segoe UI", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Label7.Location = New System.Drawing.Point(238, 91)
+        Me.Label7.Font = New System.Drawing.Font("Segoe UI", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label7.Location = New System.Drawing.Point(245, 91)
         Me.Label7.Name = "Label7"
-        Me.Label7.Size = New System.Drawing.Size(42, 28)
+        Me.Label7.Size = New System.Drawing.Size(40, 25)
         Me.Label7.TabIndex = 127
         Me.Label7.Text = "OS:"
         '
         'txtCYOS
         '
-        Me.txtCYOS.Font = New System.Drawing.Font("Segoe UI", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.txtCYOS.Location = New System.Drawing.Point(290, 88)
+        Me.txtCYOS.Font = New System.Drawing.Font("Segoe UI", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.txtCYOS.Location = New System.Drawing.Point(297, 88)
         Me.txtCYOS.Margin = New System.Windows.Forms.Padding(3, 2, 3, 2)
         Me.txtCYOS.Name = "txtCYOS"
         Me.txtCYOS.Size = New System.Drawing.Size(138, 34)
-        Me.txtCYOS.TabIndex = 4
+        Me.txtCYOS.TabIndex = 8
         '
         'Label8
         '
         Me.Label8.AutoSize = True
-        Me.Label8.BackColor = System.Drawing.SystemColors.Window
-        Me.Label8.Font = New System.Drawing.Font("Segoe UI", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Label8.Location = New System.Drawing.Point(238, 60)
+        Me.Label8.Font = New System.Drawing.Font("Segoe UI", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label8.Location = New System.Drawing.Point(245, 60)
         Me.Label8.Name = "Label8"
-        Me.Label8.Size = New System.Drawing.Size(45, 28)
+        Me.Label8.Size = New System.Drawing.Size(43, 25)
         Me.Label8.TabIndex = 125
         Me.Label8.Text = "OD:"
         '
         'txtCYOD
         '
-        Me.txtCYOD.Font = New System.Drawing.Font("Segoe UI", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.txtCYOD.Location = New System.Drawing.Point(290, 57)
+        Me.txtCYOD.Font = New System.Drawing.Font("Segoe UI", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.txtCYOD.Location = New System.Drawing.Point(297, 57)
         Me.txtCYOD.Margin = New System.Windows.Forms.Padding(3, 2, 3, 2)
         Me.txtCYOD.Name = "txtCYOD"
         Me.txtCYOD.Size = New System.Drawing.Size(138, 34)
-        Me.txtCYOD.TabIndex = 3
+        Me.txtCYOD.TabIndex = 7
         '
         'Label9
         '
         Me.Label9.AutoSize = True
-        Me.Label9.BackColor = System.Drawing.SystemColors.Window
-        Me.Label9.Font = New System.Drawing.Font("Segoe UI", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Label9.Location = New System.Drawing.Point(238, 34)
+        Me.Label9.Font = New System.Drawing.Font("Segoe UI", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label9.Location = New System.Drawing.Point(245, 29)
         Me.Label9.Name = "Label9"
-        Me.Label9.Size = New System.Drawing.Size(88, 28)
+        Me.Label9.Size = New System.Drawing.Size(86, 25)
         Me.Label9.TabIndex = 123
         Me.Label9.Text = "Cylinder:"
         '
         'Label6
         '
         Me.Label6.AutoSize = True
-        Me.Label6.BackColor = System.Drawing.SystemColors.Window
-        Me.Label6.Font = New System.Drawing.Font("Segoe UI", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Label6.Location = New System.Drawing.Point(28, 91)
+        Me.Label6.Font = New System.Drawing.Font("Segoe UI", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label6.Location = New System.Drawing.Point(20, 91)
         Me.Label6.Name = "Label6"
-        Me.Label6.Size = New System.Drawing.Size(42, 28)
+        Me.Label6.Size = New System.Drawing.Size(40, 25)
         Me.Label6.TabIndex = 122
         Me.Label6.Text = "OS:"
         '
         'txtOSSP
         '
-        Me.txtOSSP.Font = New System.Drawing.Font("Segoe UI", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.txtOSSP.Location = New System.Drawing.Point(80, 88)
+        Me.txtOSSP.Font = New System.Drawing.Font("Segoe UI", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.txtOSSP.Location = New System.Drawing.Point(72, 88)
         Me.txtOSSP.Margin = New System.Windows.Forms.Padding(3, 2, 3, 2)
         Me.txtOSSP.Name = "txtOSSP"
         Me.txtOSSP.Size = New System.Drawing.Size(138, 34)
-        Me.txtOSSP.TabIndex = 2
+        Me.txtOSSP.TabIndex = 6
         '
         'Label5
         '
         Me.Label5.AutoSize = True
-        Me.Label5.BackColor = System.Drawing.SystemColors.Window
-        Me.Label5.Font = New System.Drawing.Font("Segoe UI", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Label5.Location = New System.Drawing.Point(28, 60)
+        Me.Label5.Font = New System.Drawing.Font("Segoe UI", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label5.Location = New System.Drawing.Point(20, 60)
         Me.Label5.Name = "Label5"
-        Me.Label5.Size = New System.Drawing.Size(45, 28)
+        Me.Label5.Size = New System.Drawing.Size(43, 25)
         Me.Label5.TabIndex = 120
         Me.Label5.Text = "OD:"
         '
         'txtODSP
         '
-        Me.txtODSP.Font = New System.Drawing.Font("Segoe UI", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.txtODSP.Location = New System.Drawing.Point(80, 57)
+        Me.txtODSP.Font = New System.Drawing.Font("Segoe UI", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.txtODSP.Location = New System.Drawing.Point(72, 57)
         Me.txtODSP.Margin = New System.Windows.Forms.Padding(3, 2, 3, 2)
         Me.txtODSP.Name = "txtODSP"
         Me.txtODSP.Size = New System.Drawing.Size(138, 34)
-        Me.txtODSP.TabIndex = 1
+        Me.txtODSP.TabIndex = 5
         '
         'Label4
         '
         Me.Label4.AutoSize = True
-        Me.Label4.BackColor = System.Drawing.SystemColors.Window
-        Me.Label4.Font = New System.Drawing.Font("Segoe UI", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Label4.Location = New System.Drawing.Point(28, 34)
+        Me.Label4.Font = New System.Drawing.Font("Segoe UI", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label4.Location = New System.Drawing.Point(20, 29)
         Me.Label4.Name = "Label4"
-        Me.Label4.Size = New System.Drawing.Size(77, 28)
+        Me.Label4.Size = New System.Drawing.Size(75, 25)
         Me.Label4.TabIndex = 118
         Me.Label4.Text = "Sphere:"
         '
         'Label3
         '
         Me.Label3.AutoSize = True
-        Me.Label3.Font = New System.Drawing.Font("Segoe UI", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Label3.Location = New System.Drawing.Point(588, 33)
+        Me.Label3.Font = New System.Drawing.Font("Segoe UI", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label3.Location = New System.Drawing.Point(741, 63)
         Me.Label3.Name = "Label3"
-        Me.Label3.Size = New System.Drawing.Size(147, 28)
+        Me.Label3.Size = New System.Drawing.Size(140, 25)
         Me.Label3.TabIndex = 116
         Me.Label3.Text = "Doctor's Name:"
         '
         'Label2
         '
         Me.Label2.AutoSize = True
-        Me.Label2.Font = New System.Drawing.Font("Segoe UI", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Label2.Location = New System.Drawing.Point(32, 33)
+        Me.Label2.Font = New System.Drawing.Font("Segoe UI", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label2.Location = New System.Drawing.Point(31, 63)
         Me.Label2.Name = "Label2"
-        Me.Label2.Size = New System.Drawing.Size(146, 28)
+        Me.Label2.Size = New System.Drawing.Size(141, 25)
         Me.Label2.TabIndex = 79
         Me.Label2.Text = "Patient's Name:"
         '
@@ -331,14 +343,13 @@ Partial Class CreateCheckUp
         Me.btnCancel.Font = New System.Drawing.Font("Segoe UI", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.btnCancel.ForeColor = System.Drawing.Color.Black
         Me.btnCancel.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft
-        Me.btnCancel.Location = New System.Drawing.Point(468, 7)
+        Me.btnCancel.Location = New System.Drawing.Point(991, 418)
         Me.btnCancel.Margin = New System.Windows.Forms.Padding(3, 2, 3, 2)
         Me.btnCancel.Name = "btnCancel"
         Me.btnCancel.Size = New System.Drawing.Size(100, 27)
         Me.btnCancel.TabIndex = 19
         Me.btnCancel.Text = "&Cancel"
         Me.btnCancel.UseVisualStyleBackColor = False
-        Me.btnCancel.Visible = False
         '
         'btnClear
         '
@@ -347,154 +358,173 @@ Partial Class CreateCheckUp
         Me.btnClear.Font = New System.Drawing.Font("Segoe UI", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.btnClear.ForeColor = System.Drawing.Color.Black
         Me.btnClear.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft
-        Me.btnClear.Location = New System.Drawing.Point(347, 7)
+        Me.btnClear.Location = New System.Drawing.Point(156, 418)
         Me.btnClear.Margin = New System.Windows.Forms.Padding(3, 2, 3, 2)
         Me.btnClear.Name = "btnClear"
         Me.btnClear.Size = New System.Drawing.Size(100, 27)
         Me.btnClear.TabIndex = 18
         Me.btnClear.Text = "Cl&ear"
         Me.btnClear.UseVisualStyleBackColor = False
-        Me.btnClear.Visible = False
         '
         'btnSave
         '
         Me.btnSave.BackColor = System.Drawing.SystemColors.ControlLight
         Me.btnSave.FlatStyle = System.Windows.Forms.FlatStyle.System
-        Me.btnSave.Font = New System.Drawing.Font("Segoe UI", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.btnSave.Font = New System.Drawing.Font("Segoe UI", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.btnSave.ForeColor = System.Drawing.Color.Black
         Me.btnSave.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft
-        Me.btnSave.Location = New System.Drawing.Point(978, 502)
+        Me.btnSave.Location = New System.Drawing.Point(50, 418)
         Me.btnSave.Margin = New System.Windows.Forms.Padding(3, 2, 3, 2)
         Me.btnSave.Name = "btnSave"
         Me.btnSave.Size = New System.Drawing.Size(100, 34)
-        Me.btnSave.TabIndex = 16
+        Me.btnSave.TabIndex = 17
         Me.btnSave.Text = "&Save"
         Me.btnSave.UseVisualStyleBackColor = False
+        '
+        'grpCheckUp
+        '
+        Me.grpCheckUp.Controls.Add(Me.Label20)
+        Me.grpCheckUp.Controls.Add(Me.pdOU)
+        Me.grpCheckUp.Controls.Add(Me.Label1)
+        Me.grpCheckUp.Controls.Add(Me.pdOS)
+        Me.grpCheckUp.Controls.Add(Me.Label18)
+        Me.grpCheckUp.Controls.Add(Me.pdOD)
+        Me.grpCheckUp.Controls.Add(Me.Label19)
+        Me.grpCheckUp.Controls.Add(Me.txtRemarks)
+        Me.grpCheckUp.Controls.Add(Me.Label16)
+        Me.grpCheckUp.Controls.Add(Me.Label13)
+        Me.grpCheckUp.Controls.Add(Me.txtAddOS)
+        Me.grpCheckUp.Controls.Add(Me.Label14)
+        Me.grpCheckUp.Controls.Add(Me.txtAddOD)
+        Me.grpCheckUp.Controls.Add(Me.Label15)
+        Me.grpCheckUp.Controls.Add(Me.Label10)
+        Me.grpCheckUp.Controls.Add(Me.txtAXOS)
+        Me.grpCheckUp.Controls.Add(Me.Label11)
+        Me.grpCheckUp.Controls.Add(Me.txtAXOD)
+        Me.grpCheckUp.Controls.Add(Me.Label12)
+        Me.grpCheckUp.Controls.Add(Me.Label7)
+        Me.grpCheckUp.Controls.Add(Me.txtCYOS)
+        Me.grpCheckUp.Controls.Add(Me.Label8)
+        Me.grpCheckUp.Controls.Add(Me.txtCYOD)
+        Me.grpCheckUp.Controls.Add(Me.Label9)
+        Me.grpCheckUp.Controls.Add(Me.Label6)
+        Me.grpCheckUp.Controls.Add(Me.txtOSSP)
+        Me.grpCheckUp.Controls.Add(Me.Label5)
+        Me.grpCheckUp.Controls.Add(Me.txtODSP)
+        Me.grpCheckUp.Controls.Add(Me.Label4)
+        Me.grpCheckUp.Location = New System.Drawing.Point(11, 123)
+        Me.grpCheckUp.Margin = New System.Windows.Forms.Padding(3, 2, 3, 2)
+        Me.grpCheckUp.Name = "grpCheckUp"
+        Me.grpCheckUp.Padding = New System.Windows.Forms.Padding(3, 2, 3, 2)
+        Me.grpCheckUp.Size = New System.Drawing.Size(1114, 291)
+        Me.grpCheckUp.TabIndex = 0
+        Me.grpCheckUp.TabStop = False
         '
         'Label20
         '
         Me.Label20.AutoSize = True
-        Me.Label20.BackColor = System.Drawing.SystemColors.Window
-        Me.Label20.Font = New System.Drawing.Font("Segoe UI", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Label20.Location = New System.Drawing.Point(876, 119)
+        Me.Label20.Font = New System.Drawing.Font("Segoe UI", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label20.Location = New System.Drawing.Point(900, 121)
         Me.Label20.Name = "Label20"
-        Me.Label20.Size = New System.Drawing.Size(45, 28)
+        Me.Label20.Size = New System.Drawing.Size(43, 25)
         Me.Label20.TabIndex = 146
         Me.Label20.Text = "OU:"
         '
         'pdOU
         '
-        Me.pdOU.Font = New System.Drawing.Font("Segoe UI", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.pdOU.Location = New System.Drawing.Point(928, 120)
+        Me.pdOU.Font = New System.Drawing.Font("Segoe UI", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.pdOU.Location = New System.Drawing.Point(952, 120)
         Me.pdOU.Margin = New System.Windows.Forms.Padding(3, 2, 3, 2)
         Me.pdOU.Name = "pdOU"
         Me.pdOU.Size = New System.Drawing.Size(138, 34)
-        Me.pdOU.TabIndex = 11
+        Me.pdOU.TabIndex = 15
         '
         'Label1
         '
         Me.Label1.AutoSize = True
-        Me.Label1.BackColor = System.Drawing.SystemColors.Window
-        Me.Label1.Font = New System.Drawing.Font("Segoe UI", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Label1.Location = New System.Drawing.Point(876, 91)
+        Me.Label1.Font = New System.Drawing.Font("Segoe UI", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label1.Location = New System.Drawing.Point(900, 91)
         Me.Label1.Name = "Label1"
-        Me.Label1.Size = New System.Drawing.Size(42, 28)
+        Me.Label1.Size = New System.Drawing.Size(40, 25)
         Me.Label1.TabIndex = 144
         Me.Label1.Text = "OS:"
         '
         'pdOS
         '
-        Me.pdOS.Font = New System.Drawing.Font("Segoe UI", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.pdOS.Location = New System.Drawing.Point(928, 88)
+        Me.pdOS.Font = New System.Drawing.Font("Segoe UI", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.pdOS.Location = New System.Drawing.Point(952, 88)
         Me.pdOS.Margin = New System.Windows.Forms.Padding(3, 2, 3, 2)
         Me.pdOS.Name = "pdOS"
         Me.pdOS.Size = New System.Drawing.Size(138, 34)
-        Me.pdOS.TabIndex = 10
+        Me.pdOS.TabIndex = 14
         '
         'Label18
         '
         Me.Label18.AutoSize = True
-        Me.Label18.BackColor = System.Drawing.SystemColors.Window
-        Me.Label18.Font = New System.Drawing.Font("Segoe UI", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Label18.Location = New System.Drawing.Point(876, 60)
+        Me.Label18.Font = New System.Drawing.Font("Segoe UI", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label18.Location = New System.Drawing.Point(900, 60)
         Me.Label18.Name = "Label18"
-        Me.Label18.Size = New System.Drawing.Size(45, 28)
+        Me.Label18.Size = New System.Drawing.Size(43, 25)
         Me.Label18.TabIndex = 142
         Me.Label18.Text = "OD:"
         '
         'pdOD
         '
-        Me.pdOD.Font = New System.Drawing.Font("Segoe UI", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.pdOD.Location = New System.Drawing.Point(928, 57)
+        Me.pdOD.Font = New System.Drawing.Font("Segoe UI", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.pdOD.Location = New System.Drawing.Point(952, 57)
         Me.pdOD.Margin = New System.Windows.Forms.Padding(3, 2, 3, 2)
         Me.pdOD.Name = "pdOD"
         Me.pdOD.Size = New System.Drawing.Size(138, 34)
-        Me.pdOD.TabIndex = 9
+        Me.pdOD.TabIndex = 13
         '
         'Label19
         '
         Me.Label19.AutoSize = True
-        Me.Label19.BackColor = System.Drawing.SystemColors.Window
-        Me.Label19.Font = New System.Drawing.Font("Segoe UI", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Label19.Location = New System.Drawing.Point(876, 34)
+        Me.Label19.Font = New System.Drawing.Font("Segoe UI", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label19.Location = New System.Drawing.Point(900, 29)
         Me.Label19.Name = "Label19"
-        Me.Label19.Size = New System.Drawing.Size(41, 28)
+        Me.Label19.Size = New System.Drawing.Size(40, 25)
         Me.Label19.TabIndex = 140
         Me.Label19.Text = "PD:"
         '
-        'btnPSearch
-        '
-        Me.btnPSearch.BackColor = System.Drawing.SystemColors.ControlLight
-        Me.btnPSearch.FlatStyle = System.Windows.Forms.FlatStyle.System
-        Me.btnPSearch.Font = New System.Drawing.Font("Segoe UI", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.btnPSearch.ForeColor = System.Drawing.Color.Black
-        Me.btnPSearch.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft
-        Me.btnPSearch.Location = New System.Drawing.Point(425, 61)
-        Me.btnPSearch.Margin = New System.Windows.Forms.Padding(3, 2, 3, 2)
-        Me.btnPSearch.Name = "btnPSearch"
-        Me.btnPSearch.Size = New System.Drawing.Size(145, 30)
-        Me.btnPSearch.TabIndex = 2
-        Me.btnPSearch.Text = "Select patient"
-        Me.btnPSearch.UseVisualStyleBackColor = False
-        '
         'txtPName
         '
-        Me.txtPName.Font = New System.Drawing.Font("Segoe UI", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.txtPName.Location = New System.Drawing.Point(37, 61)
+        Me.txtPName.Font = New System.Drawing.Font("Segoe UI", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.txtPName.Location = New System.Drawing.Point(35, 90)
         Me.txtPName.Name = "txtPName"
-        Me.txtPName.ReadOnly = True
-        Me.txtPName.Size = New System.Drawing.Size(382, 34)
+        Me.txtPName.Size = New System.Drawing.Size(337, 32)
         Me.txtPName.TabIndex = 1
         '
         'pnlCheckUp
         '
         Me.pnlCheckUp.BackColor = System.Drawing.SystemColors.MenuBar
-        Me.pnlCheckUp.Controls.Add(Me.pnlNames)
+        Me.pnlCheckUp.Controls.Add(Me.Panel3)
         Me.pnlCheckUp.Controls.Add(Me.Label17)
         Me.pnlCheckUp.Controls.Add(Me.btnSave)
+        Me.pnlCheckUp.Controls.Add(Me.dtpDate)
         Me.pnlCheckUp.Controls.Add(Me.grpCheckUp)
         Me.pnlCheckUp.Controls.Add(Me.Panel1)
-        Me.pnlCheckUp.Controls.Add(Me.pnlMeasurement)
+        Me.pnlCheckUp.Controls.Add(Me.Panel2)
         Me.pnlCheckUp.Dock = System.Windows.Forms.DockStyle.Fill
         Me.pnlCheckUp.Location = New System.Drawing.Point(0, 0)
         Me.pnlCheckUp.Margin = New System.Windows.Forms.Padding(3, 2, 3, 2)
         Me.pnlCheckUp.Name = "pnlCheckUp"
         Me.pnlCheckUp.Size = New System.Drawing.Size(1121, 544)
-        Me.pnlCheckUp.TabIndex = 0
+        Me.pnlCheckUp.TabIndex = 25
         '
-        'pnlNames
+        'Panel3
         '
-        Me.pnlNames.BackColor = System.Drawing.SystemColors.Window
-        Me.pnlNames.Controls.Add(Me.Label22)
-        Me.pnlNames.Controls.Add(Me.Label2)
-        Me.pnlNames.Controls.Add(Me.Label3)
-        Me.pnlNames.Controls.Add(Me.btnPSearch)
-        Me.pnlNames.Controls.Add(Me.txtPName)
-        Me.pnlNames.Controls.Add(Me.cmbDoctors)
-        Me.pnlNames.Location = New System.Drawing.Point(12, 55)
-        Me.pnlNames.Name = "pnlNames"
-        Me.pnlNames.Size = New System.Drawing.Size(1095, 102)
-        Me.pnlNames.TabIndex = 0
+        Me.Panel3.BackColor = System.Drawing.SystemColors.Window
+        Me.Panel3.Controls.Add(Me.Label22)
+        Me.Panel3.Controls.Add(Me.Label2)
+        Me.Panel3.Controls.Add(Me.Label3)
+        Me.Panel3.Controls.Add(Me.btnPSearch)
+        Me.Panel3.Controls.Add(Me.txtPName)
+        Me.Panel3.Controls.Add(Me.cmbDoctors)
+        Me.Panel3.Location = New System.Drawing.Point(12, 55)
+        Me.Panel3.Name = "Panel3"
+        Me.Panel3.Size = New System.Drawing.Size(1095, 102)
+        Me.Panel3.TabIndex = 150
         '
         'Label22
         '
@@ -509,15 +539,14 @@ Partial Class CreateCheckUp
         '
         'cmbDoctors
         '
-        Me.cmbDoctors.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
-        Me.cmbDoctors.Font = New System.Drawing.Font("Segoe UI", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.cmbDoctors.Font = New System.Drawing.Font("Segoe UI", 10.8!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.cmbDoctors.FormattingEnabled = True
-        Me.cmbDoctors.Location = New System.Drawing.Point(593, 61)
+        Me.cmbDoctors.Location = New System.Drawing.Point(746, 89)
         Me.cmbDoctors.Name = "cmbDoctors"
-        Me.cmbDoctors.Size = New System.Drawing.Size(474, 36)
-        Me.cmbDoctors.TabIndex = 3
+        Me.cmbDoctors.Size = New System.Drawing.Size(355, 33)
+        Me.cmbDoctors.TabIndex = 144
         '
-        'Label17
+        'Label21
         '
         Me.Label17.AutoSize = True
         Me.Label17.Font = New System.Drawing.Font("Segoe UI", 7.8!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
@@ -539,7 +568,7 @@ Partial Class CreateCheckUp
         Me.grpCheckUp.Location = New System.Drawing.Point(12, 346)
         Me.grpCheckUp.Name = "grpCheckUp"
         Me.grpCheckUp.Size = New System.Drawing.Size(1095, 148)
-        Me.grpCheckUp.TabIndex = 2
+        Me.grpCheckUp.TabIndex = 145
         '
         'Panel1
         '
@@ -549,7 +578,7 @@ Partial Class CreateCheckUp
         Me.Panel1.Dock = System.Windows.Forms.DockStyle.Top
         Me.Panel1.Location = New System.Drawing.Point(0, 0)
         Me.Panel1.Name = "Panel1"
-        Me.Panel1.Size = New System.Drawing.Size(1121, 49)
+        Me.Panel1.Size = New System.Drawing.Size(1137, 49)
         Me.Panel1.TabIndex = 131
         '
         'pbAdd
@@ -571,41 +600,41 @@ Partial Class CreateCheckUp
         Me.lblhead.TabIndex = 113
         Me.lblhead.Text = "Add Checkup"
         '
-        'pnlMeasurement
+        'Panel2
         '
-        Me.pnlMeasurement.BackColor = System.Drawing.SystemColors.Window
-        Me.pnlMeasurement.Controls.Add(Me.Label4)
-        Me.pnlMeasurement.Controls.Add(Me.Label21)
-        Me.pnlMeasurement.Controls.Add(Me.Label20)
-        Me.pnlMeasurement.Controls.Add(Me.Label10)
-        Me.pnlMeasurement.Controls.Add(Me.txtAXOS)
-        Me.pnlMeasurement.Controls.Add(Me.pdOU)
-        Me.pnlMeasurement.Controls.Add(Me.Label15)
-        Me.pnlMeasurement.Controls.Add(Me.txtODSP)
-        Me.pnlMeasurement.Controls.Add(Me.Label11)
-        Me.pnlMeasurement.Controls.Add(Me.Label1)
-        Me.pnlMeasurement.Controls.Add(Me.txtAddOD)
-        Me.pnlMeasurement.Controls.Add(Me.Label5)
-        Me.pnlMeasurement.Controls.Add(Me.txtAXOD)
-        Me.pnlMeasurement.Controls.Add(Me.pdOS)
-        Me.pnlMeasurement.Controls.Add(Me.Label14)
-        Me.pnlMeasurement.Controls.Add(Me.txtOSSP)
-        Me.pnlMeasurement.Controls.Add(Me.Label12)
-        Me.pnlMeasurement.Controls.Add(Me.Label18)
-        Me.pnlMeasurement.Controls.Add(Me.txtAddOS)
-        Me.pnlMeasurement.Controls.Add(Me.Label6)
-        Me.pnlMeasurement.Controls.Add(Me.Label7)
-        Me.pnlMeasurement.Controls.Add(Me.pdOD)
-        Me.pnlMeasurement.Controls.Add(Me.Label13)
-        Me.pnlMeasurement.Controls.Add(Me.Label9)
-        Me.pnlMeasurement.Controls.Add(Me.txtCYOS)
-        Me.pnlMeasurement.Controls.Add(Me.Label19)
-        Me.pnlMeasurement.Controls.Add(Me.Label8)
-        Me.pnlMeasurement.Controls.Add(Me.txtCYOD)
-        Me.pnlMeasurement.Location = New System.Drawing.Point(12, 163)
-        Me.pnlMeasurement.Name = "pnlMeasurement"
-        Me.pnlMeasurement.Size = New System.Drawing.Size(1095, 161)
-        Me.pnlMeasurement.TabIndex = 1
+        Me.Panel2.BackColor = System.Drawing.SystemColors.Window
+        Me.Panel2.Controls.Add(Me.Label4)
+        Me.Panel2.Controls.Add(Me.Label21)
+        Me.Panel2.Controls.Add(Me.Label20)
+        Me.Panel2.Controls.Add(Me.Label10)
+        Me.Panel2.Controls.Add(Me.txtAXOS)
+        Me.Panel2.Controls.Add(Me.pdOU)
+        Me.Panel2.Controls.Add(Me.Label15)
+        Me.Panel2.Controls.Add(Me.txtODSP)
+        Me.Panel2.Controls.Add(Me.Label11)
+        Me.Panel2.Controls.Add(Me.Label1)
+        Me.Panel2.Controls.Add(Me.txtAddOD)
+        Me.Panel2.Controls.Add(Me.Label5)
+        Me.Panel2.Controls.Add(Me.txtAXOD)
+        Me.Panel2.Controls.Add(Me.pdOS)
+        Me.Panel2.Controls.Add(Me.Label14)
+        Me.Panel2.Controls.Add(Me.txtOSSP)
+        Me.Panel2.Controls.Add(Me.Label12)
+        Me.Panel2.Controls.Add(Me.Label18)
+        Me.Panel2.Controls.Add(Me.txtAddOS)
+        Me.Panel2.Controls.Add(Me.Label6)
+        Me.Panel2.Controls.Add(Me.Label7)
+        Me.Panel2.Controls.Add(Me.pdOD)
+        Me.Panel2.Controls.Add(Me.Label13)
+        Me.Panel2.Controls.Add(Me.Label9)
+        Me.Panel2.Controls.Add(Me.txtCYOS)
+        Me.Panel2.Controls.Add(Me.Label19)
+        Me.Panel2.Controls.Add(Me.Label8)
+        Me.Panel2.Controls.Add(Me.txtCYOD)
+        Me.Panel2.Location = New System.Drawing.Point(12, 163)
+        Me.Panel2.Name = "Panel2"
+        Me.Panel2.Size = New System.Drawing.Size(1095, 161)
+        Me.Panel2.TabIndex = 148
         '
         'Label21
         '
@@ -622,7 +651,7 @@ Partial Class CreateCheckUp
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(11.0!, 28.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
-        Me.ClientSize = New System.Drawing.Size(1121, 544)
+        Me.ClientSize = New System.Drawing.Size(1137, 465)
         Me.Controls.Add(Me.pnlCheckUp)
         Me.Font = New System.Drawing.Font("Segoe UI", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog
@@ -633,20 +662,24 @@ Partial Class CreateCheckUp
         Me.Name = "CreateCheckUp"
         Me.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen
         Me.Text = "Acebedo Optical"
+        Me.grpCheckUp.ResumeLayout(False)
+        Me.grpCheckUp.PerformLayout()
         Me.pnlCheckUp.ResumeLayout(False)
         Me.pnlCheckUp.PerformLayout()
-        Me.pnlNames.ResumeLayout(False)
-        Me.pnlNames.PerformLayout()
+        Me.Panel3.ResumeLayout(False)
+        Me.Panel3.PerformLayout()
         Me.grpCheckUp.ResumeLayout(False)
         Me.grpCheckUp.PerformLayout()
         Me.Panel1.ResumeLayout(False)
         Me.Panel1.PerformLayout()
         CType(Me.pbAdd, System.ComponentModel.ISupportInitialize).EndInit()
-        Me.pnlMeasurement.ResumeLayout(False)
-        Me.pnlMeasurement.PerformLayout()
+        Me.Panel2.ResumeLayout(False)
+        Me.Panel2.PerformLayout()
         Me.ResumeLayout(False)
 
     End Sub
+    Friend WithEvents Label17 As System.Windows.Forms.Label
+    Friend WithEvents dtpDate As System.Windows.Forms.DateTimePicker
     Friend WithEvents txtRemarks As System.Windows.Forms.RichTextBox
     Friend WithEvents Label16 As System.Windows.Forms.Label
     Friend WithEvents Label13 As System.Windows.Forms.Label
@@ -674,9 +707,10 @@ Partial Class CreateCheckUp
     Friend WithEvents btnCancel As System.Windows.Forms.Button
     Friend WithEvents btnClear As System.Windows.Forms.Button
     Friend WithEvents btnSave As System.Windows.Forms.Button
+    Friend WithEvents grpCheckUp As System.Windows.Forms.GroupBox
     Friend WithEvents txtPName As System.Windows.Forms.TextBox
     Friend WithEvents pnlCheckUp As System.Windows.Forms.Panel
-    Friend WithEvents btnPSearch As System.Windows.Forms.Button
+    Friend WithEvents Panel1 As System.Windows.Forms.Panel
     Friend WithEvents pbAdd As System.Windows.Forms.PictureBox
     Friend WithEvents lblhead As System.Windows.Forms.Label
     Friend WithEvents Label20 As System.Windows.Forms.Label
@@ -686,12 +720,14 @@ Partial Class CreateCheckUp
     Friend WithEvents Label18 As System.Windows.Forms.Label
     Friend WithEvents pdOD As System.Windows.Forms.TextBox
     Friend WithEvents Label19 As System.Windows.Forms.Label
+    Friend WithEvents Label21 As System.Windows.Forms.Label
+    Friend WithEvents dtpBday As System.Windows.Forms.DateTimePicker
     Friend WithEvents cmbDoctors As System.Windows.Forms.ComboBox
     Friend WithEvents Panel1 As System.Windows.Forms.Panel
     Friend WithEvents grpCheckUp As System.Windows.Forms.Panel
     Friend WithEvents Label17 As System.Windows.Forms.Label
-    Friend WithEvents pnlMeasurement As System.Windows.Forms.Panel
-    Friend WithEvents pnlNames As System.Windows.Forms.Panel
+    Friend WithEvents Panel2 As System.Windows.Forms.Panel
+    Friend WithEvents Panel3 As System.Windows.Forms.Panel
     Friend WithEvents Label21 As System.Windows.Forms.Label
     Friend WithEvents Label22 As System.Windows.Forms.Label
 End Class

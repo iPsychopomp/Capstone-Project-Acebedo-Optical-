@@ -236,7 +236,7 @@ Public Class viewCheckUp
             card.Controls.Add(lblPDOD)
 
             Dim valPDOD As New Label()
-            valPDOD.Text = If(IsDBNull(reader("pdOD")), "N/A", reader("pdOD").ToString())
+            valPDOD.Text = If(IsDBNull(reader("pdOD")) OrElse reader("pdOD") Is Nothing, "0", reader("pdOD").ToString())
             valPDOD.Location = New Point(baseX4 + labelWidth + 5, rowTop1)
             valPDOD.AutoSize = True
             valPDOD.Font = labelFontRegular
@@ -251,7 +251,7 @@ Public Class viewCheckUp
             card.Controls.Add(lblPDOS)
 
             Dim valPDOS As New Label()
-            valPDOS.Text = If(IsDBNull(reader("pdOS")), "N/A", reader("pdOS").ToString())
+            valPDOS.Text = If(IsDBNull(reader("pdOS")) OrElse reader("pdOS") Is Nothing, "0", reader("pdOS").ToString())
             valPDOS.Location = New Point(baseX4 + labelWidth + 5, rowTop2)
             valPDOS.AutoSize = True
             valPDOS.Font = labelFontRegular
@@ -268,7 +268,7 @@ Public Class viewCheckUp
             card.Controls.Add(lblPDOU)
 
             Dim valPDOU As New Label()
-            valPDOU.Text = If(IsDBNull(reader("pdOU")), "N/A", reader("pdOU").ToString())
+            valPDOU.Text = If(IsDBNull(reader("pdOU")) OrElse reader("pdOU") Is Nothing, "0", reader("pdOU").ToString())
             valPDOU.Location = New Point(baseX4 + labelWidth + 5, rowTop3)
             valPDOU.AutoSize = True
             valPDOU.Font = labelFontRegular

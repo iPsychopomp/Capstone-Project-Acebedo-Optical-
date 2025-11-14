@@ -121,9 +121,9 @@ Public Class patientRecord
             txtSearch.ForeColor = Color.Gray
 
             ' Configure column visibility if needed
-            'If patientDGV.Columns.Contains(PatientIDColumnName) Then
-            '    patientDGV.Columns(PatientIDColumnName).Visible = False ' Hide ID column
-            'End If
+            If patientDGV.Columns.Contains(PatientIDColumnName) Then
+                patientDGV.Columns(PatientIDColumnName).Visible = False ' Hide ID column
+            End If
 
             ' Apply styling after data is loaded
             DgvStyle(patientDGV)
@@ -135,36 +135,36 @@ Public Class patientRecord
         End Try
     End Sub
 
-    Private Sub patientDGV_CellDoubleClick(sender As Object, e As DataGridViewCellEventArgs) Handles patientDGV.CellDoubleClick
-        Try
-            ' Validate row index
-            If e.RowIndex < 0 OrElse e.RowIndex >= patientDGV.Rows.Count OrElse
-               patientDGV.Rows(e.RowIndex).IsNewRow Then
-                Return
-            End If
+    'Private Sub patientDGV_CellDoubleClick(sender As Object, e As DataGridViewCellEventArgs) Handles patientDGV.CellDoubleClick
+    '    Try
+    '        ' Validate row index
+    '        If e.RowIndex < 0 OrElse e.RowIndex >= patientDGV.Rows.Count OrElse
+    '           patientDGV.Rows(e.RowIndex).IsNewRow Then
+    '            Return
+    '        End If
 
-            ' Get patient ID from the correct column
-            Dim cellValue As Object = patientDGV.Rows(e.RowIndex).Cells(PatientIDColumnName).Value
-            Dim patientID As Integer
+    '        ' Get patient ID from the correct column
+    '        Dim cellValue As Object = patientDGV.Rows(e.RowIndex).Cells(PatientIDColumnName).Value
+    '        Dim patientID As Integer
 
-            If cellValue Is Nothing OrElse Not Integer.TryParse(cellValue.ToString(), patientID) Then
-                MessageBox.Show("Invalid patient record selected.",
-                              "Error", MessageBoxButtons.OK, MessageBoxIcon.Error)
-                Return
-            End If
+    '        If cellValue Is Nothing OrElse Not Integer.TryParse(cellValue.ToString(), patientID) Then
+    '            MessageBox.Show("Invalid patient record selected.",
+    '                          "Error", MessageBoxButtons.OK, MessageBoxIcon.Error)
+    '            Return
+    '        End If
 
-            ' Open patient details
-            Using actionsForm As New patientActions()
-                actionsForm.InitializeForPatient(patientID)
-                actionsForm.ShowDialog()
-                ReloadPatientData() ' Refresh after closing
-            End Using
-        Catch ex As Exception
-            MessageBox.Show("Error opening record: " & ex.Message,
-                          "Error", MessageBoxButtons.OK, MessageBoxIcon.Error)
-        End Try
-        DgvStyle(patientDGV)
-    End Sub
+    '        ' Open patient details
+    '        Using actionsForm As New patientActions()
+    '            actionsForm.InitializeForPatient(patientID)
+    '            actionsForm.ShowDialog()
+    '            ReloadPatientData() ' Refresh after closing
+    '        End Using
+    '    Catch ex As Exception
+    '        MessageBox.Show("Error opening record: " & ex.Message,
+    '                      "Error", MessageBoxButtons.OK, MessageBoxIcon.Error)
+    '    End Try
+    '    DgvStyle(patientDGV)
+    'End Sub
 
     Public Sub ReloadPatientData()
         Try
@@ -181,7 +181,7 @@ Public Class patientRecord
     Private Sub LoadPage()
         Try
             Dim countSql As String = "SELECT COUNT(*) FROM db_viewpatient"
-            Dim dataSql As String = "SELECT * FROM db_viewpatient ORDER BY patientID DESC LIMIT ? OFFSET ?"
+            Dim dataSql As String = "SELECT * FROM db_viewpatient ORDER BY fullname ASC LIMIT ? OFFSET ?"
 
             Using cn As New OdbcConnection(myDSN)
                 cn.Open()
@@ -271,6 +271,11 @@ Public Class patientRecord
             col.HeaderCell.Style.Alignment = DataGridViewContentAlignment.MiddleCenter
             ' Disable sorting completely to remove sort arrows
             col.SortMode = DataGridViewColumnSortMode.NotSortable
+
+            ' Hide patient ID column
+            If col.Name = PatientIDColumnName Then
+                col.Visible = False
+            End If
 
             ' Center align the ID and Age column data
             If col.Name = "Column1" OrElse col.HeaderText = "ID" OrElse col.Name = "Column4" OrElse col.HeaderText = "Age" Then

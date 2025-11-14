@@ -24,8 +24,6 @@ Partial Class patientCheckUp
     Private Sub InitializeComponent()
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(patientCheckUp))
         Me.txtPName = New System.Windows.Forms.TextBox()
-        Me.Label17 = New System.Windows.Forms.Label()
-        Me.dtpDate = New System.Windows.Forms.DateTimePicker()
         Me.txtRemarks = New System.Windows.Forms.RichTextBox()
         Me.Label16 = New System.Windows.Forms.Label()
         Me.Label13 = New System.Windows.Forms.Label()
@@ -84,27 +82,6 @@ Partial Class patientCheckUp
         Me.txtPName.ReadOnly = True
         Me.txtPName.Size = New System.Drawing.Size(306, 32)
         Me.txtPName.TabIndex = 1
-        '
-        'Label17
-        '
-        Me.Label17.AutoSize = True
-        Me.Label17.Font = New System.Drawing.Font("Segoe UI", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Label17.Location = New System.Drawing.Point(935, 67)
-        Me.Label17.Name = "Label17"
-        Me.Label17.Size = New System.Drawing.Size(55, 25)
-        Me.Label17.TabIndex = 141
-        Me.Label17.Text = "Date:"
-        '
-        'dtpDate
-        '
-        Me.dtpDate.CustomFormat = "yyyy-MM-dd"
-        Me.dtpDate.Font = New System.Drawing.Font("Segoe UI", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.dtpDate.Format = System.Windows.Forms.DateTimePickerFormat.Custom
-        Me.dtpDate.Location = New System.Drawing.Point(940, 90)
-        Me.dtpDate.Margin = New System.Windows.Forms.Padding(3, 2, 3, 2)
-        Me.dtpDate.Name = "dtpDate"
-        Me.dtpDate.Size = New System.Drawing.Size(151, 32)
-        Me.dtpDate.TabIndex = 140
         '
         'txtRemarks
         '
@@ -179,8 +156,6 @@ Partial Class patientCheckUp
         Me.pnlCheckUp.BackColor = System.Drawing.SystemColors.MenuBar
         Me.pnlCheckUp.Controls.Add(Me.txtDName)
         Me.pnlCheckUp.Controls.Add(Me.Panel1)
-        Me.pnlCheckUp.Controls.Add(Me.Label17)
-        Me.pnlCheckUp.Controls.Add(Me.dtpDate)
         Me.pnlCheckUp.Controls.Add(Me.btnDSearch)
         Me.pnlCheckUp.Controls.Add(Me.btnCancel)
         Me.pnlCheckUp.Controls.Add(Me.btnPSearch)
@@ -611,8 +586,6 @@ Partial Class patientCheckUp
 
     End Sub
     Friend WithEvents txtPName As System.Windows.Forms.TextBox
-    Friend WithEvents Label17 As System.Windows.Forms.Label
-    Friend WithEvents dtpDate As System.Windows.Forms.DateTimePicker
     Friend WithEvents txtRemarks As System.Windows.Forms.RichTextBox
     Friend WithEvents Label16 As System.Windows.Forms.Label
     Friend WithEvents Label13 As System.Windows.Forms.Label

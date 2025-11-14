@@ -2,6 +2,7 @@ Public Class PatientNextAppointment
     Public selectedPatientID As Integer
     Public patientName As String
     Public Property latestCheckupID As Integer
+    Public ParentCheckUpForm As checkUp = Nothing
 
     Private Sub btnSave_Click(sender As Object, e As EventArgs) Handles btnSave.Click
         Try
@@ -29,7 +30,7 @@ Public Class PatientNextAppointment
 
             ' Validate that patient has a checkup record TODAY before scheduling next appointment
             If Not HasCheckupRecord(selectedPatientID) Then
-                MsgBox("Cannot schedule next appointment. Patient must have a checkup TODAY first." & vbCrLf & vbCrLf & "Please create a checkup for this patient today before scheduling an appointment.", vbExclamation, "No Checkup Today")
+                MsgBox("A checkup is required today before scheduling the next appointment.", vbExclamation, "Caution")
                 Exit Sub
             End If
 
@@ -66,6 +67,16 @@ Public Class PatientNextAppointment
             ' Success message
             MsgBox("Appointment saved successfully.", vbInformation, "Success")
             conn.Close()
+
+            ' Refresh parent checkUp form if available
+            If ParentCheckUpForm IsNot Nothing Then
+                Try
+                    ParentCheckUpForm.LoadPage()
+                Catch ex As Exception
+                    ' Ignore refresh errors
+                End Try
+            End If
+
             Me.Close()
 
         Catch ex As Exception
@@ -159,11 +170,11 @@ Public Class PatientNextAppointment
         End Try
     End Sub
 
-    ' Removed queue auto-add: appointments are saved to tbl_appointments only
+    '' Removed queue auto-add: appointments are saved to tbl_appointments only
 
-    Private Sub btnCancel_Click(sender As Object, e As EventArgs) Handles btnCancel.Click
-        Me.Close()
-    End Sub
+    'Private Sub btnCancel_Click(sender As Object, e As EventArgs) Handles btnCancel.Click
+    '    Me.Close()
+    'End Sub
 
     Private Sub dtpDate_ValueChanged(sender As Object, e As EventArgs) Handles dtpDate.ValueChanged
         ' Ensure the selected date is always in the future

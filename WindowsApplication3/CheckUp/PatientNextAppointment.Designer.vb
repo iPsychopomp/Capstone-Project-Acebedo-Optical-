@@ -30,7 +30,6 @@ Partial Class PatientNextAppointment
         Me.cmbPatientType = New System.Windows.Forms.ComboBox()
         Me.Label4 = New System.Windows.Forms.Label()
         Me.lblPatientName = New System.Windows.Forms.Label()
-        Me.lblPatientID = New System.Windows.Forms.Label()
         Me.cmbDoctors = New System.Windows.Forms.ComboBox()
         Me.Label2 = New System.Windows.Forms.Label()
         Me.Label1 = New System.Windows.Forms.Label()
@@ -38,6 +37,7 @@ Partial Class PatientNextAppointment
         Me.Panel1 = New System.Windows.Forms.Panel()
         Me.pbAdd = New System.Windows.Forms.PictureBox()
         Me.lblhead = New System.Windows.Forms.Label()
+        Me.lblPatientID = New System.Windows.Forms.Label()
         Me.GroupBox1.SuspendLayout()
         Me.Panel1.SuspendLayout()
         CType(Me.pbAdd, System.ComponentModel.ISupportInitialize).BeginInit()
@@ -47,13 +47,13 @@ Partial Class PatientNextAppointment
         '
         Me.btnSave.BackColor = System.Drawing.SystemColors.ControlLight
         Me.btnSave.FlatStyle = System.Windows.Forms.FlatStyle.System
-        Me.btnSave.Font = New System.Drawing.Font("Segoe UI", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.btnSave.Font = New System.Drawing.Font("Segoe UI", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.btnSave.ForeColor = System.Drawing.Color.Black
         Me.btnSave.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft
-        Me.btnSave.Location = New System.Drawing.Point(39, 235)
+        Me.btnSave.Location = New System.Drawing.Point(503, 219)
         Me.btnSave.Margin = New System.Windows.Forms.Padding(3, 2, 3, 2)
         Me.btnSave.Name = "btnSave"
-        Me.btnSave.Size = New System.Drawing.Size(100, 27)
+        Me.btnSave.Size = New System.Drawing.Size(97, 36)
         Me.btnSave.TabIndex = 6
         Me.btnSave.Text = "Save"
         Me.btnSave.UseVisualStyleBackColor = False
@@ -63,16 +63,17 @@ Partial Class PatientNextAppointment
         Me.btnCancel.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.btnCancel.BackColor = System.Drawing.SystemColors.ControlLight
         Me.btnCancel.FlatStyle = System.Windows.Forms.FlatStyle.System
-        Me.btnCancel.Font = New System.Drawing.Font("Segoe UI", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.btnCancel.Font = New System.Drawing.Font("Segoe UI", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.btnCancel.ForeColor = System.Drawing.Color.Black
         Me.btnCancel.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft
-        Me.btnCancel.Location = New System.Drawing.Point(500, 235)
+        Me.btnCancel.Location = New System.Drawing.Point(26, 219)
         Me.btnCancel.Margin = New System.Windows.Forms.Padding(3, 2, 3, 2)
         Me.btnCancel.Name = "btnCancel"
-        Me.btnCancel.Size = New System.Drawing.Size(100, 27)
+        Me.btnCancel.Size = New System.Drawing.Size(97, 36)
         Me.btnCancel.TabIndex = 8
         Me.btnCancel.Text = "Cancel"
         Me.btnCancel.UseVisualStyleBackColor = False
+        Me.btnCancel.Visible = False
         '
         'GroupBox1
         '
@@ -94,89 +95,80 @@ Partial Class PatientNextAppointment
         'Label3
         '
         Me.Label3.AutoSize = True
-        Me.Label3.Font = New System.Drawing.Font("Segoe UI", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label3.Font = New System.Drawing.Font("Segoe UI", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.Label3.Location = New System.Drawing.Point(341, 22)
         Me.Label3.Name = "Label3"
-        Me.Label3.Size = New System.Drawing.Size(118, 25)
+        Me.Label3.Size = New System.Drawing.Size(122, 28)
         Me.Label3.TabIndex = 23
         Me.Label3.Text = "Patient Type:"
         '
         'cmbPatientType
         '
         Me.cmbPatientType.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
-        Me.cmbPatientType.Font = New System.Drawing.Font("Segoe UI", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.cmbPatientType.Font = New System.Drawing.Font("Segoe UI", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.cmbPatientType.FormattingEnabled = True
         Me.cmbPatientType.Items.AddRange(New Object() {"Regular", "PWD", "Senior Citizen"})
         Me.cmbPatientType.Location = New System.Drawing.Point(345, 46)
         Me.cmbPatientType.Name = "cmbPatientType"
-        Me.cmbPatientType.Size = New System.Drawing.Size(252, 33)
+        Me.cmbPatientType.Size = New System.Drawing.Size(252, 36)
         Me.cmbPatientType.TabIndex = 22
         '
         'Label4
         '
         Me.Label4.AutoSize = True
-        Me.Label4.Font = New System.Drawing.Font("Segoe UI", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label4.Font = New System.Drawing.Font("Segoe UI", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.Label4.Location = New System.Drawing.Point(32, 25)
         Me.Label4.Name = "Label4"
-        Me.Label4.Size = New System.Drawing.Size(129, 25)
+        Me.Label4.Size = New System.Drawing.Size(133, 28)
         Me.Label4.TabIndex = 21
         Me.Label4.Text = "Patient Name:"
         '
         'lblPatientName
         '
         Me.lblPatientName.AutoSize = True
-        Me.lblPatientName.Font = New System.Drawing.Font("Segoe UI", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.lblPatientName.Font = New System.Drawing.Font("Segoe UI", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.lblPatientName.Location = New System.Drawing.Point(34, 49)
         Me.lblPatientName.Name = "lblPatientName"
-        Me.lblPatientName.Size = New System.Drawing.Size(36, 25)
+        Me.lblPatientName.Size = New System.Drawing.Size(36, 28)
         Me.lblPatientName.TabIndex = 20
         Me.lblPatientName.Text = "---"
-        '
-        'lblPatientID
-        '
-        Me.lblPatientID.AutoSize = True
-        Me.lblPatientID.Location = New System.Drawing.Point(33, 25)
-        Me.lblPatientID.Name = "lblPatientID"
-        Me.lblPatientID.Size = New System.Drawing.Size(35, 28)
-        Me.lblPatientID.TabIndex = 19
-        Me.lblPatientID.Text = "ID:"
         '
         'cmbDoctors
         '
         Me.cmbDoctors.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
-        Me.cmbDoctors.Font = New System.Drawing.Font("Segoe UI", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.cmbDoctors.Font = New System.Drawing.Font("Segoe UI", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.cmbDoctors.FormattingEnabled = True
         Me.cmbDoctors.Location = New System.Drawing.Point(36, 100)
         Me.cmbDoctors.Name = "cmbDoctors"
-        Me.cmbDoctors.Size = New System.Drawing.Size(265, 33)
+        Me.cmbDoctors.Size = New System.Drawing.Size(265, 36)
         Me.cmbDoctors.TabIndex = 18
         '
         'Label2
         '
         Me.Label2.AutoSize = True
-        Me.Label2.Font = New System.Drawing.Font("Segoe UI", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label2.Font = New System.Drawing.Font("Segoe UI", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.Label2.Location = New System.Drawing.Point(34, 77)
         Me.Label2.Name = "Label2"
-        Me.Label2.Size = New System.Drawing.Size(73, 25)
+        Me.Label2.Size = New System.Drawing.Size(77, 28)
         Me.Label2.TabIndex = 17
         Me.Label2.Text = "Doctor:"
         '
         'Label1
         '
         Me.Label1.AutoSize = True
-        Me.Label1.Font = New System.Drawing.Font("Segoe UI", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label1.Font = New System.Drawing.Font("Segoe UI", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.Label1.Location = New System.Drawing.Point(341, 77)
         Me.Label1.Name = "Label1"
-        Me.Label1.Size = New System.Drawing.Size(55, 25)
+        Me.Label1.Size = New System.Drawing.Size(57, 28)
         Me.Label1.TabIndex = 16
         Me.Label1.Text = "Date:"
         '
         'dtpDate
         '
-        Me.dtpDate.Font = New System.Drawing.Font("Segoe UI", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.dtpDate.Font = New System.Drawing.Font("Segoe UI", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.dtpDate.Location = New System.Drawing.Point(345, 100)
         Me.dtpDate.Name = "dtpDate"
-        Me.dtpDate.Size = New System.Drawing.Size(252, 32)
+        Me.dtpDate.Size = New System.Drawing.Size(252, 34)
         Me.dtpDate.TabIndex = 15
         '
         'Panel1
@@ -209,11 +201,21 @@ Partial Class PatientNextAppointment
         Me.lblhead.TabIndex = 113
         Me.lblhead.Text = "Patient Next Appointment"
         '
+        'lblPatientID
+        '
+        Me.lblPatientID.AutoSize = True
+        Me.lblPatientID.Font = New System.Drawing.Font("Segoe UI", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.lblPatientID.Location = New System.Drawing.Point(33, 25)
+        Me.lblPatientID.Name = "lblPatientID"
+        Me.lblPatientID.Size = New System.Drawing.Size(35, 28)
+        Me.lblPatientID.TabIndex = 19
+        Me.lblPatientID.Text = "ID:"
+        '
         'PatientNextAppointment
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(11.0!, 28.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
-        Me.ClientSize = New System.Drawing.Size(638, 280)
+        Me.ClientSize = New System.Drawing.Size(638, 262)
         Me.Controls.Add(Me.Panel1)
         Me.Controls.Add(Me.GroupBox1)
         Me.Controls.Add(Me.btnCancel)
@@ -242,7 +244,6 @@ Partial Class PatientNextAppointment
     Friend WithEvents cmbPatientType As System.Windows.Forms.ComboBox
     Friend WithEvents Label4 As System.Windows.Forms.Label
     Friend WithEvents lblPatientName As System.Windows.Forms.Label
-    Friend WithEvents lblPatientID As System.Windows.Forms.Label
     Friend WithEvents cmbDoctors As System.Windows.Forms.ComboBox
     Friend WithEvents Label2 As System.Windows.Forms.Label
     Friend WithEvents Label1 As System.Windows.Forms.Label
@@ -250,4 +251,5 @@ Partial Class PatientNextAppointment
     Friend WithEvents Panel1 As System.Windows.Forms.Panel
     Friend WithEvents pbAdd As System.Windows.Forms.PictureBox
     Friend WithEvents lblhead As System.Windows.Forms.Label
+    Friend WithEvents lblPatientID As System.Windows.Forms.Label
 End Class

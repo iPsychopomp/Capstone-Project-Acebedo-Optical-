@@ -146,12 +146,6 @@ Public Class CreateCheckUp
         End If
     End Sub
 
-    Private Sub btnPSearch_Click(sender As Object, e As EventArgs) Handles btnPSearch.Click
-        Using chooseP As New searchPatient
-            chooseP.ShowDialog()
-        End Using
-    End Sub
-
     Private Sub CreateCheckUp_Load(sender As Object, e As EventArgs) Handles MyBase.Load
         LoadPatientNames()
         SetupPatientAutoComplete()
@@ -391,40 +385,40 @@ Public Class CreateCheckUp
         Close()
     End Sub
 
-    Private Sub btnClear_Click(sender As Object, e As EventArgs) Handles btnClear.Click
-        Try
-            ' Clear patient name and doctor name textboxes
-            txtPName.Text = ""
-            txtPName.Tag = Nothing
-            cmbDoctors.Text = ""
-            cmbDoctors.Tag = Nothing
+    'Private Sub btnClear_Click(sender As Object, e As EventArgs) Handles btnClear.Click
+    '    Try
+    '        ' Clear patient name and doctor name textboxes
+    '        txtPName.Text = ""
+    '        txtPName.Tag = Nothing
+    '        cmbDoctors.Text = ""
+    '        cmbDoctors.Tag = Nothing
 
-            ' Clear all inputs inside the group container
-            For Each obj As Control In grpCheckUp.Controls
-                If TypeOf obj Is TextBox Then
-                    CType(obj, TextBox).Clear()
-                ElseIf TypeOf obj Is ComboBox Then
-                    Dim cb As ComboBox = CType(obj, ComboBox)
-                    cb.SelectedIndex = -1
-                    cb.Text = String.Empty
-                ElseIf TypeOf obj Is RichTextBox Then
-                    CType(obj, RichTextBox).Clear()
-                ElseIf TypeOf obj Is DateTimePicker Then
-                    CType(obj, DateTimePicker).Value = DateTime.Now
-                End If
-            Next
+    '        ' Clear all inputs inside the group container
+    '        ''For Each obj As Control In grpCheckUp.Controls
+    '        'If TypeOf obj Is TextBox Then
+    '        '    CType(obj, TextBox).Clear()
+    '        'ElseIf TypeOf obj Is ComboBox Then
+    '        '    Dim cb As ComboBox = CType(obj, ComboBox)
+    '        '    cb.SelectedIndex = -1
+    '        '    cb.Text = String.Empty
+    '        'ElseIf TypeOf obj Is RichTextBox Then
+    '        '    CType(obj, RichTextBox).Clear()
+    '        'ElseIf TypeOf obj Is DateTimePicker Then
+    '        '    CType(obj, DateTimePicker).Value = DateTime.Now
+    '        'End If
+    '        'Next
 
-            ' Clear PD fields
-            pdOD.Text = "0"
-            pdOS.Text = "0"
-            pdOU.Text = "0"
+    '        ' Clear PD fields
+    '        pdOD.Text = "0"
+    '        pdOS.Text = "0"
+    '        pdOU.Text = "0"
 
-            ' Reset date to today
-            'dtpDate.Value = DateTime.Now
-        Catch ex As Exception
-            MsgBox("Failed to clear fields: " & ex.Message, vbCritical, "Error")
-        End Try
-    End Sub
+    '        ' Reset date to today
+    '        'dtpDate.Value = DateTime.Now
+    '    Catch ex As Exception
+    '        MsgBox("Failed to clear fields: " & ex.Message, vbCritical, "Error")
+    '    End Try
+    'End Sub
 
     Public Sub LoadCheckup(checkupID As Integer)
         Dim cmd As Odbc.OdbcCommand

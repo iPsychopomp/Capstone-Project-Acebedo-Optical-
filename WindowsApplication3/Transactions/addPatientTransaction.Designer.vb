@@ -30,7 +30,6 @@ Partial Class addPatientTransaction
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(addPatientTransaction))
         Me.btnCancel = New System.Windows.Forms.Button()
         Me.btnSave = New System.Windows.Forms.Button()
-        Me.txtTotal = New System.Windows.Forms.TextBox()
         Me.Label4 = New System.Windows.Forms.Label()
         Me.Label11 = New System.Windows.Forms.Label()
         Me.cmbDiscount = New System.Windows.Forms.ComboBox()
@@ -43,12 +42,6 @@ Partial Class addPatientTransaction
         Me.btnRemove = New System.Windows.Forms.Button()
         Me.btnAdd = New System.Windows.Forms.Button()
         Me.dgvSelectedProducts = New System.Windows.Forms.DataGridView()
-        Me.Column4 = New System.Windows.Forms.DataGridViewTextBoxColumn()
-        Me.Column1 = New System.Windows.Forms.DataGridViewTextBoxColumn()
-        Me.Column3 = New System.Windows.Forms.DataGridViewTextBoxColumn()
-        Me.Column5 = New System.Windows.Forms.DataGridViewTextBoxColumn()
-        Me.Column2 = New System.Windows.Forms.DataGridViewTextBoxColumn()
-        Me.Column6 = New System.Windows.Forms.DataGridViewTextBoxColumn()
         Me.Label2 = New System.Windows.Forms.Label()
         Me.txtPatientName = New System.Windows.Forms.Label()
         Me.lblPatientID = New System.Windows.Forms.TextBox()
@@ -64,6 +57,17 @@ Partial Class addPatientTransaction
         Me.txtReference = New System.Windows.Forms.TextBox()
         Me.txtRefNum = New System.Windows.Forms.Label()
         Me.cmbType = New System.Windows.Forms.ComboBox()
+        Me.Column4 = New System.Windows.Forms.DataGridViewTextBoxColumn()
+        Me.Column1 = New System.Windows.Forms.DataGridViewTextBoxColumn()
+        Me.Column3 = New System.Windows.Forms.DataGridViewTextBoxColumn()
+        Me.Column5 = New System.Windows.Forms.DataGridViewTextBoxColumn()
+        Me.Column2 = New System.Windows.Forms.DataGridViewTextBoxColumn()
+        Me.Column6 = New System.Windows.Forms.DataGridViewTextBoxColumn()
+        Me.Label5 = New System.Windows.Forms.Label()
+        Me.Label6 = New System.Windows.Forms.Label()
+        Me.txtSubTotal = New System.Windows.Forms.Label()
+        Me.txtTotalDiscount = New System.Windows.Forms.Label()
+        Me.txtTotal = New System.Windows.Forms.Label()
         CType(Me.dgvSelectedProducts, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.Panel1.SuspendLayout()
         CType(Me.pbAdd, System.ComponentModel.ISupportInitialize).BeginInit()
@@ -77,7 +81,7 @@ Partial Class addPatientTransaction
         Me.btnCancel.Font = New System.Drawing.Font("Segoe UI", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.btnCancel.ForeColor = System.Drawing.Color.Black
         Me.btnCancel.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft
-        Me.btnCancel.Location = New System.Drawing.Point(27, 769)
+        Me.btnCancel.Location = New System.Drawing.Point(27, 705)
         Me.btnCancel.Margin = New System.Windows.Forms.Padding(3, 2, 3, 2)
         Me.btnCancel.Name = "btnCancel"
         Me.btnCancel.Size = New System.Drawing.Size(100, 27)
@@ -92,25 +96,13 @@ Partial Class addPatientTransaction
         Me.btnSave.Font = New System.Drawing.Font("Segoe UI", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.btnSave.ForeColor = System.Drawing.Color.Black
         Me.btnSave.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft
-        Me.btnSave.Location = New System.Drawing.Point(560, 769)
+        Me.btnSave.Location = New System.Drawing.Point(486, 705)
         Me.btnSave.Margin = New System.Windows.Forms.Padding(3, 2, 3, 2)
         Me.btnSave.Name = "btnSave"
         Me.btnSave.Size = New System.Drawing.Size(100, 27)
         Me.btnSave.TabIndex = 219
         Me.btnSave.Text = "Save"
         Me.btnSave.UseVisualStyleBackColor = False
-        '
-        'txtTotal
-        '
-        Me.txtTotal.BackColor = System.Drawing.Color.White
-        Me.txtTotal.Font = New System.Drawing.Font("Segoe UI", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.txtTotal.Location = New System.Drawing.Point(509, 631)
-        Me.txtTotal.Margin = New System.Windows.Forms.Padding(3, 2, 3, 2)
-        Me.txtTotal.Name = "txtTotal"
-        Me.txtTotal.ReadOnly = True
-        Me.txtTotal.RightToLeft = System.Windows.Forms.RightToLeft.Yes
-        Me.txtTotal.Size = New System.Drawing.Size(151, 32)
-        Me.txtTotal.TabIndex = 218
         '
         'Label4
         '
@@ -127,7 +119,7 @@ Partial Class addPatientTransaction
         '
         Me.Label11.AutoSize = True
         Me.Label11.Font = New System.Drawing.Font("Segoe UI", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Label11.Location = New System.Drawing.Point(504, 473)
+        Me.Label11.Location = New System.Drawing.Point(20, 439)
         Me.Label11.Name = "Label11"
         Me.Label11.Size = New System.Drawing.Size(147, 25)
         Me.Label11.TabIndex = 215
@@ -140,17 +132,17 @@ Partial Class addPatientTransaction
         Me.cmbDiscount.Font = New System.Drawing.Font("Segoe UI", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.cmbDiscount.FormattingEnabled = True
         Me.cmbDiscount.Items.AddRange(New Object() {"10%", "20%", "30%", "40%", "50%", "N/A"})
-        Me.cmbDiscount.Location = New System.Drawing.Point(509, 498)
+        Me.cmbDiscount.Location = New System.Drawing.Point(146, 431)
         Me.cmbDiscount.Name = "cmbDiscount"
         Me.cmbDiscount.RightToLeft = System.Windows.Forms.RightToLeft.Yes
-        Me.cmbDiscount.Size = New System.Drawing.Size(151, 33)
+        Me.cmbDiscount.Size = New System.Drawing.Size(139, 33)
         Me.cmbDiscount.TabIndex = 214
         '
         'Label13
         '
         Me.Label13.AutoSize = True
         Me.Label13.Font = New System.Drawing.Font("Segoe UI", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Label13.Location = New System.Drawing.Point(504, 671)
+        Me.Label13.Location = New System.Drawing.Point(309, 612)
         Me.Label13.Name = "Label13"
         Me.Label13.Size = New System.Drawing.Size(124, 25)
         Me.Label13.TabIndex = 213
@@ -160,11 +152,11 @@ Partial Class addPatientTransaction
         '
         Me.txtAmountPaid.BackColor = System.Drawing.Color.White
         Me.txtAmountPaid.Font = New System.Drawing.Font("Segoe UI", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.txtAmountPaid.Location = New System.Drawing.Point(509, 696)
+        Me.txtAmountPaid.Location = New System.Drawing.Point(445, 612)
         Me.txtAmountPaid.Margin = New System.Windows.Forms.Padding(3, 2, 3, 2)
         Me.txtAmountPaid.Name = "txtAmountPaid"
         Me.txtAmountPaid.RightToLeft = System.Windows.Forms.RightToLeft.Yes
-        Me.txtAmountPaid.Size = New System.Drawing.Size(151, 32)
+        Me.txtAmountPaid.Size = New System.Drawing.Size(139, 32)
         Me.txtAmountPaid.TabIndex = 212
         Me.txtAmountPaid.Text = "0.00"
         '
@@ -175,16 +167,16 @@ Partial Class addPatientTransaction
         Me.cmbMode.Font = New System.Drawing.Font("Segoe UI", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.cmbMode.FormattingEnabled = True
         Me.cmbMode.Items.AddRange(New Object() {"G-cash", "Cash"})
-        Me.cmbMode.Location = New System.Drawing.Point(27, 498)
+        Me.cmbMode.Location = New System.Drawing.Point(445, 431)
         Me.cmbMode.Name = "cmbMode"
-        Me.cmbMode.Size = New System.Drawing.Size(266, 33)
+        Me.cmbMode.Size = New System.Drawing.Size(139, 33)
         Me.cmbMode.TabIndex = 211
         '
         'Label12
         '
         Me.Label12.AutoSize = True
         Me.Label12.Font = New System.Drawing.Font("Segoe UI", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Label12.Location = New System.Drawing.Point(22, 473)
+        Me.Label12.Location = New System.Drawing.Point(309, 439)
         Me.Label12.Name = "Label12"
         Me.Label12.Size = New System.Drawing.Size(164, 25)
         Me.Label12.TabIndex = 210
@@ -194,11 +186,11 @@ Partial Class addPatientTransaction
         '
         Me.Label1.AutoSize = True
         Me.Label1.Font = New System.Drawing.Font("Segoe UI", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Label1.Location = New System.Drawing.Point(504, 606)
+        Me.Label1.Location = New System.Drawing.Point(309, 568)
         Me.Label1.Name = "Label1"
-        Me.Label1.Size = New System.Drawing.Size(56, 25)
+        Me.Label1.Size = New System.Drawing.Size(101, 25)
         Me.Label1.TabIndex = 207
-        Me.Label1.Text = "Total:"
+        Me.Label1.Text = "Final Total:"
         '
         'dtpDate
         '
@@ -219,10 +211,10 @@ Partial Class addPatientTransaction
         Me.btnRemove.Font = New System.Drawing.Font("Segoe UI", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.btnRemove.ForeColor = System.Drawing.Color.Black
         Me.btnRemove.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft
-        Me.btnRemove.Location = New System.Drawing.Point(515, 167)
+        Me.btnRemove.Location = New System.Drawing.Point(437, 115)
         Me.btnRemove.Margin = New System.Windows.Forms.Padding(3, 2, 3, 2)
         Me.btnRemove.Name = "btnRemove"
-        Me.btnRemove.Size = New System.Drawing.Size(158, 27)
+        Me.btnRemove.Size = New System.Drawing.Size(147, 27)
         Me.btnRemove.TabIndex = 204
         Me.btnRemove.Text = "Remove"
         Me.btnRemove.UseVisualStyleBackColor = False
@@ -234,10 +226,10 @@ Partial Class addPatientTransaction
         Me.btnAdd.Font = New System.Drawing.Font("Segoe UI", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.btnAdd.ForeColor = System.Drawing.Color.Black
         Me.btnAdd.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft
-        Me.btnAdd.Location = New System.Drawing.Point(357, 167)
+        Me.btnAdd.Location = New System.Drawing.Point(279, 115)
         Me.btnAdd.Margin = New System.Windows.Forms.Padding(3, 2, 3, 2)
         Me.btnAdd.Name = "btnAdd"
-        Me.btnAdd.Size = New System.Drawing.Size(152, 27)
+        Me.btnAdd.Size = New System.Drawing.Size(147, 27)
         Me.btnAdd.TabIndex = 203
         Me.btnAdd.Text = "Select Products"
         Me.btnAdd.UseVisualStyleBackColor = False
@@ -250,6 +242,7 @@ Partial Class addPatientTransaction
         Me.dgvSelectedProducts.AlternatingRowsDefaultCellStyle = DataGridViewCellStyle1
         Me.dgvSelectedProducts.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill
         Me.dgvSelectedProducts.BackgroundColor = System.Drawing.Color.White
+        Me.dgvSelectedProducts.BorderStyle = System.Windows.Forms.BorderStyle.None
         Me.dgvSelectedProducts.CellBorderStyle = System.Windows.Forms.DataGridViewCellBorderStyle.Raised
         DataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter
         DataGridViewCellStyle2.BackColor = System.Drawing.SystemColors.Control
@@ -269,7 +262,7 @@ Partial Class addPatientTransaction
         DataGridViewCellStyle3.WrapMode = System.Windows.Forms.DataGridViewTriState.[False]
         Me.dgvSelectedProducts.DefaultCellStyle = DataGridViewCellStyle3
         Me.dgvSelectedProducts.GridColor = System.Drawing.Color.Black
-        Me.dgvSelectedProducts.Location = New System.Drawing.Point(0, 210)
+        Me.dgvSelectedProducts.Location = New System.Drawing.Point(0, 166)
         Me.dgvSelectedProducts.MultiSelect = False
         Me.dgvSelectedProducts.Name = "dgvSelectedProducts"
         Me.dgvSelectedProducts.ReadOnly = True
@@ -285,58 +278,14 @@ Partial Class addPatientTransaction
         Me.dgvSelectedProducts.RowsDefaultCellStyle = DataGridViewCellStyle5
         Me.dgvSelectedProducts.RowTemplate.Height = 40
         Me.dgvSelectedProducts.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect
-        Me.dgvSelectedProducts.Size = New System.Drawing.Size(683, 248)
+        Me.dgvSelectedProducts.Size = New System.Drawing.Size(605, 248)
         Me.dgvSelectedProducts.TabIndex = 202
-        '
-        'Column4
-        '
-        Me.Column4.HeaderText = "product ID"
-        Me.Column4.Name = "Column4"
-        Me.Column4.ReadOnly = True
-        Me.Column4.Visible = False
-        '
-        'Column1
-        '
-        Me.Column1.HeaderText = "Product Name"
-        Me.Column1.Name = "Column1"
-        Me.Column1.ReadOnly = True
-        '
-        'Column3
-        '
-        Me.Column3.HeaderText = "Category"
-        Me.Column3.Name = "Column3"
-        Me.Column3.ReadOnly = True
-        Me.Column3.Visible = False
-        '
-        'Column5
-        '
-        Me.Column5.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None
-        Me.Column5.HeaderText = "Quantity"
-        Me.Column5.Name = "Column5"
-        Me.Column5.ReadOnly = True
-        Me.Column5.Width = 120
-        '
-        'Column2
-        '
-        Me.Column2.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None
-        Me.Column2.HeaderText = "Price"
-        Me.Column2.Name = "Column2"
-        Me.Column2.ReadOnly = True
-        Me.Column2.Width = 130
-        '
-        'Column6
-        '
-        Me.Column6.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None
-        Me.Column6.HeaderText = "Total"
-        Me.Column6.Name = "Column6"
-        Me.Column6.ReadOnly = True
-        Me.Column6.Width = 130
         '
         'Label2
         '
         Me.Label2.AutoSize = True
         Me.Label2.Font = New System.Drawing.Font("Segoe UI", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Label2.Location = New System.Drawing.Point(22, 75)
+        Me.Label2.Location = New System.Drawing.Point(20, 80)
         Me.Label2.Name = "Label2"
         Me.Label2.Size = New System.Drawing.Size(141, 25)
         Me.Label2.TabIndex = 199
@@ -346,16 +295,17 @@ Partial Class addPatientTransaction
         '
         Me.txtPatientName.AutoSize = True
         Me.txtPatientName.Font = New System.Drawing.Font("Segoe UI", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.txtPatientName.Location = New System.Drawing.Point(22, 102)
+        Me.txtPatientName.Location = New System.Drawing.Point(20, 80)
         Me.txtPatientName.Name = "txtPatientName"
         Me.txtPatientName.Size = New System.Drawing.Size(141, 25)
         Me.txtPatientName.TabIndex = 229
         Me.txtPatientName.Text = "Patient's Name:"
+        Me.txtPatientName.Visible = False
         '
         'lblPatientID
         '
         Me.lblPatientID.Font = New System.Drawing.Font("Segoe UI", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.lblPatientID.Location = New System.Drawing.Point(26, 97)
+        Me.lblPatientID.Location = New System.Drawing.Point(24, 75)
         Me.lblPatientID.Name = "lblPatientID"
         Me.lblPatientID.Size = New System.Drawing.Size(76, 32)
         Me.lblPatientID.TabIndex = 201
@@ -370,7 +320,7 @@ Partial Class addPatientTransaction
         Me.Panel1.Dock = System.Windows.Forms.DockStyle.Top
         Me.Panel1.Location = New System.Drawing.Point(0, 0)
         Me.Panel1.Name = "Panel1"
-        Me.Panel1.Size = New System.Drawing.Size(683, 49)
+        Me.Panel1.Size = New System.Drawing.Size(605, 49)
         Me.Panel1.TabIndex = 230
         '
         'pbAdd
@@ -406,7 +356,7 @@ Partial Class addPatientTransaction
         '
         Me.Label3.AutoSize = True
         Me.Label3.Font = New System.Drawing.Font("Segoe UI", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Label3.Location = New System.Drawing.Point(504, 540)
+        Me.Label3.Location = New System.Drawing.Point(20, 481)
         Me.Label3.Name = "Label3"
         Me.Label3.Size = New System.Drawing.Size(133, 25)
         Me.Label3.TabIndex = 232
@@ -419,7 +369,7 @@ Partial Class addPatientTransaction
         Me.cmbLensDisc.Font = New System.Drawing.Font("Segoe UI", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.cmbLensDisc.FormattingEnabled = True
         Me.cmbLensDisc.Items.AddRange(New Object() {"10%", "20%", "30%", "40%", "50%", "N/A"})
-        Me.cmbLensDisc.Location = New System.Drawing.Point(509, 565)
+        Me.cmbLensDisc.Location = New System.Drawing.Point(134, 473)
         Me.cmbLensDisc.Name = "cmbLensDisc"
         Me.cmbLensDisc.RightToLeft = System.Windows.Forms.RightToLeft.Yes
         Me.cmbLensDisc.Size = New System.Drawing.Size(151, 33)
@@ -427,9 +377,9 @@ Partial Class addPatientTransaction
         '
         'txtPname
         '
-        Me.txtPname.Location = New System.Drawing.Point(26, 97)
+        Me.txtPname.Location = New System.Drawing.Point(146, 75)
         Me.txtPname.Name = "txtPname"
-        Me.txtPname.Size = New System.Drawing.Size(494, 34)
+        Me.txtPname.Size = New System.Drawing.Size(280, 34)
         Me.txtPname.TabIndex = 234
         '
         'btnPSearch
@@ -439,7 +389,7 @@ Partial Class addPatientTransaction
         Me.btnPSearch.Font = New System.Drawing.Font("Segoe UI", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.btnPSearch.ForeColor = System.Drawing.Color.Black
         Me.btnPSearch.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft
-        Me.btnPSearch.Location = New System.Drawing.Point(526, 97)
+        Me.btnPSearch.Location = New System.Drawing.Point(437, 75)
         Me.btnPSearch.Margin = New System.Windows.Forms.Padding(3, 2, 3, 2)
         Me.btnPSearch.Name = "btnPSearch"
         Me.btnPSearch.Size = New System.Drawing.Size(147, 27)
@@ -451,7 +401,7 @@ Partial Class addPatientTransaction
         '
         Me.Label8.AutoSize = True
         Me.Label8.Font = New System.Drawing.Font("Segoe UI", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Label8.Location = New System.Drawing.Point(22, 138)
+        Me.Label8.Location = New System.Drawing.Point(19, 121)
         Me.Label8.Name = "Label8"
         Me.Label8.Size = New System.Drawing.Size(153, 25)
         Me.Label8.TabIndex = 239
@@ -459,9 +409,9 @@ Partial Class addPatientTransaction
         '
         'txtReference
         '
-        Me.txtReference.Location = New System.Drawing.Point(26, 565)
+        Me.txtReference.Location = New System.Drawing.Point(445, 470)
         Me.txtReference.Name = "txtReference"
-        Me.txtReference.Size = New System.Drawing.Size(266, 34)
+        Me.txtReference.Size = New System.Drawing.Size(139, 34)
         Me.txtReference.TabIndex = 240
         Me.txtReference.Visible = False
         '
@@ -469,7 +419,7 @@ Partial Class addPatientTransaction
         '
         Me.txtRefNum.AutoSize = True
         Me.txtRefNum.Font = New System.Drawing.Font("Segoe UI", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.txtRefNum.Location = New System.Drawing.Point(21, 540)
+        Me.txtRefNum.Location = New System.Drawing.Point(309, 476)
         Me.txtRefNum.Name = "txtRefNum"
         Me.txtRefNum.Size = New System.Drawing.Size(170, 25)
         Me.txtRefNum.TabIndex = 241
@@ -480,16 +430,113 @@ Partial Class addPatientTransaction
         '
         Me.cmbType.FormattingEnabled = True
         Me.cmbType.Items.AddRange(New Object() {"Check-up only", "With check-up", "Items only"})
-        Me.cmbType.Location = New System.Drawing.Point(26, 162)
+        Me.cmbType.Location = New System.Drawing.Point(146, 115)
         Me.cmbType.Name = "cmbType"
-        Me.cmbType.Size = New System.Drawing.Size(325, 36)
+        Me.cmbType.Size = New System.Drawing.Size(127, 36)
         Me.cmbType.TabIndex = 242
+        '
+        'Column4
+        '
+        Me.Column4.HeaderText = "product ID"
+        Me.Column4.Name = "Column4"
+        Me.Column4.ReadOnly = True
+        Me.Column4.Visible = False
+        '
+        'Column1
+        '
+        Me.Column1.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill
+        Me.Column1.HeaderText = "Product Name"
+        Me.Column1.Name = "Column1"
+        Me.Column1.ReadOnly = True
+        '
+        'Column3
+        '
+        Me.Column3.HeaderText = "Category"
+        Me.Column3.Name = "Column3"
+        Me.Column3.ReadOnly = True
+        Me.Column3.Visible = False
+        '
+        'Column5
+        '
+        Me.Column5.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None
+        Me.Column5.HeaderText = "Quantity"
+        Me.Column5.Name = "Column5"
+        Me.Column5.ReadOnly = True
+        '
+        'Column2
+        '
+        Me.Column2.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None
+        Me.Column2.HeaderText = "Price"
+        Me.Column2.Name = "Column2"
+        Me.Column2.ReadOnly = True
+        Me.Column2.Width = 120
+        '
+        'Column6
+        '
+        Me.Column6.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None
+        Me.Column6.HeaderText = "Total"
+        Me.Column6.Name = "Column6"
+        Me.Column6.ReadOnly = True
+        Me.Column6.Width = 120
+        '
+        'Label5
+        '
+        Me.Label5.AutoSize = True
+        Me.Label5.Font = New System.Drawing.Font("Segoe UI", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label5.Location = New System.Drawing.Point(20, 612)
+        Me.Label5.Name = "Label5"
+        Me.Label5.Size = New System.Drawing.Size(135, 25)
+        Me.Label5.TabIndex = 245
+        Me.Label5.Text = "Total Discount:"
+        '
+        'Label6
+        '
+        Me.Label6.AutoSize = True
+        Me.Label6.Font = New System.Drawing.Font("Segoe UI", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label6.Location = New System.Drawing.Point(19, 568)
+        Me.Label6.Name = "Label6"
+        Me.Label6.Size = New System.Drawing.Size(93, 25)
+        Me.Label6.TabIndex = 243
+        Me.Label6.Text = "Sub Total:"
+        '
+        'txtSubTotal
+        '
+        Me.txtSubTotal.AutoSize = True
+        Me.txtSubTotal.Font = New System.Drawing.Font("Segoe UI", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.txtSubTotal.Location = New System.Drawing.Point(164, 568)
+        Me.txtSubTotal.Name = "txtSubTotal"
+        Me.txtSubTotal.Size = New System.Drawing.Size(0, 25)
+        Me.txtSubTotal.TabIndex = 246
+        '
+        'txtTotalDiscount
+        '
+        Me.txtTotalDiscount.AutoSize = True
+        Me.txtTotalDiscount.Font = New System.Drawing.Font("Segoe UI", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.txtTotalDiscount.Location = New System.Drawing.Point(164, 612)
+        Me.txtTotalDiscount.Name = "txtTotalDiscount"
+        Me.txtTotalDiscount.Size = New System.Drawing.Size(0, 25)
+        Me.txtTotalDiscount.TabIndex = 247
+        '
+        'txtTotal
+        '
+        Me.txtTotal.AutoSize = True
+        Me.txtTotal.Font = New System.Drawing.Font("Segoe UI", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.txtTotal.Location = New System.Drawing.Point(485, 568)
+        Me.txtTotal.Name = "txtTotal"
+        Me.txtTotal.Size = New System.Drawing.Size(0, 25)
+        Me.txtTotal.TabIndex = 248
         '
         'addPatientTransaction
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(11.0!, 28.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
-        Me.ClientSize = New System.Drawing.Size(683, 821)
+        Me.ClientSize = New System.Drawing.Size(605, 745)
+        Me.Controls.Add(Me.txtTotal)
+        Me.Controls.Add(Me.txtTotalDiscount)
+        Me.Controls.Add(Me.txtSubTotal)
+        Me.Controls.Add(Me.Label2)
+        Me.Controls.Add(Me.Label5)
+        Me.Controls.Add(Me.Label6)
         Me.Controls.Add(Me.cmbType)
         Me.Controls.Add(Me.txtRefNum)
         Me.Controls.Add(Me.txtReference)
@@ -502,7 +549,6 @@ Partial Class addPatientTransaction
         Me.Controls.Add(Me.txtPatientName)
         Me.Controls.Add(Me.btnCancel)
         Me.Controls.Add(Me.btnSave)
-        Me.Controls.Add(Me.txtTotal)
         Me.Controls.Add(Me.Label4)
         Me.Controls.Add(Me.Label11)
         Me.Controls.Add(Me.cmbDiscount)
@@ -516,7 +562,6 @@ Partial Class addPatientTransaction
         Me.Controls.Add(Me.btnAdd)
         Me.Controls.Add(Me.dgvSelectedProducts)
         Me.Controls.Add(Me.lblPatientID)
-        Me.Controls.Add(Me.Label2)
         Me.Font = New System.Drawing.Font("Segoe UI", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog
         Me.Icon = CType(resources.GetObject("$this.Icon"), System.Drawing.Icon)
@@ -537,7 +582,6 @@ Partial Class addPatientTransaction
     End Sub
     Friend WithEvents btnCancel As System.Windows.Forms.Button
     Friend WithEvents btnSave As System.Windows.Forms.Button
-    Friend WithEvents txtTotal As System.Windows.Forms.TextBox
     Friend WithEvents Label4 As System.Windows.Forms.Label
     Friend WithEvents Label11 As System.Windows.Forms.Label
     Friend WithEvents cmbDiscount As System.Windows.Forms.ComboBox
@@ -564,11 +608,16 @@ Partial Class addPatientTransaction
     Friend WithEvents Label8 As System.Windows.Forms.Label
     Friend WithEvents txtReference As System.Windows.Forms.TextBox
     Friend WithEvents txtRefNum As System.Windows.Forms.Label
+    Friend WithEvents cmbType As System.Windows.Forms.ComboBox
     Friend WithEvents Column4 As System.Windows.Forms.DataGridViewTextBoxColumn
     Friend WithEvents Column1 As System.Windows.Forms.DataGridViewTextBoxColumn
     Friend WithEvents Column3 As System.Windows.Forms.DataGridViewTextBoxColumn
     Friend WithEvents Column5 As System.Windows.Forms.DataGridViewTextBoxColumn
     Friend WithEvents Column2 As System.Windows.Forms.DataGridViewTextBoxColumn
     Friend WithEvents Column6 As System.Windows.Forms.DataGridViewTextBoxColumn
-    Friend WithEvents cmbType As System.Windows.Forms.ComboBox
+    Friend WithEvents Label5 As System.Windows.Forms.Label
+    Friend WithEvents Label6 As System.Windows.Forms.Label
+    Friend WithEvents txtSubTotal As System.Windows.Forms.Label
+    Friend WithEvents txtTotalDiscount As System.Windows.Forms.Label
+    Friend WithEvents txtTotal As System.Windows.Forms.Label
 End Class

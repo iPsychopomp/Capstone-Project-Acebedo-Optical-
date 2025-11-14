@@ -1637,6 +1637,7 @@ Public Class addPatientTransaction
 
     Private Sub RecomputeGridTotals()
         Dim sumTotal As Decimal = 0D
+        Dim subTotal As Decimal = 0D
         Try
             Dim idxQty As Integer = GetColumnIndexByKeys(dgvSelectedProducts, "Quantity", "Quatity")
             Dim idxPrice As Integer = GetColumnIndexByKeys(dgvSelectedProducts, "unitPrice", "Price")
@@ -1699,6 +1700,8 @@ Public Class addPatientTransaction
                 Catch
                 End Try
 
+                ' Subtotal (before discount) uses original price
+                Dim originalLine As Decimal = qty * orig
                 Dim line As Decimal = qty * effPrice
                 If idxCat >= 0 Then
                     ' line already reflects category-specific discount via effPrice
@@ -1709,11 +1712,27 @@ Public Class addPatientTransaction
                 Catch
                 End Try
                 sumTotal += line
+                subTotal += originalLine
             Next
 
 AfterLoop:
             Try
+                ' Final total (after discount)
                 If txtTotal IsNot Nothing Then txtTotal.Text = sumTotal.ToString("0.00")
+            Catch
+            End Try
+
+            Try
+                ' Sub total (before discount)
+                If txtSubTotal IsNot Nothing Then txtSubTotal.Text = subTotal.ToString("0.00")
+            Catch
+            End Try
+
+            Try
+                ' Total discount = SubTotal - FinalTotal (never negative)
+                Dim disc As Decimal = subTotal - sumTotal
+                If disc < 0D Then disc = 0D
+                If txtTotalDiscount IsNot Nothing Then txtTotalDiscount.Text = disc.ToString("0.00")
             Catch
             End Try
 
@@ -2040,4 +2059,43 @@ AfterLoop:
         End Try
     End Sub
 
+    Private Sub addPatientTransaction_Load(sender As Object, e As EventArgs) Handles MyBase.Load
+        DgvStyle(dgvSelectedProducts)
+    End Sub
+    Public Sub DgvStyle(ByRef dgv As DataGridView)
+        Try
+            dgv.AutoGenerateColumns = False
+            dgv.AllowUserToAddRows = False
+            dgv.AllowUserToDeleteRows = False
+            dgv.BorderStyle = BorderStyle.None
+            dgv.BackgroundColor = Color.White
+            dgv.AdvancedColumnHeadersBorderStyle.All = DataGridViewAdvancedCellBorderStyle.Single
+            dgv.CellBorderStyle = DataGridViewCellBorderStyle.Single
+            dgv.ColumnHeadersDefaultCellStyle.BackColor = Color.Gainsboro
+            dgv.ColumnHeadersDefaultCellStyle.ForeColor = Color.Black
+            dgv.ColumnHeadersDefaultCellStyle.Font = New Font("Segoe UI", 11, FontStyle.Regular)
+            dgv.ColumnHeadersDefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter
+            dgv.EnableHeadersVisualStyles = False
+            dgv.DefaultCellStyle.ForeColor = Color.Black
+            dgv.AlternatingRowsDefaultCellStyle.BackColor = SystemColors.Control
+            dgv.DefaultCellStyle.SelectionBackColor = SystemColors.ActiveCaption
+            dgv.DefaultCellStyle.SelectionForeColor = Color.Black
+            dgv.GridColor = Color.Silver
+            dgv.DefaultCellStyle.Padding = New Padding(5)
+            dgv.DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleLeft
+            dgv.ReadOnly = True
+            dgv.MultiSelect = False
+            dgv.AllowUserToResizeRows = False
+            dgv.RowTemplate.Height = 30
+            dgv.DefaultCellStyle.WrapMode = DataGridViewTriState.False
+            dgv.AutoSizeRowsMode = DataGridViewAutoSizeRowsMode.AllCells
+
+            For Each col As DataGridViewColumn In dgv.Columns
+                col.HeaderCell.Style.Alignment = DataGridViewContentAlignment.MiddleCenter
+                col.SortMode = DataGridViewColumnSortMode.NotSortable
+            Next
+            dgv.Refresh()
+        Catch
+        End Try
+    End Sub
 End Class

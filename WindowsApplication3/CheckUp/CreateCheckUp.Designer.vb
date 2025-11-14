@@ -60,7 +60,6 @@ Partial Class CreateCheckUp
         Me.Label18 = New System.Windows.Forms.Label()
         Me.pdOD = New System.Windows.Forms.TextBox()
         Me.Label19 = New System.Windows.Forms.Label()
-        Me.btnPSearch = New System.Windows.Forms.Button()
         Me.txtPName = New System.Windows.Forms.TextBox()
         Me.pnlCheckUp = New System.Windows.Forms.Panel()
         Me.cmbDoctors = New System.Windows.Forms.ComboBox()
@@ -69,6 +68,7 @@ Partial Class CreateCheckUp
         Me.Panel1 = New System.Windows.Forms.Panel()
         Me.pbAdd = New System.Windows.Forms.PictureBox()
         Me.lblhead = New System.Windows.Forms.Label()
+        Me.btnPSearch = New System.Windows.Forms.Button()
         Me.grpCheckUp.SuspendLayout()
         Me.pnlCheckUp.SuspendLayout()
         Me.Panel1.SuspendLayout()
@@ -482,21 +482,6 @@ Partial Class CreateCheckUp
         Me.Label19.TabIndex = 140
         Me.Label19.Text = "PD:"
         '
-        'btnPSearch
-        '
-        Me.btnPSearch.BackColor = System.Drawing.SystemColors.ControlLight
-        Me.btnPSearch.FlatStyle = System.Windows.Forms.FlatStyle.System
-        Me.btnPSearch.Font = New System.Drawing.Font("Segoe UI", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.btnPSearch.ForeColor = System.Drawing.Color.Black
-        Me.btnPSearch.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft
-        Me.btnPSearch.Location = New System.Drawing.Point(378, 92)
-        Me.btnPSearch.Margin = New System.Windows.Forms.Padding(3, 2, 3, 2)
-        Me.btnPSearch.Name = "btnPSearch"
-        Me.btnPSearch.Size = New System.Drawing.Size(147, 27)
-        Me.btnPSearch.TabIndex = 2
-        Me.btnPSearch.Text = "Select patient"
-        Me.btnPSearch.UseVisualStyleBackColor = False
-        '
         'txtPName
         '
         Me.txtPName.Font = New System.Drawing.Font("Segoe UI", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
@@ -589,6 +574,21 @@ Partial Class CreateCheckUp
         Me.lblhead.TabIndex = 113
         Me.lblhead.Text = "Add Checkup"
         '
+        'btnPSearch
+        '
+        Me.btnPSearch.BackColor = System.Drawing.SystemColors.ControlLight
+        Me.btnPSearch.FlatStyle = System.Windows.Forms.FlatStyle.System
+        Me.btnPSearch.Font = New System.Drawing.Font("Segoe UI", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.btnPSearch.ForeColor = System.Drawing.Color.Black
+        Me.btnPSearch.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft
+        Me.btnPSearch.Location = New System.Drawing.Point(378, 92)
+        Me.btnPSearch.Margin = New System.Windows.Forms.Padding(3, 2, 3, 2)
+        Me.btnPSearch.Name = "btnPSearch"
+        Me.btnPSearch.Size = New System.Drawing.Size(147, 27)
+        Me.btnPSearch.TabIndex = 2
+        Me.btnPSearch.Text = "Select patient"
+        Me.btnPSearch.UseVisualStyleBackColor = False
+        '
         'CreateCheckUp
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(11.0!, 28.0!)
@@ -646,7 +646,6 @@ Partial Class CreateCheckUp
     Friend WithEvents grpCheckUp As System.Windows.Forms.GroupBox
     Friend WithEvents txtPName As System.Windows.Forms.TextBox
     Friend WithEvents pnlCheckUp As System.Windows.Forms.Panel
-    Friend WithEvents btnPSearch As System.Windows.Forms.Button
     Friend WithEvents Panel1 As System.Windows.Forms.Panel
     Friend WithEvents pbAdd As System.Windows.Forms.PictureBox
     Friend WithEvents lblhead As System.Windows.Forms.Label
@@ -660,4 +659,5 @@ Partial Class CreateCheckUp
     Friend WithEvents Label21 As System.Windows.Forms.Label
     Friend WithEvents dtpBday As System.Windows.Forms.DateTimePicker
     Friend WithEvents cmbDoctors As System.Windows.Forms.ComboBox
+    Friend WithEvents btnPSearch As System.Windows.Forms.Button
 End Class

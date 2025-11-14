@@ -29,9 +29,13 @@ Public Class searchProducts
                         items.Add(reader("category").ToString())
                     End While
                     cmbCategories.Items.Clear()
-                    ' No default selection; empty selection means show all
-                    cmbCategories.Items.AddRange(items.ToArray())
-                    cmbCategories.SelectedIndex = -1
+                    ' Insert synthetic "All Products" option as default (no filter)
+                    cmbCategories.Items.Add("All Products")
+                    If items.Count > 0 Then
+                        cmbCategories.Items.AddRange(items.ToArray())
+                    End If
+                    cmbCategories.SelectedIndex = 0
+                    currentCategory = "" ' All Products => no category filter
                 End Using
             End Using
         Catch
@@ -121,7 +125,13 @@ Public Class searchProducts
     Private Sub cmbCategories_SelectedIndexChanged(sender As Object, e As EventArgs) Handles cmbCategories.SelectedIndexChanged
         Try
             If cmbCategories.SelectedIndex >= 0 Then
-                currentCategory = cmbCategories.SelectedItem.ToString()
+                Dim sel As String = cmbCategories.SelectedItem.ToString()
+                ' "All Products" means no category filter
+                If String.Equals(sel, "All Products", StringComparison.OrdinalIgnoreCase) Then
+                    currentCategory = ""
+                Else
+                    currentCategory = sel
+                End If
             Else
                 currentCategory = ""
             End If

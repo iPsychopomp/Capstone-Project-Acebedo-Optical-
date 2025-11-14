@@ -23,10 +23,10 @@ Public Class PatientNextAppointment
             End If
 
             ' Validate appointment date is in the future
-            'If dtpDate.Value.Date <= DateTime.Today Then
-            '    MsgBox("Appointment date must be in the future. Please select a date after today.", vbExclamation, "Invalid Date")
-            '    Exit Sub
-            'End If
+            If dtpDate.Value.Date <= DateTime.Today Then
+                MsgBox("Appointment date must be in the future. Please select a date after today.", vbExclamation, "Invalid Date")
+                Exit Sub
+            End If
 
             ' Validate that patient has a checkup record TODAY before scheduling next appointment
             If Not HasCheckupRecord(selectedPatientID) Then
@@ -56,7 +56,7 @@ Public Class PatientNextAppointment
                 insertCmd.Parameters.AddWithValue("?", selectedDoctorName)
                 insertCmd.Parameters.AddWithValue("?", lblPatientName.Text)
                 insertCmd.Parameters.AddWithValue("?", cmbPatientType.Text)
-                'insertCmd.Parameters.AddWithValue("?", dtpDate.Value.ToString("yyyy-MM-dd HH:mm:ss"))
+                insertCmd.Parameters.AddWithValue("?", dtpDate.Value.ToString("yyyy-MM-dd HH:mm:ss"))
                 insertCmd.Parameters.AddWithValue("?", latestCheckupID)
                 insertCmd.ExecuteNonQuery()
             End Using
@@ -141,9 +141,9 @@ Public Class PatientNextAppointment
 
         LoadDoctorNames()
 
-        '' Set minimum date to tomorrow (cannot select past dates or today)
-        'dtpDate.MinDate = DateTime.Today.AddDays(1)
-        'dtpDate.Value = DateTime.Today.AddDays(1)
+        ' Set minimum date to tomorrow (cannot select past dates or today)
+        dtpDate.MinDate = DateTime.Today.AddDays(1)
+        dtpDate.Value = DateTime.Today.AddDays(1)
 
         Try
             Call dbConn()
@@ -176,12 +176,12 @@ Public Class PatientNextAppointment
     '    Me.Close()
     'End Sub
 
-    Private Sub dtpDate_ValueChanged(sender As Object, e As EventArgs)
+    Private Sub dtpDate_ValueChanged(sender As Object, e As EventArgs) Handles dtpDate.ValueChanged
         ' Ensure the selected date is always in the future
-        'If dtpDate.Value.Date <= DateTime.Today Then
-        '    dtpDate.Value = DateTime.Today.AddDays(1)
-        '    MsgBox("Appointment date must be in the future. Date has been set to tomorrow.", vbInformation, "Date Adjusted")
-        'End If
+        If dtpDate.Value.Date <= DateTime.Today Then
+            dtpDate.Value = DateTime.Today.AddDays(1)
+            MsgBox("Appointment date must be in the future. Date has been set to tomorrow.", vbInformation, "Date Adjusted")
+        End If
     End Sub
 
     Private Function HasCheckupRecord(patientID As Integer) As Boolean

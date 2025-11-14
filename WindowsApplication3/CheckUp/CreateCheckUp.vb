@@ -279,7 +279,6 @@ Public Class CreateCheckUp
             MsgBox("Audit Trail Error: " & ex.Message, vbCritical, "Audit Error")
         End Try
     End Sub
-
     Private Sub LoadDoctorNames(Optional ByVal doctorIDToSelect As String = "")
         Try
             ' Open connection
@@ -329,6 +328,8 @@ Public Class CreateCheckUp
             ' swallow
         End Try
     End Sub
+
+
 
     Private Sub SetComboValue(comboBox As ComboBox, displayValue As String)
         If String.IsNullOrEmpty(displayValue) Then
@@ -504,6 +505,8 @@ Public Class CreateCheckUp
         txtAddOS.Text = ""
     End Sub
 
+
+
     Private Sub dtpAppointment_ValueChanged(sender As Object, e As EventArgs)
 
     End Sub
@@ -545,6 +548,11 @@ Public Class CreateCheckUp
         End If
     End Sub
 
+    Private Sub pnlCheckUp_Paint(sender As Object, e As PaintEventArgs) Handles pnlCheckUp.Paint
+
+    End Sub
+
+
     Private Sub cmbDoctors_SelectedIndexChanged(sender As Object, e As EventArgs) Handles cmbDoctors.SelectedIndexChanged
         Try
             If cmbDoctors.DataSource IsNot Nothing AndAlso cmbDoctors.SelectedIndex >= 0 Then
@@ -552,5 +560,13 @@ Public Class CreateCheckUp
             End If
         Catch
         End Try
+    End Sub
+
+    Private Sub txtPName_TextChanged_1(sender As Object, e As EventArgs) Handles txtPName.TextChanged
+
+    End Sub
+
+    Private Sub Label21_Click(sender As Object, e As EventArgs) Handles Label21.Click
+
     End Sub
 End Class

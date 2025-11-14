@@ -60,7 +60,7 @@ Partial Class CreateCheckUp
         Me.btnPSearch = New System.Windows.Forms.Button()
         Me.txtPName = New System.Windows.Forms.TextBox()
         Me.pnlCheckUp = New System.Windows.Forms.Panel()
-        Me.Panel3 = New System.Windows.Forms.Panel()
+        Me.pnlNames = New System.Windows.Forms.Panel()
         Me.Label22 = New System.Windows.Forms.Label()
         Me.cmbDoctors = New System.Windows.Forms.ComboBox()
         Me.Label17 = New System.Windows.Forms.Label()
@@ -68,14 +68,14 @@ Partial Class CreateCheckUp
         Me.Panel1 = New System.Windows.Forms.Panel()
         Me.pbAdd = New System.Windows.Forms.PictureBox()
         Me.lblhead = New System.Windows.Forms.Label()
-        Me.Panel2 = New System.Windows.Forms.Panel()
+        Me.pnlMeasurement = New System.Windows.Forms.Panel()
         Me.Label21 = New System.Windows.Forms.Label()
         Me.pnlCheckUp.SuspendLayout()
-        Me.Panel3.SuspendLayout()
+        Me.pnlNames.SuspendLayout()
         Me.grpCheckUp.SuspendLayout()
         Me.Panel1.SuspendLayout()
         CType(Me.pbAdd, System.ComponentModel.ISupportInitialize).BeginInit()
-        Me.Panel2.SuspendLayout()
+        Me.pnlMeasurement.SuspendLayout()
         Me.SuspendLayout()
         '
         'txtRemarks
@@ -86,7 +86,7 @@ Partial Class CreateCheckUp
         Me.txtRemarks.Location = New System.Drawing.Point(33, 39)
         Me.txtRemarks.Name = "txtRemarks"
         Me.txtRemarks.Size = New System.Drawing.Size(1034, 97)
-        Me.txtRemarks.TabIndex = 16
+        Me.txtRemarks.TabIndex = 1
         Me.txtRemarks.Text = ""
         '
         'Label16
@@ -117,7 +117,7 @@ Partial Class CreateCheckUp
         Me.txtAddOS.Margin = New System.Windows.Forms.Padding(3, 2, 3, 2)
         Me.txtAddOS.Name = "txtAddOS"
         Me.txtAddOS.Size = New System.Drawing.Size(138, 34)
-        Me.txtAddOS.TabIndex = 12
+        Me.txtAddOS.TabIndex = 8
         '
         'Label14
         '
@@ -137,7 +137,7 @@ Partial Class CreateCheckUp
         Me.txtAddOD.Margin = New System.Windows.Forms.Padding(3, 2, 3, 2)
         Me.txtAddOD.Name = "txtAddOD"
         Me.txtAddOD.Size = New System.Drawing.Size(138, 34)
-        Me.txtAddOD.TabIndex = 11
+        Me.txtAddOD.TabIndex = 7
         '
         'Label15
         '
@@ -168,7 +168,7 @@ Partial Class CreateCheckUp
         Me.txtAXOS.Margin = New System.Windows.Forms.Padding(3, 2, 3, 2)
         Me.txtAXOS.Name = "txtAXOS"
         Me.txtAXOS.Size = New System.Drawing.Size(138, 34)
-        Me.txtAXOS.TabIndex = 10
+        Me.txtAXOS.TabIndex = 6
         '
         'Label11
         '
@@ -188,7 +188,7 @@ Partial Class CreateCheckUp
         Me.txtAXOD.Margin = New System.Windows.Forms.Padding(3, 2, 3, 2)
         Me.txtAXOD.Name = "txtAXOD"
         Me.txtAXOD.Size = New System.Drawing.Size(138, 34)
-        Me.txtAXOD.TabIndex = 9
+        Me.txtAXOD.TabIndex = 5
         '
         'Label12
         '
@@ -219,7 +219,7 @@ Partial Class CreateCheckUp
         Me.txtCYOS.Margin = New System.Windows.Forms.Padding(3, 2, 3, 2)
         Me.txtCYOS.Name = "txtCYOS"
         Me.txtCYOS.Size = New System.Drawing.Size(138, 34)
-        Me.txtCYOS.TabIndex = 8
+        Me.txtCYOS.TabIndex = 4
         '
         'Label8
         '
@@ -239,7 +239,7 @@ Partial Class CreateCheckUp
         Me.txtCYOD.Margin = New System.Windows.Forms.Padding(3, 2, 3, 2)
         Me.txtCYOD.Name = "txtCYOD"
         Me.txtCYOD.Size = New System.Drawing.Size(138, 34)
-        Me.txtCYOD.TabIndex = 7
+        Me.txtCYOD.TabIndex = 3
         '
         'Label9
         '
@@ -270,7 +270,7 @@ Partial Class CreateCheckUp
         Me.txtOSSP.Margin = New System.Windows.Forms.Padding(3, 2, 3, 2)
         Me.txtOSSP.Name = "txtOSSP"
         Me.txtOSSP.Size = New System.Drawing.Size(138, 34)
-        Me.txtOSSP.TabIndex = 6
+        Me.txtOSSP.TabIndex = 2
         '
         'Label5
         '
@@ -290,7 +290,7 @@ Partial Class CreateCheckUp
         Me.txtODSP.Margin = New System.Windows.Forms.Padding(3, 2, 3, 2)
         Me.txtODSP.Name = "txtODSP"
         Me.txtODSP.Size = New System.Drawing.Size(138, 34)
-        Me.txtODSP.TabIndex = 5
+        Me.txtODSP.TabIndex = 1
         '
         'Label4
         '
@@ -367,7 +367,7 @@ Partial Class CreateCheckUp
         Me.btnSave.Margin = New System.Windows.Forms.Padding(3, 2, 3, 2)
         Me.btnSave.Name = "btnSave"
         Me.btnSave.Size = New System.Drawing.Size(100, 34)
-        Me.btnSave.TabIndex = 17
+        Me.btnSave.TabIndex = 16
         Me.btnSave.Text = "&Save"
         Me.btnSave.UseVisualStyleBackColor = False
         '
@@ -389,7 +389,7 @@ Partial Class CreateCheckUp
         Me.pdOU.Margin = New System.Windows.Forms.Padding(3, 2, 3, 2)
         Me.pdOU.Name = "pdOU"
         Me.pdOU.Size = New System.Drawing.Size(138, 34)
-        Me.pdOU.TabIndex = 15
+        Me.pdOU.TabIndex = 11
         '
         'Label1
         '
@@ -409,7 +409,7 @@ Partial Class CreateCheckUp
         Me.pdOS.Margin = New System.Windows.Forms.Padding(3, 2, 3, 2)
         Me.pdOS.Name = "pdOS"
         Me.pdOS.Size = New System.Drawing.Size(138, 34)
-        Me.pdOS.TabIndex = 14
+        Me.pdOS.TabIndex = 10
         '
         'Label18
         '
@@ -429,7 +429,7 @@ Partial Class CreateCheckUp
         Me.pdOD.Margin = New System.Windows.Forms.Padding(3, 2, 3, 2)
         Me.pdOD.Name = "pdOD"
         Me.pdOD.Size = New System.Drawing.Size(138, 34)
-        Me.pdOD.TabIndex = 13
+        Me.pdOD.TabIndex = 9
         '
         'Label19
         '
@@ -469,32 +469,32 @@ Partial Class CreateCheckUp
         'pnlCheckUp
         '
         Me.pnlCheckUp.BackColor = System.Drawing.SystemColors.MenuBar
-        Me.pnlCheckUp.Controls.Add(Me.Panel3)
+        Me.pnlCheckUp.Controls.Add(Me.pnlNames)
         Me.pnlCheckUp.Controls.Add(Me.Label17)
         Me.pnlCheckUp.Controls.Add(Me.btnSave)
         Me.pnlCheckUp.Controls.Add(Me.grpCheckUp)
         Me.pnlCheckUp.Controls.Add(Me.Panel1)
-        Me.pnlCheckUp.Controls.Add(Me.Panel2)
+        Me.pnlCheckUp.Controls.Add(Me.pnlMeasurement)
         Me.pnlCheckUp.Dock = System.Windows.Forms.DockStyle.Fill
         Me.pnlCheckUp.Location = New System.Drawing.Point(0, 0)
         Me.pnlCheckUp.Margin = New System.Windows.Forms.Padding(3, 2, 3, 2)
         Me.pnlCheckUp.Name = "pnlCheckUp"
         Me.pnlCheckUp.Size = New System.Drawing.Size(1121, 544)
-        Me.pnlCheckUp.TabIndex = 25
+        Me.pnlCheckUp.TabIndex = 0
         '
-        'Panel3
+        'pnlNames
         '
-        Me.Panel3.BackColor = System.Drawing.SystemColors.Window
-        Me.Panel3.Controls.Add(Me.Label22)
-        Me.Panel3.Controls.Add(Me.Label2)
-        Me.Panel3.Controls.Add(Me.Label3)
-        Me.Panel3.Controls.Add(Me.btnPSearch)
-        Me.Panel3.Controls.Add(Me.txtPName)
-        Me.Panel3.Controls.Add(Me.cmbDoctors)
-        Me.Panel3.Location = New System.Drawing.Point(12, 55)
-        Me.Panel3.Name = "Panel3"
-        Me.Panel3.Size = New System.Drawing.Size(1095, 102)
-        Me.Panel3.TabIndex = 150
+        Me.pnlNames.BackColor = System.Drawing.SystemColors.Window
+        Me.pnlNames.Controls.Add(Me.Label22)
+        Me.pnlNames.Controls.Add(Me.Label2)
+        Me.pnlNames.Controls.Add(Me.Label3)
+        Me.pnlNames.Controls.Add(Me.btnPSearch)
+        Me.pnlNames.Controls.Add(Me.txtPName)
+        Me.pnlNames.Controls.Add(Me.cmbDoctors)
+        Me.pnlNames.Location = New System.Drawing.Point(12, 55)
+        Me.pnlNames.Name = "pnlNames"
+        Me.pnlNames.Size = New System.Drawing.Size(1095, 102)
+        Me.pnlNames.TabIndex = 0
         '
         'Label22
         '
@@ -539,7 +539,7 @@ Partial Class CreateCheckUp
         Me.grpCheckUp.Location = New System.Drawing.Point(12, 346)
         Me.grpCheckUp.Name = "grpCheckUp"
         Me.grpCheckUp.Size = New System.Drawing.Size(1095, 148)
-        Me.grpCheckUp.TabIndex = 145
+        Me.grpCheckUp.TabIndex = 2
         '
         'Panel1
         '
@@ -571,41 +571,41 @@ Partial Class CreateCheckUp
         Me.lblhead.TabIndex = 113
         Me.lblhead.Text = "Add Checkup"
         '
-        'Panel2
+        'pnlMeasurement
         '
-        Me.Panel2.BackColor = System.Drawing.SystemColors.Window
-        Me.Panel2.Controls.Add(Me.Label4)
-        Me.Panel2.Controls.Add(Me.Label21)
-        Me.Panel2.Controls.Add(Me.Label20)
-        Me.Panel2.Controls.Add(Me.Label10)
-        Me.Panel2.Controls.Add(Me.txtAXOS)
-        Me.Panel2.Controls.Add(Me.pdOU)
-        Me.Panel2.Controls.Add(Me.Label15)
-        Me.Panel2.Controls.Add(Me.txtODSP)
-        Me.Panel2.Controls.Add(Me.Label11)
-        Me.Panel2.Controls.Add(Me.Label1)
-        Me.Panel2.Controls.Add(Me.txtAddOD)
-        Me.Panel2.Controls.Add(Me.Label5)
-        Me.Panel2.Controls.Add(Me.txtAXOD)
-        Me.Panel2.Controls.Add(Me.pdOS)
-        Me.Panel2.Controls.Add(Me.Label14)
-        Me.Panel2.Controls.Add(Me.txtOSSP)
-        Me.Panel2.Controls.Add(Me.Label12)
-        Me.Panel2.Controls.Add(Me.Label18)
-        Me.Panel2.Controls.Add(Me.txtAddOS)
-        Me.Panel2.Controls.Add(Me.Label6)
-        Me.Panel2.Controls.Add(Me.Label7)
-        Me.Panel2.Controls.Add(Me.pdOD)
-        Me.Panel2.Controls.Add(Me.Label13)
-        Me.Panel2.Controls.Add(Me.Label9)
-        Me.Panel2.Controls.Add(Me.txtCYOS)
-        Me.Panel2.Controls.Add(Me.Label19)
-        Me.Panel2.Controls.Add(Me.Label8)
-        Me.Panel2.Controls.Add(Me.txtCYOD)
-        Me.Panel2.Location = New System.Drawing.Point(12, 163)
-        Me.Panel2.Name = "Panel2"
-        Me.Panel2.Size = New System.Drawing.Size(1095, 161)
-        Me.Panel2.TabIndex = 148
+        Me.pnlMeasurement.BackColor = System.Drawing.SystemColors.Window
+        Me.pnlMeasurement.Controls.Add(Me.Label4)
+        Me.pnlMeasurement.Controls.Add(Me.Label21)
+        Me.pnlMeasurement.Controls.Add(Me.Label20)
+        Me.pnlMeasurement.Controls.Add(Me.Label10)
+        Me.pnlMeasurement.Controls.Add(Me.txtAXOS)
+        Me.pnlMeasurement.Controls.Add(Me.pdOU)
+        Me.pnlMeasurement.Controls.Add(Me.Label15)
+        Me.pnlMeasurement.Controls.Add(Me.txtODSP)
+        Me.pnlMeasurement.Controls.Add(Me.Label11)
+        Me.pnlMeasurement.Controls.Add(Me.Label1)
+        Me.pnlMeasurement.Controls.Add(Me.txtAddOD)
+        Me.pnlMeasurement.Controls.Add(Me.Label5)
+        Me.pnlMeasurement.Controls.Add(Me.txtAXOD)
+        Me.pnlMeasurement.Controls.Add(Me.pdOS)
+        Me.pnlMeasurement.Controls.Add(Me.Label14)
+        Me.pnlMeasurement.Controls.Add(Me.txtOSSP)
+        Me.pnlMeasurement.Controls.Add(Me.Label12)
+        Me.pnlMeasurement.Controls.Add(Me.Label18)
+        Me.pnlMeasurement.Controls.Add(Me.txtAddOS)
+        Me.pnlMeasurement.Controls.Add(Me.Label6)
+        Me.pnlMeasurement.Controls.Add(Me.Label7)
+        Me.pnlMeasurement.Controls.Add(Me.pdOD)
+        Me.pnlMeasurement.Controls.Add(Me.Label13)
+        Me.pnlMeasurement.Controls.Add(Me.Label9)
+        Me.pnlMeasurement.Controls.Add(Me.txtCYOS)
+        Me.pnlMeasurement.Controls.Add(Me.Label19)
+        Me.pnlMeasurement.Controls.Add(Me.Label8)
+        Me.pnlMeasurement.Controls.Add(Me.txtCYOD)
+        Me.pnlMeasurement.Location = New System.Drawing.Point(12, 163)
+        Me.pnlMeasurement.Name = "pnlMeasurement"
+        Me.pnlMeasurement.Size = New System.Drawing.Size(1095, 161)
+        Me.pnlMeasurement.TabIndex = 1
         '
         'Label21
         '
@@ -635,15 +635,15 @@ Partial Class CreateCheckUp
         Me.Text = "Acebedo Optical"
         Me.pnlCheckUp.ResumeLayout(False)
         Me.pnlCheckUp.PerformLayout()
-        Me.Panel3.ResumeLayout(False)
-        Me.Panel3.PerformLayout()
+        Me.pnlNames.ResumeLayout(False)
+        Me.pnlNames.PerformLayout()
         Me.grpCheckUp.ResumeLayout(False)
         Me.grpCheckUp.PerformLayout()
         Me.Panel1.ResumeLayout(False)
         Me.Panel1.PerformLayout()
         CType(Me.pbAdd, System.ComponentModel.ISupportInitialize).EndInit()
-        Me.Panel2.ResumeLayout(False)
-        Me.Panel2.PerformLayout()
+        Me.pnlMeasurement.ResumeLayout(False)
+        Me.pnlMeasurement.PerformLayout()
         Me.ResumeLayout(False)
 
     End Sub
@@ -690,8 +690,8 @@ Partial Class CreateCheckUp
     Friend WithEvents Panel1 As System.Windows.Forms.Panel
     Friend WithEvents grpCheckUp As System.Windows.Forms.Panel
     Friend WithEvents Label17 As System.Windows.Forms.Label
-    Friend WithEvents Panel2 As System.Windows.Forms.Panel
-    Friend WithEvents Panel3 As System.Windows.Forms.Panel
+    Friend WithEvents pnlMeasurement As System.Windows.Forms.Panel
+    Friend WithEvents pnlNames As System.Windows.Forms.Panel
     Friend WithEvents Label21 As System.Windows.Forms.Label
     Friend WithEvents Label22 As System.Windows.Forms.Label
 End Class

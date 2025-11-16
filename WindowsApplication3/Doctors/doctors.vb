@@ -14,7 +14,7 @@ Public Class doctors
     Private Sub LoadPage()
         Try
             Dim countSql As String = "SELECT COUNT(*) FROM db_viewdoctors"
-            Dim dataSql As String = "SELECT * FROM db_viewdoctors ORDER BY doctorID DESC LIMIT ? OFFSET ?"
+            Dim dataSql As String = "SELECT * FROM db_viewdoctors ORDER BY fullname ASC LIMIT ? OFFSET ?"
 
             Using cn As New Odbc.OdbcConnection(myDSN)
                 cn.Open()
@@ -37,6 +37,15 @@ Public Class doctors
             End Using
 
             NormalizeDoctorNames(doctorsDGV)
+
+            ' Hide doctorID column if it exists
+            If doctorsDGV.Columns.Contains("doctorID") Then
+                doctorsDGV.Columns("doctorID").Visible = False
+            End If
+            If doctorsDGV.Columns.Contains("Column1") Then
+                doctorsDGV.Columns("Column1").Visible = False
+            End If
+
             Dim totalPages As Integer = If(pageSize > 0, If(totalCount Mod pageSize = 0, totalCount \ pageSize, (totalCount \ pageSize) + 1), 1)
             If totalPages <= 0 Then totalPages = 1
             txtPage.Text = "Page " & (currentPage + 1).ToString() & " of " & totalPages.ToString()

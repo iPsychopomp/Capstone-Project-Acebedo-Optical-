@@ -158,7 +158,6 @@ Public Class MainForm
     Private Sub ManageUsersToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles ManageUsersToolStripMenuItem.Click
         ' Reset all toolbar buttons
         ResetButtons(Nothing)
-
         Dim usersform As New users()
         usersform.TopMost = True
         usersform.ShowDialog()

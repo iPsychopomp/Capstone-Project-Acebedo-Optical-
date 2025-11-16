@@ -601,21 +601,24 @@ Public Class CreateCheckUp
 
     Private Sub btnSPatient_Click(sender As Object, e As EventArgs) Handles btnSPatient.Click
         Try
-            ' Store the current form's visibility state
-            Dim wasVisible As Boolean = Me.Visible
-
             ' Hide only this CreateCheckUp form (not MainForm)
             Me.Visible = False
 
-            ' Show the search patient form with this form as owner
+            ' Show the search patient form with MainForm as owner to prevent MainForm from hiding
             Using searchForm As New searchPatient()
-                ' Set owner to maintain proper form hierarchy
                 searchForm.StartPosition = FormStartPosition.CenterScreen
-                searchForm.ShowDialog(Me)
+
+                ' Find the MainForm and set it as owner instead of CreateCheckUp
+                Dim mainForm As Form = Application.OpenForms.OfType(Of MainForm)().FirstOrDefault()
+                If mainForm IsNot Nothing Then
+                    searchForm.ShowDialog(mainForm)
+                Else
+                    searchForm.ShowDialog()
+                End If
             End Using
 
-            ' Restore only this CreateCheckUp form's visibility
-            Me.Visible = wasVisible
+            ' Restore CreateCheckUp form's visibility
+            Me.Visible = True
         Catch ex As Exception
             MsgBox("Error opening patient search: " & ex.Message, vbCritical, "Error")
             ' Ensure this form is shown even if there's an error

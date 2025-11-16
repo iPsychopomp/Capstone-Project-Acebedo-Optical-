@@ -18,38 +18,70 @@ Public Class users
             ' Store the current form's visibility state
             Dim wasVisible As Boolean = Me.Visible
 
-            ' Hide this users form
+            ' Hide only this users form (not MainForm)
             Me.Visible = False
 
-            ' Call the module method which will show the addUsers form
-            usersModule.btnAdd_Click(UserDGV, AddressOf OnAddRecordClosed)
+            ' Show the addUsers form
+            Using addForm As New addUsers()
+                addForm.StartPosition = FormStartPosition.CenterScreen
+                addForm.ShowDialog(Me)
+            End Using
 
-            ' Restore this form's visibility
+            ' Restore only this users form's visibility
             Me.Visible = wasVisible
+
+            ' Reload data after closing
+            LoadPage()
         Catch ex As Exception
+            MsgBox("Error opening add user form: " & ex.Message, vbCritical, "Error")
             ' Ensure this form is shown even if there's an error
             Me.Visible = True
-            MessageBox.Show("Error: " & ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error)
         End Try
     End Sub
 
     Private Sub btnEdit_Click(sender As Object, e As EventArgs) Handles btnEdit.Click
         Try
-            ' Store the current form's visibility state
-            Dim wasVisible As Boolean = Me.Visible
+            If UserDGV.SelectedRows.Count = 0 Then
+                MsgBox("Please select a record to edit.", vbExclamation, "Edit")
+                Exit Sub
+            End If
 
-            ' Hide this users form
-            Me.Visible = False
+            Dim UserID As Integer = Convert.ToInt32(UserDGV.SelectedRows(0).Cells("Column1").Value)
 
-            ' Call the module method which will show the addUsers form
-            usersModule.btnEdit_Click(UserDGV, AddressOf OnAddRecordClosed)
+            ' Admin can only edit their own account
+            If LoggedInRole = "Admin" OrElse LoggedInRole = "Administrator" Then
+                If UserID <> LoggedInUserID Then
+                    MessageBox.Show("You can only edit your own account.", "Access Denied", MessageBoxButtons.OK, MessageBoxIcon.Warning)
+                    Exit Sub
+                End If
+            End If
 
-            ' Restore this form's visibility
-            Me.Visible = wasVisible
+            If MsgBox("Are you sure you want to edit this record?", vbYesNo + vbQuestion, "Edit") = vbYes Then
+                ' Store the current form's visibility state
+                Dim wasVisible As Boolean = Me.Visible
+
+                ' Hide only this users form (not MainForm)
+                Me.Visible = False
+
+                ' Show the addUsers form for editing
+                Using editForm As New addUsers()
+                    editForm.pnlAddUser.Tag = UserID
+                    editForm.Text = "Edit Users Information"
+                    editForm.loadRecord(UserID)
+                    editForm.StartPosition = FormStartPosition.CenterScreen
+                    editForm.ShowDialog(Me)
+                End Using
+
+                ' Restore only this users form's visibility
+                Me.Visible = wasVisible
+
+                ' Reload data after closing
+                LoadPage()
+            End If
         Catch ex As Exception
+            MsgBox("Error opening edit user form: " & ex.Message, vbCritical, "Error")
             ' Ensure this form is shown even if there's an error
             Me.Visible = True
-            MessageBox.Show("Error: " & ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error)
         End Try
     End Sub
 
@@ -63,6 +95,11 @@ Public Class users
         txtPage.Text = "Search results"
         btnBack.Enabled = False
         btnNext.Enabled = False
+
+        ' Hide UserID column
+        If UserDGV.Columns.Contains("Column1") Then
+            UserDGV.Columns("Column1").Visible = False
+        End If
     End Sub
 
     Private Sub btnDelete_Click(sender As Object, e As EventArgs) Handles btnDelete.Click
@@ -134,6 +171,11 @@ Public Class users
         txtPage.Text = "Page " & (currentPage + 1).ToString() & " of " & totalPages.ToString()
         btnBack.Enabled = currentPage > 0
         btnNext.Enabled = currentPage < (totalPages - 1)
+
+        ' Hide UserID column
+        If UserDGV.Columns.Contains("Column1") Then
+            UserDGV.Columns("Column1").Visible = False
+        End If
     End Sub
 
     Private Sub btnBack_Click(sender As Object, e As EventArgs) Handles btnBack.Click

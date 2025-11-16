@@ -536,7 +536,21 @@ Public Class addUsers
                 End If
             End Using
 
-            Call LoadDGV("SELECT * FROM db_viewuser", users.UserDGV)
+            ' Reload with proper sorting
+            Try
+                If LoggedInRole = "Super Admin" Then
+                    Call LoadDGV("SELECT * FROM db_viewuser WHERE isArchived = 0 OR isArchived IS NULL ORDER BY Username ASC", users.UserDGV)
+                Else
+                    Call LoadDGV("SELECT * FROM db_viewuser WHERE (isArchived = 0 OR isArchived IS NULL) AND Role <> 'Super Admin' ORDER BY Username ASC", users.UserDGV)
+                End If
+            Catch
+                ' Fallback if isArchived column doesn't exist yet
+                If LoggedInRole = "Super Admin" Then
+                    Call LoadDGV("SELECT * FROM db_viewuser ORDER BY Username ASC", users.UserDGV)
+                Else
+                    Call LoadDGV("SELECT * FROM db_viewuser WHERE Role <> 'Super Admin' ORDER BY Username ASC", users.UserDGV)
+                End If
+            End Try
         Catch ex As Exception
             MessageBox.Show("Error saving data: " & ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error)
         Finally

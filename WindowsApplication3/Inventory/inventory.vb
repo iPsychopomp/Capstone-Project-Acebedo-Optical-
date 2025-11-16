@@ -92,14 +92,14 @@ Public Class inventory
                         "CASE WHEN p.discount > 0 THEN ROUND(p.unitPrice * (1 - p.discount), 2) ELSE NULL END AS discountedPrice, " & _
                         "p.reorderLevel, s.supplierName, p.dateAdded, p.expirationDate " & _
                         "FROM tbl_products p LEFT JOIN tbl_suppliers s ON s.supplierID = p.supplierID " & _
-                        "ORDER BY p.productID DESC LIMIT ? OFFSET ?"
+                        "ORDER BY p.productName ASC LIMIT ? OFFSET ?"
                 Else
                     dataSql = _
                         "SELECT p.productID, p.productName, p.category, p.stockQuantity, p.description, " & _
                         "p.unitPrice, '0%' AS discount, NULL AS discountedPrice, " & _
                         "p.reorderLevel, s.supplierName, p.dateAdded, p.expirationDate " & _
                         "FROM tbl_products p LEFT JOIN tbl_suppliers s ON s.supplierID = p.supplierID " & _
-                        "ORDER BY p.productID DESC LIMIT ? OFFSET ?"
+                        "ORDER BY p.productName ASC LIMIT ? OFFSET ?"
                 End If
 
                 ' Get total count
@@ -243,7 +243,7 @@ Public Class inventory
                     "FROM tbl_products p LEFT JOIN tbl_suppliers s ON s.supplierID = p.supplierID "
             End If
 
-            Dim finalSql As String = selectCore & whereClause & " ORDER BY p.productID DESC"
+            Dim finalSql As String = selectCore & whereClause & " ORDER BY p.productName ASC"
 
             ' Enable auto-generation to show all columns from query
             productDGV.AutoGenerateColumns = True

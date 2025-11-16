@@ -36,16 +36,16 @@ Module usersModule
         ' Use try-catch in case column doesn't exist in view yet
         Try
             If LoggedInRole = "Super Admin" Then
-                Call LoadDGV("SELECT * FROM db_viewuser WHERE isArchived = 0 OR isArchived IS NULL", UserDGV)
+                Call LoadDGV("SELECT * FROM db_viewuser WHERE isArchived = 0 OR isArchived IS NULL ORDER BY Username ASC", UserDGV)
             Else
-                Call LoadDGV("SELECT * FROM db_viewuser WHERE (isArchived = 0 OR isArchived IS NULL) AND Role <> 'Super Admin'", UserDGV)
+                Call LoadDGV("SELECT * FROM db_viewuser WHERE (isArchived = 0 OR isArchived IS NULL) AND Role <> 'Super Admin' ORDER BY Username ASC", UserDGV)
             End If
         Catch ex As Exception
             ' Fallback if isArchived column doesn't exist in view yet
             If LoggedInRole = "Super Admin" Then
-                Call LoadDGV("SELECT * FROM db_viewuser", UserDGV)
+                Call LoadDGV("SELECT * FROM db_viewuser ORDER BY Username ASC", UserDGV)
             Else
-                Call LoadDGV("SELECT * FROM db_viewuser WHERE Role <> 'Super Admin'", UserDGV)
+                Call LoadDGV("SELECT * FROM db_viewuser WHERE Role <> 'Super Admin' ORDER BY Username ASC", UserDGV)
             End If
         End Try
         DgvStyle(UserDGV)
@@ -66,16 +66,16 @@ Module usersModule
             ' Hide Super Admin users and archived users from list
             Try
                 If LoggedInRole = "Super Admin" Then
-                    Call LoadDGV("SELECT * FROM db_viewuser WHERE isArchived = 0 OR isArchived IS NULL", UserDGV)
+                    Call LoadDGV("SELECT * FROM db_viewuser WHERE isArchived = 0 OR isArchived IS NULL ORDER BY Username ASC", UserDGV)
                 Else
-                    Call LoadDGV("SELECT * FROM db_viewuser WHERE (isArchived = 0 OR isArchived IS NULL) AND Role <> 'Super Admin'", UserDGV)
+                    Call LoadDGV("SELECT * FROM db_viewuser WHERE (isArchived = 0 OR isArchived IS NULL) AND Role <> 'Super Admin' ORDER BY Username ASC", UserDGV)
                 End If
             Catch
                 ' Fallback if isArchived column doesn't exist yet
                 If LoggedInRole = "Super Admin" Then
-                    Call LoadDGV("SELECT * FROM db_viewuser", UserDGV)
+                    Call LoadDGV("SELECT * FROM db_viewuser ORDER BY Username ASC", UserDGV)
                 Else
-                    Call LoadDGV("SELECT * FROM db_viewuser WHERE Role <> 'Super Admin'", UserDGV)
+                    Call LoadDGV("SELECT * FROM db_viewuser WHERE Role <> 'Super Admin' ORDER BY Username ASC", UserDGV)
                 End If
             End Try
 
@@ -100,14 +100,24 @@ Module usersModule
         End Try
     End Sub
 
-    Public Sub btnAdd_Click(UserDGV As DataGridView, handler As FormClosedEventHandler)
+    Public Sub btnAdd_Click(UserDGV As DataGridView, handler As FormClosedEventHandler, Optional usersForm As Form = Nothing)
+        ' Hide the users form if provided
+        If usersForm IsNot Nothing Then
+            usersForm.Hide()
+        End If
+
         Dim usersAdd As New addUsers()
-        usersAdd.TopMost = True
+        usersAdd.Top = True
         AddHandler usersAdd.FormClosed, handler
         usersAdd.ShowDialog()
+
+        ' Show the users form again after addUsers closes
+        If usersForm IsNot Nothing Then
+            usersForm.Show()
+        End If
     End Sub
 
-    Public Sub btnEdit_Click(UserDGV As DataGridView, handler As FormClosedEventHandler)
+    Public Sub btnEdit_Click(UserDGV As DataGridView, handler As FormClosedEventHandler, Optional usersForm As Form = Nothing)
         If UserDGV.SelectedRows.Count > 0 Then
             Dim UserID As Integer = Convert.ToInt32(UserDGV.SelectedRows(0).Cells("Column1").Value)
 
@@ -120,15 +130,22 @@ Module usersModule
             End If
 
             If MsgBox("Are you sure you want to edit this record?", vbYesNo + vbQuestion, "Edit") = vbYes Then
+                ' Hide the users form if provided
+                If usersForm IsNot Nothing Then
+                    usersForm.Hide()
+                End If
 
                 Dim usersAdd As New addUsers()
                 AddHandler usersAdd.FormClosed, handler
-                usersAdd.TopMost = True
-                usersAdd.Show()
                 usersAdd.pnlAddUser.Tag = UserID
                 usersAdd.Text = "Edit Users Information"
                 usersAdd.loadRecord(UserID)
+                usersAdd.ShowDialog()
 
+                ' Show the users form again after addUsers closes
+                If usersForm IsNot Nothing Then
+                    usersForm.Show()
+                End If
             End If
         Else
             MessageBox.Show("Please select a row first.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error)
@@ -152,16 +169,16 @@ Module usersModule
         ' Hide Super Admin users and archived users from search results
         Try
             If LoggedInRole = "Super Admin" Then
-                Call LoadDGV("SELECT * FROM db_viewuser WHERE Username LIKE ? AND (isArchived = 0 OR isArchived IS NULL)", UserDGV, txtSearch.Text)
+                Call LoadDGV("SELECT * FROM db_viewuser WHERE Username LIKE ? AND (isArchived = 0 OR isArchived IS NULL) ORDER BY Username ASC", UserDGV, txtSearch.Text)
             Else
-                Call LoadDGV("SELECT * FROM db_viewuser WHERE Username LIKE ? AND (isArchived = 0 OR isArchived IS NULL) AND Role <> 'Super Admin'", UserDGV, txtSearch.Text)
+                Call LoadDGV("SELECT * FROM db_viewuser WHERE Username LIKE ? AND (isArchived = 0 OR isArchived IS NULL) AND Role <> 'Super Admin' ORDER BY Username ASC", UserDGV, txtSearch.Text)
             End If
         Catch
             ' Fallback if isArchived column doesn't exist yet
             If LoggedInRole = "Super Admin" Then
-                Call LoadDGV("SELECT * FROM db_viewuser WHERE Username LIKE ?", UserDGV, txtSearch.Text)
+                Call LoadDGV("SELECT * FROM db_viewuser WHERE Username LIKE ? ORDER BY Username ASC", UserDGV, txtSearch.Text)
             Else
-                Call LoadDGV("SELECT * FROM db_viewuser WHERE Username LIKE ? AND Role <> 'Super Admin'", UserDGV, txtSearch.Text)
+                Call LoadDGV("SELECT * FROM db_viewuser WHERE Username LIKE ? AND Role <> 'Super Admin' ORDER BY Username ASC", UserDGV, txtSearch.Text)
             End If
         End Try
 
@@ -244,11 +261,11 @@ Module usersModule
                     InsertAuditTrail(GlobalVariables.LoggedInUserID, "Archive User", "Archived user: " & username)
 
                     MsgBox("User account Deleted successfully!", vbInformation, "Success")
-                    ' Reload with proper filtering
+                    ' Reload with proper filtering and sorting
                     If LoggedInRole = "Super Admin" Then
-                        Call LoadDGV("SELECT * FROM db_viewuser WHERE isArchived = 0 OR isArchived IS NULL", UserDGV)
+                        Call LoadDGV("SELECT * FROM db_viewuser WHERE isArchived = 0 OR isArchived IS NULL ORDER BY Username ASC", UserDGV)
                     Else
-                        Call LoadDGV("SELECT * FROM db_viewuser WHERE (isArchived = 0 OR isArchived IS NULL) AND Role <> 'Super Admin'", UserDGV)
+                        Call LoadDGV("SELECT * FROM db_viewuser WHERE (isArchived = 0 OR isArchived IS NULL) AND Role <> 'Super Admin' ORDER BY Username ASC", UserDGV)
                     End If
 
                 Catch ex As Exception
@@ -289,19 +306,19 @@ Module usersModule
 
     Public Sub OnAddRecordClosed(UserDGV As DataGridView)
         Call dbConn()
-        ' Hide Super Admin users and archived users from list
+        ' Hide Super Admin users and archived users from list with proper sorting
         Try
             If LoggedInRole = "Super Admin" Then
-                Call LoadDGV("SELECT * FROM db_viewuser WHERE isArchived = 0 OR isArchived IS NULL", UserDGV)
+                Call LoadDGV("SELECT * FROM db_viewuser WHERE isArchived = 0 OR isArchived IS NULL ORDER BY Username ASC", UserDGV)
             Else
-                Call LoadDGV("SELECT * FROM db_viewuser WHERE (isArchived = 0 OR isArchived IS NULL) AND Role <> 'Super Admin'", UserDGV)
+                Call LoadDGV("SELECT * FROM db_viewuser WHERE (isArchived = 0 OR isArchived IS NULL) AND Role <> 'Super Admin' ORDER BY Username ASC", UserDGV)
             End If
         Catch
             ' Fallback if isArchived column doesn't exist yet
             If LoggedInRole = "Super Admin" Then
-                Call LoadDGV("SELECT * FROM db_viewuser", UserDGV)
+                Call LoadDGV("SELECT * FROM db_viewuser ORDER BY Username ASC", UserDGV)
             Else
-                Call LoadDGV("SELECT * FROM db_viewuser WHERE Role <> 'Super Admin'", UserDGV)
+                Call LoadDGV("SELECT * FROM db_viewuser WHERE Role <> 'Super Admin' ORDER BY Username ASC", UserDGV)
             End If
         End Try
 
@@ -337,7 +354,7 @@ Module usersModule
             Dim countSql As String = "SELECT COUNT(*)" & baseFrom & whereSql
             Dim dataSql As String = _
                 "SELECT *" & baseFrom & whereSql & _
-                " ORDER BY UserID DESC " & _
+                " ORDER BY Username ASC " & _
                 "LIMIT ? OFFSET ?"
 
             Using cn As New Odbc.OdbcConnection(myDSN)

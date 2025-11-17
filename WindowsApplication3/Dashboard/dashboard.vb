@@ -709,21 +709,21 @@ Public Class dashboard
     Private Sub pnlDash_Paint(sender As Object, e As PaintEventArgs) Handles pnlDash.Paint
 
     End Sub
-    ' Search dgvProductAvail for text in txtSearch when btnSearch is clicked
+
     Private Sub btnSearch_Click(sender As Object, e As EventArgs) Handles btnSearch.Click
         Try
             Dim searchText As String = txtSearch.Text.Trim()
 
-            ' If search is empty, reload all products
+
             If String.IsNullOrEmpty(searchText) Then
                 LoadAvailableProducts()
                 Return
             End If
 
-            ' Reload all products first, then filter
+
             LoadAvailableProducts()
 
-            ' Create a list to hold matching rows
+
             Dim matchingRows As New List(Of DataGridViewRow)()
 
             ' Find matching rows

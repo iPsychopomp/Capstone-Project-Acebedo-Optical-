@@ -116,7 +116,7 @@ Public Class Transaction
                 " COALESCE(p.fullname, t.patientName) AS patientName, " & _
                 " t.paymentType AS typeOfPayment, " & _
                 " t.transactionDate AS date, " & _
-                " t.pendingBalance, " & _
+                " CASE WHEN t.pendingBalance < 0 THEN 0 ELSE t.pendingBalance END AS pendingBalance, " & _
                 " t.settlementDate, " & _
                 " t.amountPaid, " & _
                 " t.totalAmount AS totalPayment, " & _
@@ -172,7 +172,7 @@ Public Class Transaction
                 " COALESCE(p.fullname, t.patientName) AS patientName, " & _
                 " t.paymentType AS typeOfPayment, " & _
                 " t.transactionDate AS date, " & _
-                " t.pendingBalance, " & _
+                " CASE WHEN t.pendingBalance < 0 THEN 0 ELSE t.pendingBalance END AS pendingBalance, " & _
                 " t.settlementDate, " & _
                 " t.amountPaid, " & _
                 " t.totalAmount AS totalPayment, " & _

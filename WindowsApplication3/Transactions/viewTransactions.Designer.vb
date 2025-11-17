@@ -45,17 +45,17 @@ Partial Class viewTransactions
         Me.lblFrame = New System.Windows.Forms.Label()
         Me.lblDate = New System.Windows.Forms.Label()
         Me.lblPatientName = New System.Windows.Forms.Label()
-        Me.Panel1 = New System.Windows.Forms.Panel()
-        Me.PictureBox1 = New System.Windows.Forms.PictureBox()
         Me.Label10 = New System.Windows.Forms.Label()
+        Me.PictureBox1 = New System.Windows.Forms.PictureBox()
+        Me.btnReport = New System.Windows.Forms.Button()
         Me.pnlViewTransactions.SuspendLayout()
-        Me.Panel1.SuspendLayout()
         CType(Me.PictureBox1, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.SuspendLayout()
         '
         'pnlViewTransactions
         '
         Me.pnlViewTransactions.BackColor = System.Drawing.Color.White
+        Me.pnlViewTransactions.Controls.Add(Me.lblPatientName)
         Me.pnlViewTransactions.Controls.Add(Me.lblFrameTotal)
         Me.pnlViewTransactions.Controls.Add(Me.lblLensDiscount)
         Me.pnlViewTransactions.Controls.Add(Me.lblLensTotal)
@@ -77,9 +77,9 @@ Partial Class viewTransactions
         Me.pnlViewTransactions.Controls.Add(Me.lblFrame)
         Me.pnlViewTransactions.Controls.Add(Me.lblDate)
         Me.pnlViewTransactions.Dock = System.Windows.Forms.DockStyle.Bottom
-        Me.pnlViewTransactions.Location = New System.Drawing.Point(0, 48)
+        Me.pnlViewTransactions.Location = New System.Drawing.Point(0, 42)
         Me.pnlViewTransactions.Name = "pnlViewTransactions"
-        Me.pnlViewTransactions.Size = New System.Drawing.Size(635, 460)
+        Me.pnlViewTransactions.Size = New System.Drawing.Size(635, 466)
         Me.pnlViewTransactions.TabIndex = 24
         '
         'lblFrameTotal
@@ -286,41 +286,41 @@ Partial Class viewTransactions
         '
         Me.lblPatientName.AutoSize = True
         Me.lblPatientName.Font = New System.Drawing.Font("Segoe UI", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.lblPatientName.Location = New System.Drawing.Point(12, 9)
+        Me.lblPatientName.Location = New System.Drawing.Point(606, 10)
         Me.lblPatientName.Name = "lblPatientName"
-        Me.lblPatientName.Size = New System.Drawing.Size(129, 25)
+        Me.lblPatientName.Size = New System.Drawing.Size(17, 25)
         Me.lblPatientName.TabIndex = 25
-        Me.lblPatientName.Text = "Patient Name:"
-        '
-        'Panel1
-        '
-        Me.Panel1.BackColor = System.Drawing.SystemColors.GradientActiveCaption
-        Me.Panel1.Controls.Add(Me.PictureBox1)
-        Me.Panel1.Controls.Add(Me.Label10)
-        Me.Panel1.Dock = System.Windows.Forms.DockStyle.Top
-        Me.Panel1.Location = New System.Drawing.Point(0, 0)
-        Me.Panel1.Name = "Panel1"
-        Me.Panel1.Size = New System.Drawing.Size(635, 49)
-        Me.Panel1.TabIndex = 122
-        '
-        'PictureBox1
-        '
-        Me.PictureBox1.Image = CType(resources.GetObject("PictureBox1.Image"), System.Drawing.Image)
-        Me.PictureBox1.Location = New System.Drawing.Point(12, 8)
-        Me.PictureBox1.Name = "PictureBox1"
-        Me.PictureBox1.Size = New System.Drawing.Size(31, 37)
-        Me.PictureBox1.TabIndex = 114
-        Me.PictureBox1.TabStop = False
+        Me.lblPatientName.Text = " "
+        Me.lblPatientName.Visible = False
         '
         'Label10
         '
         Me.Label10.AutoSize = True
         Me.Label10.Font = New System.Drawing.Font("Segoe UI Semibold", 12.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Label10.Location = New System.Drawing.Point(49, 12)
+        Me.Label10.Location = New System.Drawing.Point(49, 10)
         Me.Label10.Name = "Label10"
         Me.Label10.Size = New System.Drawing.Size(186, 28)
-        Me.Label10.TabIndex = 113
+        Me.Label10.TabIndex = 116
         Me.Label10.Text = "Transaction History"
+        '
+        'PictureBox1
+        '
+        Me.PictureBox1.Image = CType(resources.GetObject("PictureBox1.Image"), System.Drawing.Image)
+        Me.PictureBox1.Location = New System.Drawing.Point(12, 5)
+        Me.PictureBox1.Name = "PictureBox1"
+        Me.PictureBox1.Size = New System.Drawing.Size(31, 37)
+        Me.PictureBox1.TabIndex = 117
+        Me.PictureBox1.TabStop = False
+        '
+        'btnReport
+        '
+        Me.btnReport.Font = New System.Drawing.Font("Segoe UI", 10.8!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.btnReport.Location = New System.Drawing.Point(523, 9)
+        Me.btnReport.Name = "btnReport"
+        Me.btnReport.Size = New System.Drawing.Size(100, 27)
+        Me.btnReport.TabIndex = 118
+        Me.btnReport.Text = "Report"
+        Me.btnReport.UseVisualStyleBackColor = True
         '
         'viewTransactions
         '
@@ -328,8 +328,9 @@ Partial Class viewTransactions
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.BackColor = System.Drawing.SystemColors.GradientActiveCaption
         Me.ClientSize = New System.Drawing.Size(635, 508)
-        Me.Controls.Add(Me.Panel1)
-        Me.Controls.Add(Me.lblPatientName)
+        Me.Controls.Add(Me.btnReport)
+        Me.Controls.Add(Me.PictureBox1)
+        Me.Controls.Add(Me.Label10)
         Me.Controls.Add(Me.pnlViewTransactions)
         Me.Font = New System.Drawing.Font("Segoe UI", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog
@@ -342,8 +343,6 @@ Partial Class viewTransactions
         Me.Text = "Acebedo Optical"
         Me.pnlViewTransactions.ResumeLayout(False)
         Me.pnlViewTransactions.PerformLayout()
-        Me.Panel1.ResumeLayout(False)
-        Me.Panel1.PerformLayout()
         CType(Me.PictureBox1, System.ComponentModel.ISupportInitialize).EndInit()
         Me.ResumeLayout(False)
         Me.PerformLayout()
@@ -368,10 +367,10 @@ Partial Class viewTransactions
     Friend WithEvents lblCheckUpCost As System.Windows.Forms.Label
     Friend WithEvents lblPaymentStatus As System.Windows.Forms.Label
     Friend WithEvents lblModeOfPayment As System.Windows.Forms.Label
-    Friend WithEvents Panel1 As System.Windows.Forms.Panel
-    Friend WithEvents PictureBox1 As System.Windows.Forms.PictureBox
-    Friend WithEvents Label10 As System.Windows.Forms.Label
     Friend WithEvents lblLensDiscount As System.Windows.Forms.Label
     Friend WithEvents lblLensTotal As System.Windows.Forms.Label
     Friend WithEvents lblFrameTotal As System.Windows.Forms.Label
+    Friend WithEvents PictureBox1 As System.Windows.Forms.PictureBox
+    Friend WithEvents Label10 As System.Windows.Forms.Label
+    Friend WithEvents btnReport As System.Windows.Forms.Button
 End Class

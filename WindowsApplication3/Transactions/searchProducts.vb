@@ -247,6 +247,45 @@ Public Class searchProducts
             Catch
             End Try
 
+            ' If this is a Lens product, open selectGrade and let it handle
+            ' adding the Lens product plus OS/OD rows into the transaction grid.
+            If String.Equals(category, "Lens", StringComparison.OrdinalIgnoreCase) Then
+                Dim gradeForm As New selectGrade()
+                gradeForm.LensProductID = productID
+                gradeForm.LensProductName = productName
+                gradeForm.LensCategory = category
+                gradeForm.LensUnitPrice = unitPrice
+
+                ' Position selectGrade centered over this form
+                gradeForm.StartPosition = FormStartPosition.Manual
+                Dim screenArea = Screen.FromControl(Me).WorkingArea
+
+                ' Center selectGrade relative to searchProducts
+                Dim desiredX As Integer = Me.Left + (Me.Width - gradeForm.Width) \ 2
+                Dim desiredY As Integer = Me.Top + (Me.Height - gradeForm.Height) \ 2
+
+                ' Clamp within screen horizontally
+                If desiredX + gradeForm.Width > screenArea.Right Then
+                    desiredX = screenArea.Right - gradeForm.Width
+                End If
+                If desiredX < screenArea.Left Then
+                    desiredX = screenArea.Left
+                End If
+
+                ' Clamp within screen vertically
+                If desiredY + gradeForm.Height > screenArea.Bottom Then
+                    desiredY = screenArea.Bottom - gradeForm.Height
+                End If
+                If desiredY < screenArea.Top Then
+                    desiredY = screenArea.Top
+                End If
+
+                gradeForm.Location = New Point(desiredX, desiredY)
+
+                gradeForm.ShowDialog(Me)
+                Return
+            End If
+
             ' Locate open addPatientTransaction form
             Dim target As addPatientTransaction = Nothing
             For Each frm As Form In Application.OpenForms

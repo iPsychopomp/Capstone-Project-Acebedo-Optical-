@@ -11,12 +11,9 @@ Public Class OrderProduct
         ' Ensure database schema is updated (runs once per session)
         EnsureOrderItemsProductIDNullable()
 
-        ' Load suppliers first; products will be bound when a supplier is selected
+        ' Load suppliers first
         LoadSuppliers()
-        ' Only load global suggestions if no supplier is selected
-        If cmbSuppliers.SelectedIndex = -1 Then
-            LoadProductSuggestions()
-        End If
+
         LoadOrders()
         txtTotal.Text = "0.00"
         DgvStyle(dgvSelectedProducts)
@@ -39,6 +36,52 @@ Public Class OrderProduct
             If dgvSelectedProducts IsNot Nothing AndAlso dgvSelectedProducts.Columns.Contains("productID") Then
                 dgvSelectedProducts.Columns("productID").Visible = True
             End If
+        Catch
+        End Try
+    End Sub
+
+    Public Sub AddOrUpdateProductFromSupplier(productID As Integer, productName As String, category As String, unitPrice As Decimal, supplierName As String, quantity As Integer)
+        If quantity <= 0 Then Exit Sub
+
+        Try
+            ' Ensure columns are set up only if not already configured
+            If dgvSelectedProducts.Columns.Count = 0 Then
+                SetupSelectedProductsColumns(dgvSelectedProducts)
+            End If
+
+            ' Find existing row for this product (by name)
+            Dim existingRow As DataGridViewRow = Nothing
+            For Each r As DataGridViewRow In dgvSelectedProducts.Rows
+                If r.IsNewRow Then Continue For
+                Dim rowName As String = ""
+                Try
+                    rowName = Convert.ToString(r.Cells("ProductName").Value)
+                Catch
+                End Try
+                If rowName.Equals(productName, StringComparison.OrdinalIgnoreCase) Then
+                    existingRow = r
+                    Exit For
+                End If
+            Next
+
+            If existingRow IsNot Nothing Then
+                ' Update quantity and total
+                Dim currentQty As Integer = 0
+                Try
+                    Integer.TryParse(Convert.ToString(existingRow.Cells("Quantity").Value), currentQty)
+                Catch
+                End Try
+                Dim newQty As Integer = currentQty + quantity
+                existingRow.Cells("Quantity").Value = newQty
+                existingRow.Cells("Total").Value = (unitPrice * newQty).ToString("0.00")
+            Else
+                ' Add new row
+                dgvSelectedProducts.Rows.Add(productID, productName, category, unitPrice, quantity, supplierName, (unitPrice * quantity).ToString("0.00"))
+            End If
+
+            dgvSelectedProducts.Refresh()
+            UpdateTotalAmount()
+            HideProductIDColumn()
         Catch
         End Try
     End Sub
@@ -340,31 +383,6 @@ Public Class OrderProduct
 
     End Sub
 
-    Private Sub LoadProductSuggestions()
-        Try
-            Call dbConn()
-
-            Dim sql As String = "SELECT productName FROM tbl_products"
-            Dim cmd As New Odbc.OdbcCommand(sql, conn)
-            Dim reader As Odbc.OdbcDataReader = cmd.ExecuteReader()
-
-            ' Ensure DataSource is not set when using Items collection
-            cmbProducts.DataSource = Nothing
-            cmbProducts.Items.Clear()
-
-            While reader.Read()
-                cmbProducts.Items.Add(reader("productName").ToString())
-            End While
-
-            reader.Close()
-            conn.Close()
-
-        Catch ex As Exception
-            MsgBox("Error loading product suggestions: " & ex.Message)
-        End Try
-        DgvStyle(dgvSelectedProducts)
-    End Sub
-
     Private Sub btnRemove_Click(sender As Object, e As EventArgs) Handles btnRemove.Click
         If dgvSelectedProducts.SelectedRows.Count > 0 Then
             For Each row As DataGridViewRow In dgvSelectedProducts.SelectedRows
@@ -379,94 +397,28 @@ Public Class OrderProduct
     End Sub
     Private Sub btnAdd_Click(sender As Object, e As EventArgs) Handles btnAdd.Click
         Try
-            If cmbProducts.SelectedIndex = -1 OrElse cmbSuppliers.SelectedIndex = -1 Then
-                MsgBox("Please select both product and supplier.", vbCritical, "Error")
+            ' Require a supplier selection before opening the search form
+            If cmbSuppliers.SelectedIndex = -1 OrElse cmbSuppliers.SelectedValue Is Nothing OrElse String.IsNullOrWhiteSpace(cmbSuppliers.Text) Then
+                MsgBox("Please select a supplier first.", vbExclamation, "Supplier Required")
                 Exit Sub
             End If
 
-            Dim selectedProductName As String = cmbProducts.Text
+            Dim selectedSupplierName As String = cmbSuppliers.Text
 
-            Dim selectedSupplierID As Integer = 0
-            If Not Integer.TryParse(Convert.ToString(cmbSuppliers.SelectedValue), selectedSupplierID) Then
-                MsgBox("Please select a valid supplier.", vbCritical, "Error")
-                Exit Sub
-            End If
+            ' Open the supplier products search form filtered by the selected supplier name
+            Using frm As New searchSupplierProducts()
+                Try
+                    frm.SupplierNameFilter = selectedSupplierName
+                Catch
+                End Try
 
-            ' Get price and category from tbl_supplier_products (supplier's catalog)
-            Dim productCategory As String = GetSupplierItemCategory(selectedSupplierID, selectedProductName)
-            Dim unitPrice As Decimal = GetSupplierItemUnitPrice(selectedSupplierID, selectedProductName)
-
-            ' Validate that product exists in supplier catalog
-            If unitPrice = 0 Then
-                MsgBox("Product not found in supplier catalog or missing price information.", vbExclamation, "Error")
-                Exit Sub
-            End If
-
-            ' Try to get productID from tbl_products (main inventory)
-            ' If not found, productID will be 0 (NULL in database)
-            Dim productID As Integer = 0
-            Dim productIDStr As String = GetProductID(selectedProductName)
-            If Not String.IsNullOrEmpty(productIDStr) Then
-                Integer.TryParse(productIDStr, productID)
-            End If
-
-            Dim selectedSupplier As String = GetSupplierNameByID(selectedSupplierID)
-            Dim quantity As Integer = 1 ' Default quantity
-            If Not Integer.TryParse(numQuantity.Value.ToString(), quantity) OrElse quantity <= 0 Then
-                MsgBox("Please enter a valid quantity (must be greater than 0).", vbCritical, "Error")
-                Exit Sub
-            End If
-            Dim totalPrice As Decimal = unitPrice * quantity
-
-            ' Ensure columns are set up only if not already configured
-            If dgvSelectedProducts.Columns.Count = 0 Then
-                SetupSelectedProductsColumns(dgvSelectedProducts)
-            End If
-
-            ' Validate that columns are properly set up
-            If dgvSelectedProducts.Columns.Count < 7 Then
-                MsgBox("DataGridView columns are not properly configured. Please restart the application.", vbCritical, "Configuration Error")
-                Exit Sub
-            End If
-
-            ' Check if product already exists in the grid
-            Dim existingRow As DataGridViewRow = Nothing
-            For Each row As DataGridViewRow In dgvSelectedProducts.Rows
-                If Not row.IsNewRow Then
-                    Dim rowProductName As String = Convert.ToString(row.Cells("ProductName").Value)
-                    If rowProductName.Equals(selectedProductName, StringComparison.OrdinalIgnoreCase) Then
-                        existingRow = row
-                        Exit For
-                    End If
-                End If
-            Next
-
-            If existingRow IsNot Nothing Then
-                ' Product exists, update quantity and total
-                Dim currentQty As Integer = Convert.ToInt32(existingRow.Cells("Quantity").Value)
-                Dim newQty As Integer = currentQty + quantity
-                existingRow.Cells("Quantity").Value = newQty
-                existingRow.Cells("Total").Value = (unitPrice * newQty).ToString("0.00")
-            Else
-                ' Product doesn't exist, add new row
-                dgvSelectedProducts.Rows.Add(productID, selectedProductName, productCategory, unitPrice, quantity, selectedSupplier, totalPrice.ToString("0.00"))
-            End If
-
-            ' Refresh the DataGridView to ensure the new row is visible
-            dgvSelectedProducts.Refresh()
-
-            ' Reset the product selection to allow adding the same product again
-            cmbProducts.SelectedIndex = -1
-            numQuantity.Value = 1
-
-            ' Show success feedback
-            'MsgBox("Product added successfully! You can add more items from the same supplier.", vbInformation, "Success")
+                frm.StartPosition = FormStartPosition.CenterScreen
+                frm.ShowDialog(Me)
+            End Using
 
         Catch ex As Exception
-            MsgBox("Error adding product: " & ex.Message, vbCritical, "Error")
+            MsgBox("Error opening supplier products: " & ex.Message, vbCritical, "Error")
         End Try
-
-        UpdateTotalAmount()
 
     End Sub
 
@@ -586,6 +538,7 @@ Public Class OrderProduct
         If MsgBox("Are you sure you want to place this order?", vbQuestion + vbYesNo, "Confirm") = vbNo Then Exit Sub
 
         Dim transaction As Odbc.OdbcTransaction = Nothing
+        Dim orderDateTime As DateTime = DateTime.Now
 
         Try
             Call dbConn()
@@ -598,7 +551,7 @@ Public Class OrderProduct
             cmd.Transaction = transaction
             cmd.CommandText = "INSERT INTO tbl_productOrders (orderDate, supplierID, totalAmount, status, orderedBy) VALUES (?, ?, ?, ?, ?)"
             cmd.Parameters.Clear()
-            cmd.Parameters.Add(New Odbc.OdbcParameter("orderDate", Odbc.OdbcType.DateTime)).Value = dtpDate.Value
+            cmd.Parameters.Add(New Odbc.OdbcParameter("orderDate", Odbc.OdbcType.DateTime)).Value = orderDateTime
             cmd.Parameters.Add(New Odbc.OdbcParameter("supplierID", Odbc.OdbcType.Int)).Value = Convert.ToInt32(cmbSuppliers.SelectedValue)
 
             Dim totalAmount As Double
@@ -661,8 +614,8 @@ Public Class OrderProduct
             reportForm.dtpYear.Visible = False
             reportForm.btnGenerate.Visible = False
 
-            ' Generate the report before showing it
-            reportForm.GenerateOrderProductReport(dtpDate.Value)
+            ' Generate the report before showing it, using the exact same orderDateTime
+            reportForm.GenerateOrderProductReport(orderDateTime)
 
             ' Set the form to appear on top
 
@@ -723,8 +676,6 @@ Public Class OrderProduct
 
         dgvSelectedProducts.Rows.Clear()
 
-        dtpDate.Value = Date.Now
-
         txtTotal.Text = "0.00"
         ' Keep Ordered By as the logged-in username
         Try
@@ -732,9 +683,7 @@ Public Class OrderProduct
             txtOrderedBy.ReadOnly = True
         Catch
         End Try
-        numQuantity.Value = 0
 
-        cmbProducts.SelectedIndex = -1
         DgvStyle(dgvSelectedProducts)
     End Sub
 
@@ -971,18 +920,6 @@ Public Class OrderProduct
             End Using
 
             ' Clear previous data/suggestions to avoid mixing
-            cmbProducts.DataSource = Nothing
-            cmbProducts.Items.Clear()
-
-            cmbProducts.DataSource = dt
-            cmbProducts.DisplayMember = "productName"
-            cmbProducts.ValueMember = "productID"
-            cmbProducts.SelectedIndex = -1
-            ' Safe autocomplete for DropDownList: use None to avoid NotSupportedException
-            cmbProducts.AutoCompleteSource = AutoCompleteSource.ListItems
-            cmbProducts.AutoCompleteMode = AutoCompleteMode.None
-            cmbProducts.Text = String.Empty
-            cmbProducts.DropDownStyle = ComboBoxStyle.DropDownList
 
             If dt.Rows.Count = 0 Then
                 MsgBox("No supplier items found for the selected supplier.", vbInformation, "No Items")

@@ -28,6 +28,23 @@ Public Class Reports
         dtpFROM.Visible = False
     End Sub
 
+    ' Configure form for staff transaction report: use cmbStaffSelect instead of cboReportType
+    Public Sub ShowStaffTransactionMode()
+        Panel1.Visible = True
+        cboReportType.Visible = False
+        cmbStaffSelect.Visible = True
+        dtpYear.Visible = False
+        dtpFROM.Visible = False
+        dtpTO.Visible = False
+
+        Try
+            If cmbStaffSelect.Items.Count > 0 AndAlso cmbStaffSelect.SelectedIndex < 0 Then
+                cmbStaffSelect.SelectedIndex = 0
+            End If
+        Catch
+        End Try
+    End Sub
+
     Private Sub btnGenerate_Click(sender As Object, e As EventArgs) Handles btnGenerate.Click
         Try
             ReportViewer1.Reset()
@@ -50,6 +67,12 @@ Public Class Reports
 
     Private Sub LoadSelectedReport()
         Try
+            ' If staff transaction filter is active, use staffTransactionReport regardless of cboReportType
+            If cmbStaffSelect IsNot Nothing AndAlso cmbStaffSelect.Visible Then
+                ShowStaffTransactionReport()
+                Return
+            End If
+
             Select Case cboReportType.SelectedItem.ToString()
                 Case "Patient Information"
                     ShowPatientReport()
@@ -157,6 +180,80 @@ Public Class Reports
         End If
         Dim reportPath As String = IO.Path.Combine(Application.StartupPath, "RDLC", "printOrders.rdlc")
         SetupSingleReport(reportPath, "DataSet7", data)
+    End Sub
+
+    ' Staff transaction report (uses staffTransactionReport.rdlc)
+    Private Sub ShowStaffTransactionReport()
+        Dim fromDate As Date
+        Dim toDate As Date
+        If Not GetStaffDateRange(fromDate, toDate) Then
+            MessageBox.Show("Please select a valid date range option.", "Report", MessageBoxButtons.OK, MessageBoxIcon.Warning)
+            Return
+        End If
+
+        Dim dtSummary As DataTable = GetSalesSummaryData(connectionString, fromDate, toDate)
+        Dim dtCollection As DataTable = GetCollectionSummaryData(connectionString, fromDate, toDate)
+        Dim dtBreakdown As DataTable = GetSalesBreakdownData(connectionString, fromDate, toDate)
+
+        If dtSummary.Rows.Count = 0 AndAlso dtCollection.Rows.Count = 0 AndAlso dtBreakdown.Rows.Count = 0 Then
+            MessageBox.Show("No data found for the selected date range.", "Empty Data", MessageBoxButtons.OK, MessageBoxIcon.Information)
+            Return
+        End If
+
+        Dim reportPath As String = IO.Path.Combine(Application.StartupPath, "RDLC", "staffTransactionReport.rdlc")
+        If Not IO.File.Exists(reportPath) Then
+            MessageBox.Show("Report file not found: " & reportPath, "Missing File", MessageBoxButtons.OK, MessageBoxIcon.Error)
+            Return
+        End If
+
+        Try
+            ReportViewer1.Reset()
+
+            With ReportViewer1.LocalReport
+                .ReportPath = reportPath
+                .DataSources.Clear()
+
+                ' DataSet names must match those defined in staffTransactionReport.rdlc
+                .DataSources.Add(New ReportDataSource("DataSet99", dtSummary))      ' view_sales_summary
+                .DataSources.Add(New ReportDataSource("DataSet999", dtCollection))  ' view_collection_summary
+                .DataSources.Add(New ReportDataSource("DataSet9", dtBreakdown))     ' view_sales_breakdown
+
+                ' Set report parameters if the RDLC defines any (e.g., PreparedBy)
+                Try
+                    Dim paramsInfo = .GetParameters()
+                    If paramsInfo IsNot Nothing AndAlso paramsInfo.Count > 0 Then
+                        Dim paramList As New List(Of ReportParameter)()
+                        For Each p In paramsInfo
+                            Dim val As String = String.Empty
+                            Dim name As String = p.Name
+                            Select Case name
+                                Case "PreparedBy"
+                                    Try
+                                        Dim prepared As String = GlobalVariables.LoggedInFullName
+                                        val = If(String.IsNullOrWhiteSpace(prepared), "N/A", prepared)
+                                    Catch
+                                        val = "N/A"
+                                    End Try
+                                Case Else
+                                    val = "N/A"
+                            End Select
+                            paramList.Add(New ReportParameter(name, val))
+                        Next
+                        If paramList.Count > 0 Then .SetParameters(paramList)
+                    End If
+                Catch
+                End Try
+            End With
+
+            With ReportViewer1
+                .SetDisplayMode(DisplayMode.PrintLayout)
+                .ZoomMode = ZoomMode.Percent
+                .ZoomPercent = 100
+                .RefreshReport()
+            End With
+        Catch ex As Exception
+            MessageBox.Show("Error loading staff transaction report: " & ex.Message, "Report Error", MessageBoxButtons.OK, MessageBoxIcon.Error)
+        End Try
     End Sub
 
     ' Exposed method to load Check-Up report (used by viewCheckUp)
@@ -268,6 +365,52 @@ Public Class Reports
         Return dt
     End Function
 
+    ' Staff transaction helpers
+    Private Function GetCollectionSummaryData(connString As String, fromDate As Date, toDate As Date) As DataTable
+        Dim dt As New DataTable()
+        Using conn As New OdbcConnection(connString)
+            Dim query As String = "SELECT * FROM view_collection_summary WHERE reportDate BETWEEN ? AND ?"
+            Using cmd As New OdbcCommand(query, conn)
+                cmd.Parameters.Add(New OdbcParameter("?", OdbcType.Date)).Value = fromDate
+                cmd.Parameters.Add(New OdbcParameter("?", OdbcType.Date)).Value = toDate
+                conn.Open()
+                Dim da As New OdbcDataAdapter(cmd)
+                da.Fill(dt)
+            End Using
+        End Using
+        Return dt
+    End Function
+
+    Private Function GetSalesBreakdownData(connString As String, fromDate As Date, toDate As Date) As DataTable
+        Dim dt As New DataTable()
+        Using conn As New OdbcConnection(connString)
+            Dim query As String = "SELECT * FROM view_sales_breakdown WHERE reportDate BETWEEN ? AND ?"
+            Using cmd As New OdbcCommand(query, conn)
+                cmd.Parameters.Add(New OdbcParameter("?", OdbcType.Date)).Value = fromDate
+                cmd.Parameters.Add(New OdbcParameter("?", OdbcType.Date)).Value = toDate
+                conn.Open()
+                Dim da As New OdbcDataAdapter(cmd)
+                da.Fill(dt)
+            End Using
+        End Using
+        Return dt
+    End Function
+
+    Private Function GetSalesSummaryData(connString As String, fromDate As Date, toDate As Date) As DataTable
+        Dim dt As New DataTable()
+        Using conn As New OdbcConnection(connString)
+            Dim query As String = "SELECT * FROM view_sales_summary WHERE reportDate BETWEEN ? AND ?"
+            Using cmd As New OdbcCommand(query, conn)
+                cmd.Parameters.Add(New OdbcParameter("?", OdbcType.Date)).Value = fromDate
+                cmd.Parameters.Add(New OdbcParameter("?", OdbcType.Date)).Value = toDate
+                conn.Open()
+                Dim da As New OdbcDataAdapter(cmd)
+                da.Fill(dt)
+            End Using
+        End Using
+        Return dt
+    End Function
+
     Private Function GetInventoryData(connString As String) As DataTable
         Dim dt As New DataTable()
         Using conn As New OdbcConnection(connString)
@@ -365,6 +508,43 @@ Public Class Reports
         Return dt
     End Function
 
+    ' Determine date range based on cmbStaffSelect value for staffTransactionReport
+    Private Function GetStaffDateRange(ByRef fromDate As Date, ByRef toDate As Date) As Boolean
+        If cmbStaffSelect Is Nothing OrElse cmbStaffSelect.SelectedItem Is Nothing Then
+            Return False
+        End If
+
+        Dim today As Date = Date.Today
+
+        Select Case cmbStaffSelect.SelectedItem.ToString()
+            Case "Daily"
+                fromDate = today
+                toDate = today
+            Case "Weekly"
+                ' Last 7 days including today
+                fromDate = today.AddDays(-6)
+                toDate = today
+            Case "Monthly"
+                fromDate = New Date(today.Year, today.Month, 1)
+                toDate = fromDate.AddMonths(1).AddDays(-1)
+            Case "Annualy", "Annually"
+                fromDate = New Date(today.Year, 1, 1)
+                toDate = New Date(today.Year, 12, 31)
+            Case "Custom"
+                If dtpFROM Is Nothing OrElse dtpTO Is Nothing Then Return False
+                fromDate = dtpFROM.Value.Date
+                toDate = dtpTO.Value.Date
+                If toDate < fromDate Then
+                    MessageBox.Show("'To' date must be greater than or equal to 'From' date.", "Invalid Range", MessageBoxButtons.OK, MessageBoxIcon.Warning)
+                    Return False
+                End If
+            Case Else
+                Return False
+        End Select
+
+        Return True
+    End Function
+
     ' -----------------------------
     '   CONTROL VISIBILITY HANDLER
     ' -----------------------------
@@ -372,6 +552,24 @@ Public Class Reports
         dtpFROM.Visible = (cboReportType.SelectedItem.ToString() = "Sales Overview")
         dtpTO.Visible = (cboReportType.SelectedItem.ToString() = "Sales Overview")
         dtpYear.Visible = (cboReportType.SelectedItem.ToString() = "Annual Sales")
+    End Sub
+
+    ' Handle visibility of date pickers for staff transaction report
+    Private Sub cmbStaffSelect_SelectedIndexChanged(sender As Object, e As EventArgs) Handles cmbStaffSelect.SelectedIndexChanged
+        If cmbStaffSelect.SelectedItem Is Nothing Then
+            dtpFROM.Visible = False
+            dtpTO.Visible = False
+            Return
+        End If
+
+        Dim mode As String = cmbStaffSelect.SelectedItem.ToString()
+        If mode = "Custom" Then
+            dtpFROM.Visible = True
+            dtpTO.Visible = True
+        Else
+            dtpFROM.Visible = False
+            dtpTO.Visible = False
+        End If
     End Sub
     ' === Public method for external call from Order Form ===
     Public Sub GenerateOrderProductReport(orderDateTime As DateTime)

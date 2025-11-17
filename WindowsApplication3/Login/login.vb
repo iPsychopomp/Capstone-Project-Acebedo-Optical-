@@ -16,20 +16,20 @@ Public Class Login
         Try
             Call dbConn()
 
-            Dim isdebugging As Boolean = True
+            'Dim isdebugging As Boolean = True
 
-            Dim username As String = "sadmin"
-            Dim password As String = "s1234"
+            'Dim username As String = "sadmin"
+            'Dim password As String = "s1234"
 
             ' Try to login with isArchived check, fallback if column doesn't exist
             sql = "SELECT userID, username, role, CONCAT(fname, ' ', lname) AS fullName FROM tbl_users WHERE username= ? AND password= ?"
             cmd = New Odbc.OdbcCommand(sql, conn)
 
-            'cmd.Parameters.AddWithValue("?", txtUser.Text.Trim)
-            'cmd.Parameters.AddWithValue("?", txtPass.Text.Trim)
+            cmd.Parameters.AddWithValue("?", txtUser.Text.Trim)
+            cmd.Parameters.AddWithValue("?", txtPass.Text.Trim)
 
-            cmd.Parameters.AddWithValue("?", username)
-            cmd.Parameters.AddWithValue("?", password)
+            'cmd.Parameters.AddWithValue("?", username)
+            'cmd.Parameters.AddWithValue("?", password)
 
             da.SelectCommand = cmd
             dt.Clear()

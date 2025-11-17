@@ -213,12 +213,6 @@
     <Compile Include="Dashboard\productsSold.vb">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Dashboard\receptionistDash.Designer.vb">
-      <DependentUpon>receptionistDash.vb</DependentUpon>
-    </Compile>
-    <Compile Include="Dashboard\receptionistDash.vb">
-      <SubType>Form</SubType>
-    </Compile>
     <Compile Include="Datasets\DataSet1.Designer.vb">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -536,9 +530,6 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Dashboard\productsSold.resx">
       <DependentUpon>productsSold.vb</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Dashboard\receptionistDash.resx">
-      <DependentUpon>receptionistDash.vb</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Doctors\addDoctors.resx">
       <DependentUpon>addDoctors.vb</DependentUpon>

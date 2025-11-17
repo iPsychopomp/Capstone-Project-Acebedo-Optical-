@@ -709,7 +709,6 @@ Public Class dashboard
     Private Sub pnlDash_Paint(sender As Object, e As PaintEventArgs) Handles pnlDash.Paint
 
     End Sub
-=======
     ' Search dgvProductAvail for text in txtSearch when btnSearch is clicked
     Private Sub btnSearch_Click(sender As Object, e As EventArgs) Handles btnSearch.Click
         Try

@@ -42,7 +42,7 @@ Partial Class ImportData
         Me.Panel1.Location = New System.Drawing.Point(0, 0)
         Me.Panel1.Margin = New System.Windows.Forms.Padding(4, 5, 4, 5)
         Me.Panel1.Name = "Panel1"
-        Me.Panel1.Size = New System.Drawing.Size(447, 239)
+        Me.Panel1.Size = New System.Drawing.Size(447, 209)
         Me.Panel1.TabIndex = 1
         '
         'btnILocal
@@ -50,8 +50,8 @@ Partial Class ImportData
         Me.btnILocal.BackColor = System.Drawing.SystemColors.ActiveCaption
         Me.btnILocal.FlatAppearance.BorderSize = 0
         Me.btnILocal.FlatStyle = System.Windows.Forms.FlatStyle.Popup
-        Me.btnILocal.Font = New System.Drawing.Font("Segoe UI", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.btnILocal.Location = New System.Drawing.Point(62, 45)
+        Me.btnILocal.Font = New System.Drawing.Font("Segoe UI", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.btnILocal.Location = New System.Drawing.Point(63, 45)
         Me.btnILocal.Name = "btnILocal"
         Me.btnILocal.Size = New System.Drawing.Size(321, 27)
         Me.btnILocal.TabIndex = 6
@@ -63,8 +63,8 @@ Partial Class ImportData
         Me.btnIgDrive.BackColor = System.Drawing.SystemColors.ActiveCaption
         Me.btnIgDrive.FlatAppearance.BorderSize = 0
         Me.btnIgDrive.FlatStyle = System.Windows.Forms.FlatStyle.Popup
-        Me.btnIgDrive.Font = New System.Drawing.Font("Segoe UI", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.btnIgDrive.Location = New System.Drawing.Point(62, 94)
+        Me.btnIgDrive.Font = New System.Drawing.Font("Segoe UI", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.btnIgDrive.Location = New System.Drawing.Point(63, 94)
         Me.btnIgDrive.Name = "btnIgDrive"
         Me.btnIgDrive.Size = New System.Drawing.Size(321, 27)
         Me.btnIgDrive.TabIndex = 7
@@ -77,15 +77,15 @@ Partial Class ImportData
         Me.ToolStrip.ImageScalingSize = New System.Drawing.Size(20, 20)
         Me.ToolStrip.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.TSPLabel, Me.tspBar})
         Me.ToolStrip.LayoutStyle = System.Windows.Forms.ToolStripLayoutStyle.VerticalStackWithOverflow
-        Me.ToolStrip.Location = New System.Drawing.Point(0, 185)
+        Me.ToolStrip.Location = New System.Drawing.Point(0, 150)
         Me.ToolStrip.Name = "ToolStrip"
-        Me.ToolStrip.Size = New System.Drawing.Size(447, 54)
+        Me.ToolStrip.Size = New System.Drawing.Size(447, 59)
         Me.ToolStrip.TabIndex = 4
         '
         'TSPLabel
         '
         Me.TSPLabel.Name = "TSPLabel"
-        Me.TSPLabel.Size = New System.Drawing.Size(445, 15)
+        Me.TSPLabel.Size = New System.Drawing.Size(445, 20)
         Me.TSPLabel.Text = "---"
         '
         'tspBar
@@ -96,9 +96,9 @@ Partial Class ImportData
         '
         'ImportData
         '
-        Me.AutoScaleDimensions = New System.Drawing.SizeF(9.0!, 21.0!)
+        Me.AutoScaleDimensions = New System.Drawing.SizeF(11.0!, 28.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
-        Me.ClientSize = New System.Drawing.Size(447, 239)
+        Me.ClientSize = New System.Drawing.Size(447, 209)
         Me.Controls.Add(Me.Panel1)
         Me.Font = New System.Drawing.Font("Segoe UI Semibold", 12.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog

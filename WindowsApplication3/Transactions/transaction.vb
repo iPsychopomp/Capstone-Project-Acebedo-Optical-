@@ -224,7 +224,6 @@ Public Class Transaction
 
         ' UI adjustments based on user role
         If LoggedInRole = "Receptionist" OrElse LoggedInRole = "Doctor" Then
-            transactionDGV.Dock = DockStyle.Fill
             Label1.Visible = False
             Total.Visible = False
             txtAmountTotal.Visible = False
@@ -589,4 +588,6 @@ Public Class Transaction
             MsgBox("Failed to open Add Transaction: " & ex.Message, vbCritical, "Error")
         End Try
     End Sub
+
+
 End Class

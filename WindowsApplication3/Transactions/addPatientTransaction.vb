@@ -711,6 +711,35 @@ AfterLoop:
                 SaveItemsNew(TransactionID)
                 SavePaymentRecords(TransactionID)
             End If
+
+            ' Show success message
+            MsgBox("Transaction saved successfully!", vbInformation, "Success")
+
+            ' Refresh parent form's DataGridView if it exists
+            Try
+                Dim parentForm As Form = Me.Owner
+                If parentForm IsNot Nothing Then
+                    ' Try to find and call a refresh method on the parent form
+                    Dim refreshMethod = parentForm.GetType().GetMethod("LoadTransactions")
+                    If refreshMethod IsNot Nothing Then
+                        refreshMethod.Invoke(parentForm, Nothing)
+                    End If
+
+                    ' Alternative: try to find a DataGridView and refresh it
+                    For Each ctrl As Control In parentForm.Controls
+                        If TypeOf ctrl Is DataGridView Then
+                            Dim dgv As DataGridView = CType(ctrl, DataGridView)
+                            dgv.Refresh()
+                        End If
+                    Next
+                End If
+            Catch
+                ' Silently ignore if parent refresh fails
+            End Try
+
+            ' Close the form
+            Me.Close()
+
         Catch ex As Exception
             MsgBox("Error: " & ex.Message, vbCritical, "Save Failed")
         End Try

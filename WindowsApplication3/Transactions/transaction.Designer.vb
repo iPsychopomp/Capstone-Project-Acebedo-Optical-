@@ -37,6 +37,8 @@ Partial Class Transaction
         Me.btnSearch = New System.Windows.Forms.Button()
         Me.txtSearch = New System.Windows.Forms.TextBox()
         Me.pnlBar = New System.Windows.Forms.Panel()
+        Me.btnView = New System.Windows.Forms.Button()
+        Me.btnNew = New System.Windows.Forms.Button()
         Me.btnEdit = New System.Windows.Forms.Button()
         Me.btnSettle = New System.Windows.Forms.Button()
         Me.rbPaid = New System.Windows.Forms.RadioButton()
@@ -61,8 +63,6 @@ Partial Class Transaction
         Me.Column3 = New System.Windows.Forms.DataGridViewTextBoxColumn()
         Me.Column4 = New System.Windows.Forms.DataGridViewTextBoxColumn()
         Me.ToolTip1 = New System.Windows.Forms.ToolTip(Me.components)
-        Me.btnNew = New System.Windows.Forms.Button()
-        Me.btnView = New System.Windows.Forms.Button()
         Me.pnlBar.SuspendLayout()
         Me.pnlTrans.SuspendLayout()
         CType(Me.transactionDGV, System.ComponentModel.ISupportInitialize).BeginInit()
@@ -111,6 +111,40 @@ Partial Class Transaction
         Me.pnlBar.Name = "pnlBar"
         Me.pnlBar.Size = New System.Drawing.Size(1447, 57)
         Me.pnlBar.TabIndex = 9
+        '
+        'btnView
+        '
+        Me.btnView.BackColor = System.Drawing.Color.White
+        Me.btnView.FlatStyle = System.Windows.Forms.FlatStyle.Flat
+        Me.btnView.Font = New System.Drawing.Font("Segoe UI", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.btnView.ForeColor = System.Drawing.Color.Black
+        Me.btnView.Image = CType(resources.GetObject("btnView.Image"), System.Drawing.Image)
+        Me.btnView.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft
+        Me.btnView.Location = New System.Drawing.Point(186, 11)
+        Me.btnView.Name = "btnView"
+        Me.btnView.Size = New System.Drawing.Size(81, 35)
+        Me.btnView.TabIndex = 13
+        Me.btnView.Text = "View"
+        Me.btnView.TextAlign = System.Drawing.ContentAlignment.MiddleRight
+        Me.ToolTip1.SetToolTip(Me.btnView, "View Patient Information")
+        Me.btnView.UseVisualStyleBackColor = False
+        '
+        'btnNew
+        '
+        Me.btnNew.BackColor = System.Drawing.Color.White
+        Me.btnNew.FlatStyle = System.Windows.Forms.FlatStyle.Flat
+        Me.btnNew.Font = New System.Drawing.Font("Segoe UI", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.btnNew.ForeColor = System.Drawing.Color.Black
+        Me.btnNew.Image = CType(resources.GetObject("btnNew.Image"), System.Drawing.Image)
+        Me.btnNew.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft
+        Me.btnNew.Location = New System.Drawing.Point(12, 11)
+        Me.btnNew.Name = "btnNew"
+        Me.btnNew.Size = New System.Drawing.Size(81, 35)
+        Me.btnNew.TabIndex = 12
+        Me.btnNew.Text = "Add"
+        Me.btnNew.TextAlign = System.Drawing.ContentAlignment.MiddleRight
+        Me.ToolTip1.SetToolTip(Me.btnNew, "Add Patient Record")
+        Me.btnNew.UseVisualStyleBackColor = False
         '
         'btnEdit
         '
@@ -445,40 +479,6 @@ Partial Class Transaction
         Me.Column4.ReadOnly = True
         Me.Column4.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable
         Me.Column4.Width = 140
-        '
-        'btnNew
-        '
-        Me.btnNew.BackColor = System.Drawing.Color.White
-        Me.btnNew.FlatStyle = System.Windows.Forms.FlatStyle.Flat
-        Me.btnNew.Font = New System.Drawing.Font("Segoe UI", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.btnNew.ForeColor = System.Drawing.Color.Black
-        Me.btnNew.Image = CType(resources.GetObject("btnNew.Image"), System.Drawing.Image)
-        Me.btnNew.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft
-        Me.btnNew.Location = New System.Drawing.Point(12, 11)
-        Me.btnNew.Name = "btnNew"
-        Me.btnNew.Size = New System.Drawing.Size(81, 35)
-        Me.btnNew.TabIndex = 12
-        Me.btnNew.Text = "Add"
-        Me.btnNew.TextAlign = System.Drawing.ContentAlignment.MiddleRight
-        Me.ToolTip1.SetToolTip(Me.btnNew, "Add Patient Record")
-        Me.btnNew.UseVisualStyleBackColor = False
-        '
-        'btnView
-        '
-        Me.btnView.BackColor = System.Drawing.Color.White
-        Me.btnView.FlatStyle = System.Windows.Forms.FlatStyle.Flat
-        Me.btnView.Font = New System.Drawing.Font("Segoe UI", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.btnView.ForeColor = System.Drawing.Color.Black
-        Me.btnView.Image = CType(resources.GetObject("btnView.Image"), System.Drawing.Image)
-        Me.btnView.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft
-        Me.btnView.Location = New System.Drawing.Point(186, 11)
-        Me.btnView.Name = "btnView"
-        Me.btnView.Size = New System.Drawing.Size(81, 35)
-        Me.btnView.TabIndex = 13
-        Me.btnView.Text = "View"
-        Me.btnView.TextAlign = System.Drawing.ContentAlignment.MiddleRight
-        Me.ToolTip1.SetToolTip(Me.btnView, "View Patient Information")
-        Me.btnView.UseVisualStyleBackColor = False
         '
         'Transaction
         '

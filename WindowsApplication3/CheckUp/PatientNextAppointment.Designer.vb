@@ -55,7 +55,7 @@ Partial Class PatientNextAppointment
         Me.btnSave.Location = New System.Drawing.Point(503, 350)
         Me.btnSave.Margin = New System.Windows.Forms.Padding(3, 2, 3, 2)
         Me.btnSave.Name = "btnSave"
-        Me.btnSave.Size = New System.Drawing.Size(97, 36)
+        Me.btnSave.Size = New System.Drawing.Size(100, 35)
         Me.btnSave.TabIndex = 5
         Me.btnSave.Text = "Save"
         Me.btnSave.UseVisualStyleBackColor = False

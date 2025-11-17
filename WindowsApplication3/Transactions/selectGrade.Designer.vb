@@ -23,7 +23,6 @@ Partial Class selectGrade
     <System.Diagnostics.DebuggerStepThrough()> _
     Private Sub InitializeComponent()
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(selectGrade))
-        Me.Panel2 = New System.Windows.Forms.Panel()
         Me.Label4 = New System.Windows.Forms.Label()
         Me.txtOD = New System.Windows.Forms.TextBox()
         Me.txtODPrice = New System.Windows.Forms.TextBox()
@@ -34,42 +33,32 @@ Partial Class selectGrade
         Me.Label3 = New System.Windows.Forms.Label()
         Me.txtOSPrice = New System.Windows.Forms.TextBox()
         Me.btnConfirm = New System.Windows.Forms.Button()
-        Me.Panel2.SuspendLayout()
+        Me.Label5 = New System.Windows.Forms.Label()
+        Me.Label6 = New System.Windows.Forms.Label()
         Me.Panel1.SuspendLayout()
         Me.SuspendLayout()
-        '
-        'Panel2
-        '
-        Me.Panel2.BackColor = System.Drawing.Color.White
-        Me.Panel2.Controls.Add(Me.Label4)
-        Me.Panel2.Controls.Add(Me.txtOD)
-        Me.Panel2.Controls.Add(Me.txtODPrice)
-        Me.Panel2.Location = New System.Drawing.Point(222, 6)
-        Me.Panel2.Name = "Panel2"
-        Me.Panel2.Size = New System.Drawing.Size(133, 138)
-        Me.Panel2.TabIndex = 14
         '
         'Label4
         '
         Me.Label4.AutoSize = True
         Me.Label4.Font = New System.Drawing.Font("Segoe UI Semibold", 12.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.Label4.ForeColor = System.Drawing.SystemColors.Highlight
-        Me.Label4.Location = New System.Drawing.Point(11, 16)
+        Me.Label4.Location = New System.Drawing.Point(250, 17)
         Me.Label4.Name = "Label4"
-        Me.Label4.Size = New System.Drawing.Size(43, 28)
+        Me.Label4.Size = New System.Drawing.Size(130, 28)
         Me.Label4.TabIndex = 13
-        Me.Label4.Text = "OS:"
+        Me.Label4.Text = "OS (Left Eye)"
         '
         'txtOD
         '
-        Me.txtOD.Location = New System.Drawing.Point(16, 50)
+        Me.txtOD.Location = New System.Drawing.Point(297, 48)
         Me.txtOD.Name = "txtOD"
         Me.txtOD.Size = New System.Drawing.Size(100, 34)
         Me.txtOD.TabIndex = 3
         '
         'txtODPrice
         '
-        Me.txtODPrice.Location = New System.Drawing.Point(16, 90)
+        Me.txtODPrice.Location = New System.Drawing.Point(297, 88)
         Me.txtODPrice.Name = "txtODPrice"
         Me.txtODPrice.Size = New System.Drawing.Size(100, 34)
         Me.txtODPrice.TabIndex = 7
@@ -77,14 +66,19 @@ Partial Class selectGrade
         'Panel1
         '
         Me.Panel1.BackColor = System.Drawing.Color.White
+        Me.Panel1.Controls.Add(Me.Label6)
+        Me.Panel1.Controls.Add(Me.Label5)
+        Me.Panel1.Controls.Add(Me.Label4)
         Me.Panel1.Controls.Add(Me.txtOS)
+        Me.Panel1.Controls.Add(Me.txtODPrice)
+        Me.Panel1.Controls.Add(Me.txtOD)
         Me.Panel1.Controls.Add(Me.Label2)
         Me.Panel1.Controls.Add(Me.Label1)
         Me.Panel1.Controls.Add(Me.Label3)
         Me.Panel1.Controls.Add(Me.txtOSPrice)
-        Me.Panel1.Location = New System.Drawing.Point(16, 6)
+        Me.Panel1.Location = New System.Drawing.Point(12, 12)
         Me.Panel1.Name = "Panel1"
-        Me.Panel1.Size = New System.Drawing.Size(201, 138)
+        Me.Panel1.Size = New System.Drawing.Size(414, 134)
         Me.Panel1.TabIndex = 13
         '
         'txtOS
@@ -99,11 +93,11 @@ Partial Class selectGrade
         Me.Label2.AutoSize = True
         Me.Label2.Font = New System.Drawing.Font("Segoe UI Semibold", 12.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.Label2.ForeColor = System.Drawing.SystemColors.Highlight
-        Me.Label2.Location = New System.Drawing.Point(78, 19)
+        Me.Label2.Location = New System.Drawing.Point(26, 17)
         Me.Label2.Name = "Label2"
-        Me.Label2.Size = New System.Drawing.Size(46, 28)
+        Me.Label2.Size = New System.Drawing.Size(146, 28)
         Me.Label2.TabIndex = 12
-        Me.Label2.Text = "OD:"
+        Me.Label2.Text = "OD (Right Eye)"
         '
         'Label1
         '
@@ -132,19 +126,36 @@ Partial Class selectGrade
         '
         'btnConfirm
         '
-        Me.btnConfirm.Location = New System.Drawing.Point(258, 154)
+        Me.btnConfirm.Location = New System.Drawing.Point(309, 150)
         Me.btnConfirm.Name = "btnConfirm"
-        Me.btnConfirm.Size = New System.Drawing.Size(97, 37)
+        Me.btnConfirm.Size = New System.Drawing.Size(100, 35)
         Me.btnConfirm.TabIndex = 12
         Me.btnConfirm.Text = "Confirm"
         Me.btnConfirm.UseVisualStyleBackColor = True
+        '
+        'Label5
+        '
+        Me.Label5.AutoSize = True
+        Me.Label5.Location = New System.Drawing.Point(231, 91)
+        Me.Label5.Name = "Label5"
+        Me.Label5.Size = New System.Drawing.Size(58, 28)
+        Me.Label5.TabIndex = 14
+        Me.Label5.Text = "Price:"
+        '
+        'Label6
+        '
+        Me.Label6.AutoSize = True
+        Me.Label6.Location = New System.Drawing.Point(215, 53)
+        Me.Label6.Name = "Label6"
+        Me.Label6.Size = New System.Drawing.Size(69, 28)
+        Me.Label6.TabIndex = 15
+        Me.Label6.Text = "Grade:"
         '
         'selectGrade
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(11.0!, 28.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
-        Me.ClientSize = New System.Drawing.Size(371, 204)
-        Me.Controls.Add(Me.Panel2)
+        Me.ClientSize = New System.Drawing.Size(438, 190)
         Me.Controls.Add(Me.Panel1)
         Me.Controls.Add(Me.btnConfirm)
         Me.Font = New System.Drawing.Font("Segoe UI", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
@@ -155,14 +166,11 @@ Partial Class selectGrade
         Me.MinimizeBox = False
         Me.Name = "selectGrade"
         Me.Text = "Set Grade & Price"
-        Me.Panel2.ResumeLayout(False)
-        Me.Panel2.PerformLayout()
         Me.Panel1.ResumeLayout(False)
         Me.Panel1.PerformLayout()
         Me.ResumeLayout(False)
 
     End Sub
-    Friend WithEvents Panel2 As System.Windows.Forms.Panel
     Friend WithEvents Label4 As System.Windows.Forms.Label
     Friend WithEvents txtOD As System.Windows.Forms.TextBox
     Friend WithEvents txtODPrice As System.Windows.Forms.TextBox
@@ -173,4 +181,6 @@ Partial Class selectGrade
     Friend WithEvents Label3 As System.Windows.Forms.Label
     Friend WithEvents txtOSPrice As System.Windows.Forms.TextBox
     Friend WithEvents btnConfirm As System.Windows.Forms.Button
+    Friend WithEvents Label6 As System.Windows.Forms.Label
+    Friend WithEvents Label5 As System.Windows.Forms.Label
 End Class

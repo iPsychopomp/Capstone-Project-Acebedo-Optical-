@@ -320,6 +320,11 @@
             End If
         Next
 
+        ' Limit to 13 characters
+        If validText.Length > 13 Then
+            validText = validText.Substring(0, 13)
+        End If
+
         ' Update text if changed
         If txtRef.Text <> validText Then
             txtRef.Text = validText

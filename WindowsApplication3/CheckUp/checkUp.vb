@@ -290,28 +290,7 @@ Public Class checkUp
             Exit Sub
         End Try
 
-        ' First, check if patient has a checkup record TODAY
-        Dim checkTodaySql As String = "SELECT COUNT(*) FROM tbl_checkup WHERE patientID = ? AND DATE(checkupDate) = CURDATE()"
-        Try
-            Using checkCmd As New Odbc.OdbcCommand(checkTodaySql, conn)
-                checkCmd.Parameters.AddWithValue("?", patientID)
-                Dim todayCount As Integer = Convert.ToInt32(checkCmd.ExecuteScalar())
-
-                If todayCount = 0 Then
-                    MessageBox.Show("A checkup is required today before scheduling the next appointment.", "Caution", MessageBoxButtons.OK, MessageBoxIcon.Exclamation)
-                    If conn.State = ConnectionState.Open Then
-                        conn.Close()
-                    End If
-                    Exit Sub
-                End If
-            End Using
-        Catch ex As Exception
-            MessageBox.Show("Error checking today's checkup: " & ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error)
-            If conn.State = ConnectionState.Open Then
-                conn.Close()
-            End If
-            Exit Sub
-        End Try
+        ' REMOVED: No longer requiring checkup on same day as appointment scheduling
 
         ' Fetch the patient name and the latest check-up ID for the patient
         Dim sql As String = "SELECT CONCAT(p.fname, ' ', p.mname, ' ', p.lname) AS fullName, c.checkupID " & _

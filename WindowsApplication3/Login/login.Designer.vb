@@ -55,7 +55,7 @@ Partial Class Login
         Me.btnLogin.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft
         Me.btnLogin.Location = New System.Drawing.Point(29, 378)
         Me.btnLogin.Name = "btnLogin"
-        Me.btnLogin.Size = New System.Drawing.Size(269, 27)
+        Me.btnLogin.Size = New System.Drawing.Size(269, 35)
         Me.btnLogin.TabIndex = 21
         Me.btnLogin.Text = "Login"
         Me.btnLogin.UseVisualStyleBackColor = False
@@ -66,7 +66,7 @@ Partial Class Login
         Me.txtUser.Font = New System.Drawing.Font("Segoe UI", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.txtUser.Location = New System.Drawing.Point(109, 281)
         Me.txtUser.Name = "txtUser"
-        Me.txtUser.Size = New System.Drawing.Size(189, 27)
+        Me.txtUser.Size = New System.Drawing.Size(189, 32)
         Me.txtUser.TabIndex = 19
         Me.txtUser.Tag = ""
         '
@@ -75,7 +75,7 @@ Partial Class Login
         Me.txtPass.Font = New System.Drawing.Font("Segoe UI", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.txtPass.Location = New System.Drawing.Point(109, 331)
         Me.txtPass.Name = "txtPass"
-        Me.txtPass.Size = New System.Drawing.Size(189, 27)
+        Me.txtPass.Size = New System.Drawing.Size(189, 32)
         Me.txtPass.TabIndex = 20
         Me.txtPass.UseSystemPasswordChar = True
         '
@@ -85,7 +85,7 @@ Partial Class Login
         Me.Label1.Font = New System.Drawing.Font("Segoe UI", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.Label1.Location = New System.Drawing.Point(25, 281)
         Me.Label1.Name = "Label1"
-        Me.Label1.Size = New System.Drawing.Size(78, 20)
+        Me.Label1.Size = New System.Drawing.Size(101, 25)
         Me.Label1.TabIndex = 23
         Me.Label1.Text = "Username:"
         '
@@ -95,13 +95,13 @@ Partial Class Login
         Me.Label2.Font = New System.Drawing.Font("Segoe UI", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.Label2.Location = New System.Drawing.Point(25, 334)
         Me.Label2.Name = "Label2"
-        Me.Label2.Size = New System.Drawing.Size(73, 20)
+        Me.Label2.Size = New System.Drawing.Size(95, 25)
         Me.Label2.TabIndex = 24
         Me.Label2.Text = "Password:"
         '
         'Login
         '
-        Me.AutoScaleDimensions = New System.Drawing.SizeF(9.0!, 21.0!)
+        Me.AutoScaleDimensions = New System.Drawing.SizeF(11.0!, 28.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.BackColor = System.Drawing.Color.White
         Me.ClientSize = New System.Drawing.Size(330, 450)

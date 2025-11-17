@@ -35,8 +35,8 @@ Partial Class CreateBackup
         Me.btnBgDrive.BackColor = System.Drawing.SystemColors.ActiveCaption
         Me.btnBgDrive.FlatAppearance.BorderSize = 0
         Me.btnBgDrive.FlatStyle = System.Windows.Forms.FlatStyle.Popup
-        Me.btnBgDrive.Font = New System.Drawing.Font("Segoe UI", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.btnBgDrive.Location = New System.Drawing.Point(62, 45)
+        Me.btnBgDrive.Font = New System.Drawing.Font("Segoe UI", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.btnBgDrive.Location = New System.Drawing.Point(63, 91)
         Me.btnBgDrive.Name = "btnBgDrive"
         Me.btnBgDrive.Size = New System.Drawing.Size(321, 27)
         Me.btnBgDrive.TabIndex = 3
@@ -48,8 +48,8 @@ Partial Class CreateBackup
         Me.btnBLocal.BackColor = System.Drawing.SystemColors.ActiveCaption
         Me.btnBLocal.FlatAppearance.BorderSize = 0
         Me.btnBLocal.FlatStyle = System.Windows.Forms.FlatStyle.Popup
-        Me.btnBLocal.Font = New System.Drawing.Font("Segoe UI", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.btnBLocal.Location = New System.Drawing.Point(62, 94)
+        Me.btnBLocal.Font = New System.Drawing.Font("Segoe UI", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.btnBLocal.Location = New System.Drawing.Point(63, 41)
         Me.btnBLocal.Name = "btnBLocal"
         Me.btnBLocal.Size = New System.Drawing.Size(321, 27)
         Me.btnBLocal.TabIndex = 2
@@ -59,7 +59,7 @@ Partial Class CreateBackup
         'TSPLabel
         '
         Me.TSPLabel.Name = "TSPLabel"
-        Me.TSPLabel.Size = New System.Drawing.Size(445, 15)
+        Me.TSPLabel.Size = New System.Drawing.Size(445, 20)
         Me.TSPLabel.Text = "---"
         '
         'ToolStrip
@@ -68,9 +68,9 @@ Partial Class CreateBackup
         Me.ToolStrip.ImageScalingSize = New System.Drawing.Size(20, 20)
         Me.ToolStrip.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.TSPLabel, Me.tspBar})
         Me.ToolStrip.LayoutStyle = System.Windows.Forms.ToolStripLayoutStyle.VerticalStackWithOverflow
-        Me.ToolStrip.Location = New System.Drawing.Point(0, 185)
+        Me.ToolStrip.Location = New System.Drawing.Point(0, 150)
         Me.ToolStrip.Name = "ToolStrip"
-        Me.ToolStrip.Size = New System.Drawing.Size(447, 54)
+        Me.ToolStrip.Size = New System.Drawing.Size(447, 59)
         Me.ToolStrip.TabIndex = 0
         '
         'tspBar
@@ -81,10 +81,10 @@ Partial Class CreateBackup
         '
         'CreateBackup
         '
-        Me.AutoScaleDimensions = New System.Drawing.SizeF(9.0!, 21.0!)
+        Me.AutoScaleDimensions = New System.Drawing.SizeF(11.0!, 28.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.BackColor = System.Drawing.Color.White
-        Me.ClientSize = New System.Drawing.Size(447, 239)
+        Me.ClientSize = New System.Drawing.Size(447, 209)
         Me.Controls.Add(Me.btnBLocal)
         Me.Controls.Add(Me.ToolStrip)
         Me.Controls.Add(Me.btnBgDrive)

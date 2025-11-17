@@ -29,10 +29,11 @@ Public Class PatientNextAppointment
             End If
 
             ' Validate that patient has a checkup record TODAY before scheduling next appointment
-            If Not HasCheckupRecord(selectedPatientID) Then
-                MsgBox("A checkup is required today before scheduling the next appointment.", vbExclamation, "Caution")
-                Exit Sub
-            End If
+            ' REMOVED: No longer requiring checkup on same day as appointment scheduling
+            'If Not HasCheckupRecord(selectedPatientID) Then
+            '    MsgBox("A checkup is required today before scheduling the next appointment.", vbExclamation, "Caution")
+            '    Exit Sub
+            'End If
 
             ' Validate that latestCheckupID is set
             If latestCheckupID <= 0 Then
@@ -195,27 +196,28 @@ Public Class PatientNextAppointment
         End If
     End Sub
 
-    Private Function HasCheckupRecord(patientID As Integer) As Boolean
-        Try
-            Call dbConn()
-
-            ' Check if patient has a checkup record TODAY
-            Dim sql As String = "SELECT COUNT(*) FROM tbl_checkup WHERE patientID = ? AND DATE(checkupDate) = CURDATE()"
-            Using cmd As New Odbc.OdbcCommand(sql, conn)
-                cmd.Parameters.AddWithValue("?", patientID)
-                Dim count As Integer = Convert.ToInt32(cmd.ExecuteScalar())
-                conn.Close()
-                Return count > 0
-            End Using
-
-        Catch ex As Exception
-            MsgBox("Error checking checkup records: " & ex.Message, vbCritical, "Error")
-            If conn.State = ConnectionState.Open Then
-                conn.Close()
-            End If
-            Return False
-        End Try
-    End Function
+    ' REMOVED: Function no longer needed since we removed the checkup validation
+    'Private Function HasCheckupRecord(patientID As Integer) As Boolean
+    '    Try
+    '        Call dbConn()
+    '
+    '        ' Check if patient has a checkup record TODAY
+    '        Dim sql As String = "SELECT COUNT(*) FROM tbl_checkup WHERE patientID = ? AND DATE(checkupDate) = CURDATE()"
+    '        Using cmd As New Odbc.OdbcCommand(sql, conn)
+    '            cmd.Parameters.AddWithValue("?", patientID)
+    '            Dim count As Integer = Convert.ToInt32(cmd.ExecuteScalar())
+    '            conn.Close()
+    '            Return count > 0
+    '        End Using
+    '
+    '    Catch ex As Exception
+    '        MsgBox("Error checking checkup records: " & ex.Message, vbCritical, "Error")
+    '        If conn.State = ConnectionState.Open Then
+    '            conn.Close()
+    '        End If
+    '        Return False
+    '    End Try
+    'End Function
 
 
 End Class

@@ -37,6 +37,24 @@ Public Class supplierItems
         Return supplierItemDGV
     End Function
 
+    ' Helper method to hide ID column
+    Private Sub HideIdColumn()
+        Try
+            If supplierItemDGV IsNot Nothing AndAlso supplierItemDGV.Columns IsNot Nothing Then
+                For Each col As DataGridViewColumn In supplierItemDGV.Columns
+                    If col.Name.ToLower() = "sproductid" OrElse
+                       col.HeaderText.ToLower() = "sproductid" OrElse
+                       col.DataPropertyName.ToLower() = "sproductid" Then
+                        col.Visible = False
+                        Exit For
+                    End If
+                Next
+            End If
+        Catch ex As Exception
+            ' ignore errors
+        End Try
+    End Sub
+
     ' Local grid styling to avoid ambiguity with similarly named module methods
     Public Sub DgvStyle(ByRef supplierItemDGV As DataGridView)
         Try
@@ -66,6 +84,9 @@ Public Class supplierItems
             supplierItemDGV.RowTemplate.Height = 30
             supplierItemDGV.DefaultCellStyle.WrapMode = DataGridViewTriState.False
             supplierItemDGV.AutoSizeRowsMode = DataGridViewAutoSizeRowsMode.AllCells
+
+            ' Hide sProductID column
+            HideIdColumn()
         Catch ex As Exception
             ' ignore styling errors
         End Try
@@ -277,7 +298,10 @@ Public Class supplierItems
                         Dim dt As New DataTable()
                         adapter.Fill(dt)
                         dgv.DataSource = dt
-                        If dgv.Columns.Contains("sProductID") Then dgv.Columns("sProductID").Visible = False
+
+                        ' Hide sProductID column
+                        HideIdColumn()
+
                         If dgv.Columns.Contains("product_price") Then
                             dgv.Columns("product_price").DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleRight
                         End If
@@ -391,6 +415,9 @@ Public Class supplierItems
                     supplierItemDGV.DataSource = dt
                 End Using
             End Using
+
+            ' Hide sProductID column after binding
+            HideIdColumn()
 
             Dim totalPages As Integer = If(pageSize > 0, If(totalCount Mod pageSize = 0, totalCount \ pageSize, (totalCount \ pageSize) + 1), 1)
             If totalPages <= 0 Then totalPages = 1

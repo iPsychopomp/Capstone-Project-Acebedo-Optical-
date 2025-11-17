@@ -82,6 +82,9 @@ Partial Class dashboard
         CType(Me.PictureBox1, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.SuspendLayout()
         '
+        'BackgroundWorker1
+        '
+        '
         'pnlDash
         '
         Me.pnlDash.BackColor = System.Drawing.Color.WhiteSmoke
@@ -482,6 +485,9 @@ Partial Class dashboard
         Me.dtpTo.Name = "dtpTo"
         Me.dtpTo.Size = New System.Drawing.Size(150, 34)
         Me.dtpTo.TabIndex = 120
+        '
+        'ToolTip1
+        '
         '
         'dashboard
         '

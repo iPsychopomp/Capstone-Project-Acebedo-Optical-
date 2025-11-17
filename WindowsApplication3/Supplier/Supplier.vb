@@ -38,6 +38,13 @@ Public Class Supplier
             SupplierDGV.RowTemplate.Height = 30
             SupplierDGV.DefaultCellStyle.WrapMode = DataGridViewTriState.False
             SupplierDGV.AutoSizeRowsMode = DataGridViewAutoSizeRowsMode.AllCells
+
+            ' Hide supplier ID column
+            For Each col As DataGridViewColumn In SupplierDGV.Columns
+                If col.Name = "Column1" OrElse col.Name.ToLower().Contains("supplierid") OrElse col.HeaderText.ToLower().Contains("supplier id") OrElse col.HeaderText.ToLower().Contains("supplierid") Then
+                    col.Visible = False
+                End If
+            Next
         Catch
             ' swallow styling-time exceptions to avoid crashing UI
         End Try

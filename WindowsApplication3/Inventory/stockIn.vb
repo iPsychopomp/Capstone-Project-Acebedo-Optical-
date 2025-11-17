@@ -42,8 +42,14 @@ Public Class stockIN
         StockInDGV.DefaultCellStyle.WrapMode = DataGridViewTriState.False
         StockInDGV.AutoSizeRowsMode = DataGridViewAutoSizeRowsMode.AllCells
 
-        ' Center align the Quantity column
+        ' Hide ID columns and center align quantity columns
         For Each col As DataGridViewColumn In StockInDGV.Columns
+            ' Hide stock-in ID column
+            If col.Name.ToLower().Contains("stockinid") OrElse col.HeaderText.ToLower().Contains("stock-in id") OrElse col.HeaderText.ToLower().Contains("stockinid") Then
+                col.Visible = False
+            End If
+
+            ' Center align the Quantity column
             If col.HeaderText = "Quantity" OrElse col.Name.ToLower().Contains("quantity") Then
                 col.DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter
             End If

@@ -283,8 +283,14 @@ Public Class stockOUT
         StockOutDGV.DefaultCellStyle.WrapMode = DataGridViewTriState.False
         StockOutDGV.AutoSizeRowsMode = DataGridViewAutoSizeRowsMode.AllCells
 
-        ' Center align the Quantity column
+        ' Hide ID columns and center align quantity columns
         For Each col As DataGridViewColumn In StockOutDGV.Columns
+            ' Hide stock-out ID column
+            If col.Name.ToLower().Contains("stockoutid") OrElse col.HeaderText.ToLower().Contains("stock-out id") OrElse col.HeaderText.ToLower().Contains("stockoutid") Then
+                col.Visible = False
+            End If
+            
+            ' Center align the Quantity column
             If col.HeaderText = "Quantity" OrElse col.Name.ToLower().Contains("quantity") Then
                 col.DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter
             End If

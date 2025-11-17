@@ -456,7 +456,7 @@ Public Class addProduct
     End Sub
 
     Private Sub cleaner()
-        For Each obj As Object In grpAddPrdct.Controls
+        For Each obj As Object In pnlPrdct.Controls
             If TypeOf obj Is TextBox Then
                 obj.text = ""
             End If
@@ -464,7 +464,7 @@ Public Class addProduct
         inventory.productDGV.Tag = ""
     End Sub
 
-    Private Sub grpAddPrdct_Enter(sender As Object, e As EventArgs) Handles grpAddPrdct.Enter
+    Private Sub pnlPrdct_Enter(sender As Object, e As EventArgs) Handles pnlPrdct.Enter
         cmbPrdctName.TabIndex = 0
         cmbCategory.TabIndex = 1
         txtUnitPrice.TabIndex = 2
@@ -615,5 +615,9 @@ Public Class addProduct
         Catch ex As Exception
             ' Silently fail if dashboard is not open
         End Try
+    End Sub
+
+    Private Sub txtReorder_TextChanged(sender As Object, e As EventArgs) Handles txtReorder.TextChanged
+
     End Sub
 End Class

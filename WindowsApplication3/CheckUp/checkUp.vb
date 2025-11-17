@@ -61,6 +61,9 @@ Public Class checkUp
         checkUpDGV.DefaultCellStyle.WrapMode = DataGridViewTriState.False
         checkUpDGV.AutoSizeRowsMode = DataGridViewAutoSizeRowsMode.None
 
+        ' Disable sorting on the DataGridView itself
+        checkUpDGV.AllowUserToOrderColumns = False
+
         ' Hide checkup ID column (Column1) and patientID column
         For Each col As DataGridViewColumn In checkUpDGV.Columns
             If col.Name = "Column1" OrElse col.Name = "patientID" Then
@@ -69,6 +72,11 @@ Public Class checkUp
             ' Disable sorting to remove sort arrows
             col.SortMode = DataGridViewColumnSortMode.NotSortable
         Next
+
+        ' Clear any existing sort
+        If checkUpDGV.SortedColumn IsNot Nothing Then
+            checkUpDGV.DataSource = checkUpDGV.DataSource
+        End If
 
         checkUpDGV.Refresh()
     End Sub
@@ -339,6 +347,64 @@ Public Class checkUp
         Catch ex As Exception
             MessageBox.Show("Error fetching patient or checkup data: " & ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error)
         Finally
+            If conn.State = ConnectionState.Open Then
+                conn.Close()
+            End If
+        End Try
+    End Sub
+
+    Private Sub btnResched_Click(sender As Object, e As EventArgs) Handles btnResched.Click
+        If checkUpDGV.SelectedRows.Count = 0 Then
+            MessageBox.Show("Please select a patient record first.", "No Selection", MessageBoxButtons.OK, MessageBoxIcon.Information)
+            Return
+        End If
+
+        Dim selectedRow As DataGridViewRow = checkUpDGV.SelectedRows(0)
+        Dim patientID As Integer = 0
+
+        Try
+            patientID = Convert.ToInt32(selectedRow.Cells("patientID").Value)
+        Catch
+            MessageBox.Show("Invalid Patient ID.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error)
+            Return
+        End Try
+
+        If patientID = 0 Then
+            MessageBox.Show("Invalid Patient ID.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error)
+            Exit Sub
+        End If
+
+        ' Check if patient has an existing appointment
+        Try
+            Call dbConn()
+            If conn.State = ConnectionState.Closed Then
+                conn.Open()
+            End If
+
+            Dim checkSql As String = "SELECT COUNT(*) FROM tbl_appointments WHERE patientID = ?"
+            Using checkCmd As New Odbc.OdbcCommand(checkSql, conn)
+                checkCmd.Parameters.AddWithValue("?", patientID)
+                Dim appointmentCount As Integer = Convert.ToInt32(checkCmd.ExecuteScalar())
+
+                If appointmentCount = 0 Then
+                    MessageBox.Show("This patient has no existing appointment to reschedule.", "No Appointment", MessageBoxButtons.OK, MessageBoxIcon.Information)
+                    If conn.State = ConnectionState.Open Then
+                        conn.Close()
+                    End If
+                    Exit Sub
+                End If
+            End Using
+
+            conn.Close()
+
+            ' Open the Reschedule form
+            Dim reschedForm As New Reschedule()
+            reschedForm.selectedPatientID = patientID
+            reschedForm.ParentCheckUpForm = Me
+            reschedForm.ShowDialog()
+
+        Catch ex As Exception
+            MessageBox.Show("Error: " & ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error)
             If conn.State = ConnectionState.Open Then
                 conn.Close()
             End If

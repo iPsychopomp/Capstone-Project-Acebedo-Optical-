@@ -23,7 +23,6 @@ Partial Class checkUp
     <System.Diagnostics.DebuggerStepThrough()> _
     Private Sub InitializeComponent()
         Me.components = New System.ComponentModel.Container()
-        Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(checkUp))
         Dim DataGridViewCellStyle1 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
         Dim DataGridViewCellStyle2 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
         Dim DataGridViewCellStyle7 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
@@ -33,19 +32,12 @@ Partial Class checkUp
         Dim DataGridViewCellStyle4 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
         Dim DataGridViewCellStyle5 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
         Dim DataGridViewCellStyle6 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
+        Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(checkUp))
         Me.pnlBar = New System.Windows.Forms.Panel()
-        Me.btnAppointment = New System.Windows.Forms.Button()
-        Me.btnView = New System.Windows.Forms.Button()
-        Me.btnNew = New System.Windows.Forms.Button()
-        Me.btnSearch = New System.Windows.Forms.Button()
         Me.txtSearch = New System.Windows.Forms.TextBox()
-        Me.btnEdit = New System.Windows.Forms.Button()
         Me.pnlCheckUp = New System.Windows.Forms.Panel()
         Me.txtPage = New System.Windows.Forms.Label()
-        Me.btnNext = New System.Windows.Forms.Button()
-        Me.btnBack = New System.Windows.Forms.Button()
         Me.checkUpDGV = New System.Windows.Forms.DataGridView()
-        Me.ToolTip1 = New System.Windows.Forms.ToolTip(Me.components)
         Me.Column1 = New System.Windows.Forms.DataGridViewTextBoxColumn()
         Me.patientID = New System.Windows.Forms.DataGridViewTextBoxColumn()
         Me.PatientName = New System.Windows.Forms.DataGridViewTextBoxColumn()
@@ -54,6 +46,15 @@ Partial Class checkUp
         Me.Column6 = New System.Windows.Forms.DataGridViewTextBoxColumn()
         Me.Column4 = New System.Windows.Forms.DataGridViewTextBoxColumn()
         Me.Column2 = New System.Windows.Forms.DataGridViewTextBoxColumn()
+        Me.ToolTip1 = New System.Windows.Forms.ToolTip(Me.components)
+        Me.btnNext = New System.Windows.Forms.Button()
+        Me.btnBack = New System.Windows.Forms.Button()
+        Me.btnResched = New System.Windows.Forms.Button()
+        Me.btnAppointment = New System.Windows.Forms.Button()
+        Me.btnView = New System.Windows.Forms.Button()
+        Me.btnNew = New System.Windows.Forms.Button()
+        Me.btnSearch = New System.Windows.Forms.Button()
+        Me.btnEdit = New System.Windows.Forms.Button()
         Me.pnlBar.SuspendLayout()
         Me.pnlCheckUp.SuspendLayout()
         CType(Me.checkUpDGV, System.ComponentModel.ISupportInitialize).BeginInit()
@@ -62,6 +63,7 @@ Partial Class checkUp
         'pnlBar
         '
         Me.pnlBar.BackColor = System.Drawing.SystemColors.GradientActiveCaption
+        Me.pnlBar.Controls.Add(Me.btnResched)
         Me.pnlBar.Controls.Add(Me.btnAppointment)
         Me.pnlBar.Controls.Add(Me.btnView)
         Me.pnlBar.Controls.Add(Me.btnNew)
@@ -74,76 +76,6 @@ Partial Class checkUp
         Me.pnlBar.Size = New System.Drawing.Size(1191, 57)
         Me.pnlBar.TabIndex = 8
         '
-        'btnAppointment
-        '
-        Me.btnAppointment.BackColor = System.Drawing.Color.White
-        Me.btnAppointment.FlatStyle = System.Windows.Forms.FlatStyle.Flat
-        Me.btnAppointment.Font = New System.Drawing.Font("Segoe UI", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.btnAppointment.ForeColor = System.Drawing.Color.Black
-        Me.btnAppointment.Image = Global.WindowsApplication3.My.Resources.Resources.appointment__1_
-        Me.btnAppointment.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft
-        Me.btnAppointment.Location = New System.Drawing.Point(186, 11)
-        Me.btnAppointment.Name = "btnAppointment"
-        Me.btnAppointment.Size = New System.Drawing.Size(165, 35)
-        Me.btnAppointment.TabIndex = 12
-        Me.btnAppointment.Text = "Set Appointment"
-        Me.btnAppointment.TextAlign = System.Drawing.ContentAlignment.MiddleRight
-        Me.ToolTip1.SetToolTip(Me.btnAppointment, "Set next appointment date")
-        Me.btnAppointment.UseVisualStyleBackColor = False
-        '
-        'btnView
-        '
-        Me.btnView.BackColor = System.Drawing.Color.White
-        Me.btnView.FlatStyle = System.Windows.Forms.FlatStyle.Flat
-        Me.btnView.Font = New System.Drawing.Font("Segoe UI", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.btnView.ForeColor = System.Drawing.Color.Black
-        Me.btnView.Image = CType(resources.GetObject("btnView.Image"), System.Drawing.Image)
-        Me.btnView.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft
-        Me.btnView.Location = New System.Drawing.Point(99, 11)
-        Me.btnView.Name = "btnView"
-        Me.btnView.Size = New System.Drawing.Size(81, 35)
-        Me.btnView.TabIndex = 11
-        Me.btnView.Text = "View"
-        Me.btnView.TextAlign = System.Drawing.ContentAlignment.MiddleRight
-        Me.ToolTip1.SetToolTip(Me.btnView, "View Patient Information")
-        Me.btnView.UseVisualStyleBackColor = False
-        '
-        'btnNew
-        '
-        Me.btnNew.BackColor = System.Drawing.Color.White
-        Me.btnNew.FlatStyle = System.Windows.Forms.FlatStyle.Flat
-        Me.btnNew.Font = New System.Drawing.Font("Segoe UI", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.btnNew.ForeColor = System.Drawing.Color.Black
-        Me.btnNew.Image = CType(resources.GetObject("btnNew.Image"), System.Drawing.Image)
-        Me.btnNew.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft
-        Me.btnNew.Location = New System.Drawing.Point(12, 11)
-        Me.btnNew.Name = "btnNew"
-        Me.btnNew.Size = New System.Drawing.Size(81, 35)
-        Me.btnNew.TabIndex = 2
-        Me.btnNew.Tag = ""
-        Me.btnNew.Text = "Add"
-        Me.btnNew.TextAlign = System.Drawing.ContentAlignment.MiddleRight
-        Me.ToolTip1.SetToolTip(Me.btnNew, "Add check-up record")
-        Me.btnNew.UseVisualStyleBackColor = False
-        '
-        'btnSearch
-        '
-        Me.btnSearch.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.btnSearch.BackColor = System.Drawing.Color.White
-        Me.btnSearch.FlatStyle = System.Windows.Forms.FlatStyle.Flat
-        Me.btnSearch.Font = New System.Drawing.Font("Segoe UI", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.btnSearch.ForeColor = System.Drawing.Color.Black
-        Me.btnSearch.Image = CType(resources.GetObject("btnSearch.Image"), System.Drawing.Image)
-        Me.btnSearch.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft
-        Me.btnSearch.Location = New System.Drawing.Point(1082, 12)
-        Me.btnSearch.Name = "btnSearch"
-        Me.btnSearch.Size = New System.Drawing.Size(97, 35)
-        Me.btnSearch.TabIndex = 6
-        Me.btnSearch.Text = "Search"
-        Me.btnSearch.TextAlign = System.Drawing.ContentAlignment.MiddleRight
-        Me.ToolTip1.SetToolTip(Me.btnSearch, "Search")
-        Me.btnSearch.UseVisualStyleBackColor = False
-        '
         'txtSearch
         '
         Me.txtSearch.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
@@ -152,24 +84,6 @@ Partial Class checkUp
         Me.txtSearch.Name = "txtSearch"
         Me.txtSearch.Size = New System.Drawing.Size(183, 32)
         Me.txtSearch.TabIndex = 7
-        '
-        'btnEdit
-        '
-        Me.btnEdit.BackColor = System.Drawing.Color.Transparent
-        Me.btnEdit.FlatAppearance.BorderSize = 0
-        Me.btnEdit.FlatStyle = System.Windows.Forms.FlatStyle.Flat
-        Me.btnEdit.Font = New System.Drawing.Font("Segoe UI", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.btnEdit.ForeColor = System.Drawing.Color.Black
-        Me.btnEdit.Image = CType(resources.GetObject("btnEdit.Image"), System.Drawing.Image)
-        Me.btnEdit.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft
-        Me.btnEdit.Location = New System.Drawing.Point(49, 7)
-        Me.btnEdit.Name = "btnEdit"
-        Me.btnEdit.Size = New System.Drawing.Size(44, 44)
-        Me.btnEdit.TabIndex = 3
-        Me.btnEdit.TextAlign = System.Drawing.ContentAlignment.MiddleRight
-        Me.ToolTip1.SetToolTip(Me.btnEdit, "Edit Check-up information")
-        Me.btnEdit.UseVisualStyleBackColor = False
-        Me.btnEdit.Visible = False
         '
         'pnlCheckUp
         '
@@ -194,41 +108,6 @@ Partial Class checkUp
         Me.txtPage.Size = New System.Drawing.Size(70, 28)
         Me.txtPage.TabIndex = 129
         Me.txtPage.Text = "Page 1"
-        '
-        'btnNext
-        '
-        Me.btnNext.Anchor = System.Windows.Forms.AnchorStyles.Bottom
-        Me.btnNext.BackColor = System.Drawing.Color.Transparent
-        Me.btnNext.FlatAppearance.BorderSize = 0
-        Me.btnNext.FlatStyle = System.Windows.Forms.FlatStyle.Flat
-        Me.btnNext.Font = New System.Drawing.Font("Segoe UI", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.btnNext.ForeColor = System.Drawing.Color.Black
-        Me.btnNext.Image = CType(resources.GetObject("btnNext.Image"), System.Drawing.Image)
-        Me.btnNext.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft
-        Me.btnNext.Location = New System.Drawing.Point(653, 565)
-        Me.btnNext.Name = "btnNext"
-        Me.btnNext.Size = New System.Drawing.Size(37, 31)
-        Me.btnNext.TabIndex = 128
-        Me.btnNext.TextAlign = System.Drawing.ContentAlignment.MiddleRight
-        Me.ToolTip1.SetToolTip(Me.btnNext, "Next Page")
-        Me.btnNext.UseVisualStyleBackColor = False
-        '
-        'btnBack
-        '
-        Me.btnBack.Anchor = System.Windows.Forms.AnchorStyles.Bottom
-        Me.btnBack.BackColor = System.Drawing.Color.Transparent
-        Me.btnBack.FlatAppearance.BorderSize = 0
-        Me.btnBack.FlatStyle = System.Windows.Forms.FlatStyle.Flat
-        Me.btnBack.Font = New System.Drawing.Font("Segoe UI", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.btnBack.ForeColor = System.Drawing.Color.Black
-        Me.btnBack.Image = CType(resources.GetObject("btnBack.Image"), System.Drawing.Image)
-        Me.btnBack.Location = New System.Drawing.Point(503, 565)
-        Me.btnBack.Name = "btnBack"
-        Me.btnBack.Size = New System.Drawing.Size(37, 31)
-        Me.btnBack.TabIndex = 127
-        Me.btnBack.TextAlign = System.Drawing.ContentAlignment.MiddleRight
-        Me.ToolTip1.SetToolTip(Me.btnBack, "Previous Page")
-        Me.btnBack.UseVisualStyleBackColor = False
         '
         'checkUpDGV
         '
@@ -368,6 +247,146 @@ Partial Class checkUp
         Me.Column2.ReadOnly = True
         Me.Column2.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable
         '
+        'btnNext
+        '
+        Me.btnNext.Anchor = System.Windows.Forms.AnchorStyles.Bottom
+        Me.btnNext.BackColor = System.Drawing.Color.Transparent
+        Me.btnNext.FlatAppearance.BorderSize = 0
+        Me.btnNext.FlatStyle = System.Windows.Forms.FlatStyle.Flat
+        Me.btnNext.Font = New System.Drawing.Font("Segoe UI", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.btnNext.ForeColor = System.Drawing.Color.Black
+        Me.btnNext.Image = CType(resources.GetObject("btnNext.Image"), System.Drawing.Image)
+        Me.btnNext.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft
+        Me.btnNext.Location = New System.Drawing.Point(653, 565)
+        Me.btnNext.Name = "btnNext"
+        Me.btnNext.Size = New System.Drawing.Size(37, 31)
+        Me.btnNext.TabIndex = 128
+        Me.btnNext.TextAlign = System.Drawing.ContentAlignment.MiddleRight
+        Me.ToolTip1.SetToolTip(Me.btnNext, "Next Page")
+        Me.btnNext.UseVisualStyleBackColor = False
+        '
+        'btnBack
+        '
+        Me.btnBack.Anchor = System.Windows.Forms.AnchorStyles.Bottom
+        Me.btnBack.BackColor = System.Drawing.Color.Transparent
+        Me.btnBack.FlatAppearance.BorderSize = 0
+        Me.btnBack.FlatStyle = System.Windows.Forms.FlatStyle.Flat
+        Me.btnBack.Font = New System.Drawing.Font("Segoe UI", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.btnBack.ForeColor = System.Drawing.Color.Black
+        Me.btnBack.Image = CType(resources.GetObject("btnBack.Image"), System.Drawing.Image)
+        Me.btnBack.Location = New System.Drawing.Point(503, 565)
+        Me.btnBack.Name = "btnBack"
+        Me.btnBack.Size = New System.Drawing.Size(37, 31)
+        Me.btnBack.TabIndex = 127
+        Me.btnBack.TextAlign = System.Drawing.ContentAlignment.MiddleRight
+        Me.ToolTip1.SetToolTip(Me.btnBack, "Previous Page")
+        Me.btnBack.UseVisualStyleBackColor = False
+        '
+        'btnResched
+        '
+        Me.btnResched.BackColor = System.Drawing.Color.White
+        Me.btnResched.FlatStyle = System.Windows.Forms.FlatStyle.Flat
+        Me.btnResched.Font = New System.Drawing.Font("Segoe UI", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.btnResched.ForeColor = System.Drawing.Color.Black
+        Me.btnResched.Image = Global.WindowsApplication3.My.Resources.Resources.appointment__1_
+        Me.btnResched.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft
+        Me.btnResched.Location = New System.Drawing.Point(357, 11)
+        Me.btnResched.Name = "btnResched"
+        Me.btnResched.Size = New System.Drawing.Size(135, 35)
+        Me.btnResched.TabIndex = 13
+        Me.btnResched.Text = "Reschedule"
+        Me.btnResched.TextAlign = System.Drawing.ContentAlignment.MiddleRight
+        Me.ToolTip1.SetToolTip(Me.btnResched, "Set next appointment date")
+        Me.btnResched.UseVisualStyleBackColor = False
+        '
+        'btnAppointment
+        '
+        Me.btnAppointment.BackColor = System.Drawing.Color.White
+        Me.btnAppointment.FlatStyle = System.Windows.Forms.FlatStyle.Flat
+        Me.btnAppointment.Font = New System.Drawing.Font("Segoe UI", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.btnAppointment.ForeColor = System.Drawing.Color.Black
+        Me.btnAppointment.Image = Global.WindowsApplication3.My.Resources.Resources.appointment__1_
+        Me.btnAppointment.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft
+        Me.btnAppointment.Location = New System.Drawing.Point(186, 11)
+        Me.btnAppointment.Name = "btnAppointment"
+        Me.btnAppointment.Size = New System.Drawing.Size(165, 35)
+        Me.btnAppointment.TabIndex = 12
+        Me.btnAppointment.Text = "Set Appointment"
+        Me.btnAppointment.TextAlign = System.Drawing.ContentAlignment.MiddleRight
+        Me.ToolTip1.SetToolTip(Me.btnAppointment, "Set next appointment date")
+        Me.btnAppointment.UseVisualStyleBackColor = False
+        '
+        'btnView
+        '
+        Me.btnView.BackColor = System.Drawing.Color.White
+        Me.btnView.FlatStyle = System.Windows.Forms.FlatStyle.Flat
+        Me.btnView.Font = New System.Drawing.Font("Segoe UI", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.btnView.ForeColor = System.Drawing.Color.Black
+        Me.btnView.Image = CType(resources.GetObject("btnView.Image"), System.Drawing.Image)
+        Me.btnView.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft
+        Me.btnView.Location = New System.Drawing.Point(99, 11)
+        Me.btnView.Name = "btnView"
+        Me.btnView.Size = New System.Drawing.Size(81, 35)
+        Me.btnView.TabIndex = 11
+        Me.btnView.Text = "View"
+        Me.btnView.TextAlign = System.Drawing.ContentAlignment.MiddleRight
+        Me.ToolTip1.SetToolTip(Me.btnView, "View Patient Information")
+        Me.btnView.UseVisualStyleBackColor = False
+        '
+        'btnNew
+        '
+        Me.btnNew.BackColor = System.Drawing.Color.White
+        Me.btnNew.FlatStyle = System.Windows.Forms.FlatStyle.Flat
+        Me.btnNew.Font = New System.Drawing.Font("Segoe UI", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.btnNew.ForeColor = System.Drawing.Color.Black
+        Me.btnNew.Image = CType(resources.GetObject("btnNew.Image"), System.Drawing.Image)
+        Me.btnNew.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft
+        Me.btnNew.Location = New System.Drawing.Point(12, 11)
+        Me.btnNew.Name = "btnNew"
+        Me.btnNew.Size = New System.Drawing.Size(81, 35)
+        Me.btnNew.TabIndex = 2
+        Me.btnNew.Tag = ""
+        Me.btnNew.Text = "Add"
+        Me.btnNew.TextAlign = System.Drawing.ContentAlignment.MiddleRight
+        Me.ToolTip1.SetToolTip(Me.btnNew, "Add check-up record")
+        Me.btnNew.UseVisualStyleBackColor = False
+        '
+        'btnSearch
+        '
+        Me.btnSearch.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.btnSearch.BackColor = System.Drawing.Color.White
+        Me.btnSearch.FlatStyle = System.Windows.Forms.FlatStyle.Flat
+        Me.btnSearch.Font = New System.Drawing.Font("Segoe UI", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.btnSearch.ForeColor = System.Drawing.Color.Black
+        Me.btnSearch.Image = CType(resources.GetObject("btnSearch.Image"), System.Drawing.Image)
+        Me.btnSearch.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft
+        Me.btnSearch.Location = New System.Drawing.Point(1082, 12)
+        Me.btnSearch.Name = "btnSearch"
+        Me.btnSearch.Size = New System.Drawing.Size(97, 35)
+        Me.btnSearch.TabIndex = 6
+        Me.btnSearch.Text = "Search"
+        Me.btnSearch.TextAlign = System.Drawing.ContentAlignment.MiddleRight
+        Me.ToolTip1.SetToolTip(Me.btnSearch, "Search")
+        Me.btnSearch.UseVisualStyleBackColor = False
+        '
+        'btnEdit
+        '
+        Me.btnEdit.BackColor = System.Drawing.Color.Transparent
+        Me.btnEdit.FlatAppearance.BorderSize = 0
+        Me.btnEdit.FlatStyle = System.Windows.Forms.FlatStyle.Flat
+        Me.btnEdit.Font = New System.Drawing.Font("Segoe UI", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.btnEdit.ForeColor = System.Drawing.Color.Black
+        Me.btnEdit.Image = CType(resources.GetObject("btnEdit.Image"), System.Drawing.Image)
+        Me.btnEdit.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft
+        Me.btnEdit.Location = New System.Drawing.Point(49, 7)
+        Me.btnEdit.Name = "btnEdit"
+        Me.btnEdit.Size = New System.Drawing.Size(44, 44)
+        Me.btnEdit.TabIndex = 3
+        Me.btnEdit.TextAlign = System.Drawing.ContentAlignment.MiddleRight
+        Me.ToolTip1.SetToolTip(Me.btnEdit, "Edit Check-up information")
+        Me.btnEdit.UseVisualStyleBackColor = False
+        Me.btnEdit.Visible = False
+        '
         'checkUp
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(11.0!, 28.0!)
@@ -409,4 +428,5 @@ Partial Class checkUp
     Friend WithEvents Column6 As System.Windows.Forms.DataGridViewTextBoxColumn
     Friend WithEvents Column4 As System.Windows.Forms.DataGridViewTextBoxColumn
     Friend WithEvents Column2 As System.Windows.Forms.DataGridViewTextBoxColumn
+    Friend WithEvents btnResched As System.Windows.Forms.Button
 End Class

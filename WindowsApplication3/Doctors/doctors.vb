@@ -46,6 +46,12 @@ Public Class doctors
                 doctorsDGV.Columns("Column1").Visible = False
             End If
 
+            ' Clear any selection - user must manually select a row
+            doctorsDGV.ClearSelection()
+            If doctorsDGV.Rows.Count > 0 Then
+                doctorsDGV.CurrentCell = Nothing
+            End If
+
             Dim totalPages As Integer = If(pageSize > 0, If(totalCount Mod pageSize = 0, totalCount \ pageSize, (totalCount \ pageSize) + 1), 1)
             If totalPages <= 0 Then totalPages = 1
             txtPage.Text = "Page " & (currentPage + 1).ToString() & " of " & totalPages.ToString()
@@ -225,20 +231,48 @@ Public Class doctors
     End Sub
 
     Private Sub btnEdit_Click_1(sender As Object, e As EventArgs) Handles btnEdit.Click
+        ' Check if any row is selected - must have at least one selected row
         If doctorsDGV.SelectedRows.Count = 0 Then
-            MsgBox("Please select a record to edit.", vbExclamation, "Edit")
+            MessageBox.Show("Please select a doctor record to edit by clicking on a row.", "No Selection", MessageBoxButtons.OK, MessageBoxIcon.Warning)
             Exit Sub
         End If
 
+        ' Get the selected row
         Dim selectedRow As DataGridViewRow = doctorsDGV.SelectedRows(0)
-        Dim doctorID As Integer = selectedRow.Cells("Column1").Value
 
+        ' Validate that we have a valid row
+        If selectedRow Is Nothing OrElse selectedRow.IsNewRow Then
+            MessageBox.Show("Please select a valid doctor record to edit.", "Invalid Selection", MessageBoxButtons.OK, MessageBoxIcon.Warning)
+            Exit Sub
+        End If
+
+        ' Get doctor ID from the selected row
+        Dim doctorID As Integer = 0
+        Try
+            If selectedRow.Cells("Column1").Value IsNot Nothing Then
+                doctorID = Convert.ToInt32(selectedRow.Cells("Column1").Value)
+            End If
+        Catch ex As Exception
+            MessageBox.Show("Error reading doctor ID. Please try again.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error)
+            Exit Sub
+        End Try
+
+        If doctorID <= 0 Then
+            MessageBox.Show("Invalid doctor ID. Please select a valid record.", "Invalid Selection", MessageBoxButtons.OK, MessageBoxIcon.Warning)
+            Exit Sub
+        End If
+
+        ' Open edit form
         Dim editForm As New addDoctors()
+        ' Set edit mode BEFORE loading data to prevent default DOB from being set
+        editForm.IsEditMode = True
+        editForm.CurrentDoctorID = doctorID
         editForm.LoadDoctorData(doctorID)
         editForm.lblhead.Text = "Edit Doctor Information"
         editForm.pbAdd.Visible = False
         editForm.pbEdit.Visible = True
         Dim dr As DialogResult = editForm.ShowDialog()
+
         ' Always reload after dialog closes (save or update)
         Try
             LoadPage()

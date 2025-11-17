@@ -566,4 +566,84 @@ Public Class dashboard
     Private Sub lblDateRange_Click(sender As Object, e As EventArgs) Handles lblDateRange.Click
 
     End Sub
+
+    Private Sub ToolTip1_Popup(sender As Object, e As PopupEventArgs) Handles ToolTip1.Popup
+
+    End Sub
+
+    Private Sub pnlBar_Paint(sender As Object, e As PaintEventArgs) Handles pnlBar.Paint
+
+    End Sub
+
+    Private Sub Label9_Click(sender As Object, e As EventArgs) Handles Label9.Click
+
+    End Sub
+
+    Private Sub PictureBox3_Click(sender As Object, e As EventArgs) Handles PictureBox3.Click
+
+    End Sub
+
+    Private Sub pnlProfits_Paint(sender As Object, e As PaintEventArgs) Handles pnlProfits.Paint
+
+    End Sub
+
+    Private Sub Label11_Click(sender As Object, e As EventArgs) Handles Label11.Click
+
+    End Sub
+
+    Private Sub txtProductSold_Click(sender As Object, e As EventArgs) Handles txtProductSold.Click
+
+    End Sub
+
+    Private Sub PictureBox2_Click(sender As Object, e As EventArgs) Handles PictureBox2.Click
+
+    End Sub
+
+    Private Sub pnlProductSolds_Paint(sender As Object, e As PaintEventArgs) Handles pnlProductSolds.Paint
+
+    End Sub
+
+    Private Sub TableLayoutPanel1_Paint(sender As Object, e As PaintEventArgs) Handles TableLayoutPanel1.Paint
+
+    End Sub
+
+    Private Sub chartTopProducts_Click(sender As Object, e As EventArgs) Handles chartTopProducts.Click
+
+    End Sub
+
+    Private Sub pnlProductSold_Paint(sender As Object, e As PaintEventArgs) Handles pnlProductSold.Paint
+
+    End Sub
+
+    Private Sub chartSales_Click(sender As Object, e As EventArgs) Handles chartSales.Click
+
+    End Sub
+
+    Private Sub pnlAnalytics_Paint(sender As Object, e As PaintEventArgs) Handles pnlAnalytics.Paint
+
+    End Sub
+
+    Private Sub TableLayoutPanel2_Paint(sender As Object, e As PaintEventArgs) Handles TableLayoutPanel2.Paint
+
+    End Sub
+
+    Private Sub Label2_Click(sender As Object, e As EventArgs) Handles Label2.Click
+
+    End Sub
+
+    Private Sub Label3_Click(sender As Object, e As EventArgs) Handles Label3.Click
+
+    End Sub
+
+    Private Sub Label4_Click(sender As Object, e As EventArgs) Handles Label4.Click
+
+    End Sub
+
+    Private Sub BackgroundWorker1_DoWork(sender As Object, e As System.ComponentModel.DoWorkEventArgs) Handles BackgroundWorker1.DoWork
+
+    End Sub
+
+    Private Sub pnlDash_Paint(sender As Object, e As PaintEventArgs) Handles pnlDash.Paint
+
+    End Sub
 End Class

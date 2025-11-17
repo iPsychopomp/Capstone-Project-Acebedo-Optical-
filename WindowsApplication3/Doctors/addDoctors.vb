@@ -2,16 +2,24 @@ Imports System.ComponentModel
 
 Public Class addDoctors
 
-    Private IsEditMode As Boolean = False
-    Private CurrentDoctorID As Integer = 0
+    Public IsEditMode As Boolean = False
+    Public CurrentDoctorID As Integer = 0
 
     Private Sub addDoctors_Load(sender As Object, e As EventArgs) Handles MyBase.Load
         ' Auto-fill middle name with N/A when the field is skipped/tabbed
         AddHandler txtMname.Validating, AddressOf TextBox_Validating
-    End Sub
 
-    Private Sub btnCancel_Click(sender As Object, e As EventArgs) Handles btnCancel.Click
-        Me.Close()
+        ' Set date of birth constraints: minimum 120 years ago
+        dtpDOB.MinDate = DateTime.Now.AddYears(-120)
+        dtpDOB.MaxDate = DateTime.Now.Date ' Set to today's date (no time component)
+
+        ' Only set default value if NOT in edit mode (will be set by LoadDoctorData if editing)
+        If Not IsEditMode Then
+            dtpDOB.Value = DateTime.Now.Date ' Default to today (user must select appropriate date)
+        End If
+
+        ' Add validation handler for date of birth
+        AddHandler dtpDOB.ValueChanged, AddressOf dtpDOB_ValueChanged
     End Sub
 
     Function checkData(ByVal gb As GroupBox) As Boolean
@@ -43,20 +51,22 @@ Public Class addDoctors
                     Call dbConn()
 
                     If Not IsEditMode Then
-                        sql = "INSERT INTO tbl_doctor(fname, mname, lname, contactNumber, email, dateAdded) VALUES (?,?,?,?,?,?)"
+                        sql = "INSERT INTO tbl_doctor(fname, mname, lname, dob, contactNumber, email, dateAdded) VALUES (?,?,?,?,?,?,?)"
                         cmd = New Odbc.OdbcCommand(sql, conn)
                         cmd.Parameters.AddWithValue("?", StrConv(Trim(txtFirst.Text), VbStrConv.ProperCase))
                         cmd.Parameters.AddWithValue("?", StrConv(Trim(txtMname.Text), VbStrConv.ProperCase))
                         cmd.Parameters.AddWithValue("?", StrConv(Trim(txtLname.Text), VbStrConv.ProperCase))
+                        cmd.Parameters.AddWithValue("?", dtpDOB.Value.Date)
                         cmd.Parameters.AddWithValue("?", Trim(txtMobile.Text))
                         cmd.Parameters.AddWithValue("?", Trim(txtEmail.Text))
                         cmd.Parameters.AddWithValue("?", DateTime.Now)
                     Else
-                        sql = "UPDATE tbl_doctor SET fname=?, mname=?, lname=?, contactNumber=?, email=?, dateAdded=? WHERE doctorID=?"
+                        sql = "UPDATE tbl_doctor SET fname=?, mname=?, lname=?, dob=?, contactNumber=?, email=?, dateAdded=? WHERE doctorID=?"
                         cmd = New Odbc.OdbcCommand(sql, conn)
                         cmd.Parameters.AddWithValue("?", StrConv(Trim(txtFirst.Text), VbStrConv.ProperCase))
                         cmd.Parameters.AddWithValue("?", StrConv(Trim(txtMname.Text), VbStrConv.ProperCase))
                         cmd.Parameters.AddWithValue("?", StrConv(Trim(txtLname.Text), VbStrConv.ProperCase))
+                        cmd.Parameters.AddWithValue("?", dtpDOB.Value.Date)
                         cmd.Parameters.AddWithValue("?", Trim(txtMobile.Text))
                         cmd.Parameters.AddWithValue("?", Trim(txtEmail.Text))
                         cmd.Parameters.AddWithValue("?", DateTime.Now)
@@ -192,6 +202,12 @@ Public Class addDoctors
             txtMname.Text = "N/A"
         End If
 
+        ' Validate Date of Birth: cannot be today or in the future
+        If dtpDOB.Value.Date >= DateTime.Now.Date Then
+            missing.Add("Date of Birth")
+            assignFirst(dtpDOB)
+        End If
+
         If missing.Count > 0 Then
             MessageBox.Show("Please complete the required fields marked with (*):" & vbCrLf &
                             " - " & String.Join(vbCrLf & " - ", missing),
@@ -218,6 +234,35 @@ Public Class addDoctors
                 txtLname.Text = reader("lname").ToString()
                 txtMobile.Text = reader("contactNumber").ToString()
                 txtEmail.Text = reader("email").ToString()
+
+                ' Load date of birth if exists and calculate age
+                Try
+                    If reader("dob") IsNot Nothing AndAlso Not IsDBNull(reader("dob")) Then
+                        Dim dobValue As DateTime = Convert.ToDateTime(reader("dob"))
+                        dtpDOB.Value = dobValue
+
+                        ' Manually calculate and set age
+                        Dim birthDate As Date = dobValue
+                        Dim today As Date = Date.Today
+                        Dim age As Integer = today.Year - birthDate.Year
+
+                        ' Adjust if birthday hasn't occurred yet this year
+                        If (birthDate > today.AddYears(-age)) Then
+                            age -= 1
+                        End If
+
+                        txtAge.Text = age.ToString()
+                    Else
+                        ' Set default DOB if null
+                        dtpDOB.Value = DateTime.Now.Date.AddYears(-30)
+                        txtAge.Text = "30"
+                    End If
+                Catch ex As Exception
+                    ' If dob column doesn't exist or error, set default
+                    MessageBox.Show("Error loading DOB: " & ex.Message, "Debug", MessageBoxButtons.OK, MessageBoxIcon.Information)
+                    dtpDOB.Value = DateTime.Now.Date.AddYears(-30)
+                    txtAge.Text = "30"
+                End Try
             End If
 
             cmd.Dispose()
@@ -293,6 +338,28 @@ Public Class addDoctors
         If txt.Name = "txtMname" AndAlso String.IsNullOrWhiteSpace(txt.Text) Then
             txt.Text = "N/A"
         End If
+    End Sub
+
+    Private Sub dtpDOB_ValueChanged(sender As Object, e As EventArgs) Handles dtpDOB.ValueChanged
+        ' Calculate and display age (same logic as addPatient.vb)
+        Dim birthDate As Date = dtpDOB.Value
+        Dim today As Date = Date.Today
+        Dim age As Integer = today.Year - birthDate.Year
+
+        ' Adjust if birthday hasn't occurred yet this year
+        If (birthDate > today.AddYears(-age)) Then
+            age -= 1
+        End If
+
+        ' Validate age is not more than 120 years old
+        If age > 120 Then
+            MessageBox.Show("Invalid birthdate. Age cannot exceed 120 years old.", "Invalid Age", MessageBoxButtons.OK, MessageBoxIcon.Warning)
+            dtpDOB.Value = today.AddYears(-120)
+            age = 120
+        End If
+
+        ' Update age textbox
+        txtAge.Text = age.ToString()
     End Sub
 
 End Class

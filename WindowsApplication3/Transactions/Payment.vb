@@ -2,6 +2,7 @@
 
 Public Class Payment
     Dim transactionID As Integer
+
     Dim patientName As String
     Dim totalAmount As Decimal
     Dim pendingBalance As Decimal
@@ -12,57 +13,55 @@ Public Class Payment
         Me.totalAmount = totalAmount
         Me.pendingBalance = pendingBalance
     End Sub
+
     Private Sub SettleBalanceForm_Load(sender As Object, e As EventArgs) Handles MyBase.Load
         txtPatientName.Text = patientName
         txtTotalAmount.Text = totalAmount.ToString("N2")
         txtPendingBalance.Text = pendingBalance.ToString("N2")
-        
+
         ' Check payment count and adjust UI accordingly
         CheckPaymentCount()
+    End Sub
+
+    Private Sub btnAdd_Click(sender As Object, e As EventArgs) Handles btnAdd.Click
+        Try
+            Using frm As New addPayment()
+                frm.TransactionID = Me.transactionID
+                frm.StartPosition = FormStartPosition.CenterParent
+                frm.Owner = Me
+                frm.ShowDialog(Me)
+            End Using
+        Catch
+        End Try
     End Sub
 
     Private Sub btnSettle_Click(sender As Object, e As EventArgs) Handles btnSettle.Click
         Dim paymentAmount As Decimal
         If Decimal.TryParse(txtPayment.Text, paymentAmount) AndAlso paymentAmount > 0 Then
-            ' Check if this is a settlement (meaning there was already an initial payment)
-            ' If totalAmount != pendingBalance, it means there was already a downpayment
-            Dim hasDownpayment As Boolean = (totalAmount <> pendingBalance)
-
-            If hasDownpayment Then
-                ' This is the FINAL payment (2nd payment) - must be FULL BALANCE
-                If paymentAmount <> pendingBalance Then
-                    MessageBox.Show("You must pay the full remaining balance of " & pendingBalance.ToString("C2"), "Full Balance Required", MessageBoxButtons.OK, MessageBoxIcon.Warning)
-                    txtPayment.Focus()
-                    txtPayment.SelectAll()
-                    Return
-                End If
-            Else
-                ' This is the initial payment - can be partial
-                If paymentAmount > pendingBalance Then
-                    MessageBox.Show("Payment amount cannot exceed the pending balance.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error)
-                    Return
-                End If
+            ' Allow partial payments but never more than the pending balance
+            If paymentAmount > pendingBalance Then
+                MessageBox.Show("Payment amount cannot exceed the pending balance.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error)
+                Return
             End If
 
             UpdatePayment(paymentAmount)
+            ' Save detailed payment breakdown (Cash / G-cash) into tbl_payments
+            SavePaymentRecordsFromPayment()
+
             If Application.OpenForms().OfType(Of Transaction).Any() Then
                 Dim transForm = Application.OpenForms().OfType(Of Transaction).First()
                 transForm.LoadTransactions()
             End If
+
         Else
             MessageBox.Show("Please enter a valid payment amount.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error)
         End If
     End Sub
-    Private Sub UpdatePayment(paymentAmount As Decimal)
-        ' Double-check: If there was already a downpayment, this must be full balance
-        Dim hasDownpayment As Boolean = (totalAmount <> pendingBalance)
-        If hasDownpayment AndAlso paymentAmount <> pendingBalance Then
-            MessageBox.Show("VALIDATION ERROR: Cannot process partial payment. This is the final payment and must be the full balance of " & pendingBalance.ToString("C2"), "Invalid Payment", MessageBoxButtons.OK, MessageBoxIcon.Error)
-            Return
-        End If
 
+    Private Sub UpdatePayment(paymentAmount As Decimal)
         Dim newAmountPaid As Decimal = totalAmount - pendingBalance + paymentAmount
         Dim newPendingBalance As Decimal = pendingBalance - paymentAmount
+
         Dim newStatus As String = If(newPendingBalance = 0D, "Paid", "Pending")
         Dim settlementDate As Date = DateTime.Now.Date
 
@@ -118,7 +117,94 @@ Public Class Payment
         End Try
     End Sub
 
-    Private Sub dtpDate_ValueChanged(sender As Object, e As EventArgs) Handles dtpDate.ValueChanged
+    ' Save payment breakdown (Cash / G-cash) for this transaction into tbl_payments.
+    ' Uses mode and amounts filled into Payment by addPayment.
+    Private Sub SavePaymentRecordsFromPayment()
+        Try
+            If transactionID <= 0 Then Exit Sub
+
+            Dim mode As String = ""
+            Try
+                If lblMode IsNot Nothing AndAlso lblMode.Text IsNot Nothing Then
+                    mode = lblMode.Text.Trim()
+                End If
+            Catch
+            End Try
+            If mode = "" Then Exit Sub
+
+            Dim cashAmount As Decimal = 0D
+            Dim gcashAmount As Decimal = 0D
+
+            Try
+                Decimal.TryParse(If(lblCash.Text, "0"), cashAmount)
+            Catch
+            End Try
+
+            Try
+                Decimal.TryParse(If(lblGcash.Text, "0"), gcashAmount)
+            Catch
+            End Try
+
+            Dim reference As String = ""
+            Try
+                If txtRef IsNot Nothing AndAlso txtRef.Text IsNot Nothing Then
+                    reference = txtRef.Text.Trim()
+                End If
+            Catch
+            End Try
+
+            Dim paymentDate As Date = Date.Now
+
+            If conn Is Nothing OrElse conn.State <> ConnectionState.Open Then
+                dbConn()
+            End If
+
+            Dim insertSql As String = _
+                "INSERT INTO tbl_payments (transactionID, paymentDate, paymentType, amountPaid, referenceNumber, remarks) " & _
+                "VALUES (?, ?, ?, ?, ?, ?)"
+
+            Dim isCash As Boolean = False
+            Dim isGcash As Boolean = False
+
+            Select Case mode
+                Case "Cash"
+                    isCash = True
+                Case "G-cash"
+                    isGcash = True
+                Case "Cash and G-cash"
+                    isCash = True
+                    isGcash = True
+            End Select
+
+            If isCash AndAlso cashAmount > 0D Then
+                Using cmd As New OdbcCommand(insertSql, conn)
+                    cmd.Parameters.AddWithValue("?", transactionID)
+                    cmd.Parameters.AddWithValue("?", paymentDate)
+                    cmd.Parameters.AddWithValue("?", "Cash")
+                    cmd.Parameters.AddWithValue("?", CDbl(cashAmount))
+                    cmd.Parameters.AddWithValue("?", DBNull.Value)
+                    cmd.Parameters.AddWithValue("?", DBNull.Value)
+                    cmd.ExecuteNonQuery()
+                End Using
+            End If
+
+            If isGcash AndAlso gcashAmount > 0D Then
+                Using cmd As New OdbcCommand(insertSql, conn)
+                    cmd.Parameters.AddWithValue("?", transactionID)
+                    cmd.Parameters.AddWithValue("?", paymentDate)
+                    cmd.Parameters.AddWithValue("?", "G-cash")
+                    cmd.Parameters.AddWithValue("?", CDbl(gcashAmount))
+                    cmd.Parameters.AddWithValue("?", reference)
+                    cmd.Parameters.AddWithValue("?", DBNull.Value)
+                    cmd.ExecuteNonQuery()
+                End Using
+            End If
+        Catch
+            ' Do not interrupt settlement if saving to tbl_payments fails.
+        End Try
+    End Sub
+
+    Private Sub dtpDate_ValueChanged(sender As Object, e As EventArgs)
 
     End Sub
     Private Sub CheckPaymentCount()

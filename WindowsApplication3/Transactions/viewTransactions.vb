@@ -1,13 +1,13 @@
 Public Class viewTransactions
     Private isFormOpen As Boolean = False
-    
+
     Public Sub LoadViewTransaction(patientID As Integer)
         pnlViewTransactions.Controls.Clear()
         pnlViewTransactions.AutoScroll = True
 
         Call dbConn()
         Dim cmd As New Odbc.OdbcCommand(
-            "SELECT t.transactionID, COALESCE(p.fullname, t.patientName) AS patientName, t.transactionDate, t.discount, t.lensDiscount, t.totalAmount, t.amountPaid, t.paymentType, t.paymentStatus, t.isCheckUp " & _
+            "SELECT t.transactionID, COALESCE(p.fullname, t.patientName) AS patientName, t.transactionDate, t.discount, t.lensDiscount, t.totalAmount, t.amountPaid, t.paymentType, t.referenceNum, t.paymentStatus, t.isCheckUp " & _
             "FROM tbl_transactions t LEFT JOIN db_viewpatient p ON p.patientID = t.patientID WHERE t.patientID = ? ORDER BY t.transactionID DESC", conn)
         cmd.Parameters.Add(New Odbc.OdbcParameter("?", Odbc.OdbcType.Int)).Value = patientID
 
@@ -30,6 +30,19 @@ Public Class viewTransactions
             Dim valueX As Integer = card.Width - 120
             Dim top As Integer = 10
 
+            ' Per-transaction Payment History button inside the card
+            Dim transactionID As Integer = Convert.ToInt32(reader("transactionID"))
+            Dim btnCardPaymentHistory As New Button()
+            btnCardPaymentHistory.Text = "Payment History"
+            btnCardPaymentHistory.Font = New Font("Segoe UI", 9.0F, FontStyle.Regular)
+            btnCardPaymentHistory.Size = New Size(130, 26)
+            btnCardPaymentHistory.Location = New Point(card.Width - btnCardPaymentHistory.Width - 10, 10)
+            btnCardPaymentHistory.Tag = transactionID
+            AddHandler btnCardPaymentHistory.Click, AddressOf CardPaymentHistory_Click
+            card.Controls.Add(btnCardPaymentHistory)
+
+            top += 30
+
             ' Patient Name: [value]
             Dim lblPatientNameLabel As New Label
             lblPatientNameLabel.Text = "Patient Name:"
@@ -48,7 +61,11 @@ Public Class viewTransactions
 
             ' Date
             Dim lblDate As New Label
-            lblDate.Text = "Date: " & (reader("transactionDate")).ToShortDateString()
+            Dim dateText As String = ""
+            If Not IsDBNull(reader("transactionDate")) Then
+                dateText = Convert.ToDateTime(reader("transactionDate")).ToShortDateString()
+            End If
+            lblDate.Text = "Date: " & dateText
             lblDate.Location = New Point(10, top)
             lblDate.Font = labelFont
             lblDate.AutoSize = True
@@ -72,7 +89,6 @@ Public Class viewTransactions
             top += 30
 
             ' Load transaction items
-            Dim transactionID As Integer = Convert.ToInt32(reader("transactionID"))
             Dim cmdItems As New Odbc.OdbcCommand(
                 "SELECT productName, category, quantity, unitPrice, priceOD, priceOS, odGrade, osGrade, totalPrice, isCheckUpItem " &
                 "FROM tbl_transaction_items WHERE transactionID = ?", conn)
@@ -149,23 +165,38 @@ Public Class viewTransactions
             End While
             itemReader.Close()
 
-            ' After listing all products, show the OD/OS grades and prices only once
-            If Not String.IsNullOrEmpty(odGrade) Then
-                ' OD and OS Grades
+            ' After listing all products, show the OD/OS grades and prices as separate rows
+            If Not String.IsNullOrEmpty(odGrade) OrElse Not String.IsNullOrEmpty(osGrade) Then
+                ' OD row
                 Dim lblODGrade As New Label
-                lblODGrade.Text = "OD: " & odGrade & " / OS: " & osGrade
+                lblODGrade.Text = "OD: " & odGrade
                 lblODGrade.Location = New Point(10, top)
-                lblODGrade.Font = New Font("Segoe UI", 12, FontStyle.Italic)
+                lblODGrade.Font = labelFont
                 lblODGrade.AutoSize = True
                 card.Controls.Add(lblODGrade)
 
-                ' OD and OS Prices
                 Dim lblODPrice As New Label
-                lblODPrice.Text = "₱" & priceOD.ToString("F2") & " / ₱" & priceOS.ToString("F2")
+                lblODPrice.Text = "₱" & priceOD.ToString("F2")
                 lblODPrice.Location = New Point(costX, top)
-                lblODPrice.Font = New Font("Segoe UI", 12, FontStyle.Italic)
+                lblODPrice.Font = labelFont
                 lblODPrice.AutoSize = True
                 card.Controls.Add(lblODPrice)
+                top += 25
+
+                ' OS row
+                Dim lblOSGrade As New Label
+                lblOSGrade.Text = "OS: " & osGrade
+                lblOSGrade.Location = New Point(10, top)
+                lblOSGrade.Font = labelFont
+                lblOSGrade.AutoSize = True
+                card.Controls.Add(lblOSGrade)
+
+                Dim lblOSPrice As New Label
+                lblOSPrice.Text = "₱" & priceOS.ToString("F2")
+                lblOSPrice.Location = New Point(costX, top)
+                lblOSPrice.Font = labelFont
+                lblOSPrice.AutoSize = True
+                card.Controls.Add(lblOSPrice)
                 top += 30
             End If
 
@@ -227,7 +258,14 @@ Public Class viewTransactions
             Me.lblLensTotal.Text = "₱" & lensDiscountTotal.ToString("F2")
 
             ' Calculate Check-up Fee
-            ' Check-up Fee = Total Amount - (Sum of all items after discount)
+            ' In addPatientTransaction, totalAmount includes:
+            '   - discounted item totals (frames, lenses, etc.)
+            '   - OD and OS prices (priceOD, priceOS)
+            '   - check-up fee (if any)
+            ' tbl_transaction_items.totalPrice already contains the discounted item totals,
+            ' but not the OD/OS costs separately. We stored priceOD/priceOS above when
+            ' reading items, so we subtract them as part of the item side.
+
             Dim totalAmount As Decimal = Convert.ToDecimal(reader("totalAmount"))
 
             ' Calculate sum of all items (already includes discount in totalPrice from DB)
@@ -240,8 +278,12 @@ Public Class viewTransactions
                 itemsTotal = Convert.ToDecimal(sumResult)
             End If
 
-            ' Check-up fee is the difference
-            Dim checkupFeeTotal As Decimal = totalAmount - itemsTotal
+            ' Treat OD/OS prices as part of items, not check-up fee
+            Dim itemsPlusODOS As Decimal = itemsTotal + priceOD + priceOS
+
+            ' Check-up fee is the remaining amount after removing all item-related amounts
+            Dim checkupFeeTotal As Decimal = totalAmount - itemsPlusODOS
+            If checkupFeeTotal < 0D Then checkupFeeTotal = 0D
 
             ' Only display check-up fee if there is one (and it's positive)
             If checkupFeeTotal > 0D Then
@@ -261,36 +303,24 @@ Public Class viewTransactions
                 top += 30
             End If
 
-            ' Determine transaction type based on isCheckUp flag and presence of items
-            Dim isCheckUp As Boolean = Convert.ToBoolean(reader("isCheckUp"))
+            ' Determine transaction type based on numeric isCheckUp code and presence of items
+            ' Codes: 0 = Check-up Only, 1 = With Check-up, 3 = Items Only
+            Dim isCheckUpCode As Integer = 3
+            Try
+                If Not IsDBNull(reader("isCheckUp")) Then
+                    Integer.TryParse(reader("isCheckUp").ToString(), isCheckUpCode)
+                End If
+            Catch
+            End Try
+
             Dim hasItems As Boolean = False
 
-            ' Check if there are any product items (excluding OD/OS grades)
+            ' Check if there are any product items (excluding empty product names)
             Dim cmdCheckItems As New Odbc.OdbcCommand(
-                "SELECT COUNT(*) FROM tbl_transaction_items WHERE transactionID = ? AND productName IS NOT NULL AND productName != ''", conn)
+                "SELECT COUNT(*) FROM tbl_transaction_items WHERE transactionID = ? AND productName IS NOT NULL AND productName <> ''", conn)
             cmdCheckItems.Parameters.Add(New Odbc.OdbcParameter("?", Odbc.OdbcType.Int)).Value = transactionID
             Dim itemCount As Integer = Convert.ToInt32(cmdCheckItems.ExecuteScalar())
             hasItems = (itemCount > 0)
-
-            ' Display transaction type
-            Dim lblTransactionType As New Label
-            If isCheckUp AndAlso Not hasItems Then
-                lblTransactionType.Text = "Check-up Only"
-            ElseIf isCheckUp AndAlso hasItems Then
-                lblTransactionType.Text = "With Check-up"
-            ElseIf Not isCheckUp AndAlso hasItems Then
-                lblTransactionType.Text = "Items Only"
-            Else
-                lblTransactionType.Text = "" ' No label if unclear
-            End If
-
-            If Not String.IsNullOrEmpty(lblTransactionType.Text) Then
-                lblTransactionType.Location = New Point(10, top)
-                lblTransactionType.Font = labelFont
-                lblTransactionType.AutoSize = True
-                card.Controls.Add(lblTransactionType)
-                top += 30
-            End If
 
             ' Divider
             Dim divider As New Panel
@@ -300,6 +330,48 @@ Public Class viewTransactions
             card.Controls.Add(divider)
             top += 20
 
+            ' Display transaction type based on code and items, below the divider
+            Dim transactionTypeText As String = String.Empty
+            Select Case isCheckUpCode
+                Case 0
+                    transactionTypeText = "Check-up Only"
+                Case 1
+                    If hasItems Then
+                        transactionTypeText = "With Check-up"
+                    Else
+                        ' With check-up but no items saved; treat as Check-up only
+                        transactionTypeText = "Check-up Only"
+                    End If
+                Case 3
+                    If hasItems Then
+                        transactionTypeText = "Items Only"
+                    Else
+                        transactionTypeText = String.Empty ' No items at all
+                    End If
+                Case Else
+                    transactionTypeText = String.Empty ' Unknown code
+            End Select
+
+            If Not String.IsNullOrEmpty(transactionTypeText) Then
+                ' Left label: "Transaction type:"
+                Dim lblTransactionTypeLabel As New Label
+                lblTransactionTypeLabel.Text = "Transaction type:"
+                lblTransactionTypeLabel.Location = New Point(10, top)
+                lblTransactionTypeLabel.Font = labelBoldFont
+                lblTransactionTypeLabel.AutoSize = True
+                card.Controls.Add(lblTransactionTypeLabel)
+
+                ' Right value: e.g. "With Check-up" aligned with other right-column values
+                Dim lblTransactionTypeVal As New Label
+                lblTransactionTypeVal.Text = transactionTypeText
+                lblTransactionTypeVal.Location = New Point(costX, top)
+                lblTransactionTypeVal.Font = labelFont
+                lblTransactionTypeVal.AutoSize = True
+                card.Controls.Add(lblTransactionTypeVal)
+
+                top += 30
+            End If
+
             ' Payment Type
             Dim lblPaymentType As New Label
             lblPaymentType.Text = "Payment Type:"
@@ -308,13 +380,37 @@ Public Class viewTransactions
             lblPaymentType.AutoSize = True
             card.Controls.Add(lblPaymentType)
 
+            Dim paymentType As String = reader("paymentType").ToString()
             Dim lblPaymentTypeVal As New Label
-            lblPaymentTypeVal.Text = reader("paymentType").ToString()
+            lblPaymentTypeVal.Text = paymentType
             lblPaymentTypeVal.Location = New Point(costX, top)
             lblPaymentTypeVal.Font = labelFont
             lblPaymentTypeVal.AutoSize = True
             card.Controls.Add(lblPaymentTypeVal)
             top += 30
+
+            ' Reference Number (only for G-cash)
+            Dim referenceNum As String = ""
+            If Not IsDBNull(reader("referenceNum")) Then
+                referenceNum = reader("referenceNum").ToString()
+            End If
+
+            If paymentType.Equals("G-cash", StringComparison.OrdinalIgnoreCase) AndAlso referenceNum <> "" Then
+                Dim lblRefLabel As New Label
+                lblRefLabel.Text = "Reference Number:"
+                lblRefLabel.Location = New Point(10, top)
+                lblRefLabel.Font = labelBoldFont
+                lblRefLabel.AutoSize = True
+                card.Controls.Add(lblRefLabel)
+
+                Dim lblRefVal As New Label
+                lblRefVal.Text = referenceNum
+                lblRefVal.Location = New Point(costX, top)
+                lblRefVal.Font = labelFont
+                lblRefVal.AutoSize = True
+                card.Controls.Add(lblRefVal)
+                top += 30
+            End If
 
             ' Total Amount
             Dim lblTotalAmount As New Label
@@ -360,6 +456,25 @@ Public Class viewTransactions
         Me.Close()
     End Sub
 
+    ' Click handler for per-card Payment History buttons
+    Private Sub CardPaymentHistory_Click(sender As Object, e As EventArgs)
+        Try
+            Dim btn As Button = TryCast(sender, Button)
+            If btn Is Nothing Then Exit Sub
+            Dim transactionID As Integer = 0
+            If btn.Tag IsNot Nothing Then
+                Integer.TryParse(btn.Tag.ToString(), transactionID)
+            End If
+            If transactionID <= 0 Then Exit Sub
+            ' Open payment history form for this transaction
+            Dim frm As New viewPaymentHistory()
+            frm.TransactionID = transactionID
+            frm.StartPosition = FormStartPosition.CenterScreen
+            frm.ShowDialog(Me)
+        Catch
+        End Try
+    End Sub
+
     Private Sub viewTransactions_Load(sender As Object, e As EventArgs) Handles MyBase.Load
         ' Prevent multiple instances
         isFormOpen = True
@@ -379,4 +494,14 @@ Public Class viewTransactions
         Next
         Return False
     End Function
+
+    Private Sub btnReport_Click(sender As Object, e As EventArgs) Handles btnReport.Click
+        Try
+            Dim rpt As New Reports()
+            rpt.ShowStaffTransactionMode()   ' switch UI to staff transaction (cmbStaffSelect)
+            rpt.StartPosition = FormStartPosition.CenterScreen
+            rpt.ShowDialog(Me)
+        Catch
+        End Try
+    End Sub
 End Class

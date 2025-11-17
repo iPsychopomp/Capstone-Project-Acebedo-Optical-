@@ -13,12 +13,30 @@ Public Class dashboard
         PictureBox1.Cursor = Cursors.Hand
         lblCritical.Cursor = Cursors.Hand
         Label5.Cursor = Cursors.Hand
+        ' Apply same cursor behavior to secondary critical panel/label
+        Try
+            pnlCritical2.Cursor = Cursors.Hand
+        Catch
+        End Try
+        Try
+            lblCritical2.Cursor = Cursors.Hand
+        Catch
+        End Try
 
         ' Make pnlPatients clickable with hand cursor
         pnlPatients.Cursor = Cursors.Hand
         PictureBox4.Cursor = Cursors.Hand
         txtPatientToday.Cursor = Cursors.Hand
         Label13.Cursor = Cursors.Hand
+        ' Apply same cursor behavior to secondary patients panel/label
+        Try
+            pnlPatients2.Cursor = Cursors.Hand
+        Catch
+        End Try
+        Try
+            lblTodayPatient.Cursor = Cursors.Hand
+        Catch
+        End Try
 
         dtpFrom.Format = DateTimePickerFormat.Custom
         dtpFrom.CustomFormat = "dd MMMM yyyy"
@@ -40,9 +58,6 @@ Public Class dashboard
             Label4.Visible = False
             dtpFrom.Visible = False
             dtpTo.Visible = False
-
-
-
         Else
             pnlAnalytics.Visible = True
             pnlProductSold.Visible = True
@@ -52,9 +67,16 @@ Public Class dashboard
             Label4.Visible = True
             dtpFrom.Visible = True
             dtpTo.Visible = True
-            UpdateProfit()
-
         End If
+
+        ' Show pnlStaff for Receptionist role
+        If LoggedInRole = "Receptionist" Then
+            pnlStaff.Visible = True
+        End If
+
+        UpdateProfit()
+
+        dtpAppointment.Value = Date.Today
 
     End Sub
 
@@ -73,6 +95,18 @@ Public Class dashboard
 
             ' Update patient count for today
             UpdatePatientCount()
+
+            ' Update today's appointment count
+            UpdateTodayAppointments()
+
+            ' Load available products into product availability grid
+            LoadAvailableProducts()
+
+            ' Load product demand into demand grid
+            LoadProductDemand()
+
+            ' Load appointments into appointment grid (today's appointments by default)
+            LoadAppointmentsByDate(Date.Today)
         Catch ex As Exception
             MessageBox.Show("Error loading dashboard: " & ex.Message)
 
@@ -387,7 +421,7 @@ Public Class dashboard
         pnlProductSolds.BackColor = Color.White
     End Sub
 
-    Private Sub pnlCritical_Click(sender As Object, e As EventArgs) Handles pnlCritical.Click
+    Private Sub pnlCritical_Click(sender As Object, e As EventArgs) Handles pnlCritical.Click, pnlCritical2.Click
         ' Find the MainForm instance
         Dim mainForm As MainForm = Nothing
         For Each form As Form In Application.OpenForms
@@ -444,7 +478,7 @@ Public Class dashboard
         pnlCritical_Click(sender, e)
     End Sub
 
-    Private Sub lblCritical_Click(sender As Object, e As EventArgs) Handles lblCritical.Click
+    Private Sub lblCritical_Click(sender As Object, e As EventArgs) Handles lblCritical.Click, lblCritical2.Click
         pnlCritical_Click(sender, e)
     End Sub
 
@@ -457,27 +491,43 @@ Public Class dashboard
     End Sub
 
     ' pnlCritical hover effects
-    Private Sub pnlCritical_MouseEnter(sender As Object, e As EventArgs) Handles pnlCritical.MouseEnter
+    Private Sub pnlCritical_MouseEnter(sender As Object, e As EventArgs) Handles pnlCritical.MouseEnter, pnlCritical2.MouseEnter
         pnlCritical.BackColor = Color.LightGray
+        Try
+            pnlCritical2.BackColor = Color.LightGray
+        Catch
+        End Try
     End Sub
 
-    Private Sub pnlCritical_MouseLeave(sender As Object, e As EventArgs) Handles pnlCritical.MouseLeave
+    Private Sub pnlCritical_MouseLeave(sender As Object, e As EventArgs) Handles pnlCritical.MouseLeave, pnlCritical2.MouseLeave
         pnlCritical.BackColor = Color.White
+        Try
+            pnlCritical2.BackColor = Color.White
+        Catch
+        End Try
     End Sub
 
     ' pnlPatients click event
-    Private Sub pnlPatients_Click(sender As Object, e As EventArgs) Handles pnlPatients.Click
+    Private Sub pnlPatients_Click(sender As Object, e As EventArgs) Handles pnlPatients.Click, pnlPatients2.Click
         Dim patientTodayForm As New PatientToday()
         patientTodayForm.ShowDialog()
     End Sub
 
     ' pnlPatients hover effects
-    Private Sub pnlPatients_MouseEnter(sender As Object, e As EventArgs) Handles pnlPatients.MouseEnter
+    Private Sub pnlPatients_MouseEnter(sender As Object, e As EventArgs) Handles pnlPatients.MouseEnter, pnlPatients2.MouseEnter
         pnlPatients.BackColor = Color.LightGray
+        Try
+            pnlPatients2.BackColor = Color.LightGray
+        Catch
+        End Try
     End Sub
 
-    Private Sub pnlPatients_MouseLeave(sender As Object, e As EventArgs) Handles pnlPatients.MouseLeave
+    Private Sub pnlPatients_MouseLeave(sender As Object, e As EventArgs) Handles pnlPatients.MouseLeave, pnlPatients2.MouseLeave
         pnlPatients.BackColor = Color.White
+        Try
+            pnlPatients2.BackColor = Color.White
+        Catch
+        End Try
     End Sub
 
     ' Make child controls in pnlPatients also trigger the click event
@@ -541,13 +591,25 @@ Public Class dashboard
                 Dim count As Object = cmd.ExecuteScalar()
                 If count IsNot Nothing Then
                     txtPatientToday.Text = count.ToString()
+                    Try
+                        lblTodayPatient.Text = count.ToString()
+                    Catch
+                    End Try
                 Else
                     txtPatientToday.Text = "0"
+                    Try
+                        lblTodayPatient.Text = "0"
+                    Catch
+                    End Try
                 End If
             End Using
 
         Catch ex As Exception
             txtPatientToday.Text = "--"
+            Try
+                lblTodayPatient.Text = "--"
+            Catch
+            End Try
         Finally
             If conn.State = ConnectionState.Open Then
                 conn.Close()
@@ -566,6 +628,7 @@ Public Class dashboard
     Private Sub lblDateRange_Click(sender As Object, e As EventArgs) Handles lblDateRange.Click
 
     End Sub
+
 
     Private Sub ToolTip1_Popup(sender As Object, e As PopupEventArgs) Handles ToolTip1.Popup
 
@@ -646,4 +709,299 @@ Public Class dashboard
     Private Sub pnlDash_Paint(sender As Object, e As PaintEventArgs) Handles pnlDash.Paint
 
     End Sub
+=======
+    ' Search dgvProductAvail for text in txtSearch when btnSearch is clicked
+    Private Sub btnSearch_Click(sender As Object, e As EventArgs) Handles btnSearch.Click
+        Try
+            Dim searchText As String = txtSearch.Text.Trim()
+
+            ' If search is empty, reload all products
+            If String.IsNullOrEmpty(searchText) Then
+                LoadAvailableProducts()
+                Return
+            End If
+
+            ' Reload all products first, then filter
+            LoadAvailableProducts()
+
+            ' Create a list to hold matching rows
+            Dim matchingRows As New List(Of DataGridViewRow)()
+
+            ' Find matching rows
+            For Each row As DataGridViewRow In dgvProductAvail.Rows
+                If Not row.IsNewRow Then
+                    Dim match As Boolean = False
+
+                    ' Check Product Name column (index 0)
+                    If row.Cells(0).Value IsNot Nothing Then
+                        If row.Cells(0).Value.ToString().IndexOf(searchText, StringComparison.OrdinalIgnoreCase) >= 0 Then
+                            match = True
+                        End If
+                    End If
+
+                    ' Check Quantity column (index 1)
+                    If Not match AndAlso row.Cells(1).Value IsNot Nothing Then
+                        Dim qtyText As String = row.Cells(1).Value.ToString()
+                        If qtyText.IndexOf(searchText, StringComparison.OrdinalIgnoreCase) >= 0 Then
+                            match = True
+                        End If
+                    End If
+
+                    If match Then
+                        ' Clone the row to add to our matching list
+                        Dim newRow As DataGridViewRow = CType(row.Clone(), DataGridViewRow)
+                        For Each cell As DataGridViewCell In row.Cells
+                            newRow.Cells(cell.ColumnIndex).Value = cell.Value
+                        Next
+                        matchingRows.Add(newRow)
+                    End If
+                End If
+            Next
+
+            ' Clear the grid and add only matching rows
+            dgvProductAvail.Rows.Clear()
+            For Each row As DataGridViewRow In matchingRows
+                dgvProductAvail.Rows.Add(row)
+            Next
+
+        Catch ex As Exception
+            ' On error, reload all products
+            LoadAvailableProducts()
+            System.Diagnostics.Debug.WriteLine("Search Error: " & ex.Message)
+        End Try
+    End Sub
+
+    ' When txtSearch text changes, if empty reload all products
+    Private Sub txtSearch_TextChanged(sender As Object, e As EventArgs) Handles txtSearch.TextChanged
+        If String.IsNullOrWhiteSpace(txtSearch.Text) Then
+            LoadAvailableProducts()
+        End If
+    End Sub
+
+    ' Count how many patients have appointments today and display in txtAppoint
+    Private Sub UpdateTodayAppointments()
+        Try
+            Call dbConn()
+
+            ' Try common table/column names for appointments
+            Dim sql As String = "SELECT COUNT(*) AS totalPatientsToday FROM appointments WHERE DATE(appointmentDate) = CURDATE()"
+            Dim result As Object = Nothing
+
+            Using cmd As New OdbcCommand(sql, conn)
+                Try
+                    result = cmd.ExecuteScalar()
+                Catch ex1 As Exception
+                    ' Try alternative table/column names
+                    sql = "SELECT COUNT(*) FROM tbl_appointments WHERE DATE(appointmentDate) = CURDATE()"
+                    cmd.CommandText = sql
+                    Try
+                        result = cmd.ExecuteScalar()
+                    Catch ex2 As Exception
+                        ' Try with different date column
+                        sql = "SELECT COUNT(*) FROM appointments WHERE DATE(date) = CURDATE()"
+                        cmd.CommandText = sql
+                        Try
+                            result = cmd.ExecuteScalar()
+                        Catch ex3 As Exception
+                            ' Try with checkup table
+                            sql = "SELECT COUNT(*) FROM checkups WHERE DATE(checkupDate) = CURDATE()"
+                            cmd.CommandText = sql
+                            Try
+                                result = cmd.ExecuteScalar()
+                            Catch ex4 As Exception
+                                ' Final fallback: check if any appointments table exists
+                                sql = "SELECT COUNT(*) FROM db_viewappointments WHERE DATE(appointmentDate) = CURDATE()"
+                                cmd.CommandText = sql
+                                result = cmd.ExecuteScalar()
+                            End Try
+                        End Try
+                    End Try
+                End Try
+            End Using
+
+            If result IsNot Nothing AndAlso Not IsDBNull(result) Then
+                txtAppoint.Text = Convert.ToInt32(result).ToString()
+            Else
+                txtAppoint.Text = "0"
+            End If
+        Catch ex As Exception
+            txtAppoint.Text = "--"
+            ' Optional: show error in debug output
+            System.Diagnostics.Debug.WriteLine("UpdateTodayAppointments Error: " & ex.Message)
+        Finally
+            If conn IsNot Nothing AndAlso conn.State = ConnectionState.Open Then
+                conn.Close()
+            End If
+        End Try
+    End Sub
+
+    ' Load data for product availability from db_viewavailableproducts into dgvProductAvail
+    Private Sub LoadAvailableProducts()
+        Try
+            Call dbConn()
+
+            Dim sql As String = "SELECT productName, stockQuantity FROM db_viewavailableproducts ORDER BY productName"
+
+            Using cmd As New OdbcCommand(sql, conn)
+                Using rdr As OdbcDataReader = cmd.ExecuteReader()
+                    dgvProductAvail.Rows.Clear()
+
+                    While rdr.Read()
+                        Dim rowIndex As Integer = dgvProductAvail.Rows.Add()
+                        Try
+                            dgvProductAvail.Rows(rowIndex).Cells(0).Value = rdr("productName").ToString()
+                        Catch
+                        End Try
+                        Try
+                            dgvProductAvail.Rows(rowIndex).Cells(1).Value = Convert.ToInt32(If(rdr("stockQuantity"), 0))
+                        Catch
+                        End Try
+                    End While
+                End Using
+            End Using
+        Catch ex As Exception
+            ' If anything goes wrong, just clear the grid to avoid stale data
+            Try
+                dgvProductAvail.Rows.Clear()
+            Catch
+            End Try
+        Finally
+            If conn IsNot Nothing AndAlso conn.State = ConnectionState.Open Then
+                conn.Close()
+            End If
+        End Try
+    End Sub
+
+    ' Load data for product demand from db_viewproductdemand into dgvDemand
+    Private Sub LoadProductDemand()
+        Try
+            Call dbConn()
+
+            ' Assuming db_viewproductdemand has columns: productID, productName, totalSold, category
+            Dim sql As String = "SELECT productID, productName, totalSold, category FROM db_viewproductdemand ORDER BY productName"
+
+            Using cmd As New OdbcCommand(sql, conn)
+                Using rdr As OdbcDataReader = cmd.ExecuteReader()
+                    dgvDemand.Rows.Clear()
+
+                    While rdr.Read()
+                        Dim rowIndex As Integer = dgvDemand.Rows.Add()
+                        ' Column3 (index 0): productID (hidden)
+                        Try
+                            dgvDemand.Rows(rowIndex).Cells(0).Value = rdr("productID").ToString()
+                        Catch
+                        End Try
+                        ' DataGridViewTextBoxColumn1 (index 1): productName
+                        Try
+                            dgvDemand.Rows(rowIndex).Cells(1).Value = rdr("productName").ToString()
+                        Catch
+                        End Try
+                        ' DataGridViewTextBoxColumn2 (index 2): totalSold
+                        Try
+                            dgvDemand.Rows(rowIndex).Cells(2).Value = Convert.ToInt32(If(rdr("totalSold"), 0))
+                        Catch
+                        End Try
+                        ' Column4 (index 3): category (hidden)
+                        Try
+                            dgvDemand.Rows(rowIndex).Cells(3).Value = rdr("category").ToString()
+                        Catch
+                        End Try
+                    End While
+                End Using
+            End Using
+        Catch ex As Exception
+            ' If anything goes wrong, just clear the grid to avoid stale data
+            Try
+                dgvDemand.Rows.Clear()
+            Catch
+            End Try
+        Finally
+            If conn IsNot Nothing AndAlso conn.State = ConnectionState.Open Then
+                conn.Close()
+            End If
+        End Try
+    End Sub
+
+    ' Load data for appointments from db_viewappointments into dgvAppointment
+    Private Sub LoadAppointments()
+        Try
+            Call dbConn()
+
+            ' Assuming db_viewappointments has columns: patientName, appointmentDate
+            Dim sql As String = "SELECT patientName, appointmentDate FROM db_viewappointments ORDER BY appointmentDate"
+
+            Using cmd As New OdbcCommand(sql, conn)
+                Using rdr As OdbcDataReader = cmd.ExecuteReader()
+                    dgvAppointment.Rows.Clear()
+
+                    While rdr.Read()
+                        Dim rowIndex As Integer = dgvAppointment.Rows.Add()
+                        ' DataGridViewTextBoxColumn3 (index 0): patientName
+                        Try
+                            dgvAppointment.Rows(rowIndex).Cells(0).Value = rdr("patientName").ToString()
+                        Catch
+                        End Try
+                        ' DataGridViewTextBoxColumn4 (index 1): appointmentDate
+                        Try
+                            dgvAppointment.Rows(rowIndex).Cells(1).Value = Convert.ToDateTime(rdr("appointmentDate")).ToString("yyyy-MM-dd")
+                        Catch
+                        End Try
+                    End While
+                End Using
+            End Using
+        Catch ex As Exception
+            ' If anything goes wrong, just clear the grid to avoid stale data
+            Try
+                dgvAppointment.Rows.Clear()
+            Catch
+            End Try
+        Finally
+            If conn IsNot Nothing AndAlso conn.State = ConnectionState.Open Then
+                conn.Close()
+            End If
+        End Try
+    End Sub
+
+   
+    Private Sub LoadAppointmentsByDate(selectedDate As Date)
+        Try
+            Call dbConn()
+
+            Dim sql As String =
+                "SELECT patientName, appointmentDate FROM db_viewappointments WHERE DATE(appointmentDate) = ? ORDER BY appointmentDate"
+
+            Using cmd As New OdbcCommand(sql, conn)
+
+                ' IMPORTANT: ODBC only uses positional parameters (?)
+                cmd.Parameters.Add("?", OdbcType.Date).Value = selectedDate
+
+                Using rdr As OdbcDataReader = cmd.ExecuteReader()
+                    dgvAppointment.Rows.Clear()
+
+                    While rdr.Read()
+                        Dim rowIndex As Integer = dgvAppointment.Rows.Add()
+
+                        dgvAppointment.Rows(rowIndex).Cells(0).Value =
+                            rdr("patientName").ToString()
+
+                        dgvAppointment.Rows(rowIndex).Cells(1).Value =
+                            Convert.ToDateTime(rdr("appointmentDate")).ToString("yyyy-MM-dd")
+                    End While
+                End Using
+            End Using
+
+        Catch ex As Exception
+            dgvAppointment.Rows.Clear()
+        Finally
+            If conn IsNot Nothing AndAlso conn.State = ConnectionState.Open Then
+                conn.Close()
+            End If
+        End Try
+    End Sub
+
+
+    Private Sub dtpAppointment_ValueChanged(sender As Object, e As EventArgs) Handles dtpAppointment.ValueChanged
+        LoadAppointmentsByDate(dtpAppointment.Value.Date)
+    End Sub
+
 End Class

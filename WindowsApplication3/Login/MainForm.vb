@@ -58,7 +58,6 @@ Public Class MainForm
         If LoggedInRole = "Receptionist" OrElse LoggedInRole = "Doctor" Then
             UserToolStripMenuItem.Visible = False
             ToolsToolStripMenuItem.Visible = False
-            btnDashboard.Visible = False
             dashboard.Hide()
 
             'ReportsToolStripMenuItem.Visible = False

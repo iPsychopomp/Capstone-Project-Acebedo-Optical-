@@ -133,6 +133,14 @@ Public Class searchPatient
                     'transForm.txtPatientName.Text = fullname
                 Catch
                 End Try
+                ' Also set lblPatientID on addPatientTransaction if that label exists
+                Try
+                    Dim lbl = transForm.Controls.Find("lblPatientID", True)
+                    If lbl IsNot Nothing AndAlso lbl.Length > 0 Then
+                        lbl(0).Text = patientID
+                    End If
+                Catch
+                End Try
                 Me.DialogResult = DialogResult.OK
                 Me.Close()
                 Return

@@ -256,6 +256,11 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>DataSet8.xsd</DependentUpon>
     </Compile>
+    <Compile Include="Datasets\DataSet9.Designer.vb">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>DataSet9.xsd</DependentUpon>
+    </Compile>
     <Compile Include="dgvDesign.vb" />
     <Compile Include="Doctors\addDoctors.Designer.vb">
       <DependentUpon>addDoctors.vb</DependentUpon>
@@ -299,6 +304,12 @@
     <Compile Include="Supplier\ReceivedItems.vb">
       <SubType>Form</SubType>
     </Compile>
+    <Compile Include="Supplier\searchSupplierProducts.Designer.vb">
+      <DependentUpon>searchSupplierProducts.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Supplier\searchSupplierProducts.vb">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="Supplier\Supplier.Designer.vb">
       <DependentUpon>Supplier.vb</DependentUpon>
     </Compile>
@@ -321,6 +332,12 @@
       <DependentUpon>addPatientTransaction.vb</DependentUpon>
     </Compile>
     <Compile Include="Transactions\addPatientTransaction.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Transactions\addPayment.Designer.vb">
+      <DependentUpon>addPayment.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Transactions\addPayment.vb">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="Transactions\createTransactions.Designer.vb">
@@ -377,6 +394,18 @@
       <DependentUpon>searchProducts.vb</DependentUpon>
     </Compile>
     <Compile Include="Transactions\searchProducts.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Transactions\selectGrade.Designer.vb">
+      <DependentUpon>selectGrade.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Transactions\selectGrade.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Transactions\viewPaymentHistory.Designer.vb">
+      <DependentUpon>viewPaymentHistory.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Transactions\viewPaymentHistory.vb">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="Transactions\viewTransactions.Designer.vb">
@@ -552,8 +581,14 @@
     <EmbeddedResource Include="RDLC\salesReport.rdlc">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </EmbeddedResource>
+    <EmbeddedResource Include="RDLC\staffTransactionReport.rdlc">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </EmbeddedResource>
     <EmbeddedResource Include="Supplier\addSupplierItems.resx">
       <DependentUpon>addSupplierItems.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Supplier\searchSupplierProducts.resx">
+      <DependentUpon>searchSupplierProducts.vb</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Supplier\supplierItems.resx">
       <DependentUpon>supplierItems.vb</DependentUpon>
@@ -588,6 +623,9 @@
     <EmbeddedResource Include="Transactions\addPatientTransaction.resx">
       <DependentUpon>addPatientTransaction.vb</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Transactions\addPayment.resx">
+      <DependentUpon>addPayment.vb</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Transactions\createTransactions.resx">
       <DependentUpon>createTransactions.vb</DependentUpon>
     </EmbeddedResource>
@@ -614,6 +652,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Transactions\searchProducts.resx">
       <DependentUpon>searchProducts.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Transactions\selectGrade.resx">
+      <DependentUpon>selectGrade.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Transactions\viewPaymentHistory.resx">
+      <DependentUpon>viewPaymentHistory.vb</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Transactions\viewTransactions.resx">
       <DependentUpon>viewTransactions.vb</DependentUpon>
@@ -762,6 +806,17 @@
     </None>
     <None Include="Datasets\DataSet8.xss">
       <DependentUpon>DataSet8.xsd</DependentUpon>
+    </None>
+    <None Include="Datasets\DataSet9.xsc">
+      <DependentUpon>DataSet9.xsd</DependentUpon>
+    </None>
+    <None Include="Datasets\DataSet9.xsd">
+      <SubType>Designer</SubType>
+      <Generator>MSDataSetGenerator</Generator>
+      <LastGenOutput>DataSet9.Designer.vb</LastGenOutput>
+    </None>
+    <None Include="Datasets\DataSet9.xss">
+      <DependentUpon>DataSet9.xsd</DependentUpon>
     </None>
     <None Include="My Project\Application.myapp">
       <Generator>MyApplicationCodeGenerator</Generator>

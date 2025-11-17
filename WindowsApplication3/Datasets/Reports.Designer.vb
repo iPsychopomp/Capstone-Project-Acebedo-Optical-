@@ -31,6 +31,7 @@ Partial Class Reports
         Me.btnGenerate = New System.Windows.Forms.Button()
         Me.cboReportType = New System.Windows.Forms.ComboBox()
         Me.Panel1 = New System.Windows.Forms.Panel()
+        Me.cmbStaffSelect = New System.Windows.Forms.ComboBox()
         Me.dtpYear = New System.Windows.Forms.DateTimePicker()
         Me.dtpFROM = New System.Windows.Forms.DateTimePicker()
         Me.dtpTO = New System.Windows.Forms.DateTimePicker()
@@ -85,6 +86,7 @@ Partial Class Reports
         '
         'Panel1
         '
+        Me.Panel1.Controls.Add(Me.cmbStaffSelect)
         Me.Panel1.Controls.Add(Me.dtpYear)
         Me.Panel1.Controls.Add(Me.dtpFROM)
         Me.Panel1.Controls.Add(Me.dtpTO)
@@ -95,6 +97,18 @@ Partial Class Reports
         Me.Panel1.Name = "Panel1"
         Me.Panel1.Size = New System.Drawing.Size(1069, 65)
         Me.Panel1.TabIndex = 3
+        '
+        'cmbStaffSelect
+        '
+        Me.cmbStaffSelect.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
+        Me.cmbStaffSelect.Font = New System.Drawing.Font("Segoe UI", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.cmbStaffSelect.FormattingEnabled = True
+        Me.cmbStaffSelect.Items.AddRange(New Object() {"Daily", "Weekly", "Monthly", "Annualy", "Custom"})
+        Me.cmbStaffSelect.Location = New System.Drawing.Point(12, 12)
+        Me.cmbStaffSelect.Name = "cmbStaffSelect"
+        Me.cmbStaffSelect.Size = New System.Drawing.Size(325, 36)
+        Me.cmbStaffSelect.TabIndex = 4
+        Me.cmbStaffSelect.Visible = False
         '
         'dtpYear
         '
@@ -160,4 +174,5 @@ Partial Class Reports
     Friend WithEvents dtpFROM As System.Windows.Forms.DateTimePicker
     Friend WithEvents dtpTO As System.Windows.Forms.DateTimePicker
     Friend WithEvents dtpYear As System.Windows.Forms.DateTimePicker
+    Friend WithEvents cmbStaffSelect As System.Windows.Forms.ComboBox
 End Class

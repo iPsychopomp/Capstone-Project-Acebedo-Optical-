@@ -22,26 +22,26 @@ Partial Class OrderProduct
     'Do not modify it using the code editor.
     <System.Diagnostics.DebuggerStepThrough()> _
     Private Sub InitializeComponent()
-        Dim DataGridViewCellStyle81 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
-        Dim DataGridViewCellStyle82 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
-        Dim DataGridViewCellStyle89 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
-        Dim DataGridViewCellStyle90 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
-        Dim DataGridViewCellStyle91 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
-        Dim DataGridViewCellStyle83 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
-        Dim DataGridViewCellStyle84 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
-        Dim DataGridViewCellStyle85 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
-        Dim DataGridViewCellStyle86 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
-        Dim DataGridViewCellStyle87 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
-        Dim DataGridViewCellStyle88 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
-        Dim DataGridViewCellStyle92 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
-        Dim DataGridViewCellStyle93 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
-        Dim DataGridViewCellStyle98 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
-        Dim DataGridViewCellStyle99 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
-        Dim DataGridViewCellStyle100 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
-        Dim DataGridViewCellStyle94 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
-        Dim DataGridViewCellStyle95 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
-        Dim DataGridViewCellStyle96 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
-        Dim DataGridViewCellStyle97 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
+        Dim DataGridViewCellStyle1 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
+        Dim DataGridViewCellStyle2 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
+        Dim DataGridViewCellStyle9 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
+        Dim DataGridViewCellStyle10 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
+        Dim DataGridViewCellStyle11 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
+        Dim DataGridViewCellStyle3 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
+        Dim DataGridViewCellStyle4 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
+        Dim DataGridViewCellStyle5 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
+        Dim DataGridViewCellStyle6 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
+        Dim DataGridViewCellStyle7 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
+        Dim DataGridViewCellStyle8 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
+        Dim DataGridViewCellStyle12 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
+        Dim DataGridViewCellStyle13 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
+        Dim DataGridViewCellStyle18 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
+        Dim DataGridViewCellStyle19 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
+        Dim DataGridViewCellStyle20 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
+        Dim DataGridViewCellStyle14 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
+        Dim DataGridViewCellStyle15 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
+        Dim DataGridViewCellStyle16 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
+        Dim DataGridViewCellStyle17 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(OrderProduct))
         Me.TabControl1 = New System.Windows.Forms.TabControl()
         Me.TabPage1 = New System.Windows.Forms.TabPage()
@@ -64,7 +64,6 @@ Partial Class OrderProduct
         Me.Supplier = New System.Windows.Forms.DataGridViewTextBoxColumn()
         Me.Total = New System.Windows.Forms.DataGridViewTextBoxColumn()
         Me.TabPage2 = New System.Windows.Forms.TabPage()
-        Me.btnClose = New System.Windows.Forms.Button()
         Me.btnCancelOrder = New System.Windows.Forms.Button()
         Me.btnReceived = New System.Windows.Forms.Button()
         Me.dgvOrders = New System.Windows.Forms.DataGridView()
@@ -75,8 +74,8 @@ Partial Class OrderProduct
         Me.Column1 = New System.Windows.Forms.DataGridViewTextBoxColumn()
         Me.Status = New System.Windows.Forms.DataGridViewTextBoxColumn()
         Me.pnlBar = New System.Windows.Forms.Panel()
-        Me.Label6 = New System.Windows.Forms.Label()
         Me.PictureBox1 = New System.Windows.Forms.PictureBox()
+        Me.Label6 = New System.Windows.Forms.Label()
         Me.TabControl1.SuspendLayout()
         Me.TabPage1.SuspendLayout()
         CType(Me.dgvSelectedProducts, System.ComponentModel.ISupportInitialize).BeginInit()
@@ -245,45 +244,45 @@ Partial Class OrderProduct
         '
         Me.dgvSelectedProducts.AllowUserToAddRows = False
         Me.dgvSelectedProducts.AllowUserToDeleteRows = False
-        DataGridViewCellStyle81.BackColor = System.Drawing.Color.Gainsboro
-        Me.dgvSelectedProducts.AlternatingRowsDefaultCellStyle = DataGridViewCellStyle81
+        DataGridViewCellStyle1.BackColor = System.Drawing.Color.Gainsboro
+        Me.dgvSelectedProducts.AlternatingRowsDefaultCellStyle = DataGridViewCellStyle1
         Me.dgvSelectedProducts.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill
         Me.dgvSelectedProducts.BackgroundColor = System.Drawing.Color.White
         Me.dgvSelectedProducts.CellBorderStyle = System.Windows.Forms.DataGridViewCellBorderStyle.Raised
-        DataGridViewCellStyle82.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter
-        DataGridViewCellStyle82.BackColor = System.Drawing.SystemColors.Control
-        DataGridViewCellStyle82.Font = New System.Drawing.Font("Segoe UI", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        DataGridViewCellStyle82.ForeColor = System.Drawing.SystemColors.WindowText
-        DataGridViewCellStyle82.SelectionBackColor = System.Drawing.Color.SkyBlue
-        DataGridViewCellStyle82.SelectionForeColor = System.Drawing.SystemColors.HighlightText
-        Me.dgvSelectedProducts.ColumnHeadersDefaultCellStyle = DataGridViewCellStyle82
+        DataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter
+        DataGridViewCellStyle2.BackColor = System.Drawing.SystemColors.Control
+        DataGridViewCellStyle2.Font = New System.Drawing.Font("Segoe UI", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        DataGridViewCellStyle2.ForeColor = System.Drawing.SystemColors.WindowText
+        DataGridViewCellStyle2.SelectionBackColor = System.Drawing.Color.SkyBlue
+        DataGridViewCellStyle2.SelectionForeColor = System.Drawing.SystemColors.HighlightText
+        Me.dgvSelectedProducts.ColumnHeadersDefaultCellStyle = DataGridViewCellStyle2
         Me.dgvSelectedProducts.ColumnHeadersHeight = 50
         Me.dgvSelectedProducts.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.DisableResizing
         Me.dgvSelectedProducts.Columns.AddRange(New System.Windows.Forms.DataGridViewColumn() {Me.productID, Me.productName, Me.category, Me.product_price, Me.Quantity, Me.Supplier, Me.Total})
-        DataGridViewCellStyle89.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft
-        DataGridViewCellStyle89.BackColor = System.Drawing.SystemColors.Window
-        DataGridViewCellStyle89.Font = New System.Drawing.Font("Segoe UI", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        DataGridViewCellStyle89.ForeColor = System.Drawing.SystemColors.ControlText
-        DataGridViewCellStyle89.SelectionBackColor = System.Drawing.SystemColors.ActiveCaption
-        DataGridViewCellStyle89.SelectionForeColor = System.Drawing.Color.Black
-        DataGridViewCellStyle89.WrapMode = System.Windows.Forms.DataGridViewTriState.[False]
-        Me.dgvSelectedProducts.DefaultCellStyle = DataGridViewCellStyle89
+        DataGridViewCellStyle9.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft
+        DataGridViewCellStyle9.BackColor = System.Drawing.SystemColors.Window
+        DataGridViewCellStyle9.Font = New System.Drawing.Font("Segoe UI", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        DataGridViewCellStyle9.ForeColor = System.Drawing.SystemColors.ControlText
+        DataGridViewCellStyle9.SelectionBackColor = System.Drawing.SystemColors.ActiveCaption
+        DataGridViewCellStyle9.SelectionForeColor = System.Drawing.Color.Black
+        DataGridViewCellStyle9.WrapMode = System.Windows.Forms.DataGridViewTriState.[False]
+        Me.dgvSelectedProducts.DefaultCellStyle = DataGridViewCellStyle9
         Me.dgvSelectedProducts.GridColor = System.Drawing.Color.Black
         Me.dgvSelectedProducts.Location = New System.Drawing.Point(-4, 70)
         Me.dgvSelectedProducts.MultiSelect = False
         Me.dgvSelectedProducts.Name = "dgvSelectedProducts"
         Me.dgvSelectedProducts.ReadOnly = True
-        DataGridViewCellStyle90.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft
-        DataGridViewCellStyle90.BackColor = System.Drawing.SystemColors.Control
-        DataGridViewCellStyle90.Font = New System.Drawing.Font("Segoe UI", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        DataGridViewCellStyle90.ForeColor = System.Drawing.SystemColors.WindowText
-        DataGridViewCellStyle90.SelectionBackColor = System.Drawing.Color.SkyBlue
-        DataGridViewCellStyle90.SelectionForeColor = System.Drawing.SystemColors.HighlightText
-        Me.dgvSelectedProducts.RowHeadersDefaultCellStyle = DataGridViewCellStyle90
+        DataGridViewCellStyle10.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft
+        DataGridViewCellStyle10.BackColor = System.Drawing.SystemColors.Control
+        DataGridViewCellStyle10.Font = New System.Drawing.Font("Segoe UI", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        DataGridViewCellStyle10.ForeColor = System.Drawing.SystemColors.WindowText
+        DataGridViewCellStyle10.SelectionBackColor = System.Drawing.Color.SkyBlue
+        DataGridViewCellStyle10.SelectionForeColor = System.Drawing.SystemColors.HighlightText
+        Me.dgvSelectedProducts.RowHeadersDefaultCellStyle = DataGridViewCellStyle10
         Me.dgvSelectedProducts.RowHeadersVisible = False
         Me.dgvSelectedProducts.RowHeadersWidthSizeMode = System.Windows.Forms.DataGridViewRowHeadersWidthSizeMode.DisableResizing
-        DataGridViewCellStyle91.Font = New System.Drawing.Font("Segoe UI", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.dgvSelectedProducts.RowsDefaultCellStyle = DataGridViewCellStyle91
+        DataGridViewCellStyle11.Font = New System.Drawing.Font("Segoe UI", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.dgvSelectedProducts.RowsDefaultCellStyle = DataGridViewCellStyle11
         Me.dgvSelectedProducts.RowTemplate.Height = 30
         Me.dgvSelectedProducts.RowTemplate.Resizable = System.Windows.Forms.DataGridViewTriState.[False]
         Me.dgvSelectedProducts.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect
@@ -292,8 +291,8 @@ Partial Class OrderProduct
         '
         'productID
         '
-        DataGridViewCellStyle83.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight
-        Me.productID.DefaultCellStyle = DataGridViewCellStyle83
+        DataGridViewCellStyle3.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight
+        Me.productID.DefaultCellStyle = DataGridViewCellStyle3
         Me.productID.FillWeight = 70.0!
         Me.productID.HeaderText = "Product ID"
         Me.productID.Name = "productID"
@@ -301,8 +300,8 @@ Partial Class OrderProduct
         '
         'productName
         '
-        DataGridViewCellStyle84.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter
-        Me.productName.DefaultCellStyle = DataGridViewCellStyle84
+        DataGridViewCellStyle4.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter
+        Me.productName.DefaultCellStyle = DataGridViewCellStyle4
         Me.productName.FillWeight = 120.0!
         Me.productName.HeaderText = "Product Name"
         Me.productName.Name = "productName"
@@ -310,8 +309,8 @@ Partial Class OrderProduct
         '
         'category
         '
-        DataGridViewCellStyle85.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter
-        Me.category.DefaultCellStyle = DataGridViewCellStyle85
+        DataGridViewCellStyle5.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter
+        Me.category.DefaultCellStyle = DataGridViewCellStyle5
         Me.category.FillWeight = 70.0!
         Me.category.HeaderText = "Category"
         Me.category.Name = "category"
@@ -319,8 +318,8 @@ Partial Class OrderProduct
         '
         'product_price
         '
-        DataGridViewCellStyle86.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight
-        Me.product_price.DefaultCellStyle = DataGridViewCellStyle86
+        DataGridViewCellStyle6.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight
+        Me.product_price.DefaultCellStyle = DataGridViewCellStyle6
         Me.product_price.FillWeight = 60.0!
         Me.product_price.HeaderText = "Unit Price"
         Me.product_price.Name = "product_price"
@@ -328,8 +327,8 @@ Partial Class OrderProduct
         '
         'Quantity
         '
-        DataGridViewCellStyle87.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight
-        Me.Quantity.DefaultCellStyle = DataGridViewCellStyle87
+        DataGridViewCellStyle7.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight
+        Me.Quantity.DefaultCellStyle = DataGridViewCellStyle7
         Me.Quantity.FillWeight = 60.0!
         Me.Quantity.HeaderText = "Quantity"
         Me.Quantity.Name = "Quantity"
@@ -344,8 +343,8 @@ Partial Class OrderProduct
         '
         'Total
         '
-        DataGridViewCellStyle88.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight
-        Me.Total.DefaultCellStyle = DataGridViewCellStyle88
+        DataGridViewCellStyle8.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight
+        Me.Total.DefaultCellStyle = DataGridViewCellStyle8
         Me.Total.FillWeight = 80.0!
         Me.Total.HeaderText = "Total Price"
         Me.Total.Name = "Total"
@@ -354,7 +353,6 @@ Partial Class OrderProduct
         'TabPage2
         '
         Me.TabPage2.BackColor = System.Drawing.SystemColors.Control
-        Me.TabPage2.Controls.Add(Me.btnClose)
         Me.TabPage2.Controls.Add(Me.btnCancelOrder)
         Me.TabPage2.Controls.Add(Me.btnReceived)
         Me.TabPage2.Controls.Add(Me.dgvOrders)
@@ -365,21 +363,6 @@ Partial Class OrderProduct
         Me.TabPage2.TabIndex = 1
         Me.TabPage2.Text = "Order History"
         '
-        'btnClose
-        '
-        Me.btnClose.BackColor = System.Drawing.SystemColors.ControlLight
-        Me.btnClose.FlatStyle = System.Windows.Forms.FlatStyle.System
-        Me.btnClose.Font = New System.Drawing.Font("Segoe UI", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.btnClose.ForeColor = System.Drawing.Color.Black
-        Me.btnClose.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft
-        Me.btnClose.Location = New System.Drawing.Point(786, 547)
-        Me.btnClose.Margin = New System.Windows.Forms.Padding(3, 2, 3, 2)
-        Me.btnClose.Name = "btnClose"
-        Me.btnClose.Size = New System.Drawing.Size(100, 27)
-        Me.btnClose.TabIndex = 236
-        Me.btnClose.Text = "Close"
-        Me.btnClose.UseVisualStyleBackColor = False
-        '
         'btnCancelOrder
         '
         Me.btnCancelOrder.BackColor = System.Drawing.SystemColors.ControlLight
@@ -387,7 +370,7 @@ Partial Class OrderProduct
         Me.btnCancelOrder.Font = New System.Drawing.Font("Segoe UI", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.btnCancelOrder.ForeColor = System.Drawing.Color.Black
         Me.btnCancelOrder.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft
-        Me.btnCancelOrder.Location = New System.Drawing.Point(191, 547)
+        Me.btnCancelOrder.Location = New System.Drawing.Point(587, 547)
         Me.btnCancelOrder.Margin = New System.Windows.Forms.Padding(3, 2, 3, 2)
         Me.btnCancelOrder.Name = "btnCancelOrder"
         Me.btnCancelOrder.Size = New System.Drawing.Size(150, 27)
@@ -402,7 +385,7 @@ Partial Class OrderProduct
         Me.btnReceived.Font = New System.Drawing.Font("Segoe UI", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.btnReceived.ForeColor = System.Drawing.Color.Black
         Me.btnReceived.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft
-        Me.btnReceived.Location = New System.Drawing.Point(35, 547)
+        Me.btnReceived.Location = New System.Drawing.Point(743, 547)
         Me.btnReceived.Margin = New System.Windows.Forms.Padding(3, 2, 3, 2)
         Me.btnReceived.Name = "btnReceived"
         Me.btnReceived.Size = New System.Drawing.Size(150, 27)
@@ -414,43 +397,43 @@ Partial Class OrderProduct
         '
         Me.dgvOrders.AllowUserToAddRows = False
         Me.dgvOrders.AllowUserToDeleteRows = False
-        DataGridViewCellStyle92.BackColor = System.Drawing.Color.Gainsboro
-        Me.dgvOrders.AlternatingRowsDefaultCellStyle = DataGridViewCellStyle92
+        DataGridViewCellStyle12.BackColor = System.Drawing.Color.Gainsboro
+        Me.dgvOrders.AlternatingRowsDefaultCellStyle = DataGridViewCellStyle12
         Me.dgvOrders.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill
         Me.dgvOrders.BackgroundColor = System.Drawing.Color.White
         Me.dgvOrders.CellBorderStyle = System.Windows.Forms.DataGridViewCellBorderStyle.Raised
-        DataGridViewCellStyle93.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter
-        DataGridViewCellStyle93.BackColor = System.Drawing.SystemColors.Control
-        DataGridViewCellStyle93.Font = New System.Drawing.Font("Segoe UI", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        DataGridViewCellStyle93.ForeColor = System.Drawing.SystemColors.WindowText
-        DataGridViewCellStyle93.SelectionBackColor = System.Drawing.Color.SkyBlue
-        DataGridViewCellStyle93.SelectionForeColor = System.Drawing.SystemColors.HighlightText
-        Me.dgvOrders.ColumnHeadersDefaultCellStyle = DataGridViewCellStyle93
+        DataGridViewCellStyle13.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter
+        DataGridViewCellStyle13.BackColor = System.Drawing.SystemColors.Control
+        DataGridViewCellStyle13.Font = New System.Drawing.Font("Segoe UI", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        DataGridViewCellStyle13.ForeColor = System.Drawing.SystemColors.WindowText
+        DataGridViewCellStyle13.SelectionBackColor = System.Drawing.Color.SkyBlue
+        DataGridViewCellStyle13.SelectionForeColor = System.Drawing.SystemColors.HighlightText
+        Me.dgvOrders.ColumnHeadersDefaultCellStyle = DataGridViewCellStyle13
         Me.dgvOrders.ColumnHeadersHeight = 50
         Me.dgvOrders.Columns.AddRange(New System.Windows.Forms.DataGridViewColumn() {Me.orderID, Me.supplierName, Me.orderDate, Me.totalAmount, Me.Column1, Me.Status})
-        DataGridViewCellStyle98.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft
-        DataGridViewCellStyle98.BackColor = System.Drawing.SystemColors.Window
-        DataGridViewCellStyle98.Font = New System.Drawing.Font("Segoe UI", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        DataGridViewCellStyle98.ForeColor = System.Drawing.SystemColors.ControlText
-        DataGridViewCellStyle98.SelectionBackColor = System.Drawing.SystemColors.ActiveCaption
-        DataGridViewCellStyle98.SelectionForeColor = System.Drawing.Color.Black
-        DataGridViewCellStyle98.WrapMode = System.Windows.Forms.DataGridViewTriState.[False]
-        Me.dgvOrders.DefaultCellStyle = DataGridViewCellStyle98
+        DataGridViewCellStyle18.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft
+        DataGridViewCellStyle18.BackColor = System.Drawing.SystemColors.Window
+        DataGridViewCellStyle18.Font = New System.Drawing.Font("Segoe UI", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        DataGridViewCellStyle18.ForeColor = System.Drawing.SystemColors.ControlText
+        DataGridViewCellStyle18.SelectionBackColor = System.Drawing.SystemColors.ActiveCaption
+        DataGridViewCellStyle18.SelectionForeColor = System.Drawing.Color.Black
+        DataGridViewCellStyle18.WrapMode = System.Windows.Forms.DataGridViewTriState.[False]
+        Me.dgvOrders.DefaultCellStyle = DataGridViewCellStyle18
         Me.dgvOrders.GridColor = System.Drawing.Color.Black
         Me.dgvOrders.Location = New System.Drawing.Point(-4, 0)
         Me.dgvOrders.MultiSelect = False
         Me.dgvOrders.Name = "dgvOrders"
         Me.dgvOrders.ReadOnly = True
-        DataGridViewCellStyle99.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft
-        DataGridViewCellStyle99.BackColor = System.Drawing.SystemColors.Control
-        DataGridViewCellStyle99.Font = New System.Drawing.Font("Segoe UI", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        DataGridViewCellStyle99.ForeColor = System.Drawing.SystemColors.WindowText
-        DataGridViewCellStyle99.SelectionBackColor = System.Drawing.Color.SkyBlue
-        DataGridViewCellStyle99.SelectionForeColor = System.Drawing.SystemColors.HighlightText
-        Me.dgvOrders.RowHeadersDefaultCellStyle = DataGridViewCellStyle99
+        DataGridViewCellStyle19.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft
+        DataGridViewCellStyle19.BackColor = System.Drawing.SystemColors.Control
+        DataGridViewCellStyle19.Font = New System.Drawing.Font("Segoe UI", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        DataGridViewCellStyle19.ForeColor = System.Drawing.SystemColors.WindowText
+        DataGridViewCellStyle19.SelectionBackColor = System.Drawing.Color.SkyBlue
+        DataGridViewCellStyle19.SelectionForeColor = System.Drawing.SystemColors.HighlightText
+        Me.dgvOrders.RowHeadersDefaultCellStyle = DataGridViewCellStyle19
         Me.dgvOrders.RowHeadersVisible = False
-        DataGridViewCellStyle100.Font = New System.Drawing.Font("Segoe UI", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.dgvOrders.RowsDefaultCellStyle = DataGridViewCellStyle100
+        DataGridViewCellStyle20.Font = New System.Drawing.Font("Segoe UI", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.dgvOrders.RowsDefaultCellStyle = DataGridViewCellStyle20
         Me.dgvOrders.RowTemplate.Height = 40
         Me.dgvOrders.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect
         Me.dgvOrders.Size = New System.Drawing.Size(930, 525)
@@ -459,8 +442,8 @@ Partial Class OrderProduct
         'orderID
         '
         Me.orderID.DataPropertyName = "orderID"
-        DataGridViewCellStyle94.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight
-        Me.orderID.DefaultCellStyle = DataGridViewCellStyle94
+        DataGridViewCellStyle14.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight
+        Me.orderID.DefaultCellStyle = DataGridViewCellStyle14
         Me.orderID.FillWeight = 60.0!
         Me.orderID.HeaderText = "Order ID"
         Me.orderID.Name = "orderID"
@@ -484,8 +467,8 @@ Partial Class OrderProduct
         'totalAmount
         '
         Me.totalAmount.DataPropertyName = "totalAmount"
-        DataGridViewCellStyle95.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight
-        Me.totalAmount.DefaultCellStyle = DataGridViewCellStyle95
+        DataGridViewCellStyle15.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight
+        Me.totalAmount.DefaultCellStyle = DataGridViewCellStyle15
         Me.totalAmount.FillWeight = 70.0!
         Me.totalAmount.HeaderText = "Total Amount"
         Me.totalAmount.Name = "totalAmount"
@@ -494,8 +477,8 @@ Partial Class OrderProduct
         'Column1
         '
         Me.Column1.DataPropertyName = "orderedBy"
-        DataGridViewCellStyle96.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter
-        Me.Column1.DefaultCellStyle = DataGridViewCellStyle96
+        DataGridViewCellStyle16.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter
+        Me.Column1.DefaultCellStyle = DataGridViewCellStyle16
         Me.Column1.FillWeight = 80.0!
         Me.Column1.HeaderText = "Ordered By"
         Me.Column1.Name = "Column1"
@@ -504,8 +487,8 @@ Partial Class OrderProduct
         'Status
         '
         Me.Status.DataPropertyName = "status"
-        DataGridViewCellStyle97.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter
-        Me.Status.DefaultCellStyle = DataGridViewCellStyle97
+        DataGridViewCellStyle17.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter
+        Me.Status.DefaultCellStyle = DataGridViewCellStyle17
         Me.Status.FillWeight = 70.0!
         Me.Status.HeaderText = "Status"
         Me.Status.Name = "Status"
@@ -522,6 +505,15 @@ Partial Class OrderProduct
         Me.pnlBar.Size = New System.Drawing.Size(930, 49)
         Me.pnlBar.TabIndex = 121
         '
+        'PictureBox1
+        '
+        Me.PictureBox1.Image = CType(resources.GetObject("PictureBox1.Image"), System.Drawing.Image)
+        Me.PictureBox1.Location = New System.Drawing.Point(12, 11)
+        Me.PictureBox1.Name = "PictureBox1"
+        Me.PictureBox1.Size = New System.Drawing.Size(35, 41)
+        Me.PictureBox1.TabIndex = 114
+        Me.PictureBox1.TabStop = False
+        '
         'Label6
         '
         Me.Label6.AutoSize = True
@@ -531,15 +523,6 @@ Partial Class OrderProduct
         Me.Label6.Size = New System.Drawing.Size(73, 28)
         Me.Label6.TabIndex = 113
         Me.Label6.Text = "Orders"
-        '
-        'PictureBox1
-        '
-        Me.PictureBox1.Image = CType(resources.GetObject("PictureBox1.Image"), System.Drawing.Image)
-        Me.PictureBox1.Location = New System.Drawing.Point(12, 11)
-        Me.PictureBox1.Name = "PictureBox1"
-        Me.PictureBox1.Size = New System.Drawing.Size(35, 41)
-        Me.PictureBox1.TabIndex = 114
-        Me.PictureBox1.TabStop = False
         '
         'OrderProduct
         '
@@ -582,7 +565,6 @@ Partial Class OrderProduct
     Friend WithEvents btnCancelOrder As System.Windows.Forms.Button
     Friend WithEvents btnReceived As System.Windows.Forms.Button
     Friend WithEvents dgvOrders As System.Windows.Forms.DataGridView
-    Friend WithEvents btnClose As System.Windows.Forms.Button
     Friend WithEvents txtTotal As System.Windows.Forms.TextBox
     Friend WithEvents Label2 As System.Windows.Forms.Label
     Friend WithEvents Label3 As System.Windows.Forms.Label

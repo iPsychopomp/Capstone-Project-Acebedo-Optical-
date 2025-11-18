@@ -34,7 +34,7 @@ Public Class OrderProduct
     Private Sub HideProductIDColumn()
         Try
             If dgvSelectedProducts IsNot Nothing AndAlso dgvSelectedProducts.Columns.Contains("productID") Then
-                dgvSelectedProducts.Columns("productID").Visible = True
+                dgvSelectedProducts.Columns("productID").Visible = False
             End If
         Catch
         End Try
@@ -717,9 +717,7 @@ Public Class OrderProduct
         Me.Close()
     End Sub
 
-    Private Sub btnClose_Click(sender As Object, e As EventArgs) Handles btnClose.Click
-        Me.Close()
-    End Sub
+   
 
     Private Sub btnReceived_Click(sender As Object, e As EventArgs) Handles btnReceived.Click
         If dgvOrders.SelectedRows.Count > 0 Then

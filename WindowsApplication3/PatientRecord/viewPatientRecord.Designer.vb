@@ -27,15 +27,6 @@ Partial Class viewPatientRecord
         Me.pbEdit = New System.Windows.Forms.PictureBox()
         Me.lblHead = New System.Windows.Forms.Label()
         Me.pnlPI = New System.Windows.Forms.Panel()
-        Me.lblGender = New System.Windows.Forms.Label()
-        Me.lblAge = New System.Windows.Forms.Label()
-        Me.lblBday = New System.Windows.Forms.Label()
-        Me.lblFN = New System.Windows.Forms.Label()
-        Me.Label29 = New System.Windows.Forms.Label()
-        Me.Label2 = New System.Windows.Forms.Label()
-        Me.Label19 = New System.Windows.Forms.Label()
-        Me.Label6 = New System.Windows.Forms.Label()
-        Me.Label7 = New System.Windows.Forms.Label()
         Me.pnlAI = New System.Windows.Forms.Panel()
         Me.lblMN = New System.Windows.Forms.Label()
         Me.lblCA = New System.Windows.Forms.Label()
@@ -58,6 +49,15 @@ Partial Class viewPatientRecord
         Me.Label34 = New System.Windows.Forms.Label()
         Me.Label11 = New System.Windows.Forms.Label()
         Me.Label10 = New System.Windows.Forms.Label()
+        Me.lblGender = New System.Windows.Forms.Label()
+        Me.lblAge = New System.Windows.Forms.Label()
+        Me.lblBday = New System.Windows.Forms.Label()
+        Me.lblFN = New System.Windows.Forms.Label()
+        Me.Label2 = New System.Windows.Forms.Label()
+        Me.Label19 = New System.Windows.Forms.Label()
+        Me.Label6 = New System.Windows.Forms.Label()
+        Me.Label7 = New System.Windows.Forms.Label()
+        Me.Label29 = New System.Windows.Forms.Label()
         Me.Panel1.SuspendLayout()
         CType(Me.pbEdit, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.pnlPI.SuspendLayout()
@@ -117,97 +117,6 @@ Partial Class viewPatientRecord
         Me.pnlPI.Name = "pnlPI"
         Me.pnlPI.Size = New System.Drawing.Size(889, 169)
         Me.pnlPI.TabIndex = 205
-        '
-        'lblGender
-        '
-        Me.lblGender.AutoSize = True
-        Me.lblGender.Font = New System.Drawing.Font("Segoe UI Semibold", 12.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.lblGender.Location = New System.Drawing.Point(348, 139)
-        Me.lblGender.Name = "lblGender"
-        Me.lblGender.Size = New System.Drawing.Size(28, 28)
-        Me.lblGender.TabIndex = 114
-        Me.lblGender.Text = "--"
-        '
-        'lblAge
-        '
-        Me.lblAge.AutoSize = True
-        Me.lblAge.Font = New System.Drawing.Font("Segoe UI Semibold", 12.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.lblAge.Location = New System.Drawing.Point(348, 106)
-        Me.lblAge.Name = "lblAge"
-        Me.lblAge.Size = New System.Drawing.Size(28, 28)
-        Me.lblAge.TabIndex = 113
-        Me.lblAge.Text = "--"
-        '
-        'lblBday
-        '
-        Me.lblBday.AutoSize = True
-        Me.lblBday.Font = New System.Drawing.Font("Segoe UI Semibold", 12.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.lblBday.Location = New System.Drawing.Point(348, 73)
-        Me.lblBday.Name = "lblBday"
-        Me.lblBday.Size = New System.Drawing.Size(28, 28)
-        Me.lblBday.TabIndex = 112
-        Me.lblBday.Text = "--"
-        '
-        'lblFN
-        '
-        Me.lblFN.AutoSize = True
-        Me.lblFN.Font = New System.Drawing.Font("Segoe UI Semibold", 12.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.lblFN.Location = New System.Drawing.Point(348, 40)
-        Me.lblFN.Name = "lblFN"
-        Me.lblFN.Size = New System.Drawing.Size(28, 28)
-        Me.lblFN.TabIndex = 109
-        Me.lblFN.Text = "--"
-        '
-        'Label29
-        '
-        Me.Label29.AutoSize = True
-        Me.Label29.Font = New System.Drawing.Font("Segoe UI Semibold", 12.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Label29.ForeColor = System.Drawing.SystemColors.Highlight
-        Me.Label29.Location = New System.Drawing.Point(22, 3)
-        Me.Label29.Name = "Label29"
-        Me.Label29.Size = New System.Drawing.Size(203, 28)
-        Me.Label29.TabIndex = 108
-        Me.Label29.Text = "Personal Information"
-        '
-        'Label2
-        '
-        Me.Label2.AutoSize = True
-        Me.Label2.Font = New System.Drawing.Font("Segoe UI", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Label2.Location = New System.Drawing.Point(24, 40)
-        Me.Label2.Name = "Label2"
-        Me.Label2.Size = New System.Drawing.Size(104, 28)
-        Me.Label2.TabIndex = 79
-        Me.Label2.Text = "Full Name:"
-        '
-        'Label19
-        '
-        Me.Label19.AutoSize = True
-        Me.Label19.Font = New System.Drawing.Font("Segoe UI", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Label19.Location = New System.Drawing.Point(24, 139)
-        Me.Label19.Name = "Label19"
-        Me.Label19.Size = New System.Drawing.Size(80, 28)
-        Me.Label19.TabIndex = 106
-        Me.Label19.Text = "Gender:"
-        '
-        'Label6
-        '
-        Me.Label6.AutoSize = True
-        Me.Label6.Font = New System.Drawing.Font("Segoe UI", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Label6.Location = New System.Drawing.Point(25, 73)
-        Me.Label6.Name = "Label6"
-        Me.Label6.Size = New System.Drawing.Size(89, 28)
-        Me.Label6.TabIndex = 83
-        Me.Label6.Text = "Birthday:"
-        '
-        'Label7
-        '
-        Me.Label7.AutoSize = True
-        Me.Label7.Font = New System.Drawing.Font("Segoe UI", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Label7.Location = New System.Drawing.Point(24, 106)
-        Me.Label7.Name = "Label7"
-        Me.Label7.Size = New System.Drawing.Size(51, 28)
-        Me.Label7.TabIndex = 82
-        Me.Label7.Text = "Age:"
         '
         'pnlAI
         '
@@ -452,6 +361,97 @@ Partial Class viewPatientRecord
         Me.Label10.TabIndex = 88
         Me.Label10.Text = "Is patient diabetic?"
         '
+        'lblGender
+        '
+        Me.lblGender.AutoSize = True
+        Me.lblGender.Font = New System.Drawing.Font("Segoe UI Semibold", 12.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.lblGender.Location = New System.Drawing.Point(348, 139)
+        Me.lblGender.Name = "lblGender"
+        Me.lblGender.Size = New System.Drawing.Size(28, 28)
+        Me.lblGender.TabIndex = 114
+        Me.lblGender.Text = "--"
+        '
+        'lblAge
+        '
+        Me.lblAge.AutoSize = True
+        Me.lblAge.Font = New System.Drawing.Font("Segoe UI Semibold", 12.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.lblAge.Location = New System.Drawing.Point(348, 106)
+        Me.lblAge.Name = "lblAge"
+        Me.lblAge.Size = New System.Drawing.Size(28, 28)
+        Me.lblAge.TabIndex = 113
+        Me.lblAge.Text = "--"
+        '
+        'lblBday
+        '
+        Me.lblBday.AutoSize = True
+        Me.lblBday.Font = New System.Drawing.Font("Segoe UI Semibold", 12.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.lblBday.Location = New System.Drawing.Point(348, 73)
+        Me.lblBday.Name = "lblBday"
+        Me.lblBday.Size = New System.Drawing.Size(28, 28)
+        Me.lblBday.TabIndex = 112
+        Me.lblBday.Text = "--"
+        '
+        'lblFN
+        '
+        Me.lblFN.AutoSize = True
+        Me.lblFN.Font = New System.Drawing.Font("Segoe UI Semibold", 12.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.lblFN.Location = New System.Drawing.Point(348, 40)
+        Me.lblFN.Name = "lblFN"
+        Me.lblFN.Size = New System.Drawing.Size(28, 28)
+        Me.lblFN.TabIndex = 109
+        Me.lblFN.Text = "--"
+        '
+        'Label2
+        '
+        Me.Label2.AutoSize = True
+        Me.Label2.Font = New System.Drawing.Font("Segoe UI", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label2.Location = New System.Drawing.Point(24, 40)
+        Me.Label2.Name = "Label2"
+        Me.Label2.Size = New System.Drawing.Size(104, 28)
+        Me.Label2.TabIndex = 79
+        Me.Label2.Text = "Full Name:"
+        '
+        'Label19
+        '
+        Me.Label19.AutoSize = True
+        Me.Label19.Font = New System.Drawing.Font("Segoe UI", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label19.Location = New System.Drawing.Point(24, 139)
+        Me.Label19.Name = "Label19"
+        Me.Label19.Size = New System.Drawing.Size(80, 28)
+        Me.Label19.TabIndex = 106
+        Me.Label19.Text = "Gender:"
+        '
+        'Label6
+        '
+        Me.Label6.AutoSize = True
+        Me.Label6.Font = New System.Drawing.Font("Segoe UI", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label6.Location = New System.Drawing.Point(25, 73)
+        Me.Label6.Name = "Label6"
+        Me.Label6.Size = New System.Drawing.Size(89, 28)
+        Me.Label6.TabIndex = 83
+        Me.Label6.Text = "Birthday:"
+        '
+        'Label7
+        '
+        Me.Label7.AutoSize = True
+        Me.Label7.Font = New System.Drawing.Font("Segoe UI", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label7.Location = New System.Drawing.Point(24, 106)
+        Me.Label7.Name = "Label7"
+        Me.Label7.Size = New System.Drawing.Size(51, 28)
+        Me.Label7.TabIndex = 82
+        Me.Label7.Text = "Age:"
+        '
+        'Label29
+        '
+        Me.Label29.AutoSize = True
+        Me.Label29.Font = New System.Drawing.Font("Segoe UI Semibold", 12.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label29.ForeColor = System.Drawing.SystemColors.Highlight
+        Me.Label29.Location = New System.Drawing.Point(22, 3)
+        Me.Label29.Name = "Label29"
+        Me.Label29.Size = New System.Drawing.Size(203, 28)
+        Me.Label29.TabIndex = 108
+        Me.Label29.Text = "Personal Information"
+        '
         'viewPatientRecord
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(11.0!, 28.0!)
@@ -488,11 +488,6 @@ Partial Class viewPatientRecord
     Friend WithEvents Panel1 As System.Windows.Forms.Panel
     Friend WithEvents lblHead As System.Windows.Forms.Label
     Friend WithEvents pnlPI As System.Windows.Forms.Panel
-    Friend WithEvents Label29 As System.Windows.Forms.Label
-    Friend WithEvents Label2 As System.Windows.Forms.Label
-    Friend WithEvents Label19 As System.Windows.Forms.Label
-    Friend WithEvents Label6 As System.Windows.Forms.Label
-    Friend WithEvents Label7 As System.Windows.Forms.Label
     Friend WithEvents pnlAI As System.Windows.Forms.Panel
     Friend WithEvents Label30 As System.Windows.Forms.Label
     Friend WithEvents Label16 As System.Windows.Forms.Label
@@ -507,10 +502,6 @@ Partial Class viewPatientRecord
     Friend WithEvents Label34 As System.Windows.Forms.Label
     Friend WithEvents Label11 As System.Windows.Forms.Label
     Friend WithEvents Label10 As System.Windows.Forms.Label
-    Friend WithEvents lblGender As System.Windows.Forms.Label
-    Friend WithEvents lblAge As System.Windows.Forms.Label
-    Friend WithEvents lblBday As System.Windows.Forms.Label
-    Friend WithEvents lblFN As System.Windows.Forms.Label
     Friend WithEvents lblMN As System.Windows.Forms.Label
     Friend WithEvents lblCA As System.Windows.Forms.Label
     Friend WithEvents lblHobb As System.Windows.Forms.Label
@@ -520,4 +511,13 @@ Partial Class viewPatientRecord
     Friend WithEvents lblHB As System.Windows.Forms.Label
     Friend WithEvents lblDB As System.Windows.Forms.Label
     Friend WithEvents pbEdit As System.Windows.Forms.PictureBox
+    Friend WithEvents lblGender As System.Windows.Forms.Label
+    Friend WithEvents lblAge As System.Windows.Forms.Label
+    Friend WithEvents lblBday As System.Windows.Forms.Label
+    Friend WithEvents lblFN As System.Windows.Forms.Label
+    Friend WithEvents Label29 As System.Windows.Forms.Label
+    Friend WithEvents Label2 As System.Windows.Forms.Label
+    Friend WithEvents Label19 As System.Windows.Forms.Label
+    Friend WithEvents Label6 As System.Windows.Forms.Label
+    Friend WithEvents Label7 As System.Windows.Forms.Label
 End Class

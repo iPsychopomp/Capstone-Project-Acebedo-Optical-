@@ -475,7 +475,6 @@ Public Class addPatient
                         MessageBox.Show("The Data is Successfully Saved", "Save", MessageBoxButtons.OK, MessageBoxIcon.Information)
 
                         cleaner()
-                        RefreshPatientDGV()
                     Else
                         ' UPDATE EXISTING PATIENT
                         Dim oldDataCmd As New Odbc.OdbcCommand("SELECT * FROM patient_data WHERE patientID = ?", conn)
@@ -538,7 +537,6 @@ Public Class addPatient
                         MessageBox.Show("The Data is Successfully Updated", "Update", MessageBoxButtons.OK, MessageBoxIcon.Information)
 
                         cleaner()
-                        RefreshPatientDGV()
                     End If
                 Catch ex As Exception
                     MsgBox(ex.Message, vbCritical, "Save Error")
@@ -1285,5 +1283,256 @@ Public Class addPatient
             txtMobile.Text = "+63"
             txtMobile.SelectionStart = txtMobile.Text.Length
         End If
+    End Sub
+
+    Private Sub btnBack_Click(sender As Object, e As EventArgs) Handles btnBack.Click
+        Try
+            ' Find the MainForm instance
+            Dim mainForm As MainForm = Nothing
+            For Each frm As Form In Application.OpenForms
+                If TypeOf frm Is MainForm Then
+                    mainForm = DirectCast(frm, MainForm)
+                    Exit For
+                End If
+            Next
+
+            If mainForm IsNot Nothing Then
+                ' Check if patientRecord form already exists in open forms
+                Dim existingPatientRecord As patientRecord = Nothing
+                For Each frm As Form In Application.OpenForms
+                    If TypeOf frm Is patientRecord Then
+                        existingPatientRecord = DirectCast(frm, patientRecord)
+                        Exit For
+                    End If
+                Next
+
+                ' If exists, show and reload it; otherwise create new
+                If existingPatientRecord IsNot Nothing Then
+                    mainForm.ShowFormControls(existingPatientRecord)
+                    existingPatientRecord.ReloadPatientData()
+                Else
+                    Dim patientRecordForm As New patientRecord()
+                    mainForm.ShowFormControls(patientRecordForm)
+                    patientRecordForm.ReloadPatientData()
+                End If
+
+                ' Refresh dashboard if it's currently loaded in the container
+                For Each ctrl As Control In mainForm.pnlContainer.Controls
+                    If TypeOf ctrl Is dashboard Then
+                        Dim dash As dashboard = DirectCast(ctrl, dashboard)
+                        dash.UpdatePatientCount()
+                        Exit For
+                    End If
+                Next
+
+                ' Close this form
+                Me.Close()
+            Else
+                ' Fallback: just close the form
+                Me.Close()
+            End If
+        Catch ex As Exception
+            MessageBox.Show("Error navigating back: " & ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error)
+        End Try
+    End Sub
+
+    ' Real-time update methods for pnlSummary
+    Private Sub UpdateSummary()
+        Try
+            ' Store original positions of labels below Complete Address (one time only)
+            Static originalPositions As New Dictionary(Of Control, Integer)
+            Static originalCABottom As Integer = 0
+
+            If originalPositions.Count = 0 AndAlso pnlSummary IsNot Nothing Then
+                ' Store original bottom position of lblCA
+                originalCABottom = lblCA.Bottom
+
+                ' Find and store all labels that are below Complete Address
+                For Each ctrl As Control In pnlSummary.Controls
+                    If ctrl.Top > lblCA.Bottom Then
+                        originalPositions(ctrl) = ctrl.Top
+                    End If
+                Next
+            End If
+
+            ' Update Full Name (First + Middle + Last)
+            Dim fullName As String = ""
+            If Not String.IsNullOrWhiteSpace(txtFirst.Text) Then fullName = txtFirst.Text.Trim()
+            If Not String.IsNullOrWhiteSpace(txtMname.Text) AndAlso txtMname.Text <> "N/A" Then
+                fullName &= " " & txtMname.Text.Trim()
+            End If
+            If Not String.IsNullOrWhiteSpace(txtLname.Text) Then fullName &= " " & txtLname.Text.Trim()
+            lblFN.Text = If(String.IsNullOrWhiteSpace(fullName), "---", fullName)
+
+            ' Update Birthday
+            lblBday.Text = If(dtpBday.Value = Date.Today, "---", dtpBday.Value.ToString("yyyy-MM-dd"))
+
+            ' Update Age
+            lblAge.Text = If(String.IsNullOrWhiteSpace(txtAge.Text) OrElse txtAge.Text = "0", "---", txtAge.Text)
+
+            ' Update Gender
+            lblGender.Text = If(String.IsNullOrWhiteSpace(cmbGender.Text), "---", cmbGender.Text)
+
+            ' Update Complete Address
+            Dim address As String = ""
+            If Not String.IsNullOrWhiteSpace(txtStreet.Text) Then address = txtStreet.Text.Trim()
+            If Not String.IsNullOrWhiteSpace(cmbBgy.Text) AndAlso Not cmbBgy.Text.StartsWith("--") Then
+                address &= If(address.Length > 0, ", ", "") & cmbBgy.Text
+            End If
+            If Not String.IsNullOrWhiteSpace(cmbCity.Text) AndAlso Not cmbCity.Text.StartsWith("--") Then
+                address &= If(address.Length > 0, ", ", "") & cmbCity.Text
+            End If
+            If Not String.IsNullOrWhiteSpace(cmbProvince.Text) AndAlso Not cmbProvince.Text.StartsWith("--") Then
+                address &= If(address.Length > 0, ", ", "") & cmbProvince.Text
+            End If
+            If Not String.IsNullOrWhiteSpace(cmbRegion.Text) AndAlso Not cmbRegion.Text.StartsWith("--") Then
+                address &= If(address.Length > 0, ", ", "") & cmbRegion.Text
+            End If
+            lblCA.Text = If(String.IsNullOrWhiteSpace(address), "---", address)
+
+            ' Calculate how much lblCA has expanded
+            Dim heightDiff As Integer = lblCA.Bottom - originalCABottom
+
+            ' Adjust positions of all labels below Complete Address
+            If originalPositions.Count > 0 Then
+                For Each kvp In originalPositions
+                    kvp.Key.Top = kvp.Value + heightDiff
+                Next
+            End If
+
+            ' Update Mobile Number
+            lblMN.Text = If(String.IsNullOrWhiteSpace(txtMobile.Text) OrElse txtMobile.Text = "+63", "---", txtMobile.Text)
+
+            ' Update Occupation - show actual value including "N/A"
+            If String.IsNullOrWhiteSpace(txtOccu.Text) Then
+                lblOccu.Text = "---"
+            Else
+                lblOccu.Text = txtOccu.Text
+            End If
+
+            ' Update Sports - show actual value including "N/A"
+            If String.IsNullOrWhiteSpace(txtSports.Text) Then
+                lblSports.Text = "---"
+            Else
+                lblSports.Text = txtSports.Text
+            End If
+
+            ' Update Hobbies - show actual value including "N/A"
+            If String.IsNullOrWhiteSpace(txtHobbies.Text) Then
+                lblHobb.Text = "---"
+            Else
+                lblHobb.Text = txtHobbies.Text
+            End If
+
+            ' Update Diabetic status
+            If dbYes.Checked Then
+                lblDB.Text = "Yes"
+            ElseIf dbNo.Checked Then
+                lblDB.Text = "No"
+            Else
+                lblDB.Text = "---"
+            End If
+
+            ' Update Highblood status
+            If hbYes.Checked Then
+                lblHB.Text = "Yes"
+            ElseIf hbNo.Checked Then
+                lblHB.Text = "No"
+            Else
+                lblHB.Text = "---"
+            End If
+
+            ' Update Others - show actual value including "N/A"
+            If String.IsNullOrWhiteSpace(txtOther.Text) Then
+                lblOthers.Text = "---"
+            Else
+                lblOthers.Text = txtOther.Text
+            End If
+
+        Catch ex As Exception
+            ' Silent fail to avoid interrupting user input
+            Debug.WriteLine("Error updating summary: " & ex.Message)
+        End Try
+    End Sub
+
+    ' TextChanged event handlers for real-time updates
+    Private Sub txtFirst_TextChanged(sender As Object, e As EventArgs) Handles txtFirst.TextChanged
+        UpdateSummary()
+    End Sub
+
+    Private Sub txtMname_TextChanged(sender As Object, e As EventArgs) Handles txtMname.TextChanged
+        UpdateSummary()
+    End Sub
+
+    Private Sub txtLname_TextChanged(sender As Object, e As EventArgs) Handles txtLname.TextChanged
+        UpdateSummary()
+    End Sub
+
+    Private Sub dtpBday_ValueChanged_Summary(sender As Object, e As EventArgs) Handles dtpBday.ValueChanged
+        UpdateSummary()
+    End Sub
+
+    Private Sub txtAge_TextChanged(sender As Object, e As EventArgs) Handles txtAge.TextChanged
+        UpdateSummary()
+    End Sub
+
+    Private Sub cmbGender_SelectedIndexChanged(sender As Object, e As EventArgs) Handles cmbGender.SelectedIndexChanged
+        UpdateSummary()
+    End Sub
+
+    Private Sub cmbRegion_SelectedIndexChanged_Summary(sender As Object, e As EventArgs) Handles cmbRegion.SelectedIndexChanged
+        UpdateSummary()
+    End Sub
+
+    Private Sub cmbProvince_SelectedIndexChanged_Summary(sender As Object, e As EventArgs) Handles cmbProvince.SelectedIndexChanged
+        UpdateSummary()
+    End Sub
+
+    Private Sub cmbCity_SelectedIndexChanged_Summary(sender As Object, e As EventArgs) Handles cmbCity.SelectedIndexChanged
+        UpdateSummary()
+    End Sub
+
+    Private Sub cmbBgy_SelectedIndexChanged(sender As Object, e As EventArgs) Handles cmbBgy.SelectedIndexChanged
+        UpdateSummary()
+    End Sub
+
+    Private Sub txtStreet_TextChanged(sender As Object, e As EventArgs) Handles txtStreet.TextChanged
+        UpdateSummary()
+    End Sub
+
+    Private Sub txtMobile_TextChanged_Summary(sender As Object, e As EventArgs) Handles txtMobile.TextChanged
+        UpdateSummary()
+    End Sub
+
+    Private Sub txtOccu_TextChanged(sender As Object, e As EventArgs) Handles txtOccu.TextChanged
+        UpdateSummary()
+    End Sub
+
+    Private Sub txtSports_TextChanged(sender As Object, e As EventArgs) Handles txtSports.TextChanged
+        UpdateSummary()
+    End Sub
+
+    Private Sub txtHobbies_TextChanged(sender As Object, e As EventArgs) Handles txtHobbies.TextChanged
+        UpdateSummary()
+    End Sub
+
+    Private Sub dbYes_CheckedChanged(sender As Object, e As EventArgs) Handles dbYes.CheckedChanged
+        UpdateSummary()
+    End Sub
+
+    Private Sub dbNo_CheckedChanged(sender As Object, e As EventArgs) Handles dbNo.CheckedChanged
+        UpdateSummary()
+    End Sub
+
+    Private Sub hbYes_CheckedChanged(sender As Object, e As EventArgs) Handles hbYes.CheckedChanged
+        UpdateSummary()
+    End Sub
+
+    Private Sub hbNo_CheckedChanged(sender As Object, e As EventArgs) Handles hbNo.CheckedChanged
+        UpdateSummary()
+    End Sub
+
+    Private Sub txtOther_TextChanged(sender As Object, e As EventArgs) Handles txtOther.TextChanged
+        UpdateSummary()
     End Sub
 End Class

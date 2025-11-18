@@ -60,20 +60,53 @@ Public Class patientRecord
     End Sub
 
     Private Sub btnNew_Click(sender As Object, e As EventArgs) Handles btnNew.Click
-        Using NewPatient As New addPatient()
-            If NewPatient.ShowDialog() = DialogResult.OK Then
-                ' Refresh the grid after adding new patient
-                ReloadPatientData()
-
-                ' Select the newly added patient if Tag contains the ID
-                If NewPatient.Tag IsNot Nothing Then
-                    Dim newPatientID As Integer
-                    If Integer.TryParse(NewPatient.Tag.ToString(), newPatientID) Then
-                        SelectPatientInGrid(newPatientID)
-                    End If
+        Try
+            ' Find the MainForm instance
+            Dim mainForm As MainForm = Nothing
+            For Each frm As Form In Application.OpenForms
+                If TypeOf frm Is MainForm Then
+                    mainForm = DirectCast(frm, MainForm)
+                    Exit For
                 End If
+            Next
+
+            If mainForm IsNot Nothing Then
+                ' Create and show the addPatient form in the container
+                Dim NewPatient As New addPatient()
+
+                ' Handle form closing to refresh data
+                AddHandler NewPatient.FormClosed, Sub(s, ev)
+                                                      ' Show this patientRecord form back in the container
+                                                      mainForm.ShowFormControls(Me)
+                                                      ReloadPatientData()
+
+                                                      ' Select the newly added patient if Tag contains the ID
+                                                      If NewPatient.Tag IsNot Nothing Then
+                                                          Dim newPatientID As Integer
+                                                          If Integer.TryParse(NewPatient.Tag.ToString(), newPatientID) Then
+                                                              SelectPatientInGrid(newPatientID)
+                                                          End If
+                                                      End If
+                                                  End Sub
+
+                mainForm.ShowFormControls(NewPatient)
+            Else
+                ' Fallback to dialog if MainForm not found
+                Using NewPatient As New addPatient()
+                    If NewPatient.ShowDialog() = DialogResult.OK Then
+                        ReloadPatientData()
+                        If NewPatient.Tag IsNot Nothing Then
+                            Dim newPatientID As Integer
+                            If Integer.TryParse(NewPatient.Tag.ToString(), newPatientID) Then
+                                SelectPatientInGrid(newPatientID)
+                            End If
+                        End If
+                    End If
+                End Using
             End If
-        End Using
+        Catch ex As Exception
+            MessageBox.Show("Error opening add patient form: " & ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error)
+        End Try
         DgvStyle(patientDGV)
     End Sub
 
@@ -359,85 +392,76 @@ Public Class patientRecord
 
             ' Confirm edit action
             If MessageBox.Show("Are you sure you want to edit this patient?", "Confirm", MessageBoxButtons.YesNo, MessageBoxIcon.Question) = DialogResult.Yes Then
-                ' Create the edit form
-                Dim editForm As New addPatient()
-
-                ' Get address from selected row for pre-binding
-                Dim province As String = ""
-                Dim city As String = ""
-                Dim brgy As String = ""
-
-                ' Try to get province
-                Try
-                    If patientDGV.Columns.Contains("province") AndAlso selectedRow.Cells("province").Value IsNot Nothing Then
-                        province = selectedRow.Cells("province").Value.ToString()
+                ' Find the MainForm instance
+                Dim mainForm As MainForm = Nothing
+                For Each frm As Form In Application.OpenForms
+                    If TypeOf frm Is MainForm Then
+                        mainForm = DirectCast(frm, MainForm)
+                        Exit For
                     End If
-                Catch
-                    ' Column doesn't exist, leave empty
-                End Try
+                Next
 
-                ' Try to get city
-                Try
-                    If patientDGV.Columns.Contains("city") AndAlso selectedRow.Cells("city").Value IsNot Nothing Then
-                        city = selectedRow.Cells("city").Value.ToString()
-                    End If
-                Catch
-                    ' Column doesn't exist, leave empty
-                End Try
+                If mainForm IsNot Nothing Then
+                    ' Create the edit form
+                    Dim editForm As New addPatient()
 
-                ' Try to get brgy
-                Try
-                    If patientDGV.Columns.Contains("brgy") AndAlso selectedRow.Cells("brgy").Value IsNot Nothing Then
-                        brgy = selectedRow.Cells("brgy").Value.ToString()
-                    End If
-                Catch
-                    ' Column doesn't exist, leave empty
-                End Try
+                    ' Get address from selected row for pre-binding
+                    Dim province As String = ""
+                    Dim city As String = ""
+                    Dim brgy As String = ""
 
-                ' Pre-bind address
-                editForm.SelectedAddress = String.Format("{0}, {1}, {2}", province, city, brgy)
-
-                ' Store the original title
-                Dim originalTitle As String = editForm.Text
-
-                ' Show the form
-                editForm.Show()
-
-                ' Change the label text
-                editForm.lblHead.Text = "Edit Patient Information"
-                editForm.pbAdd.Visible = False
-                editForm.pbEdit.Visible = True
-
-                ' Keep overriding the form's title until it's closed
-                Dim titleFixer As New Timer() With {.Interval = 100}
-                AddHandler titleFixer.Tick,
-                    Sub()
-                        If editForm.IsDisposed OrElse Not editForm.Visible Then
-                            titleFixer.Stop()
-                            titleFixer.Dispose()
-                        ElseIf editForm.Text <> originalTitle Then
-                            editForm.Text = originalTitle
+                    ' Try to get province
+                    Try
+                        If patientDGV.Columns.Contains("province") AndAlso selectedRow.Cells("province").Value IsNot Nothing Then
+                            province = selectedRow.Cells("province").Value.ToString()
                         End If
-                    End Sub
-                titleFixer.Start()
+                    Catch
+                        ' Column doesn't exist, leave empty
+                    End Try
 
-                ' Load the record asynchronously
-                editForm.pnlDataEntry.Tag = patientID
-                editForm.BeginInvoke(CType(Sub()
-                                               editForm.loadRecord(patientID)
-                                           End Sub, Action))
+                    ' Try to get city
+                    Try
+                        If patientDGV.Columns.Contains("city") AndAlso selectedRow.Cells("city").Value IsNot Nothing Then
+                            city = selectedRow.Cells("city").Value.ToString()
+                        End If
+                    Catch
+                        ' Column doesn't exist, leave empty
+                    End Try
 
-                editForm.Activate()
-                editForm.TopMost = True
-                editForm.TopMost = False
+                    ' Try to get brgy
+                    Try
+                        If patientDGV.Columns.Contains("brgy") AndAlso selectedRow.Cells("brgy").Value IsNot Nothing Then
+                            brgy = selectedRow.Cells("brgy").Value.ToString()
+                        End If
+                    Catch
+                        ' Column doesn't exist, leave empty
+                    End Try
 
-                ' After closing, refresh the grid
-                AddHandler editForm.FormClosed,
-                    Sub(sender2, e2)
-                        titleFixer.Stop()
-                        titleFixer.Dispose()
-                        ReloadPatientData()
-                    End Sub
+                    ' Pre-bind address
+                    editForm.SelectedAddress = String.Format("{0}, {1}, {2}", province, city, brgy)
+
+                    ' Change the label text
+                    editForm.lblHead.Text = "Edit Patient Information"
+                    editForm.pbAdd.Visible = False
+                    editForm.pbEdit.Visible = True
+
+                    ' Load the record
+                    editForm.pnlDataEntry.Tag = patientID
+                    editForm.loadRecord(patientID)
+
+                    ' After closing, refresh the grid
+                    AddHandler editForm.FormClosed,
+                        Sub(sender2, e2)
+                            ' Show this patientRecord form back in the container
+                            mainForm.ShowFormControls(Me)
+                            ReloadPatientData()
+                        End Sub
+
+                    ' Show in container
+                    mainForm.ShowFormControls(editForm)
+                Else
+                    MessageBox.Show("Main form not found.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error)
+                End If
             End If
 
         Catch ex As Exception

@@ -22,21 +22,28 @@ Partial Class DeliverHistory
     'Do not modify it using the code editor.
     <System.Diagnostics.DebuggerStepThrough()> _
     Private Sub InitializeComponent()
-        Dim DataGridViewCellStyle27 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
-        Dim DataGridViewCellStyle28 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
-        Dim DataGridViewCellStyle37 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
-        Dim DataGridViewCellStyle38 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
-        Dim DataGridViewCellStyle39 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
-        Dim DataGridViewCellStyle29 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
-        Dim DataGridViewCellStyle30 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
-        Dim DataGridViewCellStyle31 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
-        Dim DataGridViewCellStyle32 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
-        Dim DataGridViewCellStyle33 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
-        Dim DataGridViewCellStyle34 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
-        Dim DataGridViewCellStyle35 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
-        Dim DataGridViewCellStyle36 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
+        Dim DataGridViewCellStyle1 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
+        Dim DataGridViewCellStyle2 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
+        Dim DataGridViewCellStyle11 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
+        Dim DataGridViewCellStyle12 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
+        Dim DataGridViewCellStyle13 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(DeliverHistory))
+        Dim DataGridViewCellStyle3 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
+        Dim DataGridViewCellStyle4 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
+        Dim DataGridViewCellStyle5 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
+        Dim DataGridViewCellStyle6 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
+        Dim DataGridViewCellStyle7 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
+        Dim DataGridViewCellStyle8 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
+        Dim DataGridViewCellStyle9 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
+        Dim DataGridViewCellStyle10 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
         Me.dgvDeliveryHistory = New System.Windows.Forms.DataGridView()
+        Me.btnClose = New System.Windows.Forms.Button()
+        Me.pnlBar = New System.Windows.Forms.Panel()
+        Me.PictureBox1 = New System.Windows.Forms.PictureBox()
+        Me.Label1 = New System.Windows.Forms.Label()
+        Me.txtPage = New System.Windows.Forms.Label()
+        Me.btnNext = New System.Windows.Forms.Button()
+        Me.btnBack = New System.Windows.Forms.Button()
         Me.deliveryID = New System.Windows.Forms.DataGridViewTextBoxColumn()
         Me.orderID = New System.Windows.Forms.DataGridViewTextBoxColumn()
         Me.itemID = New System.Windows.Forms.DataGridViewTextBoxColumn()
@@ -47,13 +54,6 @@ Partial Class DeliverHistory
         Me.remarks = New System.Windows.Forms.DataGridViewTextBoxColumn()
         Me.deliveryDate = New System.Windows.Forms.DataGridViewTextBoxColumn()
         Me.receivedBy = New System.Windows.Forms.DataGridViewTextBoxColumn()
-        Me.btnClose = New System.Windows.Forms.Button()
-        Me.pnlBar = New System.Windows.Forms.Panel()
-        Me.PictureBox1 = New System.Windows.Forms.PictureBox()
-        Me.Label1 = New System.Windows.Forms.Label()
-        Me.txtPage = New System.Windows.Forms.Label()
-        Me.btnNext = New System.Windows.Forms.Button()
-        Me.btnBack = New System.Windows.Forms.Button()
         CType(Me.dgvDeliveryHistory, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.pnlBar.SuspendLayout()
         CType(Me.PictureBox1, System.ComponentModel.ISupportInitialize).BeginInit()
@@ -63,143 +63,50 @@ Partial Class DeliverHistory
         '
         Me.dgvDeliveryHistory.AllowUserToAddRows = False
         Me.dgvDeliveryHistory.AllowUserToDeleteRows = False
-        DataGridViewCellStyle27.BackColor = System.Drawing.Color.Gainsboro
-        Me.dgvDeliveryHistory.AlternatingRowsDefaultCellStyle = DataGridViewCellStyle27
+        DataGridViewCellStyle1.BackColor = System.Drawing.Color.Gainsboro
+        Me.dgvDeliveryHistory.AlternatingRowsDefaultCellStyle = DataGridViewCellStyle1
         Me.dgvDeliveryHistory.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill
         Me.dgvDeliveryHistory.BackgroundColor = System.Drawing.Color.White
         Me.dgvDeliveryHistory.CellBorderStyle = System.Windows.Forms.DataGridViewCellBorderStyle.Raised
-        DataGridViewCellStyle28.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter
-        DataGridViewCellStyle28.BackColor = System.Drawing.SystemColors.Control
-        DataGridViewCellStyle28.Font = New System.Drawing.Font("Segoe UI", 10.8!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        DataGridViewCellStyle28.ForeColor = System.Drawing.SystemColors.WindowText
-        DataGridViewCellStyle28.SelectionBackColor = System.Drawing.Color.SkyBlue
-        DataGridViewCellStyle28.SelectionForeColor = System.Drawing.SystemColors.HighlightText
-        Me.dgvDeliveryHistory.ColumnHeadersDefaultCellStyle = DataGridViewCellStyle28
+        DataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter
+        DataGridViewCellStyle2.BackColor = System.Drawing.SystemColors.Control
+        DataGridViewCellStyle2.Font = New System.Drawing.Font("Segoe UI", 10.8!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        DataGridViewCellStyle2.ForeColor = System.Drawing.SystemColors.WindowText
+        DataGridViewCellStyle2.SelectionBackColor = System.Drawing.Color.SkyBlue
+        DataGridViewCellStyle2.SelectionForeColor = System.Drawing.SystemColors.HighlightText
+        Me.dgvDeliveryHistory.ColumnHeadersDefaultCellStyle = DataGridViewCellStyle2
         Me.dgvDeliveryHistory.ColumnHeadersHeight = 50
         Me.dgvDeliveryHistory.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.DisableResizing
         Me.dgvDeliveryHistory.Columns.AddRange(New System.Windows.Forms.DataGridViewColumn() {Me.deliveryID, Me.orderID, Me.itemID, Me.productID, Me.productName, Me.quantityReceived, Me.quantityDefective, Me.remarks, Me.deliveryDate, Me.receivedBy})
-        DataGridViewCellStyle37.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft
-        DataGridViewCellStyle37.BackColor = System.Drawing.SystemColors.Window
-        DataGridViewCellStyle37.Font = New System.Drawing.Font("Segoe UI", 10.8!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        DataGridViewCellStyle37.ForeColor = System.Drawing.SystemColors.ControlText
-        DataGridViewCellStyle37.SelectionBackColor = System.Drawing.SystemColors.ActiveCaption
-        DataGridViewCellStyle37.SelectionForeColor = System.Drawing.Color.Black
-        DataGridViewCellStyle37.WrapMode = System.Windows.Forms.DataGridViewTriState.[False]
-        Me.dgvDeliveryHistory.DefaultCellStyle = DataGridViewCellStyle37
+        DataGridViewCellStyle11.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft
+        DataGridViewCellStyle11.BackColor = System.Drawing.SystemColors.Window
+        DataGridViewCellStyle11.Font = New System.Drawing.Font("Segoe UI", 10.8!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        DataGridViewCellStyle11.ForeColor = System.Drawing.SystemColors.ControlText
+        DataGridViewCellStyle11.SelectionBackColor = System.Drawing.SystemColors.ActiveCaption
+        DataGridViewCellStyle11.SelectionForeColor = System.Drawing.Color.Black
+        DataGridViewCellStyle11.WrapMode = System.Windows.Forms.DataGridViewTriState.[False]
+        Me.dgvDeliveryHistory.DefaultCellStyle = DataGridViewCellStyle11
         Me.dgvDeliveryHistory.GridColor = System.Drawing.Color.Black
         Me.dgvDeliveryHistory.Location = New System.Drawing.Point(-3, 49)
         Me.dgvDeliveryHistory.MultiSelect = False
         Me.dgvDeliveryHistory.Name = "dgvDeliveryHistory"
         Me.dgvDeliveryHistory.ReadOnly = True
-        DataGridViewCellStyle38.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft
-        DataGridViewCellStyle38.BackColor = System.Drawing.SystemColors.Control
-        DataGridViewCellStyle38.Font = New System.Drawing.Font("Segoe UI", 10.8!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        DataGridViewCellStyle38.ForeColor = System.Drawing.SystemColors.WindowText
-        DataGridViewCellStyle38.SelectionBackColor = System.Drawing.Color.SkyBlue
-        DataGridViewCellStyle38.SelectionForeColor = System.Drawing.SystemColors.HighlightText
-        Me.dgvDeliveryHistory.RowHeadersDefaultCellStyle = DataGridViewCellStyle38
+        DataGridViewCellStyle12.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft
+        DataGridViewCellStyle12.BackColor = System.Drawing.SystemColors.Control
+        DataGridViewCellStyle12.Font = New System.Drawing.Font("Segoe UI", 10.8!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        DataGridViewCellStyle12.ForeColor = System.Drawing.SystemColors.WindowText
+        DataGridViewCellStyle12.SelectionBackColor = System.Drawing.Color.SkyBlue
+        DataGridViewCellStyle12.SelectionForeColor = System.Drawing.SystemColors.HighlightText
+        Me.dgvDeliveryHistory.RowHeadersDefaultCellStyle = DataGridViewCellStyle12
         Me.dgvDeliveryHistory.RowHeadersVisible = False
         Me.dgvDeliveryHistory.RowHeadersWidthSizeMode = System.Windows.Forms.DataGridViewRowHeadersWidthSizeMode.DisableResizing
-        DataGridViewCellStyle39.Font = New System.Drawing.Font("Segoe UI", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.dgvDeliveryHistory.RowsDefaultCellStyle = DataGridViewCellStyle39
+        DataGridViewCellStyle13.Font = New System.Drawing.Font("Segoe UI", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.dgvDeliveryHistory.RowsDefaultCellStyle = DataGridViewCellStyle13
         Me.dgvDeliveryHistory.RowTemplate.Height = 30
         Me.dgvDeliveryHistory.RowTemplate.Resizable = System.Windows.Forms.DataGridViewTriState.[False]
         Me.dgvDeliveryHistory.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect
         Me.dgvDeliveryHistory.Size = New System.Drawing.Size(1093, 424)
         Me.dgvDeliveryHistory.TabIndex = 226
-        '
-        'deliveryID
-        '
-        Me.deliveryID.DataPropertyName = "deliveryID"
-        DataGridViewCellStyle29.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight
-        Me.deliveryID.DefaultCellStyle = DataGridViewCellStyle29
-        Me.deliveryID.HeaderText = "Delivery ID"
-        Me.deliveryID.Name = "deliveryID"
-        Me.deliveryID.ReadOnly = True
-        Me.deliveryID.Visible = False
-        '
-        'orderID
-        '
-        Me.orderID.DataPropertyName = "orderID"
-        DataGridViewCellStyle30.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight
-        Me.orderID.DefaultCellStyle = DataGridViewCellStyle30
-        Me.orderID.FillWeight = 60.0!
-        Me.orderID.HeaderText = "Order ID"
-        Me.orderID.Name = "orderID"
-        Me.orderID.ReadOnly = True
-        '
-        'itemID
-        '
-        Me.itemID.DataPropertyName = "itemID"
-        DataGridViewCellStyle31.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight
-        Me.itemID.DefaultCellStyle = DataGridViewCellStyle31
-        Me.itemID.FillWeight = 60.0!
-        Me.itemID.HeaderText = "Item ID"
-        Me.itemID.Name = "itemID"
-        Me.itemID.ReadOnly = True
-        Me.itemID.Visible = False
-        '
-        'productID
-        '
-        Me.productID.DataPropertyName = "productID"
-        DataGridViewCellStyle32.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight
-        Me.productID.DefaultCellStyle = DataGridViewCellStyle32
-        Me.productID.FillWeight = 80.0!
-        Me.productID.HeaderText = "Product ID"
-        Me.productID.Name = "productID"
-        Me.productID.ReadOnly = True
-        '
-        'productName
-        '
-        Me.productName.DataPropertyName = "productName"
-        DataGridViewCellStyle33.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter
-        Me.productName.DefaultCellStyle = DataGridViewCellStyle33
-        Me.productName.HeaderText = "Product Name"
-        Me.productName.Name = "productName"
-        Me.productName.ReadOnly = True
-        '
-        'quantityReceived
-        '
-        Me.quantityReceived.DataPropertyName = "quantityReceived"
-        DataGridViewCellStyle34.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight
-        Me.quantityReceived.DefaultCellStyle = DataGridViewCellStyle34
-        Me.quantityReceived.FillWeight = 90.0!
-        Me.quantityReceived.HeaderText = "Quantity Received"
-        Me.quantityReceived.Name = "quantityReceived"
-        Me.quantityReceived.ReadOnly = True
-        '
-        'quantityDefective
-        '
-        Me.quantityDefective.DataPropertyName = "quantityDefective"
-        DataGridViewCellStyle35.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight
-        Me.quantityDefective.DefaultCellStyle = DataGridViewCellStyle35
-        Me.quantityDefective.FillWeight = 95.0!
-        Me.quantityDefective.HeaderText = "Quantity Defective"
-        Me.quantityDefective.Name = "quantityDefective"
-        Me.quantityDefective.ReadOnly = True
-        '
-        'remarks
-        '
-        Me.remarks.DataPropertyName = "remarks"
-        Me.remarks.HeaderText = "Remarks"
-        Me.remarks.Name = "remarks"
-        Me.remarks.ReadOnly = True
-        '
-        'deliveryDate
-        '
-        Me.deliveryDate.DataPropertyName = "deliveryDate"
-        Me.deliveryDate.HeaderText = "Delivery Date"
-        Me.deliveryDate.Name = "deliveryDate"
-        Me.deliveryDate.ReadOnly = True
-        '
-        'receivedBy
-        '
-        Me.receivedBy.DataPropertyName = "receivedBy"
-        DataGridViewCellStyle36.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter
-        Me.receivedBy.DefaultCellStyle = DataGridViewCellStyle36
-        Me.receivedBy.HeaderText = "Received By"
-        Me.receivedBy.Name = "receivedBy"
-        Me.receivedBy.ReadOnly = True
         '
         'btnClose
         '
@@ -289,6 +196,101 @@ Partial Class DeliverHistory
         Me.btnBack.TextAlign = System.Drawing.ContentAlignment.MiddleRight
         Me.btnBack.UseVisualStyleBackColor = False
         '
+        'deliveryID
+        '
+        Me.deliveryID.DataPropertyName = "deliveryID"
+        DataGridViewCellStyle3.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight
+        Me.deliveryID.DefaultCellStyle = DataGridViewCellStyle3
+        Me.deliveryID.HeaderText = "Delivery ID"
+        Me.deliveryID.Name = "deliveryID"
+        Me.deliveryID.ReadOnly = True
+        Me.deliveryID.Visible = False
+        '
+        'orderID
+        '
+        Me.orderID.DataPropertyName = "orderID"
+        DataGridViewCellStyle4.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight
+        Me.orderID.DefaultCellStyle = DataGridViewCellStyle4
+        Me.orderID.FillWeight = 60.0!
+        Me.orderID.HeaderText = "Order ID"
+        Me.orderID.Name = "orderID"
+        Me.orderID.ReadOnly = True
+        Me.orderID.Visible = False
+        '
+        'itemID
+        '
+        Me.itemID.DataPropertyName = "itemID"
+        DataGridViewCellStyle5.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight
+        Me.itemID.DefaultCellStyle = DataGridViewCellStyle5
+        Me.itemID.FillWeight = 60.0!
+        Me.itemID.HeaderText = "Item ID"
+        Me.itemID.Name = "itemID"
+        Me.itemID.ReadOnly = True
+        Me.itemID.Visible = False
+        '
+        'productID
+        '
+        Me.productID.DataPropertyName = "productID"
+        DataGridViewCellStyle6.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight
+        Me.productID.DefaultCellStyle = DataGridViewCellStyle6
+        Me.productID.FillWeight = 80.0!
+        Me.productID.HeaderText = "Product ID"
+        Me.productID.Name = "productID"
+        Me.productID.ReadOnly = True
+        Me.productID.Visible = False
+        '
+        'productName
+        '
+        Me.productName.DataPropertyName = "productName"
+        DataGridViewCellStyle7.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter
+        Me.productName.DefaultCellStyle = DataGridViewCellStyle7
+        Me.productName.HeaderText = "Product Name"
+        Me.productName.Name = "productName"
+        Me.productName.ReadOnly = True
+        '
+        'quantityReceived
+        '
+        Me.quantityReceived.DataPropertyName = "quantityReceived"
+        DataGridViewCellStyle8.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight
+        Me.quantityReceived.DefaultCellStyle = DataGridViewCellStyle8
+        Me.quantityReceived.FillWeight = 90.0!
+        Me.quantityReceived.HeaderText = "Quantity Received"
+        Me.quantityReceived.Name = "quantityReceived"
+        Me.quantityReceived.ReadOnly = True
+        '
+        'quantityDefective
+        '
+        Me.quantityDefective.DataPropertyName = "quantityDefective"
+        DataGridViewCellStyle9.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight
+        Me.quantityDefective.DefaultCellStyle = DataGridViewCellStyle9
+        Me.quantityDefective.FillWeight = 95.0!
+        Me.quantityDefective.HeaderText = "Quantity Defective"
+        Me.quantityDefective.Name = "quantityDefective"
+        Me.quantityDefective.ReadOnly = True
+        '
+        'remarks
+        '
+        Me.remarks.DataPropertyName = "remarks"
+        Me.remarks.HeaderText = "Remarks"
+        Me.remarks.Name = "remarks"
+        Me.remarks.ReadOnly = True
+        '
+        'deliveryDate
+        '
+        Me.deliveryDate.DataPropertyName = "deliveryDate"
+        Me.deliveryDate.HeaderText = "Delivery Date"
+        Me.deliveryDate.Name = "deliveryDate"
+        Me.deliveryDate.ReadOnly = True
+        '
+        'receivedBy
+        '
+        Me.receivedBy.DataPropertyName = "receivedBy"
+        DataGridViewCellStyle10.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter
+        Me.receivedBy.DefaultCellStyle = DataGridViewCellStyle10
+        Me.receivedBy.HeaderText = "Received By"
+        Me.receivedBy.Name = "receivedBy"
+        Me.receivedBy.ReadOnly = True
+        '
         'DeliverHistory
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(10.0!, 25.0!)
@@ -319,20 +321,20 @@ Partial Class DeliverHistory
     End Sub
     Friend WithEvents dgvDeliveryHistory As System.Windows.Forms.DataGridView
     Friend WithEvents btnClose As System.Windows.Forms.Button
-    Friend WithEvents deliveryID As System.Windows.Forms.DataGridViewTextBoxColumn
-    Friend WithEvents orderID As System.Windows.Forms.DataGridViewTextBoxColumn
-    Friend WithEvents itemID As System.Windows.Forms.DataGridViewTextBoxColumn
-    Friend WithEvents productID As System.Windows.Forms.DataGridViewTextBoxColumn
-    Private Shadows WithEvents productName As System.Windows.Forms.DataGridViewTextBoxColumn
-    Friend WithEvents quantityReceived As System.Windows.Forms.DataGridViewTextBoxColumn
-    Friend WithEvents quantityDefective As System.Windows.Forms.DataGridViewTextBoxColumn
-    Friend WithEvents remarks As System.Windows.Forms.DataGridViewTextBoxColumn
-    Friend WithEvents deliveryDate As System.Windows.Forms.DataGridViewTextBoxColumn
-    Friend WithEvents receivedBy As System.Windows.Forms.DataGridViewTextBoxColumn
     Friend WithEvents pnlBar As System.Windows.Forms.Panel
     Friend WithEvents PictureBox1 As System.Windows.Forms.PictureBox
     Friend WithEvents Label1 As System.Windows.Forms.Label
     Friend WithEvents txtPage As System.Windows.Forms.Label
     Friend WithEvents btnNext As System.Windows.Forms.Button
     Friend WithEvents btnBack As System.Windows.Forms.Button
+    Friend WithEvents deliveryID As System.Windows.Forms.DataGridViewTextBoxColumn
+    Friend WithEvents orderID As System.Windows.Forms.DataGridViewTextBoxColumn
+    Friend WithEvents itemID As System.Windows.Forms.DataGridViewTextBoxColumn
+    Friend WithEvents productID As System.Windows.Forms.DataGridViewTextBoxColumn
+    Friend Shadows WithEvents productName As System.Windows.Forms.DataGridViewTextBoxColumn
+    Friend WithEvents quantityReceived As System.Windows.Forms.DataGridViewTextBoxColumn
+    Friend WithEvents quantityDefective As System.Windows.Forms.DataGridViewTextBoxColumn
+    Friend WithEvents remarks As System.Windows.Forms.DataGridViewTextBoxColumn
+    Friend WithEvents deliveryDate As System.Windows.Forms.DataGridViewTextBoxColumn
+    Friend WithEvents receivedBy As System.Windows.Forms.DataGridViewTextBoxColumn
 End Class

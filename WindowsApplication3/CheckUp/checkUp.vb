@@ -84,12 +84,41 @@ Public Class checkUp
 
 
     Private Sub btnNew_Click(sender As Object, e As EventArgs) Handles btnNew.Click
-        Using check As New CreateCheckUp
-            If check.ShowDialog() = DialogResult.OK AndAlso check.DataSaved Then
-                LoadPage()
-            End If
-        End Using
+        Try
+            ' Find the MainForm instance
+            Dim mainForm As MainForm = Nothing
+            For Each frm As Form In Application.OpenForms
+                If TypeOf frm Is MainForm Then
+                    mainForm = DirectCast(frm, MainForm)
+                    Exit For
+                End If
+            Next
 
+            If mainForm IsNot Nothing Then
+                ' Create and show the CreateCheckUp form in the container
+                Dim check As New CreateCheckUp()
+
+                ' Handle form closing to refresh data
+                AddHandler check.FormClosed, Sub(s, ev)
+                                                 ' Show this checkUp form back in the container
+                                                 mainForm.ShowFormControls(Me)
+                                                 If check.DataSaved Then
+                                                     LoadPage()
+                                                 End If
+                                             End Sub
+
+                mainForm.ShowFormControls(check)
+            Else
+                ' Fallback to dialog if MainForm not found
+                Using check As New CreateCheckUp
+                    If check.ShowDialog() = DialogResult.OK AndAlso check.DataSaved Then
+                        LoadPage()
+                    End If
+                End Using
+            End If
+        Catch ex As Exception
+            MessageBox.Show("Error opening create checkup form: " & ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error)
+        End Try
     End Sub
 
     Private Sub checkUpDGV_CellClick(sender As Object, e As DataGridViewCellEventArgs) Handles checkUpDGV.CellContentClick
@@ -185,16 +214,48 @@ Public Class checkUp
             Dim checkupID As Integer = Convert.ToInt32(checkUpDGV.SelectedRows(0).Cells("Column1").Value)
 
             If MsgBox("Are you sure you want to edit this record?", vbYesNo + vbQuestion, "Edit") = vbYes Then
-                Using editCheckup As New CreateCheckUp()
-                    editCheckup.TopMost = True
-                    editCheckup.pnlCheckUp.Tag = checkupID
-                    editCheckup.LoadCheckup(checkupID)
+                Try
+                    ' Find the MainForm instance
+                    Dim mainForm As MainForm = Nothing
+                    For Each frm As Form In Application.OpenForms
+                        If TypeOf frm Is MainForm Then
+                            mainForm = DirectCast(frm, MainForm)
+                            Exit For
+                        End If
+                    Next
 
-                    If editCheckup.ShowDialog() = DialogResult.OK AndAlso editCheckup.DataSaved Then
-                        ' Refresh the DGV after successful update
-                        LoadPage()
+                    If mainForm IsNot Nothing Then
+                        ' Create the edit form
+                        Dim editCheckup As New CreateCheckUp()
+                        editCheckup.pnlCheckUp.Tag = checkupID
+                        editCheckup.LoadCheckup(checkupID)
+
+                        ' Handle form closing to refresh data
+                        AddHandler editCheckup.FormClosed, Sub(s, ev)
+                                                               ' Show this checkUp form back in the container
+                                                               mainForm.ShowFormControls(Me)
+                                                               If editCheckup.DataSaved Then
+                                                                   LoadPage()
+                                                               End If
+                                                           End Sub
+
+                        ' Show in container
+                        mainForm.ShowFormControls(editCheckup)
+                    Else
+                        ' Fallback to dialog if MainForm not found
+                        Using editCheckup As New CreateCheckUp()
+                            editCheckup.TopMost = True
+                            editCheckup.pnlCheckUp.Tag = checkupID
+                            editCheckup.LoadCheckup(checkupID)
+
+                            If editCheckup.ShowDialog() = DialogResult.OK AndAlso editCheckup.DataSaved Then
+                                LoadPage()
+                            End If
+                        End Using
                     End If
-                End Using
+                Catch ex As Exception
+                    MessageBox.Show("Error opening edit checkup form: " & ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error)
+                End Try
             End If
         Else
             MessageBox.Show("Please select a row first.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error)

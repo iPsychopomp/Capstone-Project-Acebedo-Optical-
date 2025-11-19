@@ -697,7 +697,7 @@ Partial Class addPatient
         '
         Me.lblOthers.AutoSize = True
         Me.lblOthers.Font = New System.Drawing.Font("Segoe UI", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.lblOthers.Location = New System.Drawing.Point(302, 393)
+        Me.lblOthers.Location = New System.Drawing.Point(241, 393)
         Me.lblOthers.Name = "lblOthers"
         Me.lblOthers.Size = New System.Drawing.Size(28, 28)
         Me.lblOthers.TabIndex = 141
@@ -707,7 +707,7 @@ Partial Class addPatient
         '
         Me.lblHB.AutoSize = True
         Me.lblHB.Font = New System.Drawing.Font("Segoe UI", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.lblHB.Location = New System.Drawing.Point(302, 360)
+        Me.lblHB.Location = New System.Drawing.Point(241, 360)
         Me.lblHB.Name = "lblHB"
         Me.lblHB.Size = New System.Drawing.Size(28, 28)
         Me.lblHB.TabIndex = 140
@@ -717,7 +717,7 @@ Partial Class addPatient
         '
         Me.lblDB.AutoSize = True
         Me.lblDB.Font = New System.Drawing.Font("Segoe UI", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.lblDB.Location = New System.Drawing.Point(302, 327)
+        Me.lblDB.Location = New System.Drawing.Point(241, 327)
         Me.lblDB.Name = "lblDB"
         Me.lblDB.Size = New System.Drawing.Size(28, 28)
         Me.lblDB.TabIndex = 138
@@ -757,7 +757,7 @@ Partial Class addPatient
         '
         Me.lblHobb.AutoSize = True
         Me.lblHobb.Font = New System.Drawing.Font("Segoe UI", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.lblHobb.Location = New System.Drawing.Point(302, 265)
+        Me.lblHobb.Location = New System.Drawing.Point(241, 265)
         Me.lblHobb.Name = "lblHobb"
         Me.lblHobb.Size = New System.Drawing.Size(28, 28)
         Me.lblHobb.TabIndex = 135
@@ -767,7 +767,7 @@ Partial Class addPatient
         '
         Me.lblSports.AutoSize = True
         Me.lblSports.Font = New System.Drawing.Font("Segoe UI", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.lblSports.Location = New System.Drawing.Point(302, 298)
+        Me.lblSports.Location = New System.Drawing.Point(241, 298)
         Me.lblSports.Name = "lblSports"
         Me.lblSports.Size = New System.Drawing.Size(28, 28)
         Me.lblSports.TabIndex = 134
@@ -777,7 +777,7 @@ Partial Class addPatient
         '
         Me.lblOccu.AutoSize = True
         Me.lblOccu.Font = New System.Drawing.Font("Segoe UI", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.lblOccu.Location = New System.Drawing.Point(302, 232)
+        Me.lblOccu.Location = New System.Drawing.Point(241, 232)
         Me.lblOccu.Name = "lblOccu"
         Me.lblOccu.Size = New System.Drawing.Size(28, 28)
         Me.lblOccu.TabIndex = 133
@@ -817,7 +817,7 @@ Partial Class addPatient
         '
         Me.lblMN.AutoSize = True
         Me.lblMN.Font = New System.Drawing.Font("Segoe UI", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.lblMN.Location = New System.Drawing.Point(301, 205)
+        Me.lblMN.Location = New System.Drawing.Point(240, 205)
         Me.lblMN.Name = "lblMN"
         Me.lblMN.Size = New System.Drawing.Size(28, 28)
         Me.lblMN.TabIndex = 128
@@ -827,8 +827,8 @@ Partial Class addPatient
         '
         Me.lblCA.AutoSize = True
         Me.lblCA.Font = New System.Drawing.Font("Segoe UI", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.lblCA.Location = New System.Drawing.Point(301, 171)
-        Me.lblCA.MaximumSize = New System.Drawing.Size(520, 0)
+        Me.lblCA.Location = New System.Drawing.Point(240, 171)
+        Me.lblCA.MaximumSize = New System.Drawing.Size(340, 0)
         Me.lblCA.Name = "lblCA"
         Me.lblCA.Size = New System.Drawing.Size(28, 28)
         Me.lblCA.TabIndex = 127
@@ -858,7 +858,7 @@ Partial Class addPatient
         '
         Me.lblGender.AutoSize = True
         Me.lblGender.Font = New System.Drawing.Font("Segoe UI", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.lblGender.Location = New System.Drawing.Point(301, 139)
+        Me.lblGender.Location = New System.Drawing.Point(240, 139)
         Me.lblGender.Name = "lblGender"
         Me.lblGender.Size = New System.Drawing.Size(28, 28)
         Me.lblGender.TabIndex = 123
@@ -868,7 +868,7 @@ Partial Class addPatient
         '
         Me.lblAge.AutoSize = True
         Me.lblAge.Font = New System.Drawing.Font("Segoe UI", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.lblAge.Location = New System.Drawing.Point(301, 106)
+        Me.lblAge.Location = New System.Drawing.Point(240, 106)
         Me.lblAge.Name = "lblAge"
         Me.lblAge.Size = New System.Drawing.Size(28, 28)
         Me.lblAge.TabIndex = 122
@@ -878,7 +878,7 @@ Partial Class addPatient
         '
         Me.lblBday.AutoSize = True
         Me.lblBday.Font = New System.Drawing.Font("Segoe UI", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.lblBday.Location = New System.Drawing.Point(301, 73)
+        Me.lblBday.Location = New System.Drawing.Point(240, 73)
         Me.lblBday.Name = "lblBday"
         Me.lblBday.Size = New System.Drawing.Size(28, 28)
         Me.lblBday.TabIndex = 121
@@ -888,7 +888,7 @@ Partial Class addPatient
         '
         Me.lblFN.AutoSize = True
         Me.lblFN.Font = New System.Drawing.Font("Segoe UI", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.lblFN.Location = New System.Drawing.Point(301, 40)
+        Me.lblFN.Location = New System.Drawing.Point(240, 40)
         Me.lblFN.Name = "lblFN"
         Me.lblFN.Size = New System.Drawing.Size(28, 28)
         Me.lblFN.TabIndex = 120

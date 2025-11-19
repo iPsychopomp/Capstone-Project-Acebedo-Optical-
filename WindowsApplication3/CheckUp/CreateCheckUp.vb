@@ -67,12 +67,15 @@ Public Class CreateCheckUp
                 ' Set the patient ID in the Tag
                 txtPName.Tag = patientDict(enteredText)
             End If
+
+            ' Update summary panel
+            UpdateSummary()
         Catch ex As Exception
             ' Silently handle any errors
         End Try
     End Sub
 
-    Private Sub GradeTextBox_KeyPress(sender As Object, e As KeyPressEventArgs) Handles txtODSP.KeyPress, txtOSSP.KeyPress, txtCYOD.KeyPress, txtCYOS.KeyPress, txtAXOD.KeyPress, txtAXOS.KeyPress, txtAddOD.KeyPress, txtAddOS.KeyPress
+    Private Sub GradeTextBox_KeyPress(sender As Object, e As KeyPressEventArgs) Handles txtODSP.KeyPress, txtOSSP.KeyPress, txtCYOD.KeyPress, txtCYOS.KeyPress, txtAXOD.KeyPress, txtAXOS.KeyPress, txtAddOD.KeyPress, txtAddOS.KeyPress, pdOD.KeyPress, pdOS.KeyPress, pdOU.KeyPress
         Dim txt As TextBox = CType(sender, TextBox)
         Dim keyChar As Char = e.KeyChar
 
@@ -108,7 +111,7 @@ Public Class CreateCheckUp
         End If
     End Sub
 
-    Private Sub GradeTextBox_TextChanged(sender As Object, e As EventArgs) Handles txtODSP.TextChanged, txtOSSP.TextChanged, txtCYOD.TextChanged, txtCYOS.TextChanged, txtAXOD.TextChanged, txtAXOS.TextChanged, txtAddOD.TextChanged, txtAddOS.TextChanged
+    Private Sub GradeTextBox_TextChanged(sender As Object, e As EventArgs) Handles txtODSP.TextChanged, txtOSSP.TextChanged, txtCYOD.TextChanged, txtCYOS.TextChanged, txtAXOD.TextChanged, txtAXOS.TextChanged, txtAddOD.TextChanged, txtAddOS.TextChanged, pdOD.TextChanged, pdOS.TextChanged, pdOU.TextChanged
         Dim txt As TextBox = CType(sender, TextBox)
 
         ' Limit length and keep text as-is; no forced sign logic
@@ -119,7 +122,7 @@ Public Class CreateCheckUp
         End If
     End Sub
 
-    Private Sub GradeTextBox_Leave(sender As Object, e As EventArgs) Handles txtODSP.Leave, txtOSSP.Leave, txtCYOD.Leave, txtCYOS.Leave, txtAXOD.Leave, txtAXOS.Leave, txtAddOD.Leave, txtAddOS.Leave
+    Private Sub GradeTextBox_Leave(sender As Object, e As EventArgs) Handles txtODSP.Leave, txtOSSP.Leave, txtCYOD.Leave, txtCYOS.Leave, txtAXOD.Leave, txtAXOS.Leave, txtAddOD.Leave, txtAddOS.Leave, pdOD.Leave, pdOS.Leave, pdOU.Leave
         Dim txt As TextBox = CType(sender, TextBox)
 
         ' Skip validation if empty or just a sign
@@ -186,6 +189,9 @@ Public Class CreateCheckUp
         AddHandler txtAXOS.Leave, AddressOf MeasurementTextBox_Leave
         AddHandler txtAddOD.Leave, AddressOf MeasurementTextBox_Leave
         AddHandler txtAddOS.Leave, AddressOf MeasurementTextBox_Leave
+        AddHandler pdOD.Leave, AddressOf MeasurementTextBox_Leave
+        AddHandler pdOS.Leave, AddressOf MeasurementTextBox_Leave
+        AddHandler pdOU.Leave, AddressOf MeasurementTextBox_Leave
     End Sub
 
 
@@ -411,6 +417,48 @@ Public Class CreateCheckUp
         Close()
     End Sub
 
+    Private Sub btnBack_Click(sender As Object, e As EventArgs) Handles btnBack.Click
+        Try
+            ' Find the MainForm instance
+            Dim mainForm As MainForm = Nothing
+            For Each frm As Form In Application.OpenForms
+                If TypeOf frm Is MainForm Then
+                    mainForm = DirectCast(frm, MainForm)
+                    Exit For
+                End If
+            Next
+
+            If mainForm IsNot Nothing Then
+                ' Check if checkUp form already exists in open forms
+                Dim existingCheckUp As checkUp = Nothing
+                For Each frm As Form In Application.OpenForms
+                    If TypeOf frm Is checkUp Then
+                        existingCheckUp = DirectCast(frm, checkUp)
+                        Exit For
+                    End If
+                Next
+
+                ' If exists, show and reload it; otherwise create new
+                If existingCheckUp IsNot Nothing Then
+                    mainForm.ShowFormControls(existingCheckUp)
+                    existingCheckUp.LoadPage()
+                Else
+                    Dim checkUpForm As New checkUp()
+                    mainForm.ShowFormControls(checkUpForm)
+                    checkUpForm.LoadPage()
+                End If
+
+                ' Close this form
+                Me.Close()
+            Else
+                ' Fallback: just close the form
+                Me.Close()
+            End If
+        Catch ex As Exception
+            MessageBox.Show("Error navigating back: " & ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error)
+        End Try
+    End Sub
+
     'Private Sub btnClear_Click(sender As Object, e As EventArgs) Handles btnClear.Click
     '    Try
     '        ' Clear patient name and doctor name textboxes
@@ -554,24 +602,7 @@ Public Class CreateCheckUp
         End Select
     End Sub
 
-    ' Auto-fill PD textboxes with "0" if left empty
-    Private Sub pdOD_Leave(sender As Object, e As EventArgs) Handles pdOD.Leave
-        If String.IsNullOrWhiteSpace(pdOD.Text) Then
-            pdOD.Text = "0"
-        End If
-    End Sub
 
-    Private Sub pdOS_Leave(sender As Object, e As EventArgs) Handles pdOS.Leave
-        If String.IsNullOrWhiteSpace(pdOS.Text) Then
-            pdOS.Text = "0"
-        End If
-    End Sub
-
-    Private Sub pdOU_Leave(sender As Object, e As EventArgs) Handles pdOU.Leave
-        If String.IsNullOrWhiteSpace(pdOU.Text) Then
-            pdOU.Text = "0"
-        End If
-    End Sub
 
     Private Sub pnlCheckUp_Paint(sender As Object, e As PaintEventArgs) Handles pnlCheckUp.Paint
 
@@ -583,32 +614,19 @@ Public Class CreateCheckUp
             If cmbDoctors.DataSource IsNot Nothing AndAlso cmbDoctors.SelectedIndex >= 0 Then
                 cmbDoctors.Tag = cmbDoctors.SelectedValue
             End If
+            ' Update summary panel when doctor is selected
+            UpdateSummary()
         Catch
         End Try
     End Sub
 
-    Private Sub txtPName_TextChanged_1(sender As Object, e As EventArgs) Handles txtPName.TextChanged
-
-    End Sub
-
-    Private Sub Label21_Click(sender As Object, e As EventArgs) Handles Label21.Click
-
-    End Sub
-
-    Private Sub Panel2_Paint(sender As Object, e As PaintEventArgs) Handles pnlVM.Paint
-
-    End Sub
-
     Private Sub btnSPatient_Click(sender As Object, e As EventArgs) Handles btnSPatient.Click
         Try
-            ' Hide only this CreateCheckUp form (not MainForm)
-            Me.Visible = False
-
-            ' Show the search patient form with MainForm as owner to prevent MainForm from hiding
+            ' Show the search patient form as a dialog
             Using searchForm As New searchPatient()
                 searchForm.StartPosition = FormStartPosition.CenterScreen
 
-                ' Find the MainForm and set it as owner instead of CreateCheckUp
+                ' Find the MainForm and set it as owner
                 Dim mainForm As Form = Application.OpenForms.OfType(Of MainForm)().FirstOrDefault()
                 If mainForm IsNot Nothing Then
                     searchForm.ShowDialog(mainForm)
@@ -617,12 +635,103 @@ Public Class CreateCheckUp
                 End If
             End Using
 
-            ' Restore CreateCheckUp form's visibility
-            Me.Visible = True
+            ' Update summary after patient selection
+            UpdateSummary()
         Catch ex As Exception
             MsgBox("Error opening patient search: " & ex.Message, vbCritical, "Error")
-            ' Ensure this form is shown even if there's an error
-            Me.Visible = True
         End Try
+    End Sub
+
+    ' Real-time update method for pnlCheckupSumm
+    Private Sub UpdateSummary()
+        Try
+            ' Update Patient Name
+            lblFN.Text = If(String.IsNullOrWhiteSpace(txtPName.Text), "---", txtPName.Text)
+
+            ' Update Doctor Name
+            If cmbDoctors.SelectedIndex > 0 AndAlso Not String.IsNullOrWhiteSpace(cmbDoctors.Text) AndAlso Not cmbDoctors.Text.StartsWith("--") Then
+                lblDoctor.Text = cmbDoctors.Text
+            Else
+                lblDoctor.Text = "---"
+            End If
+
+            ' Update Birthday (if you have a birthday field - currently not visible in the form)
+            ' lblBday.Text = If(dtpBday.Value = Date.Today, "---", dtpBday.Value.ToString("yyyy-MM-dd"))
+
+            ' Update OD (Right Eye) measurements - show "0" if that's the value
+            lblODs.Text = If(String.IsNullOrWhiteSpace(txtODSP.Text), "---", txtODSP.Text)
+            lblODc.Text = If(String.IsNullOrWhiteSpace(txtCYOD.Text), "---", txtCYOD.Text)
+            lblODa.Text = If(String.IsNullOrWhiteSpace(txtAXOD.Text), "---", txtAXOD.Text)
+            lblODadd.Text = If(String.IsNullOrWhiteSpace(txtAddOD.Text), "---", txtAddOD.Text)
+            lblODp.Text = If(String.IsNullOrWhiteSpace(pdOD.Text), "---", pdOD.Text)
+
+            ' Update OS (Left Eye) measurements - show "0" if that's the value
+            lblOSs.Text = If(String.IsNullOrWhiteSpace(txtOSSP.Text), "---", txtOSSP.Text)
+            lblOSc.Text = If(String.IsNullOrWhiteSpace(txtCYOS.Text), "---", txtCYOS.Text)
+            lblOSa.Text = If(String.IsNullOrWhiteSpace(txtAXOS.Text), "---", txtAXOS.Text)
+            lblOSadd.Text = If(String.IsNullOrWhiteSpace(txtAddOS.Text), "---", txtAddOS.Text)
+            lblOSp.Text = If(String.IsNullOrWhiteSpace(pdOS.Text), "---", pdOS.Text)
+
+            ' Update Binocular PD (OU) - show "0" if that's the value
+            lblBp.Text = If(String.IsNullOrWhiteSpace(pdOU.Text), "---", pdOU.Text)
+
+            ' Update Remarks - show "N/A" if that's the value
+            lblRemarks.Text = If(String.IsNullOrWhiteSpace(txtRemarks.Text), "---", txtRemarks.Text)
+
+        Catch ex As Exception
+            ' Silent fail to avoid interrupting user input
+            Debug.WriteLine("Error updating summary: " & ex.Message)
+        End Try
+    End Sub
+
+    ' TextChanged event handlers for real-time updates
+    Private Sub txtODSP_TextChanged_Summary(sender As Object, e As EventArgs) Handles txtODSP.TextChanged
+        UpdateSummary()
+    End Sub
+
+    Private Sub txtOSSP_TextChanged_Summary(sender As Object, e As EventArgs) Handles txtOSSP.TextChanged
+        UpdateSummary()
+    End Sub
+
+    Private Sub txtCYOD_TextChanged_Summary(sender As Object, e As EventArgs) Handles txtCYOD.TextChanged
+        UpdateSummary()
+    End Sub
+
+    Private Sub txtCYOS_TextChanged_Summary(sender As Object, e As EventArgs) Handles txtCYOS.TextChanged
+        UpdateSummary()
+    End Sub
+
+    Private Sub txtAXOD_TextChanged_Summary(sender As Object, e As EventArgs) Handles txtAXOD.TextChanged
+        UpdateSummary()
+    End Sub
+
+    Private Sub txtAXOS_TextChanged_Summary(sender As Object, e As EventArgs) Handles txtAXOS.TextChanged
+        UpdateSummary()
+    End Sub
+
+    Private Sub txtAddOD_TextChanged_Summary(sender As Object, e As EventArgs) Handles txtAddOD.TextChanged
+        UpdateSummary()
+    End Sub
+
+    Private Sub txtAddOS_TextChanged_Summary(sender As Object, e As EventArgs) Handles txtAddOS.TextChanged
+        UpdateSummary()
+    End Sub
+
+
+
+    Private Sub txtRemarks_TextChanged(sender As Object, e As EventArgs) Handles txtRemarks.TextChanged
+        UpdateSummary()
+    End Sub
+
+    Private Sub pdOD_TextChanged_Summary(sender As Object, e As EventArgs) Handles pdOD.TextChanged
+        UpdateSummary()
+    End Sub
+
+    Private Sub pdOS_TextChanged_Summary(sender As Object, e As EventArgs) Handles pdOS.TextChanged
+        UpdateSummary()
+    End Sub
+
+    Private Sub pdOU_TextChanged_Summary(sender As Object, e As EventArgs) Handles pdOU.TextChanged
+        UpdateSummary()
     End Sub
 End Class

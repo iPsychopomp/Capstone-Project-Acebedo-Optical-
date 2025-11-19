@@ -6,8 +6,43 @@
     Private Sub searchSupplierProducts_Load(sender As Object, e As EventArgs) Handles MyBase.Load
         Try
             LoadSupplierProducts()
+            DgvStyle(searchProductDGV)
         Catch
         End Try
+    End Sub
+    Public Sub DgvStyle(ByRef doctorsDGV As DataGridView)
+        ' Basic Grid Setup
+        doctorsDGV.AutoGenerateColumns = False
+        doctorsDGV.AllowUserToAddRows = False
+        doctorsDGV.AllowUserToDeleteRows = False
+        doctorsDGV.RowHeadersVisible = False
+        doctorsDGV.BorderStyle = BorderStyle.FixedSingle
+        doctorsDGV.BackgroundColor = Color.White
+        doctorsDGV.AdvancedColumnHeadersBorderStyle.All = DataGridViewAdvancedCellBorderStyle.Single
+        doctorsDGV.CellBorderStyle = DataGridViewCellBorderStyle.Single
+        doctorsDGV.ColumnHeadersDefaultCellStyle.BackColor = Color.Gainsboro
+        doctorsDGV.ColumnHeadersDefaultCellStyle.ForeColor = Color.Black
+        doctorsDGV.ColumnHeadersDefaultCellStyle.Font = New Font("Segoe UI", 11, FontStyle.Regular)
+        doctorsDGV.EnableHeadersVisualStyles = False
+        doctorsDGV.DefaultCellStyle.ForeColor = Color.Black
+        doctorsDGV.AlternatingRowsDefaultCellStyle.BackColor = SystemColors.Control
+        doctorsDGV.DefaultCellStyle.SelectionBackColor = SystemColors.ActiveCaption
+        doctorsDGV.DefaultCellStyle.SelectionForeColor = Color.Black
+        doctorsDGV.GridColor = Color.Silver
+        doctorsDGV.DefaultCellStyle.Padding = New Padding(5)
+        doctorsDGV.DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleLeft
+        doctorsDGV.ColumnHeadersDefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter
+        doctorsDGV.ReadOnly = True
+        doctorsDGV.MultiSelect = False
+        doctorsDGV.AllowUserToResizeRows = False
+        doctorsDGV.RowTemplate.Height = 30
+        doctorsDGV.DefaultCellStyle.WrapMode = DataGridViewTriState.False
+        doctorsDGV.AutoSizeRowsMode = DataGridViewAutoSizeRowsMode.AllCells
+
+        ' Center align all column headers
+        For Each col As DataGridViewColumn In doctorsDGV.Columns
+            col.HeaderCell.Style.Alignment = DataGridViewContentAlignment.MiddleCenter
+        Next
     End Sub
 
     Private Sub LoadSupplierProducts()
@@ -60,7 +95,6 @@
             Dim category As String = ""
             Dim unitPrice As Decimal = 0D
             Dim supplierName As String = ""
-            Dim quantity As Integer = 1
 
             Try
                 Integer.TryParse(Convert.ToString(row.Cells("Column1").Value), productID)
@@ -87,22 +121,25 @@
             Catch
             End Try
 
-            Try
-                If numQty IsNot Nothing Then
-                    Dim q As Integer = Convert.ToInt32(numQty.Value)
-                    If q > 0 Then quantity = q
-                End If
-            Catch
-            End Try
-
             If String.IsNullOrWhiteSpace(productName) OrElse unitPrice <= 0D Then Exit Sub
 
             Dim ownerForm As OrderProduct = TryCast(Me.Owner, OrderProduct)
-            If ownerForm IsNot Nothing Then
-                ownerForm.AddOrUpdateProductFromSupplier(productID, productName, category, unitPrice, supplierName, quantity)
-            End If
+            If ownerForm Is Nothing Then Exit Sub
 
-            Me.Close()
+            ' Open the productCount dialog to let user choose quantity
+            Using qtyForm As New productCount()
+                qtyForm.Owner = Me
+                qtyForm.TargetOrderForm = ownerForm
+                qtyForm.SelectedProductID = productID
+                qtyForm.SelectedProductName = productName
+                qtyForm.SelectedCategory = category
+                qtyForm.SelectedUnitPrice = unitPrice
+                qtyForm.SelectedSupplierName = supplierName
+
+                qtyForm.StartPosition = FormStartPosition.CenterScreen
+                qtyForm.ShowDialog(Me)
+            End Using
+
         Catch
         End Try
     End Sub

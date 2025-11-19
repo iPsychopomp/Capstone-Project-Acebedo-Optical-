@@ -58,6 +58,10 @@ Partial Class MainForm
         Me.btnInventory = New System.Windows.Forms.ToolStripButton()
         Me.btnDoctors = New System.Windows.Forms.ToolStripButton()
         Me.pnlContainer = New System.Windows.Forms.Panel()
+        Me.MaintenanceToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
+        Me.TransactionToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
+        Me.ProductsToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
+        Me.DiscountsToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.pnlFooter.SuspendLayout()
         Me.MenuStrip.SuspendLayout()
         Me.tsButtons.SuspendLayout()
@@ -119,7 +123,7 @@ Partial Class MainForm
         Me.MenuStrip.BackColor = System.Drawing.SystemColors.ActiveCaption
         Me.MenuStrip.Font = New System.Drawing.Font("Segoe UI", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.MenuStrip.ImageScalingSize = New System.Drawing.Size(20, 20)
-        Me.MenuStrip.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.FileToolStripMenuItem, Me.ManageInventoryToolStripMenuItem, Me.ToolsToolStripMenuItem, Me.UserToolStripMenuItem})
+        Me.MenuStrip.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.FileToolStripMenuItem, Me.ManageInventoryToolStripMenuItem, Me.ToolsToolStripMenuItem, Me.UserToolStripMenuItem, Me.MaintenanceToolStripMenuItem})
         Me.MenuStrip.Location = New System.Drawing.Point(0, 0)
         Me.MenuStrip.Name = "MenuStrip"
         Me.MenuStrip.Size = New System.Drawing.Size(1207, 33)
@@ -380,6 +384,31 @@ Partial Class MainForm
         Me.pnlContainer.Size = New System.Drawing.Size(1207, 663)
         Me.pnlContainer.TabIndex = 13
         '
+        'MaintenanceToolStripMenuItem
+        '
+        Me.MaintenanceToolStripMenuItem.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.TransactionToolStripMenuItem, Me.ProductsToolStripMenuItem, Me.DiscountsToolStripMenuItem})
+        Me.MaintenanceToolStripMenuItem.Name = "MaintenanceToolStripMenuItem"
+        Me.MaintenanceToolStripMenuItem.Size = New System.Drawing.Size(134, 29)
+        Me.MaintenanceToolStripMenuItem.Text = "Maintenance"
+        '
+        'TransactionToolStripMenuItem
+        '
+        Me.TransactionToolStripMenuItem.Name = "TransactionToolStripMenuItem"
+        Me.TransactionToolStripMenuItem.Size = New System.Drawing.Size(186, 30)
+        Me.TransactionToolStripMenuItem.Text = "Transaction"
+        '
+        'ProductsToolStripMenuItem
+        '
+        Me.ProductsToolStripMenuItem.Name = "ProductsToolStripMenuItem"
+        Me.ProductsToolStripMenuItem.Size = New System.Drawing.Size(186, 30)
+        Me.ProductsToolStripMenuItem.Text = "Products"
+        '
+        'DiscountsToolStripMenuItem
+        '
+        Me.DiscountsToolStripMenuItem.Name = "DiscountsToolStripMenuItem"
+        Me.DiscountsToolStripMenuItem.Size = New System.Drawing.Size(186, 30)
+        Me.DiscountsToolStripMenuItem.Text = "Discounts"
+        '
         'MainForm
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(11.0!, 28.0!)
@@ -444,5 +473,9 @@ Partial Class MainForm
     Friend WithEvents SupplierProductsToolStripMenuItem As System.Windows.Forms.ToolStripMenuItem
     Friend WithEvents ReportsToolStripMenuItem1 As System.Windows.Forms.ToolStripMenuItem
     Friend WithEvents ProfileToolStripMenuItem As System.Windows.Forms.ToolStripMenuItem
+    Friend WithEvents MaintenanceToolStripMenuItem As System.Windows.Forms.ToolStripMenuItem
+    Friend WithEvents TransactionToolStripMenuItem As System.Windows.Forms.ToolStripMenuItem
+    Friend WithEvents ProductsToolStripMenuItem As System.Windows.Forms.ToolStripMenuItem
+    Friend WithEvents DiscountsToolStripMenuItem As System.Windows.Forms.ToolStripMenuItem
 
 End Class

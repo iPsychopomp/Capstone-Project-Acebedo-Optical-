@@ -5,24 +5,51 @@
     Private Sub addPayment_Load(sender As Object, e As EventArgs) Handles MyBase.Load
         cmbMode.Enabled = True
 
-        If Not cmbMode.Items.Contains("Cash and G-cash") Then
-            cmbMode.Items.Add("Cash and G-cash")
-        End If
+        ' Load available payment methods from tbl_payment_method
+        Try
+            cmbMode.Items.Clear()
 
-        ' Default mode is Cash
-        If cmbMode.Items.Contains("Cash") Then
-            cmbMode.SelectedItem = "Cash"
-        End If
+            Call dbConn()
+            Dim q As String = "SELECT typeOfPayment FROM tbl_payment_method ORDER BY typeOfPayment"
+            Using cmd As New Odbc.OdbcCommand(q, conn)
+                Using rdr As Odbc.OdbcDataReader = cmd.ExecuteReader()
+                    While rdr.Read()
+                        Dim t As String = rdr("typeOfPayment").ToString().Trim()
+                        If t <> "" AndAlso Not cmbMode.Items.Contains(t) Then
+                            cmbMode.Items.Add(t)
+                        End If
+                    End While
+                End Using
+            End Using
+        Catch
+            ' If anything fails, keep whatever is already configured in the designer
+        Finally
+            Try
+                If conn IsNot Nothing AndAlso conn.State = ConnectionState.Open Then conn.Close()
+            Catch
+            End Try
+        End Try
 
+        ' Insert placeholder at the top
+        Const placeholder As String = "--Select payment method--"
+        cmbMode.Items.Insert(0, placeholder)
+
+        ' Select placeholder by default
+        cmbMode.SelectedIndex = 0
+
+        ' Initial state: hide G-cash / reference controls
         lblGcash.Visible = False
         txtGcash.Visible = False
         lblRef.Visible = False
         txtRef.Visible = False
+        lblCash.Visible = False
+        txtCash.Visible = False
 
-        ' Ensure default size for Cash mode (will match ApplyCashMode)
+        ' Default compact size while no method is chosen
         Me.ClientSize = New Size(366, 241)
-
+        pnlPayment.Size = New Size(332, 130)
         CenterPanelHorizontally()
+        btnConfirm.Top = pnlPayment.Bottom + 10
     End Sub
 
     Private Sub cmbMode_SelectedIndexChanged(sender As Object, e As EventArgs) Handles cmbMode.SelectedIndexChanged
@@ -30,16 +57,47 @@
             Return
         End If
 
-        Dim mode As String = cmbMode.SelectedItem.ToString()
+        Dim mode As String = cmbMode.SelectedItem.ToString().Trim()
 
-        Select Case mode
-            Case "Cash"
-                ApplyCashMode()
-            Case "G-cash"
-                ApplyGcashMode()
-            Case "Cash and G-cash"
-                ApplyCashAndGcashMode()
-        End Select
+        Const placeholder As String = "--Select payment method--"
+        If String.Equals(mode, placeholder, StringComparison.OrdinalIgnoreCase) Then
+            ' No specific mode selected yet: hide all amount/reference inputs
+            lblCash.Visible = False
+            txtCash.Visible = False
+            lblGcash.Visible = False
+            txtGcash.Visible = False
+            lblRef.Visible = False
+            txtRef.Visible = False
+
+            pnlPayment.Size = New Size(332, 130)
+            Me.ClientSize = New Size(366, 241)
+            CenterPanelHorizontally()
+            btnConfirm.Top = pnlPayment.Bottom + 10
+            Return
+        End If
+
+        ' Cash only
+        If String.Equals(mode, "Cash", StringComparison.OrdinalIgnoreCase) Then
+            ApplyCashMode()
+            Return
+        End If
+
+        ' Combined modes: "Cash and X" (X can be G-cash, Bank Transfer, Credit Card, Maya, etc.)
+        Dim prefix As String = "Cash and"
+        If mode.StartsWith(prefix, StringComparison.OrdinalIgnoreCase) Then
+            Dim other As String = mode.Substring(prefix.Length).Trim()
+            If String.IsNullOrWhiteSpace(other) Then
+                other = "Non-cash"
+            End If
+
+            ' Label the non-cash part clearly
+            lblGcash.Text = other & " Amount:"
+            ApplyCashAndGcashMode()
+            Return
+        End If
+
+        ' Any other value is treated as a pure non-cash method (G-cash, Bank Transfer, Credit Card, Maya, etc.)
+        ApplyNonCashMode(mode)
     End Sub
 
     Private Sub ApplyCashMode()
@@ -68,24 +126,38 @@
     End Sub
 
     Private Sub ApplyGcashMode()
+        ' Backwards-compatible wrapper for legacy calls; treat as non-cash G-cash mode
+        ApplyNonCashMode("G-cash")
+    End Sub
+
+    Private Sub ApplyNonCashMode(modeLabel As String)
+        ' Hide cash-only fields
         lblCash.Visible = False
         txtCash.Visible = False
 
+        ' Show non-cash amount and reference
         lblGcash.Visible = True
         txtGcash.Visible = True
         lblRef.Visible = True
         txtRef.Visible = True
 
-        ' Exact positions for pure G-cash mode
+        ' Update label based on selected payment method
+        If String.IsNullOrWhiteSpace(modeLabel) Then
+            lblGcash.Text = "Amount:"
+        Else
+            lblGcash.Text = modeLabel & " Amount:"
+        End If
+
+        ' Exact positions for pure non-cash mode (same as original G-cash layout)
         lblGcash.Location = New Point(33, 89)
         txtGcash.Location = New Point(38, 111)
         lblRef.Location = New Point(33, 148)
         txtRef.Location = New Point(38, 170)
 
-        ' Panel size for G-cash mode
+        ' Panel size for non-cash mode
         pnlPayment.Size = New Size(332, 232)
 
-        ' Form size for G-cash mode
+        ' Form size for non-cash mode
         Me.ClientSize = New Size(366, 300)
 
         CenterPanelHorizontally()

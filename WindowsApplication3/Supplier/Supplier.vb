@@ -158,13 +158,13 @@ Public Class Supplier
             MessageBox.Show("Please select a row first.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error)
         End If
     End Sub
-    Private Sub btnOrders_Click(sender As Object, e As EventArgs) Handles btnOrders.Click
-        Dim order As New OrderProduct()
-        Me.Hide()
-        order.TopMost = True
-        order.ShowDialog(Me)
-        Me.Show()
-    End Sub
+    'Private Sub btnOrders_Click(sender As Object, e As EventArgs) Handles btnOrders.Click
+    '    Dim order As New OrderProduct()
+    '    Me.Hide()
+    '    order.TopMost = True
+    '    order.ShowDialog(Me)
+    '    Me.Show()
+    'End Sub
     Private Sub SupplierDGV_CellDoubleClick(sender As Object, e As DataGridViewCellEventArgs) Handles SupplierDGV.CellDoubleClick
         Try
             If e.RowIndex >= 0 AndAlso SupplierDGV.Rows.Count > 0 Then
@@ -262,5 +262,36 @@ Public Class Supplier
             currentPage += 1
             LoadPage()
         End If
+    End Sub
+
+    Private Sub btnView_Click(sender As Object, e As EventArgs) Handles btnView.Click
+        Try
+            If SupplierDGV.CurrentRow IsNot Nothing AndAlso SupplierDGV.CurrentRow.Index >= 0 AndAlso SupplierDGV.Rows.Count > 0 Then
+                Dim row = SupplierDGV.Rows(SupplierDGV.CurrentRow.Index)
+                Dim supplierID As Integer = 0
+                Dim supplierName As String = String.Empty
+
+                ' Column1 is bound to supplierID in Designer
+                If row.Cells("Column1") IsNot Nothing AndAlso row.Cells("Column1").Value IsNot Nothing Then
+                    Integer.TryParse(row.Cells("Column1").Value.ToString(), supplierID)
+                End If
+                If row.Cells("Column2") IsNot Nothing AndAlso row.Cells("Column2").Value IsNot Nothing Then
+                    supplierName = row.Cells("Column2").Value.ToString()
+                End If
+
+                Dim frm As New supplierItems()
+                frm.SupplierIdFilter = supplierID
+                If Not String.IsNullOrEmpty(supplierName) Then
+                    frm.Text = "Supplier Products - " & supplierName
+                End If
+                frm.TopMost = True
+                frm.ShowDialog()
+                frm.BringToFront()
+                frm.Focus()
+            End If
+        Catch ex As Exception
+            MessageBox.Show("Unable to open supplier items: " & ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error)
+        End Try
+
     End Sub
 End Class

@@ -379,4 +379,24 @@ Public Class MainForm
         prof.TopMost = True
         prof.ShowDialog()
     End Sub
+
+    Private Sub TransactionToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles TransactionToolStripMenuItem.Click
+        ' Open the Transaction Maintenance form (no audit trail for opening)
+        Dim maint As New transactionMainte()
+        maint.TopMost = True
+        maint.ShowDialog()
+    End Sub
+
+    Private Sub ProductsToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles ProductsToolStripMenuItem.Click
+        Dim prodMaint As New productsMainte()
+        prodMaint.TopMost = True
+        prodMaint.ShowDialog()
+    End Sub
+
+    Private Sub DiscountsToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles DiscountsToolStripMenuItem.Click
+        Dim discForm As New discounts()
+        discForm.TopMost = True
+        discForm.ShowDialog()
+    End Sub
+
 End Class

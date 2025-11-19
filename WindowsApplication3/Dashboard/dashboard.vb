@@ -713,55 +713,23 @@ Public Class dashboard
     Private Sub btnSearch_Click(sender As Object, e As EventArgs) Handles btnSearch.Click
         Try
             Dim searchText As String = txtSearch.Text.Trim()
+            Dim selectedCategory As String = ""
 
+            Try
+                If cmbCategory IsNot Nothing AndAlso cmbCategory.SelectedIndex >= 0 AndAlso Not String.IsNullOrWhiteSpace(cmbCategory.Text) Then
+                    selectedCategory = cmbCategory.Text.Trim()
+                End If
+            Catch
+            End Try
 
-            If String.IsNullOrEmpty(searchText) Then
+            ' If no search text and no category, load all
+            If String.IsNullOrWhiteSpace(searchText) AndAlso String.IsNullOrWhiteSpace(selectedCategory) Then
                 LoadAvailableProducts()
                 Return
             End If
 
-
-            LoadAvailableProducts()
-
-
-            Dim matchingRows As New List(Of DataGridViewRow)()
-
-            ' Find matching rows
-            For Each row As DataGridViewRow In dgvProductAvail.Rows
-                If Not row.IsNewRow Then
-                    Dim match As Boolean = False
-
-                    ' Check Product Name column (index 0)
-                    If row.Cells(0).Value IsNot Nothing Then
-                        If row.Cells(0).Value.ToString().IndexOf(searchText, StringComparison.OrdinalIgnoreCase) >= 0 Then
-                            match = True
-                        End If
-                    End If
-
-                    ' Check Quantity column (index 1)
-                    If Not match AndAlso row.Cells(1).Value IsNot Nothing Then
-                        Dim qtyText As String = row.Cells(1).Value.ToString()
-                        If qtyText.IndexOf(searchText, StringComparison.OrdinalIgnoreCase) >= 0 Then
-                            match = True
-                        End If
-                    End If
-
-                    If match Then
-                        ' Clone the row to add to our matching list
-                        Dim newRow As DataGridViewRow = CType(row.Clone(), DataGridViewRow)
-                        For Each cell As DataGridViewCell In row.Cells
-                            newRow.Cells(cell.ColumnIndex).Value = cell.Value
-                        Next
-                        matchingRows.Add(newRow)
-                    End If
-                End If
-            Next
-
-            ' Clear the grid and add only matching rows
-            dgvProductAvail.Rows.Clear()
-            For Each row As DataGridViewRow In matchingRows
-                dgvProductAvail.Rows.Add(row)
-            Next
+            ' Load filtered by selected category (if any) and search text
+            LoadAvailableProducts(selectedCategory, searchText)
 
         Catch ex As Exception
             ' On error, reload all products
@@ -770,11 +738,22 @@ Public Class dashboard
         End Try
     End Sub
 
-    ' When txtSearch text changes, if empty reload all products
+    ' When txtSearch text changes, if empty reload products for current category
     Private Sub txtSearch_TextChanged(sender As Object, e As EventArgs) Handles txtSearch.TextChanged
-        If String.IsNullOrWhiteSpace(txtSearch.Text) Then
-            LoadAvailableProducts()
-        End If
+        Try
+            If String.IsNullOrWhiteSpace(txtSearch.Text) Then
+                Dim selectedCategory As String = ""
+                Try
+                    If cmbCategory IsNot Nothing AndAlso cmbCategory.SelectedIndex >= 0 AndAlso Not String.IsNullOrWhiteSpace(cmbCategory.Text) Then
+                        selectedCategory = cmbCategory.Text.Trim()
+                    End If
+                Catch
+                End Try
+
+                LoadAvailableProducts(selectedCategory)
+            End If
+        Catch
+        End Try
     End Sub
 
     ' Count how many patients have appointments today and display in txtAppoint
@@ -834,14 +813,43 @@ Public Class dashboard
         End Try
     End Sub
 
-    ' Load data for product availability from db_viewavailableproducts into dgvProductAvail
-    Private Sub LoadAvailableProducts()
+    ' Load data for product availability into dgvProductAvail, optionally filtered by category and search text
+    Private Sub LoadAvailableProducts(Optional category As String = "", Optional searchText As String = "")
         Try
             Call dbConn()
 
-            Dim sql As String = "SELECT productName, stockQuantity FROM db_viewavailableproducts ORDER BY productName"
+            Dim sql As String = "SELECT p.productName, p.stockQuantity, p.category FROM tbl_products p"
+
+            Dim hasCategory As Boolean = Not String.IsNullOrWhiteSpace(category)
+            Dim hasSearch As Boolean = Not String.IsNullOrWhiteSpace(searchText)
+
+            If hasCategory OrElse hasSearch Then
+                sql &= " WHERE "
+                Dim first As Boolean = True
+
+                If hasCategory Then
+                    sql &= "p.category = ?"
+                    first = False
+                End If
+
+                If hasSearch Then
+                    If Not first Then sql &= " AND "
+                    sql &= "p.productName LIKE ?"
+                End If
+            End If
+
+            sql &= " ORDER BY p.productName"
 
             Using cmd As New OdbcCommand(sql, conn)
+                If hasCategory Then
+                    cmd.Parameters.AddWithValue("?", category)
+                End If
+
+                If hasSearch Then
+                    Dim pattern As String = "%" & searchText & "%"
+                    cmd.Parameters.AddWithValue("?", pattern)
+                End If
+
                 Using rdr As OdbcDataReader = cmd.ExecuteReader()
                     dgvProductAvail.Rows.Clear()
 
@@ -961,7 +969,7 @@ Public Class dashboard
         End Try
     End Sub
 
-   
+
     Private Sub LoadAppointmentsByDate(selectedDate As Date)
         Try
             Call dbConn()
@@ -1001,6 +1009,16 @@ Public Class dashboard
 
     Private Sub dtpAppointment_ValueChanged(sender As Object, e As EventArgs) Handles dtpAppointment.ValueChanged
         LoadAppointmentsByDate(dtpAppointment.Value.Date)
+    End Sub
+
+    Private Sub cmbCategory_SelectedIndexChanged(sender As Object, e As EventArgs) Handles cmbCategory.SelectedIndexChanged
+        Dim selectedCategory As String = ""
+
+        If cmbCategory.SelectedIndex >= 0 Then
+            selectedCategory = cmbCategory.SelectedItem.ToString()
+        End If
+
+        LoadAvailableProducts(selectedCategory)
     End Sub
 
 End Class

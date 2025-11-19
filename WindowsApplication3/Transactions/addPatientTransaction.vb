@@ -206,7 +206,30 @@ Public Class addPatientTransaction
         Next
 
         Dim qty As Integer = 1
-        Dim price As Decimal = 300D
+
+        ' Get check-up price from tbl_checkup_price instead of hardcoding
+        Dim price As Decimal = 300D ' default fallback
+        Try
+            Call dbConn()
+            Dim q As String = "SELECT price FROM tbl_checkup_price ORDER BY checkupPriceID DESC LIMIT 1"
+            Using cmd As New Odbc.OdbcCommand(q, conn)
+                Dim obj = cmd.ExecuteScalar()
+                If obj IsNot Nothing AndAlso Not IsDBNull(obj) Then
+                    Dim dbPrice As Decimal
+                    If Decimal.TryParse(obj.ToString(), dbPrice) AndAlso dbPrice > 0D Then
+                        price = dbPrice
+                    End If
+                End If
+            End Using
+        Catch
+            ' ignore and keep default price
+        Finally
+            Try
+                If conn IsNot Nothing AndAlso conn.State = ConnectionState.Open Then conn.Close()
+            Catch
+            End Try
+        End Try
+
         Dim total As Decimal = price * qty
 
         If checkRow Is Nothing Then

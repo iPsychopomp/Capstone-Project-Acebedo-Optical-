@@ -20,6 +20,7 @@ Public Class inventory
             btnAdd.Visible = False
             btnEdit.Visible = False
             btnSupplier.Visible = False
+            btnOrders.Visible = False
         End If
     End Sub
 
@@ -675,5 +676,12 @@ Public Class inventory
         Catch ex As Exception
             MsgBox("Error: " & ex.Message, vbCritical, "Edit Error")
         End Try
+    End Sub
+
+    Private Sub btnOrders_Click(sender As Object, e As EventArgs) Handles btnOrders.Click
+        Dim order As New OrderProduct()
+        order.TopMost = True
+        order.ShowDialog(Me)
+        Me.Show()
     End Sub
 End Class

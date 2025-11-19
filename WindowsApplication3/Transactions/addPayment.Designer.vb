@@ -53,7 +53,6 @@ Partial Class addPayment
         Me.cmbMode.Enabled = False
         Me.cmbMode.Font = New System.Drawing.Font("Segoe UI", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.cmbMode.FormattingEnabled = True
-        Me.cmbMode.Items.AddRange(New Object() {"G-cash", "Cash"})
         Me.cmbMode.Location = New System.Drawing.Point(38, 50)
         Me.cmbMode.Name = "cmbMode"
         Me.cmbMode.Size = New System.Drawing.Size(256, 36)

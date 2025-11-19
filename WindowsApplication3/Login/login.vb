@@ -16,20 +16,20 @@ Public Class Login
         Try
             Call dbConn()
 
-            Dim isdebugging As Boolean = True
+            'Dim isdebugging As Boolean = True
 
-            Dim username As String = "sadmin"
-            Dim password As String = "s1234"
+            'Dim username As String = "sadmin"
+            'Dim password As String = "s1234"
 
             ' Try to login with isArchived check, fallback if column doesn't exist
             sql = "SELECT userID, username, role, CONCAT(fname, ' ', lname) AS fullName FROM tbl_users WHERE username= ? AND password= ?"
             cmd = New Odbc.OdbcCommand(sql, conn)
 
-            'cmd.Parameters.AddWithValue("?", txtUser.Text.Trim)
-            'cmd.Parameters.AddWithValue("?", txtPass.Text.Trim)
+            cmd.Parameters.AddWithValue("?", txtUser.Text.Trim)
+            cmd.Parameters.AddWithValue("?", txtPass.Text.Trim)
 
-            cmd.Parameters.AddWithValue("?", username)
-            cmd.Parameters.AddWithValue("?", password)
+            'cmd.Parameters.AddWithValue("?", username)
+            'cmd.Parameters.AddWithValue("?", password)
 
             da.SelectCommand = cmd
             dt.Clear()
@@ -84,21 +84,9 @@ Public Class Login
 
                 InsertAuditTrail(GlobalVariables.LoggedInUserID, "Login", "User logged in")
 
-                'MsgBox("Login Success!", vbInformation, "Login")
-
-                ' Role-based navigation
-                If GlobalVariables.LoggedInRole = "Doctor" OrElse GlobalVariables.LoggedInRole = "Receptionist" Then
-                    ' For Optometrist and Receptionist, go directly to Patient Record
+               
                     Dim Main As New MainForm()
                     MainForm.Show()
-
-                    ' Automatically navigate to Patient Record instead of Dashboard
-                    MainForm.btnPatientRecord.PerformClick()
-                Else
-                    ' For other roles (Admin, etc.), show normal MainForm with Dashboard
-                    Dim Main As New MainForm()
-                    MainForm.Show()
-                End If
 
                 Me.Hide()
                 txtPass.Clear()

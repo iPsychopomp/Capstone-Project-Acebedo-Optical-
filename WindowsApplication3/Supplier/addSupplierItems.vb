@@ -42,6 +42,12 @@ Public Class addSupplierItems
                 ElseIf btn.Name.ToLower().Contains("search") Then
                     AddHandler btn.Click, AddressOf SearchButton_Click
                 End If
+            ElseIf TypeOf ctrl Is ComboBox AndAlso ctrl.Name.ToLower().Contains("category") Then
+                Dim cmbCategory As ComboBox = DirectCast(ctrl, ComboBox)
+                AddHandler cmbCategory.SelectedIndexChanged, AddressOf cmbCategory_SelectedIndexChanged
+            ElseIf TypeOf ctrl Is ComboBox AndAlso ctrl.Name.ToLower().Contains("prdct") Then
+                Dim txtPrdctName As ComboBox = DirectCast(ctrl, ComboBox)
+                AddHandler txtPrdctName.SelectedIndexChanged, AddressOf txtPrdctName_SelectedIndexChanged
             End If
         Next
     End Sub
@@ -62,8 +68,8 @@ Public Class addSupplierItems
         Try
             Call dbConn()
 
-            ' Load categories for dropdown (assuming there's a category combobox)
-            Dim categoryQuery As String = "SELECT DISTINCT category FROM tbl_products WHERE category IS NOT NULL AND category <> '' ORDER BY category"
+            ' Load categories from tbl_all_products
+            Dim categoryQuery As String = "SELECT DISTINCT Category FROM tbl_all_products WHERE Category IS NOT NULL AND Category <> '' ORDER BY Category"
             Dim cmd As New Odbc.OdbcCommand(categoryQuery, conn)
             Dim reader As Odbc.OdbcDataReader = cmd.ExecuteReader()
 
@@ -73,7 +79,7 @@ Public Class addSupplierItems
                     Dim cmbCategory As ComboBox = DirectCast(ctrl, ComboBox)
                     cmbCategory.Items.Clear()
                     While reader.Read()
-                        cmbCategory.Items.Add(reader("category").ToString())
+                        cmbCategory.Items.Add(reader("Category").ToString())
                     End While
                     Exit For
                 End If
@@ -432,6 +438,99 @@ Public Class addSupplierItems
             If pos > txtUnitPrice.TextLength Then pos = txtUnitPrice.TextLength
             txtUnitPrice.SelectionStart = pos
         End If
+    End Sub
+
+    Private Sub cmbCategory_SelectedIndexChanged(sender As Object, e As EventArgs) Handles cmbCategory.SelectedIndexChanged
+        Try
+            Dim selectedCategory As String = ""
+
+            ' Directly use cmbCategory
+            If cmbCategory.SelectedItem IsNot Nothing Then
+                selectedCategory = cmbCategory.SelectedItem.ToString()
+            End If
+
+            ' Load products based on selected category
+            LoadProductsByCategory(selectedCategory)
+
+        Catch ex As Exception
+            MessageBox.Show("Error loading products: " & ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error)
+        End Try
+    End Sub
+
+    Private Sub LoadProductsByCategory(category As String)
+        Try
+            If String.IsNullOrEmpty(category) Then Return
+
+            Call dbConn()
+
+            ' Clear existing items
+            txtPrdctName.Items.Clear()
+
+            ' Load products from tbl_all_products based on category
+            Dim productQuery As String = "SELECT productName FROM tbl_all_products WHERE Category = ? ORDER BY productName"
+            Dim cmd As New Odbc.OdbcCommand(productQuery, conn)
+            cmd.Parameters.AddWithValue("?", category)
+
+            Using reader As Odbc.OdbcDataReader = cmd.ExecuteReader()
+                While reader.Read()
+                    txtPrdctName.Items.Add(reader("productName").ToString())
+                End While
+            End Using
+
+            conn.Close()
+        Catch ex As Exception
+            MessageBox.Show("Error loading products by category: " & ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error)
+        Finally
+            If conn.State = ConnectionState.Open Then
+                conn.Close()
+            End If
+        End Try
+    End Sub
+
+    Private Sub txtPrdctName_SelectedIndexChanged(sender As Object, e As EventArgs) Handles txtPrdctName.SelectedIndexChanged
+        Try
+            Dim selectedProduct As String = ""
+
+            ' Directly use txtPrdctName
+            If txtPrdctName.SelectedItem IsNot Nothing Then
+                selectedProduct = txtPrdctName.SelectedItem.ToString()
+            End If
+
+            ' Load description for the selected product
+            LoadProductDescription(selectedProduct)
+
+        Catch ex As Exception
+            MessageBox.Show("Error loading product description: " & ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error)
+        End Try
+    End Sub
+
+    Private Sub LoadProductDescription(productName As String)
+        Try
+            If String.IsNullOrEmpty(productName) Then Return
+
+            Call dbConn()
+
+            ' Get description from tbl_all_products
+            Dim descQuery As String = "SELECT Description FROM tbl_all_products WHERE productName = ?"
+            Dim cmd As New Odbc.OdbcCommand(descQuery, conn)
+            cmd.Parameters.AddWithValue("?", productName)
+
+            Dim result = cmd.ExecuteScalar()
+            If result IsNot Nothing Then
+                ' txtDescription is declared on the form (inside grpAddPrdct), so set it directly
+                txtDescription.Text = result.ToString()
+            Else
+                txtDescription.Text = String.Empty
+            End If
+
+            conn.Close()
+        Catch ex As Exception
+            MessageBox.Show("Error loading product description: " & ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error)
+        Finally
+            If conn.State = ConnectionState.Open Then
+                conn.Close()
+            End If
+        End Try
     End Sub
 
 End Class

@@ -33,7 +33,6 @@ Partial Class addSupplierItems
         Me.txtUnitPrice = New System.Windows.Forms.TextBox()
         Me.Label5 = New System.Windows.Forms.Label()
         Me.txtDescription = New System.Windows.Forms.TextBox()
-        Me.txtPrdctName = New System.Windows.Forms.TextBox()
         Me.Label6 = New System.Windows.Forms.Label()
         Me.cmbCategory = New System.Windows.Forms.ComboBox()
         Me.Label3 = New System.Windows.Forms.Label()
@@ -42,6 +41,7 @@ Partial Class addSupplierItems
         Me.btnCancel = New System.Windows.Forms.Button()
         Me.btnSave = New System.Windows.Forms.Button()
         Me.pnlPrdct = New System.Windows.Forms.Panel()
+        Me.txtPrdctName = New System.Windows.Forms.ComboBox()
         CType(Me.pbEdit, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.Panel1.SuspendLayout()
         CType(Me.pbAdd, System.ComponentModel.ISupportInitialize).BeginInit()
@@ -104,7 +104,7 @@ Partial Class addSupplierItems
         '
         Me.Label10.AutoSize = True
         Me.Label10.ForeColor = System.Drawing.Color.Red
-        Me.Label10.Location = New System.Drawing.Point(107, 81)
+        Me.Label10.Location = New System.Drawing.Point(113, 23)
         Me.Label10.Name = "Label10"
         Me.Label10.Size = New System.Drawing.Size(20, 25)
         Me.Label10.TabIndex = 127
@@ -115,7 +115,7 @@ Partial Class addSupplierItems
         Me.Label9.AutoSize = True
         Me.Label9.Font = New System.Drawing.Font("Segoe UI", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.Label9.ForeColor = System.Drawing.Color.Red
-        Me.Label9.Location = New System.Drawing.Point(152, 23)
+        Me.Label9.Location = New System.Drawing.Point(162, 82)
         Me.Label9.Name = "Label9"
         Me.Label9.Size = New System.Drawing.Size(20, 25)
         Me.Label9.TabIndex = 126
@@ -147,14 +147,6 @@ Partial Class addSupplierItems
         Me.txtDescription.Size = New System.Drawing.Size(248, 32)
         Me.txtDescription.TabIndex = 3
         '
-        'txtPrdctName
-        '
-        Me.txtPrdctName.Font = New System.Drawing.Font("Segoe UI", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.txtPrdctName.Location = New System.Drawing.Point(30, 46)
-        Me.txtPrdctName.Name = "txtPrdctName"
-        Me.txtPrdctName.Size = New System.Drawing.Size(246, 32)
-        Me.txtPrdctName.TabIndex = 1
-        '
         'Label6
         '
         Me.Label6.AutoSize = True
@@ -171,7 +163,7 @@ Partial Class addSupplierItems
         Me.cmbCategory.Font = New System.Drawing.Font("Segoe UI", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.cmbCategory.FormattingEnabled = True
         Me.cmbCategory.Items.AddRange(New Object() {"Frame", "Contact Lens", "Lens", "Solution", "Accesories"})
-        Me.cmbCategory.Location = New System.Drawing.Point(29, 109)
+        Me.cmbCategory.Location = New System.Drawing.Point(34, 46)
         Me.cmbCategory.Name = "cmbCategory"
         Me.cmbCategory.Size = New System.Drawing.Size(247, 33)
         Me.cmbCategory.TabIndex = 2
@@ -180,7 +172,7 @@ Partial Class addSupplierItems
         '
         Me.Label3.AutoSize = True
         Me.Label3.Font = New System.Drawing.Font("Segoe UI", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Label3.Location = New System.Drawing.Point(25, 81)
+        Me.Label3.Location = New System.Drawing.Point(30, 23)
         Me.Label3.Name = "Label3"
         Me.Label3.Size = New System.Drawing.Size(92, 25)
         Me.Label3.TabIndex = 111
@@ -190,7 +182,7 @@ Partial Class addSupplierItems
         '
         Me.Label2.AutoSize = True
         Me.Label2.Font = New System.Drawing.Font("Segoe UI", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Label2.Location = New System.Drawing.Point(25, 23)
+        Me.Label2.Location = New System.Drawing.Point(29, 82)
         Me.Label2.Name = "Label2"
         Me.Label2.Size = New System.Drawing.Size(137, 25)
         Me.Label2.TabIndex = 110
@@ -199,20 +191,20 @@ Partial Class addSupplierItems
         'grpAddPrdct
         '
         Me.grpAddPrdct.BackColor = System.Drawing.SystemColors.MenuBar
+        Me.grpAddPrdct.Controls.Add(Me.txtPrdctName)
         Me.grpAddPrdct.Controls.Add(Me.Label12)
         Me.grpAddPrdct.Controls.Add(Me.Label10)
         Me.grpAddPrdct.Controls.Add(Me.Label9)
         Me.grpAddPrdct.Controls.Add(Me.txtUnitPrice)
         Me.grpAddPrdct.Controls.Add(Me.Label5)
         Me.grpAddPrdct.Controls.Add(Me.txtDescription)
-        Me.grpAddPrdct.Controls.Add(Me.txtPrdctName)
         Me.grpAddPrdct.Controls.Add(Me.Label6)
         Me.grpAddPrdct.Controls.Add(Me.cmbCategory)
         Me.grpAddPrdct.Controls.Add(Me.Label3)
         Me.grpAddPrdct.Controls.Add(Me.Label2)
         Me.grpAddPrdct.Location = New System.Drawing.Point(12, 53)
         Me.grpAddPrdct.Name = "grpAddPrdct"
-        Me.grpAddPrdct.Size = New System.Drawing.Size(631, 177)
+        Me.grpAddPrdct.Size = New System.Drawing.Size(631, 171)
         Me.grpAddPrdct.TabIndex = 110
         Me.grpAddPrdct.TabStop = False
         '
@@ -258,6 +250,16 @@ Partial Class addSupplierItems
         Me.pnlPrdct.Size = New System.Drawing.Size(653, 288)
         Me.pnlPrdct.TabIndex = 19
         '
+        'txtPrdctName
+        '
+        Me.txtPrdctName.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
+        Me.txtPrdctName.Font = New System.Drawing.Font("Segoe UI", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.txtPrdctName.FormattingEnabled = True
+        Me.txtPrdctName.Location = New System.Drawing.Point(35, 109)
+        Me.txtPrdctName.Name = "txtPrdctName"
+        Me.txtPrdctName.Size = New System.Drawing.Size(247, 33)
+        Me.txtPrdctName.TabIndex = 130
+        '
         'addSupplierItems
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(10.0!, 25.0!)
@@ -292,7 +294,6 @@ Partial Class addSupplierItems
     Friend WithEvents txtUnitPrice As System.Windows.Forms.TextBox
     Friend WithEvents Label5 As System.Windows.Forms.Label
     Friend WithEvents txtDescription As System.Windows.Forms.TextBox
-    Friend WithEvents txtPrdctName As System.Windows.Forms.TextBox
     Friend WithEvents Label6 As System.Windows.Forms.Label
     Friend WithEvents cmbCategory As System.Windows.Forms.ComboBox
     Friend WithEvents Label3 As System.Windows.Forms.Label
@@ -301,4 +302,5 @@ Partial Class addSupplierItems
     Friend WithEvents btnCancel As System.Windows.Forms.Button
     Friend WithEvents btnSave As System.Windows.Forms.Button
     Friend WithEvents pnlPrdct As System.Windows.Forms.Panel
+    Friend WithEvents txtPrdctName As System.Windows.Forms.ComboBox
 End Class

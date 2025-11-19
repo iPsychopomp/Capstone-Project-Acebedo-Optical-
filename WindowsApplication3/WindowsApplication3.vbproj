@@ -268,6 +268,18 @@
     <Compile Include="Doctors\addDoctors.vb">
       <SubType>Form</SubType>
     </Compile>
+    <Compile Include="Inventory\discounts.Designer.vb">
+      <DependentUpon>discounts.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Inventory\discounts.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Inventory\productsMainte.Designer.vb">
+      <DependentUpon>productsMainte.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Inventory\productsMainte.vb">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="Supplier\addSupplier.Designer.vb">
       <DependentUpon>addSupplier.vb</DependentUpon>
     </Compile>
@@ -296,6 +308,12 @@
       <DependentUpon>OrderProduct.vb</DependentUpon>
     </Compile>
     <Compile Include="Supplier\OrderProduct.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Supplier\productCount.Designer.vb">
+      <DependentUpon>productCount.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Supplier\productCount.vb">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="Supplier\ReceivedItems.Designer.vb">
@@ -400,6 +418,12 @@
       <DependentUpon>selectGrade.vb</DependentUpon>
     </Compile>
     <Compile Include="Transactions\selectGrade.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Transactions\transactionMainte.Designer.vb">
+      <DependentUpon>transactionMainte.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Transactions\transactionMainte.vb">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="Transactions\viewPaymentHistory.Designer.vb">
@@ -563,6 +587,12 @@
     <EmbeddedResource Include="Doctors\addDoctors.resx">
       <DependentUpon>addDoctors.vb</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Inventory\discounts.resx">
+      <DependentUpon>discounts.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Inventory\productsMainte.resx">
+      <DependentUpon>productsMainte.vb</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="RDLC\annualSales.rdlc">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </EmbeddedResource>
@@ -587,6 +617,12 @@
     <EmbeddedResource Include="Supplier\addSupplierItems.resx">
       <DependentUpon>addSupplierItems.vb</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Supplier\OrderProduct.resx">
+      <DependentUpon>OrderProduct.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Supplier\productCount.resx">
+      <DependentUpon>productCount.vb</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Supplier\searchSupplierProducts.resx">
       <DependentUpon>searchSupplierProducts.vb</DependentUpon>
     </EmbeddedResource>
@@ -604,9 +640,6 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Supplier\DeliverHistory.resx">
       <DependentUpon>DeliverHistory.vb</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Supplier\OrderProduct.resx">
-      <DependentUpon>OrderProduct.vb</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Supplier\ReceivedItems.resx">
       <DependentUpon>ReceivedItems.vb</DependentUpon>
@@ -655,6 +688,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Transactions\selectGrade.resx">
       <DependentUpon>selectGrade.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Transactions\transactionMainte.resx">
+      <DependentUpon>transactionMainte.vb</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Transactions\viewPaymentHistory.resx">
       <DependentUpon>viewPaymentHistory.vb</DependentUpon>

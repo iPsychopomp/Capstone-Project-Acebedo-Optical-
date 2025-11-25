@@ -93,6 +93,7 @@ Public Class checkUp
             ' Store reference to this form for the handler
             Dim parentForm As checkUp = Me
 
+
             ' Always refresh list after the create form closes (save or cancel)
             AddHandler check.FormClosed, Sub(s, ev)
                                              Try
@@ -204,29 +205,31 @@ Public Class checkUp
     End Sub
 
     Private Sub btnEdit_Click(sender As Object, e As EventArgs) Handles btnEdit.Click
-        If checkUpDGV.SelectedRows.Count > 0 Then
-            Dim checkupID As Integer = Convert.ToInt32(checkUpDGV.SelectedRows(0).Cells("Column1").Value)
-
-            If MsgBox("Are you sure you want to edit this record?", vbYesNo + vbQuestion, "Edit") = vbYes Then
-                Try
-                    ' Open CreateCheckUp as a popup dialog for editing
-                    Using editCheckup As New CreateCheckUp()
-                        editCheckup.TopMost = True
-                        editCheckup.StartPosition = FormStartPosition.CenterScreen
-                        editCheckup.pnlCheckUp.Tag = checkupID
-                        editCheckup.LoadCheckup(checkupID)
-
-                        If editCheckup.ShowDialog() = DialogResult.OK AndAlso editCheckup.DataSaved Then
-                            LoadPage()
-                        End If
-                    End Using
-                Catch ex As Exception
-                    MessageBox.Show("Error opening edit checkup form: " & ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error)
-                End Try
-            End If
-        Else
+        If checkUpDGV.SelectedRows.Count = 0 Then
             MessageBox.Show("Please select a row first.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error)
+            Return
         End If
+
+        Dim checkupID As Integer = Convert.ToInt32(checkUpDGV.SelectedRows(0).Cells("Column1").Value)
+
+        If MsgBox("Are you sure you want to edit this record?", vbYesNo + vbQuestion, "Edit") <> vbYes Then
+            Return
+        End If
+
+        Try
+            Using editCheckup As New CreateCheckUp()
+                editCheckup.TopMost = True
+                editCheckup.StartPosition = FormStartPosition.CenterScreen
+                editCheckup.pnlCheckUp.Tag = checkupID
+                editCheckup.LoadCheckup(checkupID)
+
+                If editCheckup.ShowDialog() = DialogResult.OK AndAlso editCheckup.DataSaved Then
+                    LoadPage()
+                End If
+            End Using
+        Catch ex As Exception
+            MessageBox.Show("Error opening edit checkup form: " & ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error)
+        End Try
     End Sub
 
     Private Sub btnSearch_Click(sender As Object, e As EventArgs) Handles btnSearch.Click
@@ -347,7 +350,7 @@ Public Class checkUp
             Dim queue As New PatientNextAppointment()
             queue.selectedPatientID = patientID
             queue.latestCheckupID = latestCheckupID
-            queue.PatientName = patientName
+            queue.patientName = patientName
             queue.ParentCheckUpForm = Me
             queue.ShowDialog()
 

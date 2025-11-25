@@ -447,53 +447,38 @@ Public Class CreateCheckUp
             Me.Close()
         Catch ex As Exception
             MessageBox.Show("Error closing form: " & ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error)
+
+            ' Find the MainForm instance
+            Dim mainForm As MainForm = Nothing
+            For Each frm As Form In Application.OpenForms
+                If TypeOf frm Is MainForm Then
+                    mainForm = DirectCast(frm, MainForm)
+                    Exit For
+                End If
+            Next
+
+            If mainForm IsNot Nothing Then
+                ' Check if checkUp form already exists in open forms
+                Dim existingCheckUp As checkUp = Nothing
+                For Each frm As Form In Application.OpenForms
+                    If TypeOf frm Is checkUp Then
+                        existingCheckUp = DirectCast(frm, checkUp)
+                        Exit For
+                    End If
+                Next
+
+                ' If exists, show and reload it; otherwise create new
+                If existingCheckUp IsNot Nothing Then
+                    mainForm.ShowFormControls(existingCheckUp)
+                    existingCheckUp.LoadPage()
+                Else
+                    Dim checkUpForm As New checkUp()
+                    mainForm.ShowFormControls(checkUpForm)
+                    checkUpForm.LoadPage()
+                End If
+            End If
         End Try
     End Sub
-
-    Private Sub btnBack_Click(sender As Object, e As EventArgs) Handles btnBack.Click
-        Try
-            ' Simply close the dialog without saving
-            Me.DialogResult = DialogResult.Cancel
-            Me.Close()
-        Catch ex As Exception
-            MessageBox.Show("Error closing form: " & ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error)
-        End Try
-    End Sub
-
-    'Private Sub btnClear_Click(sender As Object, e As EventArgs) Handles btnClear.Click
-    '    Try
-    '        ' Clear patient name and doctor name textboxes
-    '        txtPName.Text = ""
-    '        txtPName.Tag = Nothing
-    '        cmbDoctors.Text = ""
-    '        cmbDoctors.Tag = Nothing
-
-    '        ' Clear all inputs inside the group container
-    '        ''For Each obj As Control In grpCheckUp.Controls
-    '        'If TypeOf obj Is TextBox Then
-    '        '    CType(obj, TextBox).Clear()
-    '        'ElseIf TypeOf obj Is ComboBox Then
-    '        '    Dim cb As ComboBox = CType(obj, ComboBox)
-    '        '    cb.SelectedIndex = -1
-    '        '    cb.Text = String.Empty
-    '        'ElseIf TypeOf obj Is RichTextBox Then
-    '        '    CType(obj, RichTextBox).Clear()
-    '        'ElseIf TypeOf obj Is DateTimePicker Then
-    '        '    CType(obj, DateTimePicker).Value = DateTime.Now
-    '        'End If
-    '        'Next
-
-    '        ' Clear PD fields
-    '        pdOD.Text = "0"
-    '        pdOS.Text = "0"
-    '        pdOU.Text = "0"
-
-    '        ' Reset date to today
-    '        'dtpDate.Value = DateTime.Now
-    '    Catch ex As Exception
-    '        MsgBox("Failed to clear fields: " & ex.Message, vbCritical, "Error")
-    '    End Try
-    'End Sub
 
     Public Sub LoadCheckup(checkupID As Integer)
         Dim cmd As Odbc.OdbcCommand
@@ -623,6 +608,7 @@ Public Class CreateCheckUp
 
     Private Sub btnSPatient_Click(sender As Object, e As EventArgs) Handles btnSPatient.Click
         Try
+
             ' Set flag to indicate form should stay hidden during patient search/add flow
             shouldStayHidden = True
             KeepHiddenAfterSearchClose = True
@@ -634,30 +620,31 @@ Public Class CreateCheckUp
 
             Try
                 ' Show the search patient form as a dialog
-                Dim searchForm As New searchPatient()
+                Using searchForm As New searchPatient()
 
-                ' INDUSTRY STANDARD: Use callback pattern instead of form reference
-                searchForm.OnPatientSelected = Sub(patientID As Integer, fullname As String)
-                                                   Try
-                                                       txtPName.Text = fullname
-                                                       txtPName.Tag = patientID
-                                                       UpdateSummary()
-                                                       Logger.Info("Patient selected via callback - Name: " & fullname & ", ID: " & patientID.ToString(), "CreateCheckUp")
-                                                   Catch ex As Exception
-                                                       Logger.Error("Error setting patient in CreateCheckUp", ex, "CreateCheckUp")
-                                                   End Try
-                                               End Sub
+                    ' INDUSTRY STANDARD: Use callback pattern instead of form reference
+                    searchForm.OnPatientSelected = Sub(patientID As Integer, fullname As String)
+                                                       Try
+                                                           txtPName.Text = fullname
+                                                           txtPName.Tag = patientID
+                                                           UpdateSummary()
+                                                           Logger.Info("Patient selected via callback - Name: " & fullname & ", ID: " & patientID.ToString(), "CreateCheckUp")
+                                                       Catch ex As Exception
+                                                           Logger.Error("Error setting patient in CreateCheckUp", ex, "CreateCheckUp")
+                                                       End Try
+                                                   End Sub
 
-                ' Fallback: Pass reference to this CreateCheckUp form (for legacy support)
-                searchForm.ParentCheckUpForm = Me
-                searchForm.StartPosition = FormStartPosition.CenterScreen
-                searchForm.TopMost = True
+                    ' Fallback: Pass reference to this CreateCheckUp form (for legacy support)
+                    searchForm.ParentCheckUpForm = Me
+                    searchForm.StartPosition = FormStartPosition.CenterScreen
+                    searchForm.TopMost = True
 
-                ' Show dialog - searchPatient.FormClosing will handle restoring this form
-                searchForm.ShowDialog()
+                    ' Show dialog - searchPatient.FormClosing will handle restoring this form
+                    searchForm.ShowDialog()
 
-                ' Update summary after patient selection
-                UpdateSummary()
+                    ' Update summary after patient selection
+                    UpdateSummary()
+                End Using
             Catch ex As Exception
                 MsgBox("Error opening patient search: " & ex.Message, vbCritical, "Error")
                 ' On error, restore visibility

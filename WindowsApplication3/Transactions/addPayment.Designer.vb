@@ -42,9 +42,9 @@ Partial Class addPayment
         Me.Label1.AutoSize = True
         Me.Label1.Location = New System.Drawing.Point(33, 28)
         Me.Label1.Name = "Label1"
-        Me.Label1.Size = New System.Drawing.Size(171, 28)
+        Me.Label1.Size = New System.Drawing.Size(166, 28)
         Me.Label1.TabIndex = 0
-        Me.Label1.Text = "Mode of Payment:"
+        Me.Label1.Text = "Payment Method:"
         '
         'cmbMode
         '

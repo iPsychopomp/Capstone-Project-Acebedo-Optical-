@@ -209,11 +209,15 @@ Public Class searchProducts
         Return -1
     End Function
 
-    Private Sub searchProductDGV_CellDoubleClick(sender As Object, e As DataGridViewCellEventArgs) Handles searchProductDGV.CellDoubleClick
+    Private Sub SelectProduct()
         Try
-            If e.RowIndex < 0 Then Return
+            ' Check if any row is selected
+            If searchProductDGV.SelectedRows.Count = 0 Then
+                MsgBox("Please select a product first.", MsgBoxStyle.Information, "Select Product")
+                Return
+            End If
 
-            Dim row As DataGridViewRow = searchProductDGV.Rows(e.RowIndex)
+            Dim row As DataGridViewRow = searchProductDGV.SelectedRows(0)
 
             ' Read fields safely from the bound DataRowView when possible
             Dim productID As String = ""
@@ -256,6 +260,95 @@ Public Class searchProducts
                 gradeForm.LensCategory = category
                 gradeForm.LensUnitPrice = unitPrice
 
+                ' Try to pre-fill OD/OS from the latest saved checkup (tbl_checkup)
+                ' Prefer the patient selected in addPatientTransaction (via searchPatient
+                ' and stored in lblPatientID); if not available, fall back to any
+                ' open CreateCheckUp patient (txtPName.Tag).
+                Try
+                    Dim patientID As Integer = 0
+
+                    ' First preference: active addPatientTransaction patient ID (set from searchPatient)
+                    For Each frm As Form In Application.OpenForms
+                        If TypeOf frm Is addPatientTransaction Then
+                            Dim at As addPatientTransaction = DirectCast(frm, addPatientTransaction)
+                            Try
+                                Dim pidText As String = ""
+                                If at.lblPatientID IsNot Nothing Then
+                                    pidText = at.lblPatientID.Text
+                                End If
+                                Integer.TryParse(pidText, patientID)
+                            Catch
+                            End Try
+                            Exit For
+                        End If
+                    Next
+
+                    ' Fallback: if still no patientID, use any open CreateCheckUp form
+                    If patientID <= 0 Then
+                        For Each frm As Form In Application.OpenForms
+                            If TypeOf frm Is CreateCheckUp Then
+                                Dim chk As CreateCheckUp = DirectCast(frm, CreateCheckUp)
+                                Try
+                                    If chk.txtPName IsNot Nothing AndAlso chk.txtPName.Tag IsNot Nothing Then
+                                        Integer.TryParse(chk.txtPName.Tag.ToString(), patientID)
+                                    End If
+                                Catch
+                                End Try
+                                Exit For
+                            End If
+                        Next
+                    End If
+
+                    If patientID > 0 Then
+                        Dim addOD As String = ""
+                        Dim addOS As String = ""
+
+                        Try
+                            dbConn()
+                            Dim sql As String = "SELECT addOD, addOS FROM tbl_checkup WHERE patientID = ? ORDER BY CheckupDate DESC, checkupID DESC LIMIT 1"
+                            Using cmd As New OdbcCommand(sql, conn)
+                                cmd.Parameters.AddWithValue("?", patientID)
+                                Using rdr As OdbcDataReader = cmd.ExecuteReader()
+                                    If rdr.Read() Then
+                                        Try
+                                            addOD = If(rdr("addOD"), "").ToString().Trim()
+                                        Catch
+                                        End Try
+                                        Try
+                                            addOS = If(rdr("addOS"), "").ToString().Trim()
+                                        Catch
+                                        End Try
+                                    End If
+                                End Using
+                            End Using
+                        Catch
+                        Finally
+                            Try
+                                If conn IsNot Nothing Then
+                                    conn.Close()
+                                    conn.Dispose()
+                                End If
+                            Catch
+                            End Try
+                        End Try
+
+                        Try
+                            If Not String.IsNullOrWhiteSpace(addOD) Then
+                                gradeForm.txtOD.Text = addOD
+                            End If
+                        Catch
+                        End Try
+
+                        Try
+                            If Not String.IsNullOrWhiteSpace(addOS) Then
+                                gradeForm.txtOS.Text = addOS
+                            End If
+                        Catch
+                        End Try
+                    End If
+                Catch
+                End Try
+
                 ' Position selectGrade centered over this form
                 gradeForm.StartPosition = FormStartPosition.Manual
                 Dim screenArea = Screen.FromControl(Me).WorkingArea
@@ -286,7 +379,7 @@ Public Class searchProducts
                 Return
             End If
 
-            ' Locate open addPatientTransaction form
+            ' Locate open addPatientTransaction form for non-Lens products
             Dim target As addPatientTransaction = Nothing
             For Each frm As Form In Application.OpenForms
                 If TypeOf frm Is addPatientTransaction Then
@@ -301,14 +394,6 @@ Public Class searchProducts
             End If
 
             Dim dgv As DataGridView = target.dgvSelectedProducts
-
-            ' If bound to a DataSource, detach to allow programmatic row adds
-            Try
-                If dgv.DataSource IsNot Nothing Then
-                    dgv.DataSource = Nothing
-                End If
-            Catch
-            End Try
 
             ' Ensure required columns exist if Load event was disabled
             If dgv.Columns.Count = 0 Then
@@ -402,8 +487,16 @@ Public Class searchProducts
                 dgv.Refresh()
             Catch
             End Try
+
         Catch ex As Exception
             MsgBox(ex.Message.ToString, vbCritical, "Error")
+        End Try
+    End Sub
+
+    Private Sub btnSelect_Click(sender As Object, e As EventArgs) Handles btnSelect.Click
+        Try
+            SelectProduct()
+        Catch
         End Try
     End Sub
 

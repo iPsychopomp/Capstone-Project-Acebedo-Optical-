@@ -8,6 +8,27 @@ Public Class productsMainte
         LoadProducts()
         ConfigureGridBinding()
         DgvStyle(dgvProducts)
+
+        ' Ensure cmbCategory has an "All Products" option at the top
+        Try
+            If cmbCategory IsNot Nothing Then
+                Dim hasAll As Boolean = False
+                For Each item In cmbCategory.Items
+                    If String.Equals(item.ToString().Trim(), "All Products", StringComparison.OrdinalIgnoreCase) Then
+                        hasAll = True
+                        Exit For
+                    End If
+                Next
+                If Not hasAll Then
+                    cmbCategory.Items.Insert(0, "All Products")
+                End If
+
+                If cmbCategory.Items.Count > 0 AndAlso cmbCategory.SelectedIndex < 0 Then
+                    cmbCategory.SelectedIndex = 0
+                End If
+            End If
+        Catch
+        End Try
     End Sub
 
     Public Sub DgvStyle(ByRef doctorsDGV As DataGridView)
@@ -170,7 +191,12 @@ Public Class productsMainte
         Catch
         End Try
 
-        LoadProducts(selectedCategory, term)
+        ' All Products shows everything (ignores category filter)
+        If String.Equals(selectedCategory, "All Products", StringComparison.OrdinalIgnoreCase) Then
+            LoadProducts("", term)
+        Else
+            LoadProducts(selectedCategory, term)
+        End If
     End Sub
 
     Private Function ValidateFields() As Boolean

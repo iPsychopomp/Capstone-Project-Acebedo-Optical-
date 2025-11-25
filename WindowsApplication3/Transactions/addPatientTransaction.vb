@@ -921,15 +921,21 @@ AfterLoop:
 
         Dim paymentStatus As String
 
+        ' Read current payment mode label text (e.g. "Cash", "G-cash", etc.)
+        Dim modeLabel As String = ""
+        Try
+            If lblMode IsNot Nothing AndAlso Not String.IsNullOrWhiteSpace(lblMode.Text) Then
+                modeLabel = lblMode.Text.Trim()
+            End If
+        Catch
+        End Try
+
         ' Validate that a patient has been selected using the currentPatientID field
         Dim patientID As Integer = currentPatientID
         If patientID <= 0 Then
             MsgBox("Please select a patient before saving this transaction.", vbExclamation, "Patient Required")
             Exit Sub
         End If
-
-
-
 
         If Not Double.TryParse(txtTotal.Text, totalAmount) OrElse totalAmount <= 0 Then
             MsgBox("Total must be greater than 0.", vbCritical, "Error")
@@ -942,6 +948,22 @@ AfterLoop:
             Exit Sub
         End If
         If amountPaid < 0 Then amountPaid = 0
+
+        ' Require that a real payment method has been chosen
+        ' Block save if lblMode is empty, default ("---"), or still "Add Payment method"
+        If String.IsNullOrWhiteSpace(modeLabel) _
+           OrElse String.Equals(modeLabel, "---", StringComparison.OrdinalIgnoreCase) _
+           OrElse String.Equals(modeLabel, "Add Payment method", StringComparison.OrdinalIgnoreCase) Then
+            MsgBox("Please add a payment before saving.", vbExclamation, "Payment Required")
+            Exit Sub
+        End If
+
+        ' Require a positive payment/downpayment amount
+        If amountPaid <= 0 Then
+            MsgBox("Please enter a payment or downpayment before saving.", vbExclamation, "Payment Required")
+            txtAmountPaid.Focus()
+            Exit Sub
+        End If
 
         If amountPaid > totalAmount Then
             MsgBox("Amount Paid cannot be greater than Total.", vbExclamation, "Invalid Payment")

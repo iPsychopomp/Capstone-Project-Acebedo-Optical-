@@ -102,7 +102,28 @@ Public Class dashboard
             ' Load available products into product availability grid
             LoadAvailableProducts()
 
-            ' Load product demand into demand grid
+            ' Ensure cmbCategory has an "All Products" option
+            Try
+                If cmbCategory IsNot Nothing Then
+                    Dim hasAll As Boolean = False
+                    For Each item In cmbCategory.Items
+                        If String.Equals(item.ToString().Trim(), "All Products", StringComparison.OrdinalIgnoreCase) Then
+                            hasAll = True
+                            Exit For
+                        End If
+                    Next
+                    If Not hasAll Then
+                        cmbCategory.Items.Insert(0, "All Products")
+                    End If
+                    If cmbCategory.Items.Count > 0 AndAlso cmbCategory.SelectedIndex < 0 Then
+                        cmbCategory.SelectedIndex = 0
+                    End If
+                End If
+            Catch
+            End Try
+
+            ' Load demand categories and initial data
+            LoadDemandCategories()
             LoadProductDemand()
 
             ' Load appointments into appointment grid (today's appointments by default)
@@ -813,6 +834,55 @@ Public Class dashboard
         End Try
     End Sub
 
+    ' Load distinct demand categories into cmbDemand, including an "All Products" option
+    Private Sub LoadDemandCategories()
+        Try
+            ' Ensure combo exists before using it
+            If cmbDemand Is Nothing Then Return
+
+            Call dbConn()
+
+            cmbDemand.Items.Clear()
+            cmbDemand.Items.Add("All Products")
+
+            Dim sql As String = "SELECT DISTINCT category FROM db_viewproductdemand WHERE category IS NOT NULL AND TRIM(category) <> '' ORDER BY category"
+
+            Using cmd As New OdbcCommand(sql, conn)
+                Using rdr As OdbcDataReader = cmd.ExecuteReader()
+                    While rdr.Read()
+                        Try
+                            Dim cat As String = rdr("category").ToString()
+                            If Not String.IsNullOrWhiteSpace(cat) Then
+                                cmbDemand.Items.Add(cat)
+                            End If
+                        Catch
+                        End Try
+                    End While
+                End Using
+            End Using
+
+            If cmbDemand.Items.Count > 0 Then
+                cmbDemand.SelectedIndex = 0 ' All Products by default
+            End If
+
+        Catch
+            ' On any error, at least make sure All Products exists
+            Try
+                If cmbDemand IsNot Nothing Then
+                    If cmbDemand.Items.Count = 0 Then
+                        cmbDemand.Items.Add("All Products")
+                        cmbDemand.SelectedIndex = 0
+                    End If
+                End If
+            Catch
+            End Try
+        Finally
+            If conn IsNot Nothing AndAlso conn.State = ConnectionState.Open Then
+                conn.Close()
+            End If
+        End Try
+    End Sub
+
     ' Load data for product availability into dgvProductAvail, optionally filtered by category and search text
     Private Sub LoadAvailableProducts(Optional category As String = "", Optional searchText As String = "")
         Try
@@ -880,14 +950,26 @@ Public Class dashboard
     End Sub
 
     ' Load data for product demand from db_viewproductdemand into dgvDemand
-    Private Sub LoadProductDemand()
+    ' Optional category parameter allows filtering by category when provided.
+    Private Sub LoadProductDemand(Optional category As String = "")
         Try
             Call dbConn()
 
             ' Assuming db_viewproductdemand has columns: productID, productName, totalSold, category
-            Dim sql As String = "SELECT productID, productName, totalSold, category FROM db_viewproductdemand ORDER BY productName"
+            Dim sql As String = "SELECT productID, productName, totalSold, category FROM db_viewproductdemand"
+
+            Dim hasCategory As Boolean = Not String.IsNullOrWhiteSpace(category)
+            If hasCategory Then
+                sql &= " WHERE category = ?"
+            End If
+
+            sql &= " ORDER BY productName"
 
             Using cmd As New OdbcCommand(sql, conn)
+                If hasCategory Then
+                    cmd.Parameters.AddWithValue("?", category)
+                End If
+
                 Using rdr As OdbcDataReader = cmd.ExecuteReader()
                     dgvDemand.Rows.Clear()
 
@@ -1011,14 +1093,43 @@ Public Class dashboard
         LoadAppointmentsByDate(dtpAppointment.Value.Date)
     End Sub
 
+    ' When cmbDemand category changes, reload dgvDemand accordingly
+    Private Sub cmbDemand_SelectedIndexChanged(sender As Object, e As EventArgs) Handles cmbDemand.SelectedIndexChanged
+        Try
+            If cmbDemand Is Nothing OrElse cmbDemand.SelectedIndex < 0 Then
+                LoadProductDemand()
+                Return
+            End If
+
+            Dim text As String = cmbDemand.SelectedItem.ToString().Trim()
+
+            ' All Products shows everything
+            If String.Equals(text, "All Products", StringComparison.OrdinalIgnoreCase) Then
+                LoadProductDemand()
+            Else
+                LoadProductDemand(text)
+            End If
+        Catch
+            ' On error, just load all
+            Try
+                LoadProductDemand()
+            Catch
+            End Try
+        End Try
+    End Sub
+
     Private Sub cmbCategory_SelectedIndexChanged(sender As Object, e As EventArgs) Handles cmbCategory.SelectedIndexChanged
         Dim selectedCategory As String = ""
 
         If cmbCategory.SelectedIndex >= 0 Then
-            selectedCategory = cmbCategory.SelectedItem.ToString()
+            selectedCategory = cmbCategory.SelectedItem.ToString().Trim()
         End If
 
-        LoadAvailableProducts(selectedCategory)
+        ' All Products shows everything
+        If String.Equals(selectedCategory, "All Products", StringComparison.OrdinalIgnoreCase) Then
+            LoadAvailableProducts()
+        Else
+            LoadAvailableProducts(selectedCategory)
+        End If
     End Sub
-
 End Class

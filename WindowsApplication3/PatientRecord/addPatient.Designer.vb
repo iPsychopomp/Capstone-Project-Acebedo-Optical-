@@ -631,7 +631,6 @@ Partial Class addPatient
         'pnlDataEntry
         '
         Me.pnlDataEntry.BackColor = System.Drawing.SystemColors.MenuBar
-        Me.pnlDataEntry.Controls.Add(Me.btnBack)
         Me.pnlDataEntry.Controls.Add(Me.pnlSummary)
         Me.pnlDataEntry.Controls.Add(Me.pnlMI)
         Me.pnlDataEntry.Controls.Add(Me.pnlCAI)
@@ -646,6 +645,22 @@ Partial Class addPatient
         Me.pnlDataEntry.Size = New System.Drawing.Size(1540, 825)
         Me.pnlDataEntry.TabIndex = 21
         '
+
+        'btnBack
+        '
+        Me.btnBack.BackColor = System.Drawing.SystemColors.Window
+        Me.btnBack.Font = New System.Drawing.Font("Segoe UI", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.btnBack.ForeColor = System.Drawing.Color.Black
+        Me.btnBack.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft
+        Me.btnBack.Location = New System.Drawing.Point(1310, 3)
+        Me.btnBack.Margin = New System.Windows.Forms.Padding(3, 4, 3, 4)
+        Me.btnBack.Name = "btnBack"
+        Me.btnBack.Size = New System.Drawing.Size(100, 35)
+        Me.btnBack.TabIndex = 208
+        Me.btnBack.Text = "Back"
+        Me.btnBack.UseVisualStyleBackColor = False
+        '
+
         'pnlSummary
         '
         Me.pnlSummary.BackColor = System.Drawing.SystemColors.Window
@@ -1140,9 +1155,11 @@ Partial Class addPatient
         'Panel1
         '
         Me.Panel1.BackColor = System.Drawing.SystemColors.GradientActiveCaption
+        Me.Panel1.Controls.Add(Me.btnBack)
         Me.Panel1.Controls.Add(Me.pbEdit)
         Me.Panel1.Controls.Add(Me.pbAdd)
         Me.Panel1.Controls.Add(Me.lblHead)
+        Me.Panel1.Controls.Add(Me.btnSave)
         Me.Panel1.Dock = System.Windows.Forms.DockStyle.Top
         Me.Panel1.Font = New System.Drawing.Font("Segoe UI", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.Panel1.Location = New System.Drawing.Point(0, 0)

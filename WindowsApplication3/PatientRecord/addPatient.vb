@@ -5,7 +5,7 @@ Imports Newtonsoft.Json
 Imports System.ComponentModel ' Import for CancelEventArgs
 Imports System.Text.RegularExpressions
 
-Public Class addPatient
+Partial Public Class addPatient
     Public SelectedAddress As String ' Set this before showing the form
     Private addressDataLoaded As Boolean = False ' Track if address data is loaded
 
@@ -276,6 +276,7 @@ Public Class addPatient
             cmbCity.ValueMember = "city_code"
 
             cmbBgy.DataSource = Nothing
+            UpdateSummary()
         Catch ex As Exception
             MessageBox.Show("Error loading cities: " & ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error)
         End Try
@@ -291,6 +292,7 @@ Public Class addPatient
                 cmbBgy.DisplayMember = "brgy_name"
                 cmbBgy.ValueMember = "brgy_code"
             End If
+            UpdateSummary()
         Catch ex As Exception
             MessageBox.Show("Error loading barangays: " & ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error)
         End Try
@@ -310,6 +312,7 @@ Public Class addPatient
                 cmbCity.DataSource = Nothing
                 cmbBgy.DataSource = Nothing
             End If
+            UpdateSummary()
         Catch ex As Exception
             MessageBox.Show("Error loading provinces: " & ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error)
         End Try
@@ -831,7 +834,7 @@ Public Class addPatient
     End Sub
 
     Function checkData(ByVal container As Control) As Boolean
-        For Each obj As Object In Container.Controls
+        For Each obj As Object In container.Controls
             If TypeOf obj Is TextBox Then
                 If Len(obj.Text) = 0 Then
                     MsgBox("Please input data", vbCritical, "Save")
@@ -1147,6 +1150,7 @@ Public Class addPatient
         End If
 
         txtAge.Text = age.ToString()
+        UpdateSummary()
     End Sub
 
     Private Sub patientEntry_Load(sender As Object, e As EventArgs) Handles MyBase.Shown
@@ -1246,6 +1250,7 @@ Public Class addPatient
             Debug.WriteLine("Error in phone number formatting: " & ex.Message)
         Finally
             isUpdating = False
+            UpdateSummary()
         End Try
     End Sub
 
@@ -1545,9 +1550,7 @@ Public Class addPatient
         UpdateSummary()
     End Sub
 
-    Private Sub dtpBday_ValueChanged_Summary(sender As Object, e As EventArgs) Handles dtpBday.ValueChanged
-        UpdateSummary()
-    End Sub
+
 
     Private Sub txtAge_TextChanged(sender As Object, e As EventArgs) Handles txtAge.TextChanged
         UpdateSummary()
@@ -1557,17 +1560,11 @@ Public Class addPatient
         UpdateSummary()
     End Sub
 
-    Private Sub cmbRegion_SelectedIndexChanged_Summary(sender As Object, e As EventArgs) Handles cmbRegion.SelectedIndexChanged
-        UpdateSummary()
-    End Sub
 
-    Private Sub cmbProvince_SelectedIndexChanged_Summary(sender As Object, e As EventArgs) Handles cmbProvince.SelectedIndexChanged
-        UpdateSummary()
-    End Sub
 
-    Private Sub cmbCity_SelectedIndexChanged_Summary(sender As Object, e As EventArgs) Handles cmbCity.SelectedIndexChanged
-        UpdateSummary()
-    End Sub
+
+
+
 
     Private Sub cmbBgy_SelectedIndexChanged(sender As Object, e As EventArgs) Handles cmbBgy.SelectedIndexChanged
         UpdateSummary()
@@ -1577,9 +1574,7 @@ Public Class addPatient
         UpdateSummary()
     End Sub
 
-    Private Sub txtMobile_TextChanged_Summary(sender As Object, e As EventArgs) Handles txtMobile.TextChanged
-        UpdateSummary()
-    End Sub
+
 
     Private Sub txtOccu_TextChanged(sender As Object, e As EventArgs) Handles txtOccu.TextChanged
         UpdateSummary()

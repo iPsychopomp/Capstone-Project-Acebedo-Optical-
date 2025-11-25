@@ -573,7 +573,7 @@ Partial Class OrderProduct
     Friend WithEvents PictureBox1 As System.Windows.Forms.PictureBox
     Friend WithEvents Label6 As System.Windows.Forms.Label
     Friend WithEvents productID As System.Windows.Forms.DataGridViewTextBoxColumn
-    Friend WithEvents productName As System.Windows.Forms.DataGridViewTextBoxColumn
+    Friend Shadows WithEvents productName As System.Windows.Forms.DataGridViewTextBoxColumn
     Friend WithEvents category As System.Windows.Forms.DataGridViewTextBoxColumn
     Friend WithEvents product_price As System.Windows.Forms.DataGridViewTextBoxColumn
     Friend WithEvents Quantity As System.Windows.Forms.DataGridViewTextBoxColumn

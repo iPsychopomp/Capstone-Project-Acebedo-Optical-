@@ -1,4 +1,4 @@
-﻿Imports System.Data.Odbc
+Imports System.Data.Odbc
 
 Public Class Payment
     Dim transactionID As Integer
@@ -90,11 +90,12 @@ Public Class Payment
 
 
 
-            ' Only show success message when payment is fully completed
+            ' Show confirmation for both partial and full payments
             If newPendingBalance = 0D Then
-                MessageBox.Show("Payment completed! Transaction is now fully paid.", "Payment Complete", MessageBoxButtons.OK, MessageBoxIcon.Information)
+                MessageBox.Show("Payment completed! Transaction is now fully paid.", "Payment Saved", MessageBoxButtons.OK, MessageBoxIcon.Information)
+            Else
+                MessageBox.Show("Payment saved successfully.", "Payment Saved", MessageBoxButtons.OK, MessageBoxIcon.Information)
             End If
-            ' No message for partial payments - silent processing
             If Application.OpenForms().OfType(Of Transaction).Any() Then
                 Dim transForm = Application.OpenForms().OfType(Of Transaction).First()
                 transForm.LoadTransactions()
@@ -163,41 +164,49 @@ Public Class Payment
                 "INSERT INTO tbl_payments (transactionID, paymentDate, paymentType, amountPaid, referenceNumber, remarks) " & _
                 "VALUES (?, ?, ?, ?, ?, ?)"
 
-            Dim isCash As Boolean = False
-            Dim isGcash As Boolean = False
-
-            Select Case mode
-                Case "Cash"
-                    isCash = True
-                Case "G-cash"
-                    isGcash = True
-                Case "Cash and G-cash"
-                    isCash = True
-                    isGcash = True
-            End Select
-
-            If isCash AndAlso cashAmount > 0D Then
-                Using cmd As New OdbcCommand(insertSql, conn)
-                    cmd.Parameters.AddWithValue("?", transactionID)
-                    cmd.Parameters.AddWithValue("?", paymentDate)
-                    cmd.Parameters.AddWithValue("?", "Cash")
-                    cmd.Parameters.AddWithValue("?", CDbl(cashAmount))
-                    cmd.Parameters.AddWithValue("?", DBNull.Value)
-                    cmd.Parameters.AddWithValue("?", DBNull.Value)
-                    cmd.ExecuteNonQuery()
-                End Using
-            End If
-
-            If isGcash AndAlso gcashAmount > 0D Then
-                Using cmd As New OdbcCommand(insertSql, conn)
-                    cmd.Parameters.AddWithValue("?", transactionID)
-                    cmd.Parameters.AddWithValue("?", paymentDate)
-                    cmd.Parameters.AddWithValue("?", "G-cash")
-                    cmd.Parameters.AddWithValue("?", CDbl(gcashAmount))
-                    cmd.Parameters.AddWithValue("?", reference)
-                    cmd.Parameters.AddWithValue("?", DBNull.Value)
-                    cmd.ExecuteNonQuery()
-                End Using
+            ' Handle all payment types from the database
+            ' Check if mode contains " and " to detect combined payments
+            If mode.Contains(" and ") Then
+                ' Handle combined payments (e.g., "Cash and G-cash")
+                Dim paymentTypes = mode.Split(New String() {" and "}, StringSplitOptions.RemoveEmptyEntries)
+                For Each paymentType In paymentTypes
+                    Dim amount As Decimal = If(paymentType.Trim().ToLower() = "cash", cashAmount, gcashAmount)
+                    If amount > 0D Then
+                        Using cmd As New OdbcCommand(insertSql, conn)
+                            cmd.Parameters.AddWithValue("?", transactionID)
+                            cmd.Parameters.AddWithValue("?", paymentDate)
+                            cmd.Parameters.AddWithValue("?", paymentType.Trim())
+                            cmd.Parameters.AddWithValue("?", CDbl(amount))
+                            ' Only include reference for non-cash payments
+                            If paymentType.Trim().ToLower() = "cash" Then
+                                cmd.Parameters.AddWithValue("?", DBNull.Value)
+                            Else
+                                cmd.Parameters.AddWithValue("?", reference)
+                            End If
+                            cmd.Parameters.AddWithValue("?", DBNull.Value)
+                            cmd.ExecuteNonQuery()
+                        End Using
+                    End If
+                Next
+            Else
+                ' Handle single payment method
+                Dim amount As Decimal = If(mode.Trim().ToLower() = "cash", cashAmount, gcashAmount)
+                If amount > 0D Then
+                    Using cmd As New OdbcCommand(insertSql, conn)
+                        cmd.Parameters.AddWithValue("?", transactionID)
+                        cmd.Parameters.AddWithValue("?", paymentDate)
+                        cmd.Parameters.AddWithValue("?", mode.Trim())
+                        cmd.Parameters.AddWithValue("?", CDbl(amount))
+                        ' Only include reference for non-cash payments
+                        If mode.Trim().ToLower() = "cash" Then
+                            cmd.Parameters.AddWithValue("?", DBNull.Value)
+                        Else
+                            cmd.Parameters.AddWithValue("?", reference)
+                        End If
+                        cmd.Parameters.AddWithValue("?", DBNull.Value)
+                        cmd.ExecuteNonQuery()
+                    End Using
+                End If
             End If
         Catch
             ' Do not interrupt settlement if saving to tbl_payments fails.

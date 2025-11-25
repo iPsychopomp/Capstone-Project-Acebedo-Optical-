@@ -504,6 +504,7 @@
     <Compile Include="Inventory\stockIn.vb">
       <SubType>Form</SubType>
     </Compile>
+    <Compile Include="Data\Logger.vb" />
     <Compile Include="Login\dataModule.vb" />
     <Compile Include="Login\login.Designer.vb">
       <DependentUpon>login.vb</DependentUpon>

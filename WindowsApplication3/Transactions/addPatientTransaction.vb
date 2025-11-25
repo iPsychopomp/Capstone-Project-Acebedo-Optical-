@@ -14,18 +14,112 @@ Public Class addPatientTransaction
     ' Store the patient ID for the transaction
     Private currentPatientID As Integer = 0
 
+    ' Public method to set patient info from searchPatient form
+    Public Sub SetPatientInfo(patientID As Integer, fullname As String)
+        Try
+            ' Check if form is disposed
+            If Me.IsDisposed OrElse Me.Disposing Then
+                Debug.WriteLine("SetPatientInfo: Form is disposed, cannot set patient info")
+                Return
+            End If
 
+            Debug.WriteLine("SetPatientInfo called with ID: " & patientID.ToString() & ", Name: " & fullname)
+
+            ' Set the patient ID
+            currentPatientID = patientID
+
+            ' Use Invoke to ensure we're on the UI thread
+            If Me.InvokeRequired Then
+                Me.Invoke(New Action(Sub() SetPatientInfo(patientID, fullname)))
+                Return
+            End If
+
+            ' Set the patient name in txtPname
+            If txtPname IsNot Nothing AndAlso Not txtPname.IsDisposed Then
+                txtPname.Text = fullname
+                txtPname.ForeColor = Color.Black
+                Debug.WriteLine("txtPname set to: " & txtPname.Text)
+            Else
+                Debug.WriteLine("txtPname is Nothing or disposed")
+            End If
+
+            ' Also set txtPatientName if available
+            If txtPatientName IsNot Nothing AndAlso Not txtPatientName.IsDisposed Then
+                txtPatientName.Text = fullname
+                txtPatientName.ForeColor = Color.Black
+                Debug.WriteLine("txtPatientName set to: " & txtPatientName.Text)
+            Else
+                Debug.WriteLine("txtPatientName is Nothing or disposed")
+            End If
+
+            ' Set lblPatientID if available
+            If lblPatientID IsNot Nothing AndAlso Not lblPatientID.IsDisposed Then
+                lblPatientID.Text = patientID.ToString()
+                Debug.WriteLine("lblPatientID set to: " & lblPatientID.Text)
+            Else
+                Debug.WriteLine("lblPatientID is Nothing or disposed")
+            End If
+
+            ' Update controls and preview panel
+            Try
+                UpdateControls()
+                UpdatePreviewPanel()
+                Debug.WriteLine("UpdateControls and UpdatePreviewPanel completed")
+            Catch ex2 As Exception
+                Debug.WriteLine("Error updating controls: " & ex2.Message)
+            End Try
+
+            ' Force focus to ensure the form is active
+            Try
+                If cmbType IsNot Nothing AndAlso Not cmbType.IsDisposed Then
+                    cmbType.Focus()
+                End If
+            Catch ex3 As Exception
+                Debug.WriteLine("Error setting focus: " & ex3.Message)
+            End Try
+
+            ' Force a refresh of the form
+            Try
+                Me.Refresh()
+            Catch
+            End Try
+
+            Debug.WriteLine("SetPatientInfo completed successfully")
+
+        Catch ex As Exception
+            ' Show error for debugging
+            Debug.WriteLine("SetPatientInfo Error: " & ex.Message)
+            Debug.WriteLine("Stack trace: " & ex.StackTrace)
+        End Try
+    End Sub
 
     Private Sub btnPSearch_Click(sender As Object, e As EventArgs) Handles btnPSearch.Click
         Try
-
-
             ' Show the search patient form with this form as owner
             Using frm As New searchPatient()
+                ' INDUSTRY STANDARD: Use callback pattern
+                frm.OnPatientSelected = Sub(patientID As Integer, fullname As String)
+                                            Try
+                                                SetPatientInfo(patientID, fullname)
+                                                Logger.Info("Patient selected via callback in addPatientTransaction - Name: " & fullname & ", ID: " & patientID.ToString(), "addPatientTransaction")
+                                            Catch ex As Exception
+                                                Logger.Error("Error setting patient in addPatientTransaction", ex, "addPatientTransaction")
+                                            End Try
+                                        End Sub
+
                 frm.StartPosition = FormStartPosition.CenterScreen
-                frm.ShowDialog(Me)
+                Dim result As DialogResult = frm.ShowDialog(Me)
+
+                ' After dialog closes, refresh controls to reflect any changes
+                If result = DialogResult.OK Then
+                    Try
+                        UpdateControls()
+                    Catch
+                    End Try
+                End If
             End Using
         Catch ex As Exception
+            Logger.Error("Error in btnPSearch_Click", ex, "addPatientTransaction")
             MsgBox(ex.Message.ToString, vbCritical, "Error")
             ' Ensure this form is shown even if there's an error
             Me.Visible = True
@@ -34,58 +128,11 @@ Public Class addPatientTransaction
 
     Private Sub btnAdd_Click(sender As Object, e As EventArgs) Handles btnAdd.Click
         Try
-            ' Position addPatientTransaction and searchProducts so both fit on screen,
-            ' centered as a pair horizontally.
-            Dim screenArea = Screen.FromControl(Me).WorkingArea
-            Dim gap As Integer = 10
-
             Using prodct As New searchProducts()
-                prodct.StartPosition = FormStartPosition.Manual
-
-                ' Compute combined width of the two forms plus gap
-                Dim totalWidth As Integer = Me.Width + gap + prodct.Width
-
-                ' Compute left X so the pair is centered on the screen
-                Dim pairLeftX As Integer = screenArea.Left + (screenArea.Width - totalWidth) \ 2
-                If pairLeftX < screenArea.Left Then
-                    pairLeftX = screenArea.Left
-                End If
-
-                ' Vertical position: keep current Y but clamp to screen
-                Dim topY As Integer = Me.Top
-                If topY < screenArea.Top Then
-                    topY = screenArea.Top + 5
-                End If
-                If topY + Me.Height > screenArea.Bottom Then
-                    topY = screenArea.Bottom - Me.Height - 5
-                End If
-
-                ' Place this form on the left of the pair
-                Me.StartPosition = FormStartPosition.Manual
-                Me.Location = New Point(pairLeftX, topY)
-
-                ' Place searchProducts to the right of this form
-                Dim prodX As Integer = pairLeftX + Me.Width + gap
-                Dim prodY As Integer = topY
-
-                ' Clamp searchProducts vertically within screen
-                If prodY + prodct.Height > screenArea.Bottom Then
-                    prodY = screenArea.Bottom - prodct.Height - 5
-                End If
-                If prodY < screenArea.Top Then
-                    prodY = screenArea.Top
-                End If
-
-                prodct.Location = New Point(prodX, prodY)
-
+                prodct.StartPosition = FormStartPosition.CenterScreen
+                prodct.TopMost = True
                 prodct.ShowDialog(Me)
             End Using
-
-            ' After closing searchProducts, return this form to the center of the screen
-            Me.StartPosition = FormStartPosition.Manual
-            Dim centerX As Integer = screenArea.Left + (screenArea.Width - Me.Width) \ 2
-            Dim centerY As Integer = screenArea.Top + (screenArea.Height - Me.Height) \ 2
-            Me.Location = New Point(centerX, centerY)
         Catch ex As Exception
             MsgBox(ex.Message.ToString, vbCritical, "Error")
         End Try
@@ -424,6 +471,268 @@ Public Class addPatientTransaction
             If btnPayment IsNot Nothing Then btnPayment.Enabled = hasItems
         Catch
         End Try
+
+        ' Update the preview panel in real-time
+        UpdatePreviewPanel()
+    End Sub
+
+    Private Sub UpdatePreviewPanel()
+        Try
+            ' Update Fullname (txtFN)
+            If txtFN IsNot Nothing Then
+                txtFN.Text = If(String.IsNullOrWhiteSpace(txtPname.Text), "--", txtPname.Text)
+            End If
+
+            ' Update Transaction Type (txtTT)
+            If txtTT IsNot Nothing Then
+                txtTT.Text = If(cmbType.SelectedItem Is Nothing, "--", cmbType.SelectedItem.ToString())
+            End If
+
+            ' Update Selected Products (txtSP) - with dynamic expansion
+            If txtSP IsNot Nothing Then
+                Dim productList As New System.Text.StringBuilder()
+                Dim productCount As Integer = 0
+                Dim idxName As Integer = GetColumnIndexByKeys(dgvSelectedProducts, "ProductName", "Product Name", "productName")
+
+                If idxName >= 0 Then
+                    For Each r As DataGridViewRow In dgvSelectedProducts.Rows
+                        If r.IsNewRow Then Continue For
+                        Dim pname As String = If(r.Cells(idxName).Value, "").ToString()
+                        If Not String.IsNullOrWhiteSpace(pname) Then
+                            If productCount > 0 Then productList.AppendLine()
+                            productList.Append(pname)
+                            productCount += 1
+                        End If
+                    Next
+                End If
+
+                If productCount = 0 Then
+                    txtSP.Text = "--"
+                Else
+                    txtSP.Text = productList.ToString()
+                End If
+
+                ' Adjust vertical spacing: move labels below txtSP down based on product count
+                AdjustPreviewPanelLayout(productCount)
+            End If
+
+            ' Update Frame Discount (txtFD)
+            If txtFD IsNot Nothing Then
+                txtFD.Text = If(cmbDiscount.SelectedItem Is Nothing, "--", cmbDiscount.SelectedItem.ToString())
+            End If
+
+            ' Update Lens Discount (txtLD)
+            If txtLD IsNot Nothing Then
+                txtLD.Text = If(cmbLensDisc.SelectedItem Is Nothing, "--", cmbLensDisc.SelectedItem.ToString())
+            End If
+
+            ' Update Mode of Payment (txtMOP) and handle visibility
+            Dim paymentMode As String = ""
+            If lblMode IsNot Nothing AndAlso Not String.IsNullOrWhiteSpace(lblMode.Text) AndAlso lblMode.Text <> "---" Then
+                paymentMode = lblMode.Text.Trim()
+            End If
+
+            If txtMOP IsNot Nothing Then
+                txtMOP.Text = If(String.IsNullOrEmpty(paymentMode), "--", paymentMode)
+            End If
+
+            ' Show/Hide fields based on payment mode
+            Dim showCash As Boolean = True
+            Dim showGcash As Boolean = True
+            Dim showRef As Boolean = True
+
+            If String.Equals(paymentMode, "Cash", StringComparison.OrdinalIgnoreCase) Then
+                ' Cash only: hide G-cash and Reference
+                showGcash = False
+                showRef = False
+            ElseIf String.Equals(paymentMode, "G-cash", StringComparison.OrdinalIgnoreCase) Then
+                ' G-cash only: hide Cash
+                showCash = False
+            ElseIf String.Equals(paymentMode, "Cash and G-cash", StringComparison.OrdinalIgnoreCase) Then
+                ' Both: show all
+                showCash = True
+                showGcash = True
+                showRef = True
+            End If
+
+            ' Apply visibility to Cash field and label
+            Try
+                If txtC IsNot Nothing Then
+                    txtC.Visible = showCash
+                    txtC.Text = If(String.IsNullOrWhiteSpace(lblCash.Text) OrElse lblCash.Text = "---", "--", lblCash.Text)
+                End If
+                Dim label22 As Label = TryCast(pnlPPS.Controls("Label22"), Label)
+                If label22 IsNot Nothing Then label22.Visible = showCash
+            Catch
+            End Try
+
+            ' Apply visibility to G-cash field and label
+            Try
+                If txtGC IsNot Nothing Then
+                    txtGC.Visible = showGcash
+                    txtGC.Text = If(String.IsNullOrWhiteSpace(lblGcash.Text) OrElse lblGcash.Text = "---", "--", lblGcash.Text)
+                End If
+                Dim label23 As Label = TryCast(pnlPPS.Controls("Label23"), Label)
+                If label23 IsNot Nothing Then label23.Visible = showGcash
+            Catch
+            End Try
+
+            ' Apply visibility to Reference field and label
+            Try
+                If txtRef IsNot Nothing Then
+                    txtRef.Visible = showRef
+                    txtRef.Text = If(String.IsNullOrWhiteSpace(txtReference.Text), "--", txtReference.Text)
+                End If
+                Dim label24 As Label = TryCast(pnlPPS.Controls("Label24"), Label)
+                If label24 IsNot Nothing Then label24.Visible = showRef
+            Catch
+            End Try
+
+            ' Update Sub Total (txtST)
+            If txtST IsNot Nothing Then
+                txtST.Text = If(String.IsNullOrWhiteSpace(txtSubTotal.Text) OrElse txtSubTotal.Text = "--", "--", txtSubTotal.Text)
+            End If
+
+            ' Update Total Discount (txtTD)
+            If txtTD IsNot Nothing Then
+                txtTD.Text = If(String.IsNullOrWhiteSpace(txtTotalDiscount.Text) OrElse txtTotalDiscount.Text = "--", "--", txtTotalDiscount.Text)
+            End If
+
+            ' Update Total Price (txtTP)
+            If txtTP IsNot Nothing Then
+                txtTP.Text = If(String.IsNullOrWhiteSpace(txtTotal.Text) OrElse txtTotal.Text = "--", "--", txtTotal.Text)
+            End If
+
+            ' Update Amount Paid (txtAP)
+            If txtAP IsNot Nothing Then
+                txtAP.Text = If(String.IsNullOrWhiteSpace(txtAmountPaid.Text), "--", txtAmountPaid.Text)
+            End If
+
+        Catch ex As Exception
+            ' Silently ignore preview panel update errors
+        End Try
+    End Sub
+
+    Private Sub AdjustPreviewPanelLayout(productCount As Integer)
+        Try
+            ' Base Y position for txtSP
+            Dim baseSPY As Integer = 119
+            ' Each product line adds approximately 18 pixels (tighter spacing for products)
+            Dim lineHeight As Integer = 18
+            Dim extraLines As Integer = Math.Max(0, productCount - 1)
+            Dim productOffset As Integer = extraLines * lineHeight
+
+            ' Calculate additional offset based on hidden payment fields
+            Dim paymentOffset As Integer = 0
+            Dim hiddenFieldHeight As Integer = 35 ' Height per hidden field row (consistent spacing)
+
+            ' Check visibility of payment fields
+            Dim cashVisible As Boolean = True
+            Dim gcashVisible As Boolean = True
+            Dim refVisible As Boolean = True
+
+            Try
+                If txtC IsNot Nothing Then cashVisible = txtC.Visible
+            Catch
+            End Try
+            Try
+                If txtGC IsNot Nothing Then gcashVisible = txtGC.Visible
+            Catch
+            End Try
+            Try
+                If txtRef IsNot Nothing Then refVisible = txtRef.Visible
+            Catch
+            End Try
+
+            ' Calculate how many fields are hidden
+            If Not cashVisible Then paymentOffset -= hiddenFieldHeight
+            If Not gcashVisible Then paymentOffset -= hiddenFieldHeight
+            If Not refVisible Then paymentOffset -= hiddenFieldHeight
+
+            ' Base positions for all controls with consistent 35px spacing
+            Dim basePositions As New Dictionary(Of String, Integer) From {
+                {"txtFD", 154},
+                {"Label19", 154},
+                {"txtLD", 189},
+                {"Label20", 189},
+                {"txtMOP", 224},
+                {"Label21", 224},
+                {"txtC", 259},
+                {"Label22", 259},
+                {"txtGC", 294},
+                {"Label23", 294},
+                {"txtRef", 329},
+                {"Label24", 329},
+                {"txtST", 364},
+                {"Label28", 364},
+                {"txtTD", 399},
+                {"Label25", 399},
+                {"txtTP", 434},
+                {"Label26", 434},
+                {"txtAP", 469},
+                {"Label27", 469}
+            }
+
+            ' Apply offset to each control
+            For Each kvp In basePositions
+                Dim ctrl As Control = Nothing
+                Select Case kvp.Key
+                    Case "txtFD" : ctrl = txtFD
+                    Case "Label19" : ctrl = pnlPPS.Controls("Label19")
+                    Case "txtLD" : ctrl = txtLD
+                    Case "Label20" : ctrl = pnlPPS.Controls("Label20")
+                    Case "txtMOP" : ctrl = txtMOP
+                    Case "Label21" : ctrl = pnlPPS.Controls("Label21")
+                    Case "txtC" : ctrl = txtC
+                    Case "Label22" : ctrl = pnlPPS.Controls("Label22")
+                    Case "txtGC" : ctrl = txtGC
+                    Case "Label23" : ctrl = pnlPPS.Controls("Label23")
+                    Case "txtRef" : ctrl = txtRef
+                    Case "Label24" : ctrl = pnlPPS.Controls("Label24")
+                    Case "txtST" : ctrl = txtST
+                    Case "Label28" : ctrl = pnlPPS.Controls("Label28")
+                    Case "txtTD" : ctrl = txtTD
+                    Case "Label25" : ctrl = pnlPPS.Controls("Label25")
+                    Case "txtTP" : ctrl = txtTP
+                    Case "Label26" : ctrl = pnlPPS.Controls("Label26")
+                    Case "txtAP" : ctrl = txtAP
+                    Case "Label27" : ctrl = pnlPPS.Controls("Label27")
+                End Select
+
+                If ctrl IsNot Nothing Then
+                    ' Apply product offset to all fields
+                    Dim totalOffset As Integer = productOffset
+
+                    ' Apply payment offset only to fields below the payment section (txtST and below)
+                    If kvp.Key = "txtST" OrElse kvp.Key = "Label28" OrElse _
+                       kvp.Key = "txtTD" OrElse kvp.Key = "Label25" OrElse _
+                       kvp.Key = "txtTP" OrElse kvp.Key = "Label26" OrElse _
+                       kvp.Key = "txtAP" OrElse kvp.Key = "Label27" Then
+                        totalOffset += paymentOffset
+                    End If
+
+                    ctrl.Top = kvp.Value + totalOffset
+                End If
+            Next
+
+            ' Expand panel height if needed
+            Dim minPanelHeight As Integer = 520
+            Dim requiredHeight As Integer = 500 + productOffset + paymentOffset
+            If pnlPPS IsNot Nothing Then
+                pnlPPS.Height = Math.Max(minPanelHeight, requiredHeight)
+            End If
+
+            ' Ensure btnSave stays on top when panel expands
+            Try
+                If btnSave IsNot Nothing Then
+                    btnSave.BringToFront()
+                End If
+            Catch
+            End Try
+
+        Catch ex As Exception
+            ' Silently ignore layout adjustment errors
+        End Try
     End Sub
 
     Private Sub RecomputeGridTotals()
@@ -580,8 +889,6 @@ AfterLoop:
         End Try
     End Sub
 
-    
-
     ' ===================== NEW ACTIVE SAVE FLOW (outside #If False) =====================
     Private Sub btnSave_Click(sender As Object, e As EventArgs) Handles btnSave.Click
         SaveTransactionNew()
@@ -622,7 +929,7 @@ AfterLoop:
         End If
 
 
-        
+
 
         If Not Double.TryParse(txtTotal.Text, totalAmount) OrElse totalAmount <= 0 Then
             MsgBox("Total must be greater than 0.", vbCritical, "Error")
@@ -738,30 +1045,13 @@ AfterLoop:
             ' Show success message
             MsgBox("Transaction saved successfully!", vbInformation, "Success")
 
-            ' Refresh parent form's DataGridView if it exists
+            ' Navigate back to transaction form
             Try
-                Dim parentForm As Form = Me.Owner
-                If parentForm IsNot Nothing Then
-                    ' Try to find and call a refresh method on the parent form
-                    Dim refreshMethod = parentForm.GetType().GetMethod("LoadTransactions")
-                    If refreshMethod IsNot Nothing Then
-                        refreshMethod.Invoke(parentForm, Nothing)
-                    End If
-
-                    ' Alternative: try to find a DataGridView and refresh it
-                    For Each ctrl As Control In parentForm.Controls
-                        If TypeOf ctrl Is DataGridView Then
-                            Dim dgv As DataGridView = CType(ctrl, DataGridView)
-                            dgv.Refresh()
-                        End If
-                    Next
-                End If
-            Catch
-                ' Silently ignore if parent refresh fails
+                NavigateToTransactionForm()
+            Catch ex As Exception
+                ' If navigation fails, just close the form
+                Me.Close()
             End Try
-
-            ' Close the form
-            Me.Close()
 
         Catch ex As Exception
             MsgBox("Error: " & ex.Message, vbCritical, "Save Failed")
@@ -861,7 +1151,6 @@ AfterLoop:
         End If
 
     End Sub
-
 
     Private Sub SaveItemsNew(transactionID As Integer)
         If conn.State <> ConnectionState.Open Then conn.Open()
@@ -1036,8 +1325,11 @@ AfterLoop:
 
     ' Full loader for edit mode: restores header fields and items (including OD/OS) from DB
     Private Sub LoadTransactionForEdit(transactionID As Integer)
+        Dim localConn As Odbc.OdbcConnection = Nothing
         Try
-            Call dbConn()
+            ' Use a fresh local connection instead of global conn
+            localConn = New Odbc.OdbcConnection(myDSN)
+            localConn.Open()
 
             ' -------- Header: tbl_transactions --------
             Dim sql As String = "SELECT patientID, patientName, totalAmount, amountPaid, paymentType, referenceNum, transactionDate, discount, lensDiscount, isCheckUp " & _
@@ -1045,11 +1337,16 @@ AfterLoop:
             Dim loadedPatientName As String = ""
             Dim loadedIsCheckCode As Integer = 3
 
-            Using cmd As New Odbc.OdbcCommand(sql, conn)
+            Using cmd As New Odbc.OdbcCommand(sql, localConn)
                 cmd.Parameters.AddWithValue("?", transactionID)
                 Using rdr = cmd.ExecuteReader()
                     If rdr.Read() Then
-                        lblPatientID.Text = If(rdr("patientID") Is DBNull.Value, "", rdr("patientID").ToString())
+                        ' Store the patient ID for validation
+                        Dim patientIDValue As String = If(rdr("patientID") Is DBNull.Value, "", rdr("patientID").ToString())
+                        lblPatientID.Text = patientIDValue
+                        If Not String.IsNullOrEmpty(patientIDValue) Then
+                            Integer.TryParse(patientIDValue, currentPatientID)
+                        End If
 
                         ' Store patient name and populate both txtPatientName (if present) and txtPname
                         loadedPatientName = If(rdr("patientName") Is DBNull.Value, "", rdr("patientName").ToString())
@@ -1064,6 +1361,14 @@ AfterLoop:
 
                         txtTotal.Text = If(IsDBNull(rdr("totalAmount")), "0.00", Convert.ToDecimal(rdr("totalAmount")).ToString("N2"))
                         txtAmountPaid.Text = If(IsDBNull(rdr("amountPaid")), "0.00", Convert.ToDecimal(rdr("amountPaid")).ToString("N2"))
+
+                        ' Payment Type (mode)
+                        Try
+                            If lblMode IsNot Nothing Then
+                                lblMode.Text = If(IsDBNull(rdr("paymentType")), "", rdr("paymentType").ToString())
+                            End If
+                        Catch
+                        End Try
 
                         ' Reference number
                         Try
@@ -1106,7 +1411,7 @@ AfterLoop:
 
             Dim itemsSql As String = "SELECT productID, productName, category, quantity, unitPrice, totalPrice, odGrade, osGrade, priceOD, priceOS " & _
                                      "FROM tbl_transaction_items WHERE transactionID = ?"
-            Using cmdItems As New Odbc.OdbcCommand(itemsSql, conn)
+            Using cmdItems As New Odbc.OdbcCommand(itemsSql, localConn)
                 cmdItems.Parameters.AddWithValue("?", transactionID)
                 Using rdrItems = cmdItems.ExecuteReader()
                     Dim odGrade As String = ""
@@ -1180,10 +1485,53 @@ AfterLoop:
             Catch
             End Try
 
+            ' -------- Load payment details from tbl_payments --------
+            Try
+                Dim cashAmount As Decimal = 0D
+                Dim gcashAmount As Decimal = 0D
+
+                Dim paymentsSql As String = "SELECT paymentType, amountPaid FROM tbl_payments WHERE transactionID = ?"
+                Using cmdPayments As New Odbc.OdbcCommand(paymentsSql, localConn)
+                    cmdPayments.Parameters.AddWithValue("?", transactionID)
+                    Using rdrPayments = cmdPayments.ExecuteReader()
+                        While rdrPayments.Read()
+                            Dim payType As String = If(IsDBNull(rdrPayments("paymentType")), "", rdrPayments("paymentType").ToString())
+                            Dim amount As Decimal = If(IsDBNull(rdrPayments("amountPaid")), 0D, Convert.ToDecimal(rdrPayments("amountPaid")))
+
+                            If String.Equals(payType, "Cash", StringComparison.OrdinalIgnoreCase) Then
+                                cashAmount += amount
+                            ElseIf String.Equals(payType, "G-cash", StringComparison.OrdinalIgnoreCase) Then
+                                gcashAmount += amount
+                            End If
+                        End While
+                    End Using
+                End Using
+
+                ' Set the labels
+                Try
+                    If lblCash IsNot Nothing Then
+                        lblCash.Text = cashAmount.ToString("0.00")
+                    End If
+                Catch
+                End Try
+
+                Try
+                    If lblGcash IsNot Nothing Then
+                        lblGcash.Text = gcashAmount.ToString("0.00")
+                    End If
+                Catch
+                End Try
+            Catch
+                ' Ignore payment loading errors
+            End Try
+
         Catch ex As Exception
             MessageBox.Show("Error loading transaction: " & ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error)
         Finally
-            If conn IsNot Nothing AndAlso conn.State = ConnectionState.Open Then conn.Close()
+            If localConn IsNot Nothing AndAlso localConn.State = ConnectionState.Open Then
+                localConn.Close()
+                localConn.Dispose()
+            End If
         End Try
     End Sub
 
@@ -1193,6 +1541,14 @@ AfterLoop:
         ' When opened from Transaction.btnEdit, restore full header + items from DB
         If IsEditMode AndAlso TransactionID > 0 Then
             LoadTransactionForEdit(TransactionID)
+        Else
+            ' For new transactions, ensure patient fields are visible and enabled
+            Try
+                If txtPname IsNot Nothing Then txtPname.Enabled = True
+                If txtPatientName IsNot Nothing Then txtPatientName.Enabled = True
+                If btnPSearch IsNot Nothing Then btnPSearch.Enabled = True
+            Catch
+            End Try
         End If
 
         ' Initialize control enabled state based on current patient/text/grid
@@ -1259,5 +1615,64 @@ AfterLoop:
             pyment.StartPosition = FormStartPosition.CenterScreen
             pyment.ShowDialog(Me)
         End Using
+        ' Update preview after payment dialog closes
+        Try
+            UpdatePreviewPanel()
+        Catch
+        End Try
+    End Sub
+
+    ' Event handlers for real-time preview updates
+    Private Sub txtReference_TextChanged(sender As Object, e As EventArgs) Handles txtReference.TextChanged
+        Try
+            UpdatePreviewPanel()
+        Catch
+        End Try
+    End Sub
+
+    Private Sub txtAmountPaid_TextChanged(sender As Object, e As EventArgs) Handles txtAmountPaid.TextChanged
+        Try
+            UpdatePreviewPanel()
+        Catch
+        End Try
+    End Sub
+
+    Private Sub txtSP_Click(sender As Object, e As EventArgs) Handles txtSP.Click
+
+    End Sub
+
+    Private Sub btnBack_Click(sender As Object, e As EventArgs) Handles btnBack.Click
+        Try
+            ' Navigate back to transaction form
+            NavigateToTransactionForm()
+        Catch ex As Exception
+            MessageBox.Show("Error navigating back: " & ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error)
+        End Try
+    End Sub
+
+    Private Sub NavigateToTransactionForm()
+        Try
+            ' Find the MainForm
+            Dim mainForm As MainForm = Nothing
+            For Each openForm As Form In Application.OpenForms
+                If TypeOf openForm Is MainForm Then
+                    mainForm = DirectCast(openForm, MainForm)
+                    Exit For
+                End If
+            Next
+
+            If mainForm IsNot Nothing Then
+                ' Create and show transaction form in MainForm container
+                Dim transForm As New Transaction()
+                mainForm.ShowFormControls(transForm)
+                transForm.LoadTransactions()
+            Else
+                ' Fallback: just close this form
+                Me.Close()
+            End If
+        Catch ex As Exception
+            ' If anything fails, just close the form
+            Me.Close()
+        End Try
     End Sub
 End Class

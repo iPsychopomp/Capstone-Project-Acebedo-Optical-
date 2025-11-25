@@ -6,14 +6,21 @@ Public Class PatientNextAppointment
 
     Private Sub btnSave_Click(sender As Object, e As EventArgs) Handles btnSave.Click
         Try
+            ' Check if doctor is selected (not the placeholder)
             If cmbDoctors.SelectedItem Is Nothing Then
                 MsgBox("Please select a doctor.", vbExclamation, "Missing Doctor")
                 Exit Sub
             End If
 
+            Dim selectedDoc As KeyValuePair(Of String, String) = DirectCast(cmbDoctors.SelectedItem, KeyValuePair(Of String, String))
+            If String.IsNullOrEmpty(selectedDoc.Key) Then
+                MsgBox("Please select a doctor.", vbExclamation, "Missing Doctor")
+                Exit Sub
+            End If
+
             ' Check if AppointmentType and patientName are available
-            If String.IsNullOrEmpty(cmbAppointmentType.Text) Then
-                MsgBox("Please select a patient type.", vbExclamation, "Missing Patient Type")
+            If String.IsNullOrEmpty(cmbAppointmentType.Text) OrElse cmbAppointmentType.Text = "-- Select Appointment Type --" Then
+                MsgBox("Please select an appointment type.", vbExclamation, "Missing Appointment Type")
                 Exit Sub
             End If
 
@@ -47,12 +54,15 @@ Public Class PatientNextAppointment
             Dim selectedDoctorID As String = selectedDoctor.Key
             Dim selectedDoctorName As String = selectedDoctor.Value
 
-            ' Get reason text, default to empty string if null or whitespace
-            Dim reason As String = If(String.IsNullOrWhiteSpace(txtReason.Text), "", txtReason.Text.Trim())
+            ' Get reason text, default to "N/A" if null or whitespace
+            Dim reason As String = If(String.IsNullOrWhiteSpace(txtReason.Text), "N/A", txtReason.Text.Trim())
 
-            ' Insert SQL with patientType, patientName, and reason
-            Dim insertSql As String = "INSERT INTO tbl_appointments (patientID, doctorID, doctorName, patientName, AppointmentType, appointmentDate, checkupID, reason) " & _
-                                      "VALUES (?, ?, ?, ?, ?, ?, ?, ?)"
+            ' Get appointment time from dtpAT control
+            Dim appointmentTime As String = dtpAT.Value.ToString("HH:mm:ss")
+
+            ' Insert SQL with patientType, patientName, reason, and AppointmentTime
+            Dim insertSql As String = "INSERT INTO tbl_appointments (patientID, doctorID, doctorName, patientName, AppointmentType, appointmentDate, AppointmentTime, checkupID, reason) " & _
+                                      "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)"
 
             Using insertCmd As New Odbc.OdbcCommand(insertSql, conn)
                 insertCmd.Parameters.AddWithValue("?", selectedPatientID)
@@ -60,7 +70,8 @@ Public Class PatientNextAppointment
                 insertCmd.Parameters.AddWithValue("?", selectedDoctorName)
                 insertCmd.Parameters.AddWithValue("?", lblPatientName.Text)
                 insertCmd.Parameters.AddWithValue("?", cmbAppointmentType.Text)
-                insertCmd.Parameters.AddWithValue("?", dtpDate.Value.ToString("yyyy-MM-dd HH:mm:ss"))
+                insertCmd.Parameters.AddWithValue("?", dtpDate.Value.ToString("yyyy-MM-dd"))
+                insertCmd.Parameters.AddWithValue("?", appointmentTime)
                 insertCmd.Parameters.AddWithValue("?", latestCheckupID)
                 insertCmd.Parameters.AddWithValue("?", reason)
                 insertCmd.ExecuteNonQuery()
@@ -119,6 +130,9 @@ Public Class PatientNextAppointment
             cmbDoctors.Items.Clear()
             Dim doctorList As New List(Of KeyValuePair(Of String, String))
 
+            ' Add empty placeholder as first item so no doctor is selected by default
+            doctorList.Add(New KeyValuePair(Of String, String)("", "-- Select Doctor --"))
+
             While reader.Read()
                 doctorList.Add(New KeyValuePair(Of String, String)(reader("doctorID").ToString(), reader("FullName").ToString()))
             End While
@@ -145,6 +159,14 @@ Public Class PatientNextAppointment
     Private Sub PatientsQueue_Load(sender As Object, e As EventArgs) Handles MyBase.Load
 
         LoadDoctorNames()
+
+        ' Add placeholder for Appointment Type and set as default
+        cmbAppointmentType.Items.Clear()
+        cmbAppointmentType.Items.Add("-- Select Appointment Type --")
+        cmbAppointmentType.Items.Add("Check-up")
+        cmbAppointmentType.Items.Add("Follow-up")
+        cmbAppointmentType.Items.Add("Consultation Only")
+        cmbAppointmentType.SelectedIndex = 0
 
         ' Set minimum date to tomorrow (cannot select past dates or today)
         dtpDate.MinDate = DateTime.Today.AddDays(1)
@@ -193,6 +215,13 @@ Public Class PatientNextAppointment
         If dtpDate.Value.Date <= DateTime.Today Then
             dtpDate.Value = DateTime.Today.AddDays(1)
             MsgBox("Appointment date must be in the future. Date has been set to tomorrow.", vbInformation, "Date Adjusted")
+        End If
+    End Sub
+
+    Private Sub txtReason_Leave(sender As Object, e As EventArgs) Handles txtReason.Leave
+        ' Auto-fill "N/A" if reason is empty when user tabs out
+        If String.IsNullOrWhiteSpace(txtReason.Text) Then
+            txtReason.Text = "N/A"
         End If
     End Sub
 

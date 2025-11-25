@@ -149,6 +149,32 @@ Public Class CreateCheckUp
         End If
     End Sub
 
+    ' Flag to track if form should stay hidden (during patient search/add flow)
+    Private shouldStayHidden As Boolean = False
+    ' Also stay hidden after search closes when opening Add Patient
+    Private stayHiddenAfterSearchClose As Boolean = False
+
+    ' NOTE: VB is case-insensitive; use a different name for the public property
+    Public Property KeepHiddenAfterSearchClose As Boolean
+        Get
+            Return stayHiddenAfterSearchClose
+        End Get
+        Set(value As Boolean)
+            stayHiddenAfterSearchClose = value
+        End Set
+    End Property
+
+    ' Override VisibleChanged to prevent unwanted showing
+    Protected Overrides Sub OnVisibleChanged(e As EventArgs)
+        MyBase.OnVisibleChanged(e)
+
+        ' If we're supposed to stay hidden, force hide
+        If (shouldStayHidden Or stayHiddenAfterSearchClose) AndAlso Me.Visible Then
+            Me.Visible = False
+            Me.Hide()
+        End If
+    End Sub
+
     Private Sub CreateCheckUp_Load(sender As Object, e As EventArgs) Handles MyBase.Load
         LoadPatientNames()
         SetupPatientAutoComplete()
@@ -267,7 +293,8 @@ Public Class CreateCheckUp
                 DataSaved = True
                 Try
                     modCheckUp.RefreshCheckUpDGV()
-                Catch
+                Catch ex As Exception
+                    Debug.WriteLine("Error refreshing checkup list: " & ex.Message)
                 End Try
             Catch ex As Exception
                 MsgBox("Error saving checkup: " & ex.Message, vbCritical, "Save Error")
@@ -414,48 +441,22 @@ Public Class CreateCheckUp
     'End Sub
 
     Private Sub btnCancel_Click(sender As Object, e As EventArgs) Handles btnCancel.Click
-        Close()
+        Try
+            ' Simply close the dialog without saving
+            Me.DialogResult = DialogResult.Cancel
+            Me.Close()
+        Catch ex As Exception
+            MessageBox.Show("Error closing form: " & ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error)
+        End Try
     End Sub
 
     Private Sub btnBack_Click(sender As Object, e As EventArgs) Handles btnBack.Click
         Try
-            ' Find the MainForm instance
-            Dim mainForm As MainForm = Nothing
-            For Each frm As Form In Application.OpenForms
-                If TypeOf frm Is MainForm Then
-                    mainForm = DirectCast(frm, MainForm)
-                    Exit For
-                End If
-            Next
-
-            If mainForm IsNot Nothing Then
-                ' Check if checkUp form already exists in open forms
-                Dim existingCheckUp As checkUp = Nothing
-                For Each frm As Form In Application.OpenForms
-                    If TypeOf frm Is checkUp Then
-                        existingCheckUp = DirectCast(frm, checkUp)
-                        Exit For
-                    End If
-                Next
-
-                ' If exists, show and reload it; otherwise create new
-                If existingCheckUp IsNot Nothing Then
-                    mainForm.ShowFormControls(existingCheckUp)
-                    existingCheckUp.LoadPage()
-                Else
-                    Dim checkUpForm As New checkUp()
-                    mainForm.ShowFormControls(checkUpForm)
-                    checkUpForm.LoadPage()
-                End If
-
-                ' Close this form
-                Me.Close()
-            Else
-                ' Fallback: just close the form
-                Me.Close()
-            End If
+            ' Simply close the dialog without saving
+            Me.DialogResult = DialogResult.Cancel
+            Me.Close()
         Catch ex As Exception
-            MessageBox.Show("Error navigating back: " & ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error)
+            MessageBox.Show("Error closing form: " & ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error)
         End Try
     End Sub
 
@@ -622,23 +623,62 @@ Public Class CreateCheckUp
 
     Private Sub btnSPatient_Click(sender As Object, e As EventArgs) Handles btnSPatient.Click
         Try
-            ' Show the search patient form as a dialog
-            Using searchForm As New searchPatient()
+            ' Set flag to indicate form should stay hidden during patient search/add flow
+            shouldStayHidden = True
+            KeepHiddenAfterSearchClose = True
+
+            ' Hide CreateCheckUp form before showing search dialog
+            Me.Visible = False
+            Me.Hide()
+            Me.SendToBack()
+
+            Try
+                ' Show the search patient form as a dialog
+                Dim searchForm As New searchPatient()
+
+                ' INDUSTRY STANDARD: Use callback pattern instead of form reference
+                searchForm.OnPatientSelected = Sub(patientID As Integer, fullname As String)
+                                                   Try
+                                                       txtPName.Text = fullname
+                                                       txtPName.Tag = patientID
+                                                       UpdateSummary()
+                                                       Logger.Info("Patient selected via callback - Name: " & fullname & ", ID: " & patientID.ToString(), "CreateCheckUp")
+                                                   Catch ex As Exception
+                                                       Logger.Error("Error setting patient in CreateCheckUp", ex, "CreateCheckUp")
+                                                   End Try
+                                               End Sub
+
+                ' Fallback: Pass reference to this CreateCheckUp form (for legacy support)
+                searchForm.ParentCheckUpForm = Me
                 searchForm.StartPosition = FormStartPosition.CenterScreen
+                searchForm.TopMost = True
 
-                ' Find the MainForm and set it as owner
-                Dim mainForm As Form = Application.OpenForms.OfType(Of MainForm)().FirstOrDefault()
-                If mainForm IsNot Nothing Then
-                    searchForm.ShowDialog(mainForm)
-                Else
-                    searchForm.ShowDialog()
-                End If
-            End Using
+                ' Show dialog - searchPatient.FormClosing will handle restoring this form
+                searchForm.ShowDialog()
 
-            ' Update summary after patient selection
-            UpdateSummary()
+                ' Update summary after patient selection
+                UpdateSummary()
+            Catch ex As Exception
+                MsgBox("Error opening patient search: " & ex.Message, vbCritical, "Error")
+                ' On error, restore visibility
+                shouldStayHidden = False
+                KeepHiddenAfterSearchClose = False
+                Me.Visible = True
+                Me.Show()
+                Me.BringToFront()
+                Me.Focus()
+            End Try
+
         Catch ex As Exception
-            MsgBox("Error opening patient search: " & ex.Message, vbCritical, "Error")
+            ' Outer catch to handle any unexpected errors
+            shouldStayHidden = False
+            KeepHiddenAfterSearchClose = False
+            Try
+                Me.Visible = True
+                Me.Show()
+            Catch
+            End Try
+            MsgBox("Unexpected error: " & ex.Message, vbCritical, "Error")
         End Try
     End Sub
 

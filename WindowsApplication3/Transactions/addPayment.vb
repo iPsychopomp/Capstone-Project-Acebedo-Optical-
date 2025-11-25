@@ -251,13 +251,40 @@
             End Try
 
         Else
+            ' Try to find addPatientTransaction - check both Owner and embedded forms
             Dim parent As addPatientTransaction = TryCast(Me.Owner, addPatientTransaction)
+
+            ' If not found via Owner, search in MainForm's container
+            If parent Is Nothing Then
+                For Each frm As Form In Application.OpenForms
+                    If TypeOf frm Is MainForm Then
+                        Dim mainForm As MainForm = DirectCast(frm, MainForm)
+                        ' Search for addPatientTransaction in the container
+                        For Each ctrl As Control In mainForm.Controls
+                            If TypeOf ctrl Is Panel Then
+                                For Each innerCtrl As Control In ctrl.Controls
+                                    If TypeOf innerCtrl Is addPatientTransaction Then
+                                        parent = DirectCast(innerCtrl, addPatientTransaction)
+                                        Exit For
+                                    End If
+                                Next
+                                If parent IsNot Nothing Then Exit For
+                            End If
+                        Next
+                        If parent IsNot Nothing Then Exit For
+                    End If
+                Next
+            End If
+
             If parent IsNot Nothing Then
 
                 ' Validate against final total in addPatientTransaction
                 Dim finalTotal As Decimal = 0D
                 Try
-                    Decimal.TryParse(parent.txtTotal.Text, finalTotal)
+                    Dim txtTotal = parent.Controls.Find("txtTotal", True)
+                    If txtTotal IsNot Nothing AndAlso txtTotal.Length > 0 Then
+                        Decimal.TryParse(txtTotal(0).Text, finalTotal)
+                    End If
                 Catch
                 End Try
 
@@ -266,32 +293,43 @@
                     Exit Sub
                 End If
 
-                ' Push values back to parent form
+                ' Push values back to parent form using Controls.Find for embedded forms
                 Try
-                    parent.lblMode.Text = mode
-                Catch
-                End Try
-
-                Try
-                    parent.lblCash.Text = cashAmount.ToString("0.00")
-                Catch
-                End Try
-
-                Try
-                    parent.lblGcash.Text = gcashAmount.ToString("0.00")
-                Catch
-                End Try
-
-                Try
-                    If parent.txtReference IsNot Nothing Then
-                        parent.txtReference.Text = refText
+                    Dim lblMode = parent.Controls.Find("lblMode", True)
+                    If lblMode IsNot Nothing AndAlso lblMode.Length > 0 Then
+                        lblMode(0).Text = mode
                     End If
                 Catch
                 End Try
 
                 Try
-                    If parent.txtAmountPaid IsNot Nothing Then
-                        parent.txtAmountPaid.Text = totalPaid.ToString("0.00")
+                    Dim lblCash = parent.Controls.Find("lblCash", True)
+                    If lblCash IsNot Nothing AndAlso lblCash.Length > 0 Then
+                        lblCash(0).Text = cashAmount.ToString("0.00")
+                    End If
+                Catch
+                End Try
+
+                Try
+                    Dim lblGcash = parent.Controls.Find("lblGcash", True)
+                    If lblGcash IsNot Nothing AndAlso lblGcash.Length > 0 Then
+                        lblGcash(0).Text = gcashAmount.ToString("0.00")
+                    End If
+                Catch
+                End Try
+
+                Try
+                    Dim txtReference = parent.Controls.Find("txtReference", True)
+                    If txtReference IsNot Nothing AndAlso txtReference.Length > 0 Then
+                        txtReference(0).Text = refText
+                    End If
+                Catch
+                End Try
+
+                Try
+                    Dim txtAmountPaid = parent.Controls.Find("txtAmountPaid", True)
+                    If txtAmountPaid IsNot Nothing AndAlso txtAmountPaid.Length > 0 Then
+                        txtAmountPaid(0).Text = totalPaid.ToString("0.00")
                     End If
                 Catch
                 End Try

@@ -23,6 +23,7 @@ Partial Class checkUp
     <System.Diagnostics.DebuggerStepThrough()> _
     Private Sub InitializeComponent()
         Me.components = New System.ComponentModel.Container()
+        Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(checkUp))
         Dim DataGridViewCellStyle1 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
         Dim DataGridViewCellStyle2 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
         Dim DataGridViewCellStyle7 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
@@ -32,29 +33,30 @@ Partial Class checkUp
         Dim DataGridViewCellStyle4 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
         Dim DataGridViewCellStyle5 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
         Dim DataGridViewCellStyle6 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
-        Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(checkUp))
         Me.pnlBar = New System.Windows.Forms.Panel()
+        Me.btnResched = New System.Windows.Forms.Button()
+        Me.btnAppointment = New System.Windows.Forms.Button()
+        Me.btnView = New System.Windows.Forms.Button()
+        Me.btnNew = New System.Windows.Forms.Button()
+        Me.btnSearch = New System.Windows.Forms.Button()
         Me.txtSearch = New System.Windows.Forms.TextBox()
+        Me.btnEdit = New System.Windows.Forms.Button()
         Me.pnlCheckUp = New System.Windows.Forms.Panel()
         Me.txtPage = New System.Windows.Forms.Label()
+        Me.btnNext = New System.Windows.Forms.Button()
+        Me.btnBack = New System.Windows.Forms.Button()
         Me.checkUpDGV = New System.Windows.Forms.DataGridView()
+        Me.ToolTip1 = New System.Windows.Forms.ToolTip(Me.components)
         Me.Column1 = New System.Windows.Forms.DataGridViewTextBoxColumn()
         Me.patientID = New System.Windows.Forms.DataGridViewTextBoxColumn()
         Me.PatientName = New System.Windows.Forms.DataGridViewTextBoxColumn()
         Me.Column3 = New System.Windows.Forms.DataGridViewTextBoxColumn()
         Me.Column5 = New System.Windows.Forms.DataGridViewTextBoxColumn()
         Me.Column6 = New System.Windows.Forms.DataGridViewTextBoxColumn()
+        Me.Column7 = New System.Windows.Forms.DataGridViewTextBoxColumn()
         Me.Column4 = New System.Windows.Forms.DataGridViewTextBoxColumn()
         Me.Column2 = New System.Windows.Forms.DataGridViewTextBoxColumn()
-        Me.ToolTip1 = New System.Windows.Forms.ToolTip(Me.components)
-        Me.btnNext = New System.Windows.Forms.Button()
-        Me.btnBack = New System.Windows.Forms.Button()
-        Me.btnResched = New System.Windows.Forms.Button()
-        Me.btnAppointment = New System.Windows.Forms.Button()
-        Me.btnView = New System.Windows.Forms.Button()
-        Me.btnNew = New System.Windows.Forms.Button()
-        Me.btnSearch = New System.Windows.Forms.Button()
-        Me.btnEdit = New System.Windows.Forms.Button()
+        Me.Column8 = New System.Windows.Forms.DataGridViewTextBoxColumn()
         Me.pnlBar.SuspendLayout()
         Me.pnlCheckUp.SuspendLayout()
         CType(Me.checkUpDGV, System.ComponentModel.ISupportInitialize).BeginInit()
@@ -75,212 +77,6 @@ Partial Class checkUp
         Me.pnlBar.Name = "pnlBar"
         Me.pnlBar.Size = New System.Drawing.Size(1191, 57)
         Me.pnlBar.TabIndex = 8
-        '
-        'txtSearch
-        '
-        Me.txtSearch.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.txtSearch.Font = New System.Drawing.Font("Segoe UI", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.txtSearch.Location = New System.Drawing.Point(893, 16)
-        Me.txtSearch.Name = "txtSearch"
-        Me.txtSearch.Size = New System.Drawing.Size(183, 32)
-        Me.txtSearch.TabIndex = 7
-        '
-        'pnlCheckUp
-        '
-        Me.pnlCheckUp.BackColor = System.Drawing.Color.White
-        Me.pnlCheckUp.Controls.Add(Me.txtPage)
-        Me.pnlCheckUp.Controls.Add(Me.btnNext)
-        Me.pnlCheckUp.Controls.Add(Me.btnBack)
-        Me.pnlCheckUp.Controls.Add(Me.checkUpDGV)
-        Me.pnlCheckUp.Controls.Add(Me.pnlBar)
-        Me.pnlCheckUp.Dock = System.Windows.Forms.DockStyle.Fill
-        Me.pnlCheckUp.Location = New System.Drawing.Point(0, 0)
-        Me.pnlCheckUp.Name = "pnlCheckUp"
-        Me.pnlCheckUp.Size = New System.Drawing.Size(1191, 596)
-        Me.pnlCheckUp.TabIndex = 12
-        '
-        'txtPage
-        '
-        Me.txtPage.Anchor = System.Windows.Forms.AnchorStyles.Bottom
-        Me.txtPage.AutoSize = True
-        Me.txtPage.Location = New System.Drawing.Point(546, 568)
-        Me.txtPage.Name = "txtPage"
-        Me.txtPage.Size = New System.Drawing.Size(70, 28)
-        Me.txtPage.TabIndex = 129
-        Me.txtPage.Text = "Page 1"
-        '
-        'checkUpDGV
-        '
-        Me.checkUpDGV.AllowUserToAddRows = False
-        Me.checkUpDGV.AllowUserToDeleteRows = False
-        DataGridViewCellStyle1.BackColor = System.Drawing.Color.Gainsboro
-        Me.checkUpDGV.AlternatingRowsDefaultCellStyle = DataGridViewCellStyle1
-        Me.checkUpDGV.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
-            Or System.Windows.Forms.AnchorStyles.Left) _
-            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.checkUpDGV.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill
-        Me.checkUpDGV.BackgroundColor = System.Drawing.Color.White
-        Me.checkUpDGV.ColumnHeadersBorderStyle = System.Windows.Forms.DataGridViewHeaderBorderStyle.[Single]
-        DataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter
-        DataGridViewCellStyle2.BackColor = System.Drawing.SystemColors.Control
-        DataGridViewCellStyle2.Font = New System.Drawing.Font("Segoe UI", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        DataGridViewCellStyle2.ForeColor = System.Drawing.SystemColors.WindowText
-        DataGridViewCellStyle2.SelectionBackColor = System.Drawing.Color.SkyBlue
-        DataGridViewCellStyle2.SelectionForeColor = System.Drawing.SystemColors.HighlightText
-        Me.checkUpDGV.ColumnHeadersDefaultCellStyle = DataGridViewCellStyle2
-        Me.checkUpDGV.ColumnHeadersHeight = 50
-        Me.checkUpDGV.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.DisableResizing
-        Me.checkUpDGV.Columns.AddRange(New System.Windows.Forms.DataGridViewColumn() {Me.Column1, Me.patientID, Me.PatientName, Me.Column3, Me.Column5, Me.Column6, Me.Column4, Me.Column2})
-        DataGridViewCellStyle7.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft
-        DataGridViewCellStyle7.BackColor = System.Drawing.SystemColors.Window
-        DataGridViewCellStyle7.Font = New System.Drawing.Font("Segoe UI", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        DataGridViewCellStyle7.ForeColor = System.Drawing.SystemColors.ControlText
-        DataGridViewCellStyle7.SelectionBackColor = System.Drawing.SystemColors.ActiveCaption
-        DataGridViewCellStyle7.SelectionForeColor = System.Drawing.Color.Black
-        DataGridViewCellStyle7.WrapMode = System.Windows.Forms.DataGridViewTriState.[False]
-        Me.checkUpDGV.DefaultCellStyle = DataGridViewCellStyle7
-        Me.checkUpDGV.GridColor = System.Drawing.Color.Black
-        Me.checkUpDGV.Location = New System.Drawing.Point(0, 57)
-        Me.checkUpDGV.MultiSelect = False
-        Me.checkUpDGV.Name = "checkUpDGV"
-        Me.checkUpDGV.ReadOnly = True
-        Me.checkUpDGV.RowHeadersBorderStyle = System.Windows.Forms.DataGridViewHeaderBorderStyle.[Single]
-        DataGridViewCellStyle8.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft
-        DataGridViewCellStyle8.BackColor = System.Drawing.SystemColors.Control
-        DataGridViewCellStyle8.Font = New System.Drawing.Font("Segoe UI", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        DataGridViewCellStyle8.ForeColor = System.Drawing.SystemColors.WindowText
-        DataGridViewCellStyle8.SelectionBackColor = System.Drawing.Color.SkyBlue
-        DataGridViewCellStyle8.SelectionForeColor = System.Drawing.SystemColors.HighlightText
-        Me.checkUpDGV.RowHeadersDefaultCellStyle = DataGridViewCellStyle8
-        Me.checkUpDGV.RowHeadersVisible = False
-        Me.checkUpDGV.RowHeadersWidthSizeMode = System.Windows.Forms.DataGridViewRowHeadersWidthSizeMode.DisableResizing
-        DataGridViewCellStyle9.Font = New System.Drawing.Font("Segoe UI", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.checkUpDGV.RowsDefaultCellStyle = DataGridViewCellStyle9
-        Me.checkUpDGV.RowTemplate.Height = 30
-        Me.checkUpDGV.RowTemplate.Resizable = System.Windows.Forms.DataGridViewTriState.[False]
-        Me.checkUpDGV.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect
-        Me.checkUpDGV.Size = New System.Drawing.Size(1191, 508)
-        Me.checkUpDGV.TabIndex = 10
-        '
-        'Column1
-        '
-        Me.Column1.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None
-        Me.Column1.DataPropertyName = "CheckupID"
-        DataGridViewCellStyle3.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter
-        Me.Column1.DefaultCellStyle = DataGridViewCellStyle3
-        Me.Column1.FillWeight = 74.61929!
-        Me.Column1.HeaderText = "ID"
-        Me.Column1.Name = "Column1"
-        Me.Column1.ReadOnly = True
-        Me.Column1.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable
-        Me.Column1.Visible = False
-        Me.Column1.Width = 40
-        '
-        'patientID
-        '
-        Me.patientID.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None
-        Me.patientID.DataPropertyName = "patientID"
-        DataGridViewCellStyle4.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter
-        Me.patientID.DefaultCellStyle = DataGridViewCellStyle4
-        Me.patientID.HeaderText = "ID"
-        Me.patientID.Name = "patientID"
-        Me.patientID.ReadOnly = True
-        Me.patientID.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable
-        Me.patientID.Width = 40
-        '
-        'PatientName
-        '
-        Me.PatientName.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None
-        Me.PatientName.DataPropertyName = "PatientName"
-        Me.PatientName.FillWeight = 281.0131!
-        Me.PatientName.HeaderText = "Patient Name"
-        Me.PatientName.Name = "PatientName"
-        Me.PatientName.ReadOnly = True
-        Me.PatientName.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable
-        Me.PatientName.Width = 436
-        '
-        'Column3
-        '
-        Me.Column3.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None
-        Me.Column3.DataPropertyName = "CheckupDoctor"
-        Me.Column3.FillWeight = 42.15196!
-        Me.Column3.HeaderText = "Doctor's Name"
-        Me.Column3.Name = "Column3"
-        Me.Column3.ReadOnly = True
-        Me.Column3.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable
-        Me.Column3.Width = 436
-        '
-        'Column5
-        '
-        Me.Column5.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill
-        Me.Column5.DataPropertyName = "CheckupDate"
-        DataGridViewCellStyle5.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight
-        Me.Column5.DefaultCellStyle = DataGridViewCellStyle5
-        Me.Column5.HeaderText = "Check Up Date"
-        Me.Column5.Name = "Column5"
-        Me.Column5.ReadOnly = True
-        Me.Column5.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable
-        '
-        'Column6
-        '
-        Me.Column6.DataPropertyName = "AppointmentType"
-        Me.Column6.HeaderText = "Appointment Type"
-        Me.Column6.Name = "Column6"
-        Me.Column6.ReadOnly = True
-        Me.Column6.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable
-        '
-        'Column4
-        '
-        Me.Column4.DataPropertyName = "AppointedDoctor"
-        Me.Column4.HeaderText = "Appointed Doctor"
-        Me.Column4.Name = "Column4"
-        Me.Column4.ReadOnly = True
-        Me.Column4.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable
-        '
-        'Column2
-        '
-        Me.Column2.DataPropertyName = "AppointmentDate"
-        DataGridViewCellStyle6.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight
-        Me.Column2.DefaultCellStyle = DataGridViewCellStyle6
-        Me.Column2.HeaderText = "Next Appointment"
-        Me.Column2.Name = "Column2"
-        Me.Column2.ReadOnly = True
-        Me.Column2.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable
-        '
-        'btnNext
-        '
-        Me.btnNext.Anchor = System.Windows.Forms.AnchorStyles.Bottom
-        Me.btnNext.BackColor = System.Drawing.Color.Transparent
-        Me.btnNext.FlatAppearance.BorderSize = 0
-        Me.btnNext.FlatStyle = System.Windows.Forms.FlatStyle.Flat
-        Me.btnNext.Font = New System.Drawing.Font("Segoe UI", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.btnNext.ForeColor = System.Drawing.Color.Black
-        Me.btnNext.Image = CType(resources.GetObject("btnNext.Image"), System.Drawing.Image)
-        Me.btnNext.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft
-        Me.btnNext.Location = New System.Drawing.Point(653, 565)
-        Me.btnNext.Name = "btnNext"
-        Me.btnNext.Size = New System.Drawing.Size(37, 31)
-        Me.btnNext.TabIndex = 128
-        Me.btnNext.TextAlign = System.Drawing.ContentAlignment.MiddleRight
-        Me.ToolTip1.SetToolTip(Me.btnNext, "Next Page")
-        Me.btnNext.UseVisualStyleBackColor = False
-        '
-        'btnBack
-        '
-        Me.btnBack.Anchor = System.Windows.Forms.AnchorStyles.Bottom
-        Me.btnBack.BackColor = System.Drawing.Color.Transparent
-        Me.btnBack.FlatAppearance.BorderSize = 0
-        Me.btnBack.FlatStyle = System.Windows.Forms.FlatStyle.Flat
-        Me.btnBack.Font = New System.Drawing.Font("Segoe UI", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.btnBack.ForeColor = System.Drawing.Color.Black
-        Me.btnBack.Image = CType(resources.GetObject("btnBack.Image"), System.Drawing.Image)
-        Me.btnBack.Location = New System.Drawing.Point(503, 565)
-        Me.btnBack.Name = "btnBack"
-        Me.btnBack.Size = New System.Drawing.Size(37, 31)
-        Me.btnBack.TabIndex = 127
-        Me.btnBack.TextAlign = System.Drawing.ContentAlignment.MiddleRight
-        Me.ToolTip1.SetToolTip(Me.btnBack, "Previous Page")
-        Me.btnBack.UseVisualStyleBackColor = False
         '
         'btnResched
         '
@@ -369,6 +165,15 @@ Partial Class checkUp
         Me.ToolTip1.SetToolTip(Me.btnSearch, "Search")
         Me.btnSearch.UseVisualStyleBackColor = False
         '
+        'txtSearch
+        '
+        Me.txtSearch.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.txtSearch.Font = New System.Drawing.Font("Segoe UI", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.txtSearch.Location = New System.Drawing.Point(893, 16)
+        Me.txtSearch.Name = "txtSearch"
+        Me.txtSearch.Size = New System.Drawing.Size(183, 32)
+        Me.txtSearch.TabIndex = 7
+        '
         'btnEdit
         '
         Me.btnEdit.BackColor = System.Drawing.Color.Transparent
@@ -386,6 +191,216 @@ Partial Class checkUp
         Me.ToolTip1.SetToolTip(Me.btnEdit, "Edit Check-up information")
         Me.btnEdit.UseVisualStyleBackColor = False
         Me.btnEdit.Visible = False
+        '
+        'pnlCheckUp
+        '
+        Me.pnlCheckUp.BackColor = System.Drawing.Color.White
+        Me.pnlCheckUp.Controls.Add(Me.txtPage)
+        Me.pnlCheckUp.Controls.Add(Me.btnNext)
+        Me.pnlCheckUp.Controls.Add(Me.btnBack)
+        Me.pnlCheckUp.Controls.Add(Me.checkUpDGV)
+        Me.pnlCheckUp.Controls.Add(Me.pnlBar)
+        Me.pnlCheckUp.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.pnlCheckUp.Location = New System.Drawing.Point(0, 0)
+        Me.pnlCheckUp.Name = "pnlCheckUp"
+        Me.pnlCheckUp.Size = New System.Drawing.Size(1191, 596)
+        Me.pnlCheckUp.TabIndex = 12
+        '
+        'txtPage
+        '
+        Me.txtPage.Anchor = System.Windows.Forms.AnchorStyles.Bottom
+        Me.txtPage.AutoSize = True
+        Me.txtPage.Location = New System.Drawing.Point(546, 568)
+        Me.txtPage.Name = "txtPage"
+        Me.txtPage.Size = New System.Drawing.Size(70, 28)
+        Me.txtPage.TabIndex = 129
+        Me.txtPage.Text = "Page 1"
+        '
+        'btnNext
+        '
+        Me.btnNext.Anchor = System.Windows.Forms.AnchorStyles.Bottom
+        Me.btnNext.BackColor = System.Drawing.Color.Transparent
+        Me.btnNext.FlatAppearance.BorderSize = 0
+        Me.btnNext.FlatStyle = System.Windows.Forms.FlatStyle.Flat
+        Me.btnNext.Font = New System.Drawing.Font("Segoe UI", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.btnNext.ForeColor = System.Drawing.Color.Black
+        Me.btnNext.Image = CType(resources.GetObject("btnNext.Image"), System.Drawing.Image)
+        Me.btnNext.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft
+        Me.btnNext.Location = New System.Drawing.Point(653, 565)
+        Me.btnNext.Name = "btnNext"
+        Me.btnNext.Size = New System.Drawing.Size(37, 31)
+        Me.btnNext.TabIndex = 128
+        Me.btnNext.TextAlign = System.Drawing.ContentAlignment.MiddleRight
+        Me.ToolTip1.SetToolTip(Me.btnNext, "Next Page")
+        Me.btnNext.UseVisualStyleBackColor = False
+        '
+        'btnBack
+        '
+        Me.btnBack.Anchor = System.Windows.Forms.AnchorStyles.Bottom
+        Me.btnBack.BackColor = System.Drawing.Color.Transparent
+        Me.btnBack.FlatAppearance.BorderSize = 0
+        Me.btnBack.FlatStyle = System.Windows.Forms.FlatStyle.Flat
+        Me.btnBack.Font = New System.Drawing.Font("Segoe UI", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.btnBack.ForeColor = System.Drawing.Color.Black
+        Me.btnBack.Image = CType(resources.GetObject("btnBack.Image"), System.Drawing.Image)
+        Me.btnBack.Location = New System.Drawing.Point(503, 565)
+        Me.btnBack.Name = "btnBack"
+        Me.btnBack.Size = New System.Drawing.Size(37, 31)
+        Me.btnBack.TabIndex = 127
+        Me.btnBack.TextAlign = System.Drawing.ContentAlignment.MiddleRight
+        Me.ToolTip1.SetToolTip(Me.btnBack, "Previous Page")
+        Me.btnBack.UseVisualStyleBackColor = False
+        '
+        'checkUpDGV
+        '
+        Me.checkUpDGV.AllowUserToAddRows = False
+        Me.checkUpDGV.AllowUserToDeleteRows = False
+        DataGridViewCellStyle1.BackColor = System.Drawing.Color.Gainsboro
+        Me.checkUpDGV.AlternatingRowsDefaultCellStyle = DataGridViewCellStyle1
+        Me.checkUpDGV.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
+            Or System.Windows.Forms.AnchorStyles.Left) _
+            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.checkUpDGV.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill
+        Me.checkUpDGV.BackgroundColor = System.Drawing.Color.White
+        Me.checkUpDGV.ColumnHeadersBorderStyle = System.Windows.Forms.DataGridViewHeaderBorderStyle.[Single]
+        DataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter
+        DataGridViewCellStyle2.BackColor = System.Drawing.SystemColors.Control
+        DataGridViewCellStyle2.Font = New System.Drawing.Font("Segoe UI", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        DataGridViewCellStyle2.ForeColor = System.Drawing.SystemColors.WindowText
+        DataGridViewCellStyle2.SelectionBackColor = System.Drawing.Color.SkyBlue
+        DataGridViewCellStyle2.SelectionForeColor = System.Drawing.SystemColors.HighlightText
+        Me.checkUpDGV.ColumnHeadersDefaultCellStyle = DataGridViewCellStyle2
+        Me.checkUpDGV.ColumnHeadersHeight = 50
+        Me.checkUpDGV.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.DisableResizing
+        Me.checkUpDGV.Columns.AddRange(New System.Windows.Forms.DataGridViewColumn() {Me.Column1, Me.patientID, Me.PatientName, Me.Column3, Me.Column5, Me.Column6, Me.Column7, Me.Column4, Me.Column2, Me.Column8})
+        DataGridViewCellStyle7.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft
+        DataGridViewCellStyle7.BackColor = System.Drawing.SystemColors.Window
+        DataGridViewCellStyle7.Font = New System.Drawing.Font("Segoe UI", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        DataGridViewCellStyle7.ForeColor = System.Drawing.SystemColors.ControlText
+        DataGridViewCellStyle7.SelectionBackColor = System.Drawing.SystemColors.ActiveCaption
+        DataGridViewCellStyle7.SelectionForeColor = System.Drawing.Color.Black
+        DataGridViewCellStyle7.WrapMode = System.Windows.Forms.DataGridViewTriState.[False]
+        Me.checkUpDGV.DefaultCellStyle = DataGridViewCellStyle7
+        Me.checkUpDGV.GridColor = System.Drawing.Color.Black
+        Me.checkUpDGV.Location = New System.Drawing.Point(0, 57)
+        Me.checkUpDGV.MultiSelect = False
+        Me.checkUpDGV.Name = "checkUpDGV"
+        Me.checkUpDGV.ReadOnly = True
+        Me.checkUpDGV.RowHeadersBorderStyle = System.Windows.Forms.DataGridViewHeaderBorderStyle.[Single]
+        DataGridViewCellStyle8.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft
+        DataGridViewCellStyle8.BackColor = System.Drawing.SystemColors.Control
+        DataGridViewCellStyle8.Font = New System.Drawing.Font("Segoe UI", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        DataGridViewCellStyle8.ForeColor = System.Drawing.SystemColors.WindowText
+        DataGridViewCellStyle8.SelectionBackColor = System.Drawing.Color.SkyBlue
+        DataGridViewCellStyle8.SelectionForeColor = System.Drawing.SystemColors.HighlightText
+        Me.checkUpDGV.RowHeadersDefaultCellStyle = DataGridViewCellStyle8
+        Me.checkUpDGV.RowHeadersVisible = False
+        Me.checkUpDGV.RowHeadersWidthSizeMode = System.Windows.Forms.DataGridViewRowHeadersWidthSizeMode.DisableResizing
+        DataGridViewCellStyle9.Font = New System.Drawing.Font("Segoe UI", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.checkUpDGV.RowsDefaultCellStyle = DataGridViewCellStyle9
+        Me.checkUpDGV.RowTemplate.Height = 30
+        Me.checkUpDGV.RowTemplate.Resizable = System.Windows.Forms.DataGridViewTriState.[False]
+        Me.checkUpDGV.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect
+        Me.checkUpDGV.Size = New System.Drawing.Size(1191, 508)
+        Me.checkUpDGV.TabIndex = 10
+        '
+        'Column1
+        '
+        Me.Column1.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None
+        Me.Column1.DataPropertyName = "CheckupID"
+        DataGridViewCellStyle3.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter
+        Me.Column1.DefaultCellStyle = DataGridViewCellStyle3
+        Me.Column1.FillWeight = 74.61929!
+        Me.Column1.HeaderText = "ID"
+        Me.Column1.Name = "Column1"
+        Me.Column1.ReadOnly = True
+        Me.Column1.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable
+        Me.Column1.Visible = False
+        Me.Column1.Width = 40
+        '
+        'patientID
+        '
+        Me.patientID.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None
+        Me.patientID.DataPropertyName = "patientID"
+        DataGridViewCellStyle4.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter
+        Me.patientID.DefaultCellStyle = DataGridViewCellStyle4
+        Me.patientID.HeaderText = "ID"
+        Me.patientID.Name = "patientID"
+        Me.patientID.ReadOnly = True
+        Me.patientID.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable
+        Me.patientID.Width = 40
+        '
+        'PatientName
+        '
+        Me.PatientName.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None
+        Me.PatientName.DataPropertyName = "PatientName"
+        Me.PatientName.FillWeight = 281.0131!
+        Me.PatientName.HeaderText = "Patient Name"
+        Me.PatientName.Name = "PatientName"
+        Me.PatientName.ReadOnly = True
+        Me.PatientName.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable
+        Me.PatientName.Width = 310
+        '
+        'Column3
+        '
+        Me.Column3.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None
+        Me.Column3.DataPropertyName = "CheckupDoctor"
+        Me.Column3.FillWeight = 42.15196!
+        Me.Column3.HeaderText = "Doctor's Name"
+        Me.Column3.Name = "Column3"
+        Me.Column3.ReadOnly = True
+        Me.Column3.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable
+        Me.Column3.Width = 310
+        '
+        'Column5
+        '
+        Me.Column5.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill
+        Me.Column5.DataPropertyName = "CheckupDate"
+        DataGridViewCellStyle5.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight
+        Me.Column5.DefaultCellStyle = DataGridViewCellStyle5
+        Me.Column5.HeaderText = "Check Up Date"
+        Me.Column5.Name = "Column5"
+        Me.Column5.ReadOnly = True
+        Me.Column5.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable
+        '
+        'Column6
+        '
+        Me.Column6.DataPropertyName = "AppointmentType"
+        Me.Column6.HeaderText = "Appointment Type"
+        Me.Column6.Name = "Column6"
+        Me.Column6.ReadOnly = True
+        Me.Column6.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable
+        '
+        'Column7
+        '
+        Me.Column7.DataPropertyName = "AppointmentTime"
+        Me.Column7.HeaderText = "Appointment Time"
+        Me.Column7.Name = "Column7"
+        Me.Column7.ReadOnly = True
+        '
+        'Column4
+        '
+        Me.Column4.DataPropertyName = "AppointedDoctor"
+        Me.Column4.HeaderText = "Appointed Doctor"
+        Me.Column4.Name = "Column4"
+        Me.Column4.ReadOnly = True
+        Me.Column4.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable
+        '
+        'Column2
+        '
+        Me.Column2.DataPropertyName = "AppointmentDate"
+        DataGridViewCellStyle6.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight
+        Me.Column2.DefaultCellStyle = DataGridViewCellStyle6
+        Me.Column2.HeaderText = "Next Appointment"
+        Me.Column2.Name = "Column2"
+        Me.Column2.ReadOnly = True
+        Me.Column2.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable
+        '
+        'Column8
+        '
+        Me.Column8.HeaderText = "Status"
+        Me.Column8.Name = "Column8"
+        Me.Column8.ReadOnly = True
         '
         'checkUp
         '
@@ -420,13 +435,15 @@ Partial Class checkUp
     Friend WithEvents btnBack As System.Windows.Forms.Button
     Friend WithEvents btnView As System.Windows.Forms.Button
     Friend WithEvents btnAppointment As System.Windows.Forms.Button
+    Friend WithEvents btnResched As System.Windows.Forms.Button
     Friend WithEvents Column1 As System.Windows.Forms.DataGridViewTextBoxColumn
     Friend WithEvents patientID As System.Windows.Forms.DataGridViewTextBoxColumn
     Friend WithEvents PatientName As System.Windows.Forms.DataGridViewTextBoxColumn
     Friend WithEvents Column3 As System.Windows.Forms.DataGridViewTextBoxColumn
     Friend WithEvents Column5 As System.Windows.Forms.DataGridViewTextBoxColumn
     Friend WithEvents Column6 As System.Windows.Forms.DataGridViewTextBoxColumn
+    Friend WithEvents Column7 As System.Windows.Forms.DataGridViewTextBoxColumn
     Friend WithEvents Column4 As System.Windows.Forms.DataGridViewTextBoxColumn
     Friend WithEvents Column2 As System.Windows.Forms.DataGridViewTextBoxColumn
-    Friend WithEvents btnResched As System.Windows.Forms.Button
+    Friend WithEvents Column8 As System.Windows.Forms.DataGridViewTextBoxColumn
 End Class

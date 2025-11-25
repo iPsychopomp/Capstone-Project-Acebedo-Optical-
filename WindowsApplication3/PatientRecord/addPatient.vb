@@ -447,7 +447,7 @@ Public Class addPatient
                         cmd.Parameters.AddWithValue("?", StrConv(Trim(txtFirst.Text), VbStrConv.ProperCase))
                         cmd.Parameters.AddWithValue("?", StrConv(Trim(txtMname.Text), VbStrConv.ProperCase))
                         cmd.Parameters.AddWithValue("?", StrConv(Trim(txtLname.Text), VbStrConv.ProperCase))
-                        cmd.Parameters.AddWithValue("?", dtpBday.Text)
+                        cmd.Parameters.AddWithValue("?", dtpBday.Value.ToString("yyyy-MM-dd"))
                         cmd.Parameters.AddWithValue("?", highbloodVal)
                         cmd.Parameters.AddWithValue("?", StrConv(Trim(txtOccu.Text), VbStrConv.ProperCase))
                         cmd.Parameters.AddWithValue("?", cmbProvince.Text)
@@ -474,6 +474,15 @@ Public Class addPatient
                         InsertAuditTrail("Insert", "Added new patient: " & txtFirst.Text & " " & txtLname.Text, "patient_data", patientID)
                         MessageBox.Show("The Data is Successfully Saved", "Save", MessageBoxButtons.OK, MessageBoxIcon.Information)
 
+                        ' Check if we're in the CreateCheckUp flow (searchPatient is hidden)
+                        Dim hiddenSearchPatient As searchPatient = Nothing
+                        For Each frm As Form In Application.OpenForms
+                            If TypeOf frm Is searchPatient AndAlso Not frm.Visible Then
+                                hiddenSearchPatient = DirectCast(frm, searchPatient)
+                                Exit For
+                            End If
+                        Next
+
                         cleaner()
                     Else
                         ' UPDATE EXISTING PATIENT
@@ -487,7 +496,14 @@ Public Class addPatient
                             If reader("fname").ToString() <> txtFirst.Text Then changes.Add("First Name: " & reader("fname") & " → " & txtFirst.Text)
                             If reader("mname").ToString() <> txtMname.Text Then changes.Add("Middle Name: " & reader("mname") & " → " & txtMname.Text)
                             If reader("lname").ToString() <> txtLname.Text Then changes.Add("Last Name: " & reader("lname") & " → " & txtLname.Text)
-                            If reader("bday").ToString() <> dtpBday.Text Then changes.Add("Birthday: " & reader("bday") & " → " & dtpBday.Text)
+                            ' Handle NULL birthday comparison
+                            If Not IsDBNull(reader("bday")) Then
+                                If CDate(reader("bday")).ToString("yyyy-MM-dd") <> dtpBday.Value.ToString("yyyy-MM-dd") Then
+                                    changes.Add("Birthday: " & reader("bday") & " → " & dtpBday.Value.ToString("yyyy-MM-dd"))
+                                End If
+                            Else
+                                changes.Add("Birthday: NULL → " & dtpBday.Value.ToString("yyyy-MM-dd"))
+                            End If
                             If reader("occupation").ToString() <> txtOccu.Text Then changes.Add("Occupation: " & reader("occupation") & " → " & txtOccu.Text)
                             If reader("province").ToString() <> cmbProvince.Text Then changes.Add("Province: " & reader("province") & " → " & cmbProvince.Text)
                             If reader("city").ToString() <> cmbCity.Text Then changes.Add("City: " & reader("city") & " → " & cmbCity.Text)
@@ -511,7 +527,7 @@ Public Class addPatient
                         cmd.Parameters.AddWithValue("?", StrConv(Trim(txtFirst.Text), VbStrConv.ProperCase))
                         cmd.Parameters.AddWithValue("?", StrConv(Trim(txtMname.Text), VbStrConv.ProperCase))
                         cmd.Parameters.AddWithValue("?", StrConv(Trim(txtLname.Text), VbStrConv.ProperCase))
-                        cmd.Parameters.AddWithValue("?", dtpBday.Text)
+                        cmd.Parameters.AddWithValue("?", dtpBday.Value.ToString("yyyy-MM-dd"))
                         cmd.Parameters.AddWithValue("?", highbloodVal)
                         cmd.Parameters.AddWithValue("?", StrConv(Trim(txtOccu.Text), VbStrConv.ProperCase))
                         cmd.Parameters.AddWithValue("?", cmbProvince.Text)
@@ -596,16 +612,23 @@ Public Class addPatient
                     txtFirst.Text = .Item("fname").ToString()
                     txtMname.Text = .Item("mname").ToString()
                     txtLname.Text = .Item("lname").ToString()
-                    dtpBday.Text = .Item("bday").ToString()
+                    ' Parse the date properly to avoid format issues
+                    If Not IsDBNull(.Item("bday")) Then
+                        dtpBday.Value = CDate(.Item("bday"))
 
-                    ' Compute age from birthday
-                    Dim birthDate As Date = Date.Parse(.Item("bday").ToString())
-                    Dim today As Date = Date.Today
-                    Dim age As Integer = today.Year - birthDate.Year
-                    If (birthDate > today.AddYears(-age)) Then
-                        age -= 1
+                        ' Compute age from birthday using the DateTimePicker value
+                        Dim birthDate As Date = dtpBday.Value
+                        Dim today As Date = Date.Today
+                        Dim age As Integer = today.Year - birthDate.Year
+                        If (birthDate > today.AddYears(-age)) Then
+                            age -= 1
+                        End If
+                        txtAge.Text = age.ToString()
+                    Else
+                        ' If birthday is NULL, set to today and age to 0
+                        dtpBday.Value = Date.Today
+                        txtAge.Text = "0"
                     End If
-                    txtAge.Text = age.ToString()
 
                     txtOccu.Text = .Item("occupation").ToString()
                     txtStreet.Text = If(.Item("street") Is DBNull.Value, "", .Item("street").ToString())
@@ -862,7 +885,7 @@ Public Class addPatient
 
                 cmd.Parameters.AddWithValue("?", Trim(txtFirst.Text).ToUpper())
                 cmd.Parameters.AddWithValue("?", Trim(txtLname.Text).ToUpper())
-                cmd.Parameters.AddWithValue("?", dtpBday.Text)
+                cmd.Parameters.AddWithValue("?", dtpBday.Value.ToString("yyyy-MM-dd"))
 
                 Dim count As Integer = Convert.ToInt32(cmd.ExecuteScalar())
                 If count > 0 Then
@@ -876,7 +899,7 @@ Public Class addPatient
 
                 cmd.Parameters.AddWithValue("?", Trim(txtFirst.Text).ToUpper())
                 cmd.Parameters.AddWithValue("?", Trim(txtLname.Text).ToUpper())
-                cmd.Parameters.AddWithValue("?", dtpBday.Text)
+                cmd.Parameters.AddWithValue("?", dtpBday.Value.ToString("yyyy-MM-dd"))
                 cmd.Parameters.AddWithValue("?", pnlDataEntry.Tag)
 
                 Dim count As Integer = Convert.ToInt32(cmd.ExecuteScalar())
@@ -1297,6 +1320,60 @@ Public Class addPatient
             Next
 
             If mainForm IsNot Nothing Then
+                ' Check if searchPatient is hidden (opened from CreateCheckUp flow)
+                Dim hiddenSearchPatient As searchPatient = Nothing
+                Dim hiddenCreateCheckUp As CreateCheckUp = Nothing
+
+                For Each frm As Form In Application.OpenForms
+                    If TypeOf frm Is searchPatient AndAlso Not frm.Visible Then
+                        hiddenSearchPatient = DirectCast(frm, searchPatient)
+                    ElseIf TypeOf frm Is CreateCheckUp Then
+                        hiddenCreateCheckUp = DirectCast(frm, CreateCheckUp)
+                    End If
+                Next
+
+                If hiddenSearchPatient IsNot Nothing Then
+                    ' We're in the CreateCheckUp flow - close addPatient and show searchPatient again
+                    Try
+                        If Not hiddenSearchPatient.IsDisposed AndAlso Not hiddenSearchPatient.Disposing Then
+                            ' CRITICAL: Ensure CreateCheckUp stays hidden BEFORE closing addPatient
+                            Try
+                                If hiddenCreateCheckUp IsNot Nothing AndAlso Not hiddenCreateCheckUp.IsDisposed Then
+                                    hiddenCreateCheckUp.Visible = False
+                                    hiddenCreateCheckUp.Hide()
+                                    hiddenCreateCheckUp.SendToBack()
+                                End If
+                            Catch
+                                ' Ignore errors hiding CreateCheckUp
+                            End Try
+
+                            Me.Close()
+
+                            ' Show searchPatient with error handling
+                            Try
+                                hiddenSearchPatient.Visible = True
+                                hiddenSearchPatient.Show()
+                                hiddenSearchPatient.BringToFront()
+                                hiddenSearchPatient.Focus()
+                                hiddenSearchPatient.TopMost = True
+                                hiddenSearchPatient.TopMost = False
+                            Catch ex2 As Exception
+                                ' If showing fails, the form might be disposed
+                                Debug.WriteLine("Error showing searchPatient: " & ex2.Message)
+                            End Try
+                            Return
+                        Else
+                            ' searchPatient is disposed, just close this form
+                            Me.Close()
+                            Return
+                        End If
+                    Catch ex As Exception
+                        ' If searchPatient is disposed or any error occurs, just close this form
+                        Me.Close()
+                        Return
+                    End Try
+                End If
+
                 ' Check if patientRecord form already exists in open forms
                 Dim existingPatientRecord As patientRecord = Nothing
                 For Each frm As Form In Application.OpenForms

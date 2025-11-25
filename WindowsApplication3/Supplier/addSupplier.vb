@@ -124,7 +124,7 @@ Public Class addSupplier
 
         ' Auto-fill optional text boxes (without *) with N/A when left blank
         Dim requiredSet As New HashSet(Of Control) From {txtSupplierName, txtContactPerson, txtContactNumber, txtAddress, txtEmail}
-        For Each ctrl As Control In grpAddUser.Controls
+        For Each ctrl As Control In pnlAddSupp.Controls
             If TypeOf ctrl Is TextBox AndAlso Not requiredSet.Contains(ctrl) Then
                 Dim tb As TextBox = CType(ctrl, TextBox)
                 If String.IsNullOrWhiteSpace(tb.Text) Then tb.Text = "N/A"
@@ -275,13 +275,5 @@ Public Class addSupplier
             txtContactNumber.Text = "+63"
             txtContactNumber.SelectionStart = txtContactNumber.Text.Length
         End If
-    End Sub
-
-    Private Sub btnCancel_Click(sender As Object, e As EventArgs) Handles btnCancel.Click
-        Me.Close()
-    End Sub
-
-    Private Sub addSupplier_Load(sender As Object, e As EventArgs) Handles MyBase.Load
-
     End Sub
 End Class

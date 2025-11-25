@@ -6,10 +6,10 @@ Module modCheckUp
             dgv.AutoGenerateColumns = False
             Call dbConn()
             Dim sql As String = _
-                "SELECT vc.*, ap.doctorName AS AppointedDoctor, ap.appointmentDate AS AppointmentDate, ap.AppointmentType " & _
+                "SELECT vc.*, ap.doctorName AS AppointedDoctor, ap.appointmentDate AS AppointmentDate, ap.AppointmentType, ap.AppointmentTime " & _
                 "FROM db_viewcheckup vc " & _
                 "LEFT JOIN ( " & _
-                "  SELECT a.checkupID, a.doctorName, a.appointmentDate, a.AppointmentType " & _
+                "  SELECT a.checkupID, a.doctorName, a.appointmentDate, a.AppointmentType, a.AppointmentTime " & _
                 "  FROM tbl_appointments a " & _
                 "  JOIN (SELECT checkupID, MAX(appointmentDate) AS maxDate FROM tbl_appointments GROUP BY checkupID) mx " & _
                 "    ON mx.checkupID = a.checkupID AND mx.maxDate = a.appointmentDate " & _
@@ -57,10 +57,10 @@ Module modCheckUp
             dgv.AutoGenerateColumns = False
             Call dbConn()
             Dim sql As String = _
-                "SELECT vc.*, ap.doctorName AS AppointedDoctor, ap.appointmentDate AS AppointmentDate, ap.AppointmentType " & _
+                "SELECT vc.*, ap.doctorName AS AppointedDoctor, ap.appointmentDate AS AppointmentDate, ap.AppointmentType, ap.AppointmentTime " & _
                 "FROM db_viewcheckup vc " & _
                 "LEFT JOIN ( " & _
-                "  SELECT a.checkupID, a.doctorName, a.appointmentDate, a.AppointmentType " & _
+                "  SELECT a.checkupID, a.doctorName, a.appointmentDate, a.AppointmentType, a.AppointmentTime " & _
                 "  FROM tbl_appointments a " & _
                 "  JOIN (SELECT checkupID, MAX(appointmentDate) AS maxDate FROM tbl_appointments GROUP BY checkupID) mx " & _
                 "    ON mx.checkupID = a.checkupID AND mx.maxDate = a.appointmentDate " & _
@@ -108,11 +108,31 @@ Module modCheckUp
 
     Public Sub RefreshCheckUpDGV()
         ' Refresh the checkUp DGV if a checkUp form is open
+        ' First check Application.OpenForms
         For Each f As Form In Application.OpenForms
             If TypeOf f Is checkUp Then
                 Try
                     Dim formRef As checkUp = CType(f, checkUp)
-                    LoadCheckUpData(formRef.checkUpDGV)
+                    formRef.LoadPage()
+                Catch ex As Exception
+                    MsgBox("Failed to refresh check-up records: " & ex.Message, vbCritical, "Error")
+                End Try
+                Return
+            End If
+        Next
+
+        ' If not found in OpenForms, check MainForm's pnlContainer (embedded form scenario)
+        For Each f As Form In Application.OpenForms
+            If TypeOf f Is MainForm Then
+                Try
+                    Dim mainForm As MainForm = CType(f, MainForm)
+                    For Each ctrl As Control In mainForm.pnlContainer.Controls
+                        If TypeOf ctrl Is checkUp Then
+                            Dim formRef As checkUp = CType(ctrl, checkUp)
+                            formRef.LoadPage()
+                            Return
+                        End If
+                    Next
                 Catch ex As Exception
                     MsgBox("Failed to refresh check-up records: " & ex.Message, vbCritical, "Error")
                 End Try
@@ -126,10 +146,10 @@ Module modCheckUp
             dgv.AutoGenerateColumns = False
             Dim countSql As String = "SELECT COUNT(*) FROM db_viewcheckup"
             Dim dataSql As String = _
-                "SELECT vc.*, ap.doctorName AS AppointedDoctor, ap.appointmentDate AS AppointmentDate, ap.AppointmentType " & _
+                "SELECT vc.*, ap.doctorName AS AppointedDoctor, ap.appointmentDate AS AppointmentDate, ap.AppointmentType, ap.AppointmentTime " & _
                 "FROM db_viewcheckup vc " & _
                 "LEFT JOIN ( " & _
-                "  SELECT a.checkupID, a.doctorName, a.appointmentDate, a.AppointmentType " & _
+                "  SELECT a.checkupID, a.doctorName, a.appointmentDate, a.AppointmentType, a.AppointmentTime " & _
                 "  FROM tbl_appointments a " & _
                 "  JOIN (SELECT checkupID, MAX(appointmentDate) AS maxDate FROM tbl_appointments GROUP BY checkupID) mx " & _
                 "    ON mx.checkupID = a.checkupID AND mx.maxDate = a.appointmentDate " & _

@@ -85,37 +85,31 @@ Public Class checkUp
 
     Private Sub btnNew_Click(sender As Object, e As EventArgs) Handles btnNew.Click
         Try
-            ' Find the MainForm instance
-            Dim mainForm As MainForm = Nothing
-            For Each frm As Form In Application.OpenForms
-                If TypeOf frm Is MainForm Then
-                    mainForm = DirectCast(frm, MainForm)
-                    Exit For
-                End If
-            Next
+            ' Open CreateCheckUp as a modeless form (not modal) so other forms in MainForm can be used
+            Dim check As New CreateCheckUp()
+            check.TopMost = True
+            check.StartPosition = FormStartPosition.CenterScreen
 
-            If mainForm IsNot Nothing Then
-                ' Create and show the CreateCheckUp form in the container
-                Dim check As New CreateCheckUp()
+            ' Store reference to this form for the handler
+            Dim parentForm As checkUp = Me
 
-                ' Handle form closing to refresh data
-                AddHandler check.FormClosed, Sub(s, ev)
-                                                 ' Show this checkUp form back in the container
-                                                 mainForm.ShowFormControls(Me)
-                                                 If check.DataSaved Then
-                                                     LoadPage()
+            ' Always refresh list after the create form closes (save or cancel)
+            AddHandler check.FormClosed, Sub(s, ev)
+                                             Try
+                                                 ' Use Invoke to ensure we're on the UI thread
+                                                 If parentForm IsNot Nothing AndAlso Not parentForm.IsDisposed Then
+                                                     If parentForm.InvokeRequired Then
+                                                         parentForm.Invoke(Sub() parentForm.LoadPage())
+                                                     Else
+                                                         parentForm.LoadPage()
+                                                     End If
                                                  End If
-                                             End Sub
+                                             Catch ex As Exception
+                                                 Debug.WriteLine("Error refreshing checkup list: " & ex.Message)
+                                             End Try
+                                         End Sub
 
-                mainForm.ShowFormControls(check)
-            Else
-                ' Fallback to dialog if MainForm not found
-                Using check As New CreateCheckUp
-                    If check.ShowDialog() = DialogResult.OK AndAlso check.DataSaved Then
-                        LoadPage()
-                    End If
-                End Using
-            End If
+            check.Show()
         Catch ex As Exception
             MessageBox.Show("Error opening create checkup form: " & ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error)
         End Try
@@ -215,44 +209,17 @@ Public Class checkUp
 
             If MsgBox("Are you sure you want to edit this record?", vbYesNo + vbQuestion, "Edit") = vbYes Then
                 Try
-                    ' Find the MainForm instance
-                    Dim mainForm As MainForm = Nothing
-                    For Each frm As Form In Application.OpenForms
-                        If TypeOf frm Is MainForm Then
-                            mainForm = DirectCast(frm, MainForm)
-                            Exit For
-                        End If
-                    Next
-
-                    If mainForm IsNot Nothing Then
-                        ' Create the edit form
-                        Dim editCheckup As New CreateCheckUp()
+                    ' Open CreateCheckUp as a popup dialog for editing
+                    Using editCheckup As New CreateCheckUp()
+                        editCheckup.TopMost = True
+                        editCheckup.StartPosition = FormStartPosition.CenterScreen
                         editCheckup.pnlCheckUp.Tag = checkupID
                         editCheckup.LoadCheckup(checkupID)
 
-                        ' Handle form closing to refresh data
-                        AddHandler editCheckup.FormClosed, Sub(s, ev)
-                                                               ' Show this checkUp form back in the container
-                                                               mainForm.ShowFormControls(Me)
-                                                               If editCheckup.DataSaved Then
-                                                                   LoadPage()
-                                                               End If
-                                                           End Sub
-
-                        ' Show in container
-                        mainForm.ShowFormControls(editCheckup)
-                    Else
-                        ' Fallback to dialog if MainForm not found
-                        Using editCheckup As New CreateCheckUp()
-                            editCheckup.TopMost = True
-                            editCheckup.pnlCheckUp.Tag = checkupID
-                            editCheckup.LoadCheckup(checkupID)
-
-                            If editCheckup.ShowDialog() = DialogResult.OK AndAlso editCheckup.DataSaved Then
-                                LoadPage()
-                            End If
-                        End Using
-                    End If
+                        If editCheckup.ShowDialog() = DialogResult.OK AndAlso editCheckup.DataSaved Then
+                            LoadPage()
+                        End If
+                    End Using
                 Catch ex As Exception
                     MessageBox.Show("Error opening edit checkup form: " & ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error)
                 End Try

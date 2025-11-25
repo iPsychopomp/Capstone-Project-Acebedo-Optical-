@@ -389,13 +389,6 @@ Public Class Transaction
                 Return
             End If
 
-            ' Check payment count limit
-            Dim paymentCount As Integer = GetTransactionPaymentCount(transactionID)
-            If paymentCount >= 2 Then
-                MessageBox.Show("This transaction has already reached the maximum of 2 payments and cannot be settled further.", "Payment Limit Reached", MessageBoxButtons.OK, MessageBoxIcon.Information)
-                Return
-            End If
-
             ' Ensure Type of Payment is set before allowing settlement
             Try
                 Call dbConn()
@@ -446,6 +439,11 @@ Public Class Transaction
                     End If
                 End Using
 
+                ' Close connection after checking
+                If conn IsNot Nothing AndAlso conn.State = ConnectionState.Open Then
+                    conn.Close()
+                End If
+
                 If pendingBalance <= 0D Then
                     MessageBox.Show("This transaction has already been paid and cannot be edited.", "Edit Not Allowed", MessageBoxButtons.OK, MessageBoxIcon.Information)
                     Return
@@ -455,14 +453,34 @@ Public Class Transaction
                 newTransaction.IsEditMode = True
                 newTransaction.TransactionID = transactionID
 
+                ' Find the MainForm and show the form in its container
+                Dim mainForm As MainForm = TryCast(Me.FindForm().Owner, MainForm)
+                If mainForm Is Nothing Then
+                    ' If Owner is not set, search through open forms
+                    For Each openForm As Form In Application.OpenForms
+                        If TypeOf openForm Is MainForm Then
+                            mainForm = DirectCast(openForm, MainForm)
+                            Exit For
+                        End If
+                    Next
+                End If
 
-                newTransaction.TopMost = True
-                newTransaction.ShowDialog()
-
-                LoadTransactions()
+                If mainForm IsNot Nothing Then
+                    mainForm.ShowFormControls(newTransaction)
+                Else
+                    ' Fallback to dialog if MainForm not found
+                    newTransaction.TopMost = True
+                    newTransaction.ShowDialog()
+                    LoadTransactions()
+                End If
 
             Catch ex As Exception
                 MessageBox.Show("Error editing transaction: " & ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error)
+            Finally
+                ' Ensure connection is closed
+                If conn IsNot Nothing AndAlso conn.State = ConnectionState.Open Then
+                    conn.Close()
+                End If
             End Try
         Else
             MessageBox.Show("Please select a row first.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error)
@@ -582,8 +600,30 @@ Public Class Transaction
             frm.pbAdd.Visible = True
             frm.pbEdit.Visible = False
             frm.lblTitle.Text = "Add Transaction"
-            frm.ShowDialog()
-            LoadTransactions()
+
+            Debug.WriteLine("Creating new addPatientTransaction form")
+
+            ' Find the MainForm and show the form in its container
+            Dim mainForm As MainForm = TryCast(Me.FindForm().Owner, MainForm)
+            If mainForm Is Nothing Then
+                ' If Owner is not set, search through open forms
+                For Each openForm As Form In Application.OpenForms
+                    If TypeOf openForm Is MainForm Then
+                        mainForm = DirectCast(openForm, MainForm)
+                        Exit For
+                    End If
+                Next
+            End If
+
+            If mainForm IsNot Nothing Then
+                Debug.WriteLine("Showing form in MainForm container")
+                mainForm.ShowFormControls(frm)
+            Else
+                ' Fallback to dialog if MainForm not found
+                Debug.WriteLine("MainForm not found, showing as dialog")
+                frm.ShowDialog()
+                LoadTransactions()
+            End If
         Catch ex As Exception
             MsgBox("Failed to open Add Transaction: " & ex.Message, vbCritical, "Error")
         End Try

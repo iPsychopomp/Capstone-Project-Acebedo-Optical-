@@ -1,4 +1,4 @@
-﻿Imports System.Data.Odbc
+Imports System.Data.Odbc
 
 Partial Class discounts
 
@@ -293,6 +293,14 @@ Partial Class discounts
             ' Refresh grid to reflect new discount and discounted price
             LoadProductsForDiscounts()
 
+            Try
+                If Application.OpenForms().OfType(Of inventory).Any() Then
+                    Dim inv = Application.OpenForms().OfType(Of inventory).First()
+                    inv.LoadProductsWithDiscountCheck()
+                End If
+            Catch
+            End Try
+
         Catch ex As Exception
             MessageBox.Show("Error updating discount: " & ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error)
         Finally
@@ -358,6 +366,14 @@ Partial Class discounts
             txtDiscount.Clear()
             LoadProductsForDiscounts()
 
+            Try
+                If Application.OpenForms().OfType(Of inventory).Any() Then
+                    Dim inv = Application.OpenForms().OfType(Of inventory).First()
+                    inv.LoadProductsWithDiscountCheck()
+                End If
+            Catch
+            End Try
+
         Catch ex As Exception
             MessageBox.Show("Error removing discount: " & ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error)
         Finally
@@ -387,6 +403,16 @@ Partial Class discounts
                 ' ignore audit failure here
             End Try
         End Using
+    End Sub
+
+    Private Sub discounts_FormClosed(sender As Object, e As FormClosedEventArgs) Handles Me.FormClosed
+        Try
+            If Application.OpenForms().OfType(Of inventory).Any() Then
+                Dim inv = Application.OpenForms().OfType(Of inventory).First()
+                inv.LoadProductsWithDiscountCheck()
+            End If
+        Catch
+        End Try
     End Sub
 
 End Class

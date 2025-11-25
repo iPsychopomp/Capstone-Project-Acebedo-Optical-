@@ -161,6 +161,8 @@ Partial Class addPayment
         Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle
         Me.Icon = CType(resources.GetObject("$this.Icon"), System.Drawing.Icon)
         Me.Margin = New System.Windows.Forms.Padding(4, 5, 4, 5)
+        Me.MaximizeBox = False
+        Me.MinimizeBox = False
         Me.Name = "addPayment"
         Me.Text = "Add payment"
         Me.pnlPayment.ResumeLayout(False)

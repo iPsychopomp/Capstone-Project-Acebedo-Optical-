@@ -50,9 +50,23 @@
         Try
             Call dbConn()
 
+            ' First check if patient has any appointment
+            Dim checkSql As String = "SELECT COUNT(*) FROM tbl_appointments WHERE patientID = ?"
+            Using checkCmd As New Odbc.OdbcCommand(checkSql, conn)
+                checkCmd.Parameters.AddWithValue("?", selectedPatientID)
+                Dim appointmentCount As Integer = Convert.ToInt32(checkCmd.ExecuteScalar())
+
+                If appointmentCount = 0 Then
+                    MessageBox.Show("This patient has no existing appointment to reschedule.", "No Appointment", MessageBoxButtons.OK, MessageBoxIcon.Information)
+                    conn.Close()
+                    Me.Close()
+                    Exit Sub
+                End If
+            End Using
+
             ' Get the latest appointment for this patient
             Dim sql As String = "SELECT a.appointmentID, a.doctorID, a.doctorName, a.patientName, a.AppointmentType, " & _
-                               "a.appointmentDate, a.reason " & _
+                               "a.appointmentDate, a.AppointmentTime, a.reason " & _
                                "FROM tbl_appointments a " & _
                                "WHERE a.patientID = ? " & _
                                "ORDER BY a.appointmentDate DESC LIMIT 1"
@@ -69,6 +83,7 @@
                     Dim savedDoctorID As String = ""
                     Dim savedAppointmentType As String = ""
                     Dim savedAppointmentDate As DateTime = DateTime.Today.AddDays(1)
+                    Dim savedAppointmentTime As DateTime = DateTime.Now
                     Dim savedReason As String = ""
 
                     ' Get appointment type
@@ -84,6 +99,12 @@
                     ' Get appointment date
                     If Not IsDBNull(reader("appointmentDate")) Then
                         savedAppointmentDate = Convert.ToDateTime(reader("appointmentDate"))
+                    End If
+
+                    ' Get appointment time
+                    If Not IsDBNull(reader("AppointmentTime")) Then
+                        Dim timeStr As String = reader("AppointmentTime").ToString()
+                        DateTime.TryParse(timeStr, savedAppointmentTime)
                     End If
 
                     ' Get reason
@@ -117,12 +138,18 @@
                         dtpDate.Value = DateTime.Today.AddDays(1)
                     End If
 
+                    ' Set appointment time
+                    dtpAT.Value = savedAppointmentTime
+
                     ' Set reason
                     txtReason.Text = savedReason
 
                 Else
-                    MessageBox.Show("No appointment found for this patient.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error)
+                    reader.Close()
+                    MessageBox.Show("No appointment found for this patient.", "No Appointment", MessageBoxButtons.OK, MessageBoxIcon.Information)
+                    conn.Close()
                     Me.Close()
+                    Exit Sub
                 End If
 
             End Using
@@ -134,6 +161,7 @@
             If conn.State = ConnectionState.Open Then
                 conn.Close()
             End If
+            Me.Close()
         End Try
     End Sub
 
@@ -164,15 +192,19 @@
             ' Get reason text
             Dim reason As String = If(String.IsNullOrWhiteSpace(txtReason.Text), "", txtReason.Text.Trim())
 
-            ' Update SQL
+            ' Get appointment time from dtpAT control
+            Dim appointmentTime As String = dtpAT.Value.ToString("HH:mm:ss")
+
+            ' Update SQL with AppointmentTime
             Dim updateSql As String = "UPDATE tbl_appointments SET doctorID = ?, doctorName = ?, AppointmentType = ?, " & _
-                                     "appointmentDate = ?, reason = ? WHERE appointmentID = ?"
+                                     "appointmentDate = ?, AppointmentTime = ?, reason = ? WHERE appointmentID = ?"
 
             Using updateCmd As New Odbc.OdbcCommand(updateSql, conn)
                 updateCmd.Parameters.AddWithValue("?", selectedDoctorID)
                 updateCmd.Parameters.AddWithValue("?", selectedDoctorName)
                 updateCmd.Parameters.AddWithValue("?", cmbAppointmentType.Text)
-                updateCmd.Parameters.AddWithValue("?", dtpDate.Value.ToString("yyyy-MM-dd HH:mm:ss"))
+                updateCmd.Parameters.AddWithValue("?", dtpDate.Value.ToString("yyyy-MM-dd"))
+                updateCmd.Parameters.AddWithValue("?", appointmentTime)
                 updateCmd.Parameters.AddWithValue("?", reason)
                 updateCmd.Parameters.AddWithValue("?", appointmentID)
                 updateCmd.ExecuteNonQuery()

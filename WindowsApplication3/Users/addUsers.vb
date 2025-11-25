@@ -35,6 +35,7 @@ Public Class addUsers
                         ' Set to today if invalid date
                         dtpDOB.Value = Date.Today
                     End If
+
                 End If
                 cmbRole.Text = dt.Rows(0)("Role").ToString()
                 txtUser.Text = dt.Rows(0)("Username").ToString()
@@ -490,7 +491,7 @@ Public Class addUsers
 
                 If Len(pnlAddUser.Tag) = 0 Then
 
-                    cmd.CommandText = "INSERT INTO tbl_users (Username, Password, Role, Fname, Mname, Lname, Suffix, dob, MobileNum, Email) VALUES (?,?,?,?,?,?,?,?,?,?)"
+                    cmd.CommandText = "INSERT INTO tbl_users (Username, Password, Role, Fname, Mname, Lname, dob, MobileNum, Email) VALUES (?,?,?,?,?,?,?,?,?)"
                     cmd.Parameters.AddWithValue("?", username)
                     cmd.Parameters.AddWithValue("?", txtPass.Text)
                     cmd.Parameters.AddWithValue("?", StrConv(Trim(cmbRole.Text), VbStrConv.ProperCase))
@@ -518,7 +519,7 @@ Public Class addUsers
 
                 Else
 
-                    cmd.CommandText = "UPDATE tbl_users SET Username=?, Password=?, Role=?, Fname=?, Mname=?, Lname=?, Suffix=?, dob=?, MobileNum=?, Email=? WHERE UserID=?"
+                    cmd.CommandText = "UPDATE tbl_users SET Username=?, Password=?, Role=?, Fname=?, Mname=?, Lname=?, dob=?, MobileNum=?, Email=? WHERE UserID=?"
                     cmd.Parameters.AddWithValue("?", username)
                     cmd.Parameters.AddWithValue("?", txtPass.Text)
                     cmd.Parameters.AddWithValue("?", StrConv(Trim(cmbRole.Text), VbStrConv.ProperCase))
@@ -602,13 +603,6 @@ Public Class addUsers
             txtMobile.Text = "+63"
             txtMobile.SelectionStart = txtMobile.Text.Length
         End If
-    End Sub
-
-
-
-
-    Private Sub txtPass_TextChanged(sender As Object, e As EventArgs) Handles txtPass.TextChanged
-
     End Sub
 
     Private Sub DateTimePicker_Validating(sender As Object, e As CancelEventArgs)

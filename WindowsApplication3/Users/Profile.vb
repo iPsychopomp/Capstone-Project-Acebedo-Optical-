@@ -33,7 +33,8 @@ Public Class Profile
 
             Using conn As New OdbcConnection("DSN=dsnsystem")
                 conn.Open()
-                Dim sql As String = "SELECT Username, Password, Role, Fname, Mname, Lname, Suffix, dob, MobileNum, Email FROM tbl_users WHERE UserID = ?"
+                ' Remove Suffix from SELECT since we don't use it
+                Dim sql As String = "SELECT Username, Password, Role, Fname, Mname, Lname, dob, MobileNum, Email FROM tbl_users WHERE UserID = ?"
                 Using cmd As New OdbcCommand(sql, conn)
                     cmd.Parameters.AddWithValue("?", userId)
                     Using rd = cmd.ExecuteReader()
@@ -44,8 +45,9 @@ Public Class Profile
                             If Not rd.IsDBNull(3) Then txtFirst.Text = rd.GetString(3) Else txtFirst.Text = ""
                             If Not rd.IsDBNull(4) Then txtMname.Text = rd.GetString(4) Else txtMname.Text = ""
                             If Not rd.IsDBNull(5) Then txtLname.Text = rd.GetString(5) Else txtLname.Text = ""
-                            If Not rd.IsDBNull(7) Then
-                                Dim dobValue As Date = rd.GetDateTime(7)
+                            ' Index 6 is now dob (removed Suffix from query)
+                            If Not rd.IsDBNull(6) Then
+                                Dim dobValue As Date = rd.GetDateTime(6)
                                 ' Validate date is within acceptable range before setting
                                 If dobValue <= Date.Today AndAlso dobValue >= Date.Today.AddYears(-120) Then
                                     dtpDOB.Value = dobValue
@@ -59,8 +61,8 @@ Public Class Profile
                                 dtpDOB.Value = Date.Today
                                 txtAge.Text = "0"
                             End If
-                            If Not rd.IsDBNull(8) Then txtMobile.Text = rd.GetString(8) Else txtMobile.Text = ""
-                            If Not rd.IsDBNull(9) Then txtEmail.Text = rd.GetString(9) Else txtEmail.Text = ""
+                            If Not rd.IsDBNull(7) Then txtMobile.Text = rd.GetString(7) Else txtMobile.Text = ""
+                            If Not rd.IsDBNull(8) Then txtEmail.Text = rd.GetString(8) Else txtEmail.Text = ""
 
                             ' Removed: default-password notice now shows after login, not here
                         Else
@@ -87,7 +89,7 @@ Public Class Profile
             If userId <= 0 Then Return
 
             ' Username duplicate check
-            Dim username As String = txtUser.Text.Trim().ToLower()
+            Dim username As String = txtUser.Text.Trim()
             Dim oldUser As String = ""
 
             Using conn As New OdbcConnection("DSN=dsnsystem")
@@ -99,25 +101,33 @@ Public Class Profile
                 Dim oldFname As String = ""
                 Dim oldMname As String = ""
                 Dim oldLname As String = ""
-                Dim oldSuffix As String = ""
                 Dim oldDob As String = ""
 
-                Using getCmd As New OdbcCommand("SELECT Username, Password, Email, MobileNum, Fname, Mname, Lname, Suffix, dob FROM tbl_users WHERE UserID= ?", conn)
+                Using getCmd As New OdbcCommand("SELECT Username, Password, Email, MobileNum, Fname, Mname, Lname, dob FROM tbl_users WHERE UserID= ?", conn)
                     getCmd.Parameters.AddWithValue("?", userId)
                     Using rd = getCmd.ExecuteReader()
                         If rd.Read() Then
-                            If Not rd.IsDBNull(0) Then oldUser = rd.GetString(0).Trim().ToLower()
+                            If Not rd.IsDBNull(0) Then oldUser = rd.GetString(0).Trim()
                             If Not rd.IsDBNull(1) Then oldPass = rd.GetString(1)
                             If Not rd.IsDBNull(2) Then oldEmail = rd.GetString(2)
                             If Not rd.IsDBNull(3) Then oldMobile = rd.GetString(3)
                             If Not rd.IsDBNull(4) Then oldFname = rd.GetString(4)
                             If Not rd.IsDBNull(5) Then oldMname = rd.GetString(5)
                             If Not rd.IsDBNull(6) Then oldLname = rd.GetString(6)
-                            If Not rd.IsDBNull(7) Then oldSuffix = rd.GetString(7)
-                            If Not rd.IsDBNull(8) Then oldDob = rd.GetString(8)
+                            If Not rd.IsDBNull(7) Then oldDob = rd.GetDateTime(7).ToString("yyyy-MM-dd")
                         End If
                     End Using
                 End Using
+
+                Dim newPassCandidate As String = txtPass.Text
+                If oldPass <> newPassCandidate Then
+                    If newPassCandidate Is Nothing Then newPassCandidate = ""
+                    If newPassCandidate.Length < 8 Then
+                        MessageBox.Show("Password must be at least 8 characters.", "Validation", MessageBoxButtons.OK, MessageBoxIcon.Exclamation)
+                        txtPass.Focus()
+                        Return
+                    End If
+                End If
 
                 ' If username changed, enforce uniqueness
                 If username <> oldUser Then
@@ -145,13 +155,14 @@ Public Class Profile
                 Dim newLname As String = StrConv(Trim(txtLname.Text), VbStrConv.ProperCase)
                 Dim newDob As String = dtpDOB.Value.Date.ToString("yyyy-MM-dd")
 
-                Using upd As New OdbcCommand("UPDATE tbl_users SET Username=?, Password=?, Fname=?, Mname=?, Lname=?, Suffix=?, dob=?, Email=?, MobileNum=? WHERE UserID= ?", conn)
+                Using upd As New OdbcCommand("UPDATE tbl_users SET Username=?, Password=?, Fname=?, Mname=?, Lname=?, dob=?, Email=?, MobileNum=? WHERE UserID= ?", conn)
                     upd.Parameters.AddWithValue("?", username)
                     upd.Parameters.AddWithValue("?", newPass)
                     upd.Parameters.AddWithValue("?", newFname)
                     upd.Parameters.AddWithValue("?", newMname)
                     upd.Parameters.AddWithValue("?", newLname)
-                    upd.Parameters.AddWithValue("?", dtpDOB.Value.Date)
+                    'Dim newDob As String = dtpDOB.Value.ToString("yyyy-MM-dd")
+                    upd.Parameters.AddWithValue("?", newDob).Value = newDob  ' Use the string version
                     upd.Parameters.AddWithValue("?", newEmail)
                     upd.Parameters.AddWithValue("?", newMobile)
                     upd.Parameters.AddWithValue("?", userId)
@@ -272,7 +283,7 @@ Public Class Profile
                     cmd.Parameters.AddWithValue("?", ActionType)
                     cmd.Parameters.AddWithValue("?", ActionDetails)
                     cmd.Parameters.AddWithValue("?", DateTime.Now.ToString("HH:mm:ss"))
-                    cmd.Parameters.AddWithValue("?", DateTime.Now.Date)
+                    cmd.Parameters.AddWithValue("?", DateTime.Now.ToString("yyyy-MM-dd"))
                     cmd.ExecuteNonQuery()
                 End Using
             Catch
@@ -435,5 +446,5 @@ Public Class Profile
         End Try
     End Sub
 
-  
+
 End Class

@@ -33,7 +33,6 @@ Partial Class searchSupplierProducts
         Me.txtPage = New System.Windows.Forms.Label()
         Me.Panel1 = New System.Windows.Forms.Panel()
         Me.cmbCategories = New System.Windows.Forms.ComboBox()
-        Me.Label1 = New System.Windows.Forms.Label()
         Me.btnSearch = New System.Windows.Forms.Button()
         Me.txtSearch = New System.Windows.Forms.TextBox()
         Me.searchProductDGV = New System.Windows.Forms.DataGridView()
@@ -46,6 +45,7 @@ Partial Class searchSupplierProducts
         Me.Column7 = New System.Windows.Forms.DataGridViewTextBoxColumn()
         Me.btnNext = New System.Windows.Forms.Button()
         Me.btnBack = New System.Windows.Forms.Button()
+        Me.btnSelect = New System.Windows.Forms.Button()
         Me.Panel1.SuspendLayout()
         CType(Me.searchProductDGV, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.SuspendLayout()
@@ -54,7 +54,7 @@ Partial Class searchSupplierProducts
         '
         Me.txtPage.Anchor = System.Windows.Forms.AnchorStyles.Bottom
         Me.txtPage.AutoSize = True
-        Me.txtPage.Location = New System.Drawing.Point(317, 481)
+        Me.txtPage.Location = New System.Drawing.Point(318, 664)
         Me.txtPage.Name = "txtPage"
         Me.txtPage.Size = New System.Drawing.Size(70, 28)
         Me.txtPage.TabIndex = 151
@@ -64,7 +64,6 @@ Partial Class searchSupplierProducts
         '
         Me.Panel1.BackColor = System.Drawing.SystemColors.GradientActiveCaption
         Me.Panel1.Controls.Add(Me.cmbCategories)
-        Me.Panel1.Controls.Add(Me.Label1)
         Me.Panel1.Controls.Add(Me.btnSearch)
         Me.Panel1.Controls.Add(Me.txtSearch)
         Me.Panel1.Dock = System.Windows.Forms.DockStyle.Top
@@ -81,17 +80,6 @@ Partial Class searchSupplierProducts
         Me.cmbCategories.Name = "cmbCategories"
         Me.cmbCategories.Size = New System.Drawing.Size(135, 33)
         Me.cmbCategories.TabIndex = 119
-        '
-        'Label1
-        '
-        Me.Label1.AutoSize = True
-        Me.Label1.Font = New System.Drawing.Font("Segoe UI", 9.0!, System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Label1.ForeColor = System.Drawing.Color.DimGray
-        Me.Label1.Location = New System.Drawing.Point(3, 30)
-        Me.Label1.Name = "Label1"
-        Me.Label1.Size = New System.Drawing.Size(278, 20)
-        Me.Label1.TabIndex = 118
-        Me.Label1.Text = "Note: Please double click to select product"
         '
         'btnSearch
         '
@@ -163,7 +151,7 @@ Partial Class searchSupplierProducts
         Me.searchProductDGV.RowTemplate.Height = 30
         Me.searchProductDGV.RowTemplate.Resizable = System.Windows.Forms.DataGridViewTriState.[False]
         Me.searchProductDGV.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect
-        Me.searchProductDGV.Size = New System.Drawing.Size(754, 429)
+        Me.searchProductDGV.Size = New System.Drawing.Size(754, 606)
         Me.searchProductDGV.TabIndex = 147
         '
         'Column1
@@ -245,7 +233,7 @@ Partial Class searchSupplierProducts
         Me.btnNext.ForeColor = System.Drawing.Color.Black
         Me.btnNext.Image = CType(resources.GetObject("btnNext.Image"), System.Drawing.Image)
         Me.btnNext.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft
-        Me.btnNext.Location = New System.Drawing.Point(424, 478)
+        Me.btnNext.Location = New System.Drawing.Point(425, 661)
         Me.btnNext.Name = "btnNext"
         Me.btnNext.Size = New System.Drawing.Size(37, 31)
         Me.btnNext.TabIndex = 150
@@ -261,18 +249,35 @@ Partial Class searchSupplierProducts
         Me.btnBack.Font = New System.Drawing.Font("Segoe UI", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.btnBack.ForeColor = System.Drawing.Color.Black
         Me.btnBack.Image = CType(resources.GetObject("btnBack.Image"), System.Drawing.Image)
-        Me.btnBack.Location = New System.Drawing.Point(274, 478)
+        Me.btnBack.Location = New System.Drawing.Point(275, 661)
         Me.btnBack.Name = "btnBack"
         Me.btnBack.Size = New System.Drawing.Size(37, 31)
         Me.btnBack.TabIndex = 149
         Me.btnBack.TextAlign = System.Drawing.ContentAlignment.MiddleRight
         Me.btnBack.UseVisualStyleBackColor = False
         '
+        'btnSelect
+        '
+        Me.btnSelect.Anchor = System.Windows.Forms.AnchorStyles.Bottom
+        Me.btnSelect.BackColor = System.Drawing.SystemColors.ControlLight
+        Me.btnSelect.FlatStyle = System.Windows.Forms.FlatStyle.System
+        Me.btnSelect.Font = New System.Drawing.Font("Segoe UI", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.btnSelect.ForeColor = System.Drawing.Color.Black
+        Me.btnSelect.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft
+        Me.btnSelect.Location = New System.Drawing.Point(612, 660)
+        Me.btnSelect.Margin = New System.Windows.Forms.Padding(3, 2, 3, 2)
+        Me.btnSelect.Name = "btnSelect"
+        Me.btnSelect.Size = New System.Drawing.Size(130, 27)
+        Me.btnSelect.TabIndex = 152
+        Me.btnSelect.Text = "Select Product"
+        Me.btnSelect.UseVisualStyleBackColor = False
+        '
         'searchSupplierProducts
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(11.0!, 28.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
-        Me.ClientSize = New System.Drawing.Size(754, 509)
+        Me.ClientSize = New System.Drawing.Size(754, 696)
+        Me.Controls.Add(Me.btnSelect)
         Me.Controls.Add(Me.txtPage)
         Me.Controls.Add(Me.btnNext)
         Me.Controls.Add(Me.btnBack)
@@ -298,7 +303,6 @@ Partial Class searchSupplierProducts
     Friend WithEvents btnBack As System.Windows.Forms.Button
     Friend WithEvents Panel1 As System.Windows.Forms.Panel
     Friend WithEvents cmbCategories As System.Windows.Forms.ComboBox
-    Friend WithEvents Label1 As System.Windows.Forms.Label
     Friend WithEvents btnSearch As System.Windows.Forms.Button
     Friend WithEvents txtSearch As System.Windows.Forms.TextBox
     Friend WithEvents searchProductDGV As System.Windows.Forms.DataGridView
@@ -309,4 +313,5 @@ Partial Class searchSupplierProducts
     Friend WithEvents Column5 As System.Windows.Forms.DataGridViewTextBoxColumn
     Friend WithEvents Column6 As System.Windows.Forms.DataGridViewTextBoxColumn
     Friend WithEvents Column7 As System.Windows.Forms.DataGridViewTextBoxColumn
+    Friend WithEvents btnSelect As System.Windows.Forms.Button
 End Class

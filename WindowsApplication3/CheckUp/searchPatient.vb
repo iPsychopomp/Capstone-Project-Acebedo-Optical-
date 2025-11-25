@@ -1,5 +1,8 @@
 Imports System.Data.Odbc
 
+' Delegate for patient selection callback (Industry Standard Pattern)
+Public Delegate Sub PatientSelectedCallback(patientID As Integer, fullname As String)
+
 Public Class searchPatient
 
     ' Pagination state
@@ -8,6 +11,12 @@ Public Class searchPatient
     Private totalRecords As Integer = 0
     Private totalPages As Integer = 1
     Private currentSearchTerm As String = ""
+
+    ' Store reference to CreateCheckUp form if opened from btnAddP flow
+    Public Property ParentCheckUpForm As CreateCheckUp = Nothing
+
+    ' Callback pattern - Industry Standard approach for loose coupling
+    Public Property OnPatientSelected As PatientSelectedCallback = Nothing
 
     Private Sub searchPatient_Load(sender As Object, e As EventArgs) Handles MyBase.Load
         LoadPatientSearch()
@@ -79,12 +88,15 @@ Public Class searchPatient
         End Try
     End Sub
 
-    Private Sub searchPatientDGV_CellDoubleClick(sender As Object, e As DataGridViewCellEventArgs) Handles searchPatientDGV.CellDoubleClick
+    Private Sub SelectPatient()
         Try
-            If e.RowIndex < 0 Then Return
+            ' Check if any row is selected
+            If searchPatientDGV.SelectedRows.Count = 0 Then
+                MsgBox("Please select a patient first.", MsgBoxStyle.Information, "Select Patient")
+                Return
+            End If
 
-            Dim row As DataGridViewRow = searchPatientDGV.Rows(e.RowIndex)
-
+            Dim row As DataGridViewRow = searchPatientDGV.SelectedRows(0)
             Dim patientID As String = ""
             Dim fullname As String = ""
             Dim bdayStr As String = ""
@@ -102,83 +114,163 @@ Public Class searchPatient
             Catch
             End Try
 
-            ' Try addPatientTransaction first
+            Dim pid As Integer = If(String.IsNullOrEmpty(patientID), 0, Convert.ToInt32(patientID))
+
+            ' INDUSTRY STANDARD: Use callback pattern first (loose coupling)
+            If OnPatientSelected IsNot Nothing Then
+                Logger.Info("Using callback pattern to set patient - Name: " & fullname & ", ID: " & pid.ToString(), "searchPatient")
+                Try
+                    OnPatientSelected.Invoke(pid, fullname)
+                    Logger.Info("Callback invoked successfully", "searchPatient")
+                    Me.DialogResult = DialogResult.OK
+                    Me.Close()
+                    Return
+                Catch ex As Exception
+                    Logger.Error("Error invoking callback", ex, "searchPatient")
+                End Try
+            End If
+
+            ' FALLBACK: Legacy form-finding approach
+            Logger.Debug("No callback set, using legacy form-finding approach", "searchPatient")
+
+            ' PRIORITY 1: Check for CreateCheckUp first (if ParentCheckUpForm is set or form exists)
+            Dim targetForm As CreateCheckUp = Nothing
+
+            ' First check if we have a stored parent form reference
+            If ParentCheckUpForm IsNot Nothing Then
+                targetForm = ParentCheckUpForm
+                Logger.Info("Using stored ParentCheckUpForm reference", "searchPatient")
+            Else
+                ' Search in MainForm's container first (most reliable for embedded forms)
+                Logger.Debug("Searching for CreateCheckUp in MainForm container...", "searchPatient")
+                For Each frm As Form In Application.OpenForms
+                    If TypeOf frm Is MainForm Then
+                        Dim mainForm As MainForm = DirectCast(frm, MainForm)
+                        Logger.Debug("Found MainForm, checking pnlContainer controls...", "searchPatient")
+                        ' Search for CreateCheckUp in the pnlContainer
+                        For Each ctrl As Control In mainForm.pnlContainer.Controls
+                            Logger.Debug("  Control type: " & ctrl.GetType().Name, "searchPatient")
+                            If TypeOf ctrl Is CreateCheckUp Then
+                                targetForm = DirectCast(ctrl, CreateCheckUp)
+                                Logger.Info("Found CreateCheckUp in container!", "searchPatient")
+                                Exit For
+                            End If
+                        Next
+                        If targetForm IsNot Nothing Then Exit For
+                    End If
+                Next
+
+                ' If not found in container, check Application.OpenForms
+                If targetForm Is Nothing Then
+                    For Each frm As Form In Application.OpenForms
+                        If TypeOf frm Is CreateCheckUp Then
+                            targetForm = DirectCast(frm, CreateCheckUp)
+                            Logger.Info("Found CreateCheckUp in OpenForms", "searchPatient")
+                            Exit For
+                        End If
+                    Next
+                End If
+            End If
+
+            ' If CreateCheckUp found, set patient info and exit
+            If targetForm IsNot Nothing Then
+                Try
+                    Logger.Info("Setting patient in CreateCheckUp - Name: " & fullname & ", ID: " & patientID, "searchPatient")
+                    targetForm.txtPName.Text = fullname
+                    targetForm.txtPName.Tag = If(String.IsNullOrEmpty(patientID), Nothing, patientID)
+
+                    ' Bring the form to front
+                    Try
+                        targetForm.BringToFront()
+                        targetForm.Visible = True
+                        targetForm.Focus()
+                        Logger.Debug("CreateCheckUp form brought to front", "searchPatient")
+                    Catch ex2 As Exception
+                        Logger.Warning("Could not bring CreateCheckUp form to front: " & ex2.Message, "searchPatient")
+                    End Try
+
+                    Logger.Info("Patient info set successfully in CreateCheckUp", "searchPatient")
+                Catch ex As Exception
+                    Logger.Error("Error setting patient in CreateCheckUp", ex, "searchPatient")
+                End Try
+
+                Me.DialogResult = DialogResult.OK
+                Me.Close()
+                Return
+            End If
+
+            ' PRIORITY 2: If no CreateCheckUp, try addPatientTransaction
+            Logger.Debug("CreateCheckUp NOT found, checking for addPatientTransaction", "searchPatient")
             Dim transForm As addPatientTransaction = Nothing
+
+            ' Search in MainForm's container
             For Each frm As Form In Application.OpenForms
-                If TypeOf frm Is addPatientTransaction Then
-                    transForm = DirectCast(frm, addPatientTransaction)
-                    Exit For
+                If TypeOf frm Is MainForm Then
+                    Dim mainForm As MainForm = DirectCast(frm, MainForm)
+                    For Each ctrl As Control In mainForm.pnlContainer.Controls
+                        If TypeOf ctrl Is addPatientTransaction Then
+                            transForm = DirectCast(ctrl, addPatientTransaction)
+                            Logger.Info("Found addPatientTransaction in container!", "searchPatient")
+                            Exit For
+                        End If
+                    Next
+                    If transForm IsNot Nothing Then Exit For
                 End If
             Next
 
+            ' Check if the Owner is addPatientTransaction
+            If transForm Is Nothing AndAlso Me.Owner IsNot Nothing AndAlso TypeOf Me.Owner Is addPatientTransaction Then
+                transForm = DirectCast(Me.Owner, addPatientTransaction)
+                Logger.Info("Found addPatientTransaction as Owner", "searchPatient")
+            End If
+
+            ' Check Application.OpenForms
+            If transForm Is Nothing Then
+                For Each frm As Form In Application.OpenForms
+                    If TypeOf frm Is addPatientTransaction Then
+                        transForm = DirectCast(frm, addPatientTransaction)
+                        Logger.Info("Found addPatientTransaction in OpenForms", "searchPatient")
+                        Exit For
+                    End If
+                Next
+            End If
+
             If transForm IsNot Nothing Then
                 Try
-                    ' Set the patient ID using reflection since it's a private field
-                    Dim patientIDField = transForm.GetType().GetField("currentPatientID", Reflection.BindingFlags.NonPublic Or Reflection.BindingFlags.Instance)
-                    If patientIDField IsNot Nothing Then
-                        patientIDField.SetValue(transForm, If(String.IsNullOrEmpty(patientID), 0, Convert.ToInt32(patientID)))
+                    If Not transForm.IsDisposed Then
+                        Dim transPatientID As Integer = If(String.IsNullOrEmpty(patientID), 0, Convert.ToInt32(patientID))
+                        Logger.Info("Setting patient info - Name: " & fullname & ", ID: " & transPatientID.ToString(), "searchPatient")
+                        transForm.SetPatientInfo(transPatientID, fullname)
+                        Logger.Info("Patient info set successfully", "searchPatient")
+
+                        Try
+                            transForm.BringToFront()
+                            transForm.Visible = True
+                            transForm.Focus()
+                            Logger.Debug("Transaction form brought to front", "searchPatient")
+                        Catch ex2 As Exception
+                            Logger.Warning("Could not bring transaction form to front: " & ex2.Message, "searchPatient")
+                        End Try
                     End If
-                Catch
-                End Try
-                ' Try set a control named txtPname if it exists
-                Try
-                    Dim ctrl = transForm.Controls.Find("txtPname", True)
-                    If ctrl IsNot Nothing AndAlso ctrl.Length > 0 Then
-                        ctrl(0).Text = fullname
-                    End If
-                Catch
-                End Try
-                ' Also set txtPatientName if available (Designer shows this label exists)
-                Try
-                    'transForm.txtPatientName.Text = fullname
-                Catch
-                End Try
-                ' Also set lblPatientID on addPatientTransaction if that label exists
-                Try
-                    Dim lbl = transForm.Controls.Find("lblPatientID", True)
-                    If lbl IsNot Nothing AndAlso lbl.Length > 0 Then
-                        lbl(0).Text = patientID
-                    End If
-                Catch
+                Catch ex As Exception
+                    Logger.Error("Error calling SetPatientInfo", ex, "searchPatient")
                 End Try
                 Me.DialogResult = DialogResult.OK
                 Me.Close()
                 Return
             End If
 
-            ' Fallback: CreateCheckUp
-            Dim targetForm As CreateCheckUp = Nothing
-            For Each frm As Form In Application.OpenForms
-                If TypeOf frm Is CreateCheckUp Then
-                    targetForm = DirectCast(frm, CreateCheckUp)
-                    Exit For
-                End If
-            Next
-
-            If targetForm Is Nothing Then
-                Me.Close()
-                Return
-            End If
-
-            Try
-                targetForm.txtPName.Text = fullname
-                targetForm.txtPName.Tag = If(String.IsNullOrEmpty(patientID), Nothing, patientID)
-            Catch
-            End Try
-
-            Try
-                Dim parsed As DateTime
-                If DateTime.TryParse(bdayStr, parsed) Then
-                    'targetForm.dtpBday.Value = parsed
-                End If
-            Catch
-            End Try
-
-            Me.DialogResult = DialogResult.OK
+            ' If no form found, just close
+            Logger.Warning("No target form found (CreateCheckUp or addPatientTransaction)", "searchPatient")
             Me.Close()
         Catch ex As Exception
+            Logger.Error("Error in SelectPatient", ex, "searchPatient")
             MsgBox(ex.Message.ToString, vbCritical, "Error")
         End Try
+    End Sub
+
+    Private Sub btnSelect_Click(sender As Object, e As EventArgs) Handles btnSelect.Click
+        SelectPatient()
     End Sub
 
     Private Sub btnSearch_Click(sender As Object, e As EventArgs) Handles btnSearch.Click
@@ -206,43 +298,100 @@ Public Class searchPatient
 
     Private Sub btnAddP_Click(sender As Object, e As EventArgs) Handles btnAddP.Click
         Try
-            ' Store references to parent forms that should be hidden
-            Dim formsToHide As New List(Of Form)()
-
-            ' Find and hide only CreateCheckUp forms (not searchPatient)
+            ' Find the MainForm instance
+            Dim mainForm As MainForm = Nothing
             For Each frm As Form In Application.OpenForms
-                If TypeOf frm Is CreateCheckUp Then
-                    If frm.Visible Then
-                        formsToHide.Add(frm)
-                        frm.Hide()
-                    End If
-                End If
-                If TypeOf frm Is addPatientTransaction Then
-                    If frm.Visible Then
-                        formsToHide.Add(frm)
-                        frm.Hide()
-                    End If
-                End If
-                If TypeOf frm Is searchPatient Then
-                    If frm.Visible Then
-                        formsToHide.Add(frm)
-                        frm.Hide()
-                    End If
+                If TypeOf frm Is MainForm Then
+                    mainForm = DirectCast(frm, MainForm)
+                    Exit For
                 End If
             Next
 
-            ' Show the addPatient form
-            Using frm As New addPatient()
-                Dim result As DialogResult = frm.ShowDialog(Me)
-                If result = DialogResult.OK Then
-                    LoadPatientSearch()
-                End If
-            End Using
+            If mainForm IsNot Nothing Then
+                ' Determine which form called us (transaction or checkup)
+                Dim callingTransactionForm As addPatientTransaction = Nothing
+                Dim callingCheckUpForm As CreateCheckUp = Nothing
 
-            ' Restore visibility of hidden forms
-            For Each frm As Form In formsToHide
-                frm.Show()
-            Next
+                ' Check if we have a parent CreateCheckUp form reference
+                If ParentCheckUpForm IsNot Nothing Then
+                    callingCheckUpForm = ParentCheckUpForm
+                Else
+                    ' Search for addPatientTransaction in open forms or container
+                    For Each frm As Form In Application.OpenForms
+                        If TypeOf frm Is addPatientTransaction Then
+                            callingTransactionForm = DirectCast(frm, addPatientTransaction)
+                            Exit For
+                        End If
+                    Next
+
+                    ' If not found in OpenForms, search in MainForm's container
+                    If callingTransactionForm Is Nothing Then
+                        For Each ctrl As Control In mainForm.pnlContainer.Controls
+                            If TypeOf ctrl Is addPatientTransaction Then
+                                callingTransactionForm = DirectCast(ctrl, addPatientTransaction)
+                                Exit For
+                            End If
+                        Next
+                    End If
+
+                    ' If still not found, check for CreateCheckUp
+                    If callingTransactionForm Is Nothing Then
+                        For Each frm As Form In Application.OpenForms
+                            If TypeOf frm Is CreateCheckUp Then
+                                callingCheckUpForm = DirectCast(frm, CreateCheckUp)
+                                Exit For
+                            End If
+                        Next
+
+                        ' Search in container if not found
+                        If callingCheckUpForm Is Nothing Then
+                            For Each ctrl As Control In mainForm.pnlContainer.Controls
+                                If TypeOf ctrl Is CreateCheckUp Then
+                                    callingCheckUpForm = DirectCast(ctrl, CreateCheckUp)
+                                    Exit For
+                                End If
+                            Next
+                        End If
+                    End If
+                End If
+
+                ' Close this search form
+                Me.Close()
+
+                ' Show addPatient form in MainForm's container
+                Dim addPatientForm As New addPatient()
+                mainForm.ShowFormControls(addPatientForm)
+
+                ' When addPatient closes, return to the appropriate form
+                AddHandler addPatientForm.FormClosed, Sub(s, ev)
+                                                          If callingTransactionForm IsNot Nothing Then
+                                                              ' Return to addPatientTransaction
+                                                              mainForm.ShowFormControls(callingTransactionForm)
+
+                                                              ' Show searchPatient dialog on top and pass the transaction reference
+                                                              Dim newSearchForm As New searchPatient()
+                                                              newSearchForm.StartPosition = FormStartPosition.CenterScreen
+                                                              newSearchForm.ShowDialog(mainForm)
+                                                          ElseIf callingCheckUpForm IsNot Nothing Then
+                                                              ' Return to CreateCheckUp
+                                                              mainForm.ShowFormControls(callingCheckUpForm)
+
+                                                              ' Show searchPatient dialog on top and pass the CreateCheckUp reference
+                                                              Dim newSearchForm As New searchPatient()
+                                                              newSearchForm.ParentCheckUpForm = callingCheckUpForm
+                                                              newSearchForm.StartPosition = FormStartPosition.CenterScreen
+                                                              newSearchForm.ShowDialog(mainForm)
+                                                          End If
+                                                      End Sub
+            Else
+                ' Fallback to old behavior if MainForm not found
+                Using frm As New addPatient()
+                    Dim result As DialogResult = frm.ShowDialog(Me)
+                    If result = DialogResult.OK Then
+                        LoadPatientSearch()
+                    End If
+                End Using
+            End If
 
         Catch ex As Exception
             MsgBox(ex.Message.ToString, vbCritical, "Error")

@@ -1,10 +1,32 @@
-﻿Imports System.Data.Odbc
+Imports System.Data.Odbc
 
 Partial Class discounts
 
     Private Sub discounts_Load(sender As Object, e As EventArgs) Handles MyBase.Load
         LoadProductsForDiscounts()
         DgvStyle(dgvProductsDiscounts)
+
+        ' Ensure cmbCategory has an "All Products" option at the top
+        Try
+            If cmbCategory IsNot Nothing Then
+                Dim hasAll As Boolean = False
+                For Each item In cmbCategory.Items
+                    If String.Equals(item.ToString().Trim(), "All Products", StringComparison.OrdinalIgnoreCase) Then
+                        hasAll = True
+                        Exit For
+                    End If
+                Next
+
+                If Not hasAll Then
+                    cmbCategory.Items.Insert(0, "All Products")
+                End If
+
+                If cmbCategory.Items.Count > 0 AndAlso cmbCategory.SelectedIndex < 0 Then
+                    cmbCategory.SelectedIndex = 0
+                End If
+            End If
+        Catch
+        End Try
     End Sub
 
     Public Sub DgvStyle(ByRef doctorsDGV As DataGridView)
@@ -39,6 +61,8 @@ Partial Class discounts
         ' Center align all column headers
         For Each col As DataGridViewColumn In doctorsDGV.Columns
             col.HeaderCell.Style.Alignment = DataGridViewContentAlignment.MiddleCenter
+            ' Disable column sorting
+            col.SortMode = DataGridViewColumnSortMode.NotSortable
         Next
     End Sub
 
@@ -171,7 +195,12 @@ Partial Class discounts
         Catch
         End Try
 
-        LoadProductsForDiscounts(selectedCategory, term)
+        ' All Products shows everything (ignores category filter)
+        If String.Equals(selectedCategory, "All Products", StringComparison.OrdinalIgnoreCase) Then
+            LoadProductsForDiscounts("", term)
+        Else
+            LoadProductsForDiscounts(selectedCategory, term)
+        End If
     End Sub
 
     Private Sub dgvProductsDiscounts_CellClick(sender As Object, e As DataGridViewCellEventArgs) Handles dgvProductsDiscounts.CellClick
@@ -293,6 +322,14 @@ Partial Class discounts
             ' Refresh grid to reflect new discount and discounted price
             LoadProductsForDiscounts()
 
+            Try
+                If Application.OpenForms().OfType(Of inventory).Any() Then
+                    Dim inv = Application.OpenForms().OfType(Of inventory).First()
+                    inv.LoadProductsWithDiscountCheck()
+                End If
+            Catch
+            End Try
+
         Catch ex As Exception
             MessageBox.Show("Error updating discount: " & ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error)
         Finally
@@ -358,6 +395,14 @@ Partial Class discounts
             txtDiscount.Clear()
             LoadProductsForDiscounts()
 
+            Try
+                If Application.OpenForms().OfType(Of inventory).Any() Then
+                    Dim inv = Application.OpenForms().OfType(Of inventory).First()
+                    inv.LoadProductsWithDiscountCheck()
+                End If
+            Catch
+            End Try
+
         Catch ex As Exception
             MessageBox.Show("Error removing discount: " & ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error)
         Finally
@@ -387,6 +432,16 @@ Partial Class discounts
                 ' ignore audit failure here
             End Try
         End Using
+    End Sub
+
+    Private Sub discounts_FormClosed(sender As Object, e As FormClosedEventArgs) Handles Me.FormClosed
+        Try
+            If Application.OpenForms().OfType(Of inventory).Any() Then
+                Dim inv = Application.OpenForms().OfType(Of inventory).First()
+                inv.LoadProductsWithDiscountCheck()
+            End If
+        Catch
+        End Try
     End Sub
 
 End Class

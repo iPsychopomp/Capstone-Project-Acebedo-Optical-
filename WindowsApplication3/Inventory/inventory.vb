@@ -22,12 +22,60 @@ Public Class inventory
             btnSupplier.Visible = False
             btnOrders.Visible = False
         End If
+
+        ' Load categories into cmbDemand with an "All Products" option
+        LoadInventoryCategories()
     End Sub
 
     ' Load products with discount column check
     Public Sub LoadProductsWithDiscountCheck()
         EnsureDiscountColumn()
         SafeLoadProducts()
+    End Sub
+
+    ' Load distinct categories into cmbDemand, including an "All Products" item
+    Private Sub LoadInventoryCategories()
+        Try
+            If cmbDemand Is Nothing Then Return
+
+            Call dbConn()
+
+            Dim dt As New DataTable()
+            Dim sql As String = "SELECT DISTINCT category FROM tbl_products WHERE category IS NOT NULL AND category <> '' ORDER BY category"
+
+            Using cmd As New Odbc.OdbcCommand(sql, conn)
+                Using da As New Odbc.OdbcDataAdapter(cmd)
+                    da.Fill(dt)
+                End Using
+            End Using
+
+            cmbDemand.Items.Clear()
+
+            ' Add All Products first
+            cmbDemand.Items.Add("All Products")
+
+            For Each row As DataRow In dt.Rows
+                Dim cat As String = ""
+                Try
+                    cat = Convert.ToString(row("category")).Trim()
+                Catch
+                End Try
+                If Not String.IsNullOrWhiteSpace(cat) Then
+                    cmbDemand.Items.Add(cat)
+                End If
+            Next
+
+            If cmbDemand.Items.Count > 0 Then
+                cmbDemand.SelectedIndex = 0
+            End If
+
+        Catch
+        Finally
+            Try
+                If conn IsNot Nothing AndAlso conn.State = ConnectionState.Open Then conn.Close()
+            Catch
+            End Try
+        End Try
     End Sub
 
     Public Sub DgvStyle(ByRef productDGV As DataGridView)
@@ -683,5 +731,46 @@ Public Class inventory
         order.TopMost = True
         order.ShowDialog(Me)
         Me.Show()
+    End Sub
+
+    Private Sub cmbDemand_SelectedIndexChanged(sender As Object, e As EventArgs) Handles cmbDemand.SelectedIndexChanged
+        Try
+            If cmbDemand Is Nothing OrElse cmbDemand.SelectedIndex < 0 Then
+                currentPage = 0
+                LoadPage()
+                Return
+            End If
+
+            Dim selectedCategory As String = Convert.ToString(cmbDemand.SelectedItem).Trim()
+
+            ' All Products shows everything using the normal paged load
+            If String.Equals(selectedCategory, "All Products", StringComparison.OrdinalIgnoreCase) Then
+                currentPage = 0
+                LoadPage()
+                Return
+            End If
+
+            ' Filter by selected category using SafeLoadProducts
+            Dim safeCategory As String = selectedCategory.Replace("'", "''")
+            Dim whereClause As String = " WHERE p.category = '" & safeCategory & "'"
+
+            SafeLoadProducts(whereClause)
+
+            ' When filtered, indicate that paging controls are not active
+            Try
+                txtPage.Text = "Filtered by category"
+                btnBack.Enabled = False
+                btnNext.Enabled = False
+            Catch
+            End Try
+
+        Catch
+            ' On any error, fall back to normal load
+            Try
+                currentPage = 0
+                LoadPage()
+            Catch
+            End Try
+        End Try
     End Sub
 End Class

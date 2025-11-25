@@ -414,7 +414,45 @@ Public Class CreateCheckUp
     'End Sub
 
     Private Sub btnCancel_Click(sender As Object, e As EventArgs) Handles btnCancel.Click
-        Close()
+        Try
+            ' Find the MainForm instance
+            Dim mainForm As MainForm = Nothing
+            For Each frm As Form In Application.OpenForms
+                If TypeOf frm Is MainForm Then
+                    mainForm = DirectCast(frm, MainForm)
+                    Exit For
+                End If
+            Next
+
+            If mainForm IsNot Nothing Then
+                ' Check if checkUp form already exists in open forms
+                Dim existingCheckUp As checkUp = Nothing
+                For Each frm As Form In Application.OpenForms
+                    If TypeOf frm Is checkUp Then
+                        existingCheckUp = DirectCast(frm, checkUp)
+                        Exit For
+                    End If
+                Next
+
+                ' If exists, show and reload it; otherwise create new
+                If existingCheckUp IsNot Nothing Then
+                    mainForm.ShowFormControls(existingCheckUp)
+                    existingCheckUp.LoadPage()
+                Else
+                    Dim checkUpForm As New checkUp()
+                    mainForm.ShowFormControls(checkUpForm)
+                    checkUpForm.LoadPage()
+                End If
+
+                ' Close this form
+                Me.Close()
+            Else
+                ' Fallback: just close the form
+                Me.Close()
+            End If
+        Catch ex As Exception
+            MessageBox.Show("Error navigating back: " & ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error)
+        End Try
     End Sub
 
     Private Sub btnBack_Click(sender As Object, e As EventArgs) Handles btnBack.Click
@@ -624,6 +662,20 @@ Public Class CreateCheckUp
         Try
             ' Show the search patient form as a dialog
             Using searchForm As New searchPatient()
+                ' INDUSTRY STANDARD: Use callback pattern instead of form reference
+                searchForm.OnPatientSelected = Sub(patientID As Integer, fullname As String)
+                                                   Try
+                                                       txtPName.Text = fullname
+                                                       txtPName.Tag = patientID
+                                                       UpdateSummary()
+                                                       Logger.Info("Patient selected via callback - Name: " & fullname & ", ID: " & patientID.ToString(), "CreateCheckUp")
+                                                   Catch ex As Exception
+                                                       Logger.Error("Error setting patient in CreateCheckUp", ex, "CreateCheckUp")
+                                                   End Try
+                                               End Sub
+
+                ' Fallback: Pass reference to this CreateCheckUp form (for legacy support)
+                searchForm.ParentCheckUpForm = Me
                 searchForm.StartPosition = FormStartPosition.CenterScreen
 
                 ' Find the MainForm and set it as owner

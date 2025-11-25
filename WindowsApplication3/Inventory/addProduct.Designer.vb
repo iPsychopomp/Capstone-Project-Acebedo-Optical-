@@ -27,26 +27,26 @@ Partial Class addProduct
         Me.btnSave = New System.Windows.Forms.Button()
         Me.pnlPrdct = New System.Windows.Forms.Panel()
         Me.pnlIM = New System.Windows.Forms.Panel()
-        Me.Label14 = New System.Windows.Forms.Label()
+        Me.Label15 = New System.Windows.Forms.Label()
         Me.dtpEDate = New System.Windows.Forms.DateTimePicker()
+        Me.Label14 = New System.Windows.Forms.Label()
+        Me.txtDiscount = New System.Windows.Forms.TextBox()
         Me.Label8 = New System.Windows.Forms.Label()
         Me.txtReorder = New System.Windows.Forms.TextBox()
-        Me.Label4 = New System.Windows.Forms.Label()
         Me.Label16 = New System.Windows.Forms.Label()
+        Me.Label12 = New System.Windows.Forms.Label()
+        Me.Label5 = New System.Windows.Forms.Label()
+        Me.Label4 = New System.Windows.Forms.Label()
+        Me.txtUnitPrice = New System.Windows.Forms.TextBox()
         Me.pnlPI = New System.Windows.Forms.Panel()
         Me.txtDescription = New System.Windows.Forms.RichTextBox()
         Me.Label11 = New System.Windows.Forms.Label()
         Me.Label13 = New System.Windows.Forms.Label()
-        Me.txtDiscount = New System.Windows.Forms.TextBox()
         Me.cmbPrdctName = New System.Windows.Forms.ComboBox()
-        Me.Label15 = New System.Windows.Forms.Label()
         Me.Label1 = New System.Windows.Forms.Label()
         Me.cmbSuppliers = New System.Windows.Forms.ComboBox()
-        Me.Label12 = New System.Windows.Forms.Label()
         Me.Label2 = New System.Windows.Forms.Label()
-        Me.txtUnitPrice = New System.Windows.Forms.TextBox()
         Me.Label10 = New System.Windows.Forms.Label()
-        Me.Label5 = New System.Windows.Forms.Label()
         Me.Label6 = New System.Windows.Forms.Label()
         Me.Label9 = New System.Windows.Forms.Label()
         Me.Label3 = New System.Windows.Forms.Label()
@@ -127,6 +127,26 @@ Partial Class addProduct
         Me.pnlIM.Size = New System.Drawing.Size(793, 165)
         Me.pnlIM.TabIndex = 137
         '
+        'Label15
+        '
+        Me.Label15.AutoSize = True
+        Me.Label15.Font = New System.Drawing.Font("Segoe UI", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label15.Location = New System.Drawing.Point(404, 32)
+        Me.Label15.Name = "Label15"
+        Me.Label15.Size = New System.Drawing.Size(93, 28)
+        Me.Label15.TabIndex = 132
+        Me.Label15.Text = "Discount:"
+        '
+        'dtpEDate
+        '
+        Me.dtpEDate.CustomFormat = "yyyy-MM-dd"
+        Me.dtpEDate.Font = New System.Drawing.Font("Segoe UI", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.dtpEDate.Format = System.Windows.Forms.DateTimePickerFormat.[Short]
+        Me.dtpEDate.Location = New System.Drawing.Point(409, 127)
+        Me.dtpEDate.Name = "dtpEDate"
+        Me.dtpEDate.Size = New System.Drawing.Size(352, 34)
+        Me.dtpEDate.TabIndex = 136
+        '
         'Label14
         '
         Me.Label14.AutoSize = True
@@ -138,15 +158,14 @@ Partial Class addProduct
         Me.Label14.TabIndex = 131
         Me.Label14.Text = "*"
         '
-        'dtpEDate
+        'txtDiscount
         '
-        Me.dtpEDate.CustomFormat = "yyyy-MM-dd"
-        Me.dtpEDate.Font = New System.Drawing.Font("Segoe UI", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.dtpEDate.Format = System.Windows.Forms.DateTimePickerFormat.[Short]
-        Me.dtpEDate.Location = New System.Drawing.Point(409, 127)
-        Me.dtpEDate.Name = "dtpEDate"
-        Me.dtpEDate.Size = New System.Drawing.Size(352, 34)
-        Me.dtpEDate.TabIndex = 136
+        Me.txtDiscount.Font = New System.Drawing.Font("Segoe UI", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.txtDiscount.Location = New System.Drawing.Point(409, 55)
+        Me.txtDiscount.Name = "txtDiscount"
+        Me.txtDiscount.ReadOnly = True
+        Me.txtDiscount.Size = New System.Drawing.Size(352, 34)
+        Me.txtDiscount.TabIndex = 133
         '
         'Label8
         '
@@ -166,16 +185,6 @@ Partial Class addProduct
         Me.txtReorder.Size = New System.Drawing.Size(341, 34)
         Me.txtReorder.TabIndex = 121
         '
-        'Label4
-        '
-        Me.Label4.AutoSize = True
-        Me.Label4.Font = New System.Drawing.Font("Segoe UI", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Label4.Location = New System.Drawing.Point(404, 104)
-        Me.Label4.Name = "Label4"
-        Me.Label4.Size = New System.Drawing.Size(150, 28)
-        Me.Label4.TabIndex = 135
-        Me.Label4.Text = "Expiration Date:"
-        '
         'Label16
         '
         Me.Label16.AutoSize = True
@@ -186,6 +195,45 @@ Partial Class addProduct
         Me.Label16.Size = New System.Drawing.Size(297, 28)
         Me.Label16.TabIndex = 132
         Me.Label16.Text = "Price && Inventory Management"
+        '
+        'Label12
+        '
+        Me.Label12.AutoSize = True
+        Me.Label12.Font = New System.Drawing.Font("Segoe UI", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label12.ForeColor = System.Drawing.Color.Red
+        Me.Label12.Location = New System.Drawing.Point(103, 32)
+        Me.Label12.Name = "Label12"
+        Me.Label12.Size = New System.Drawing.Size(20, 28)
+        Me.Label12.TabIndex = 129
+        Me.Label12.Text = "*"
+        '
+        'Label5
+        '
+        Me.Label5.AutoSize = True
+        Me.Label5.Font = New System.Drawing.Font("Segoe UI", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label5.Location = New System.Drawing.Point(23, 32)
+        Me.Label5.Name = "Label5"
+        Me.Label5.Size = New System.Drawing.Size(100, 28)
+        Me.Label5.TabIndex = 122
+        Me.Label5.Text = "Unit Price:"
+        '
+        'Label4
+        '
+        Me.Label4.AutoSize = True
+        Me.Label4.Font = New System.Drawing.Font("Segoe UI", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label4.Location = New System.Drawing.Point(404, 104)
+        Me.Label4.Name = "Label4"
+        Me.Label4.Size = New System.Drawing.Size(150, 28)
+        Me.Label4.TabIndex = 135
+        Me.Label4.Text = "Expiration Date:"
+        '
+        'txtUnitPrice
+        '
+        Me.txtUnitPrice.Font = New System.Drawing.Font("Segoe UI", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.txtUnitPrice.Location = New System.Drawing.Point(28, 55)
+        Me.txtUnitPrice.Name = "txtUnitPrice"
+        Me.txtUnitPrice.Size = New System.Drawing.Size(341, 34)
+        Me.txtUnitPrice.TabIndex = 123
         '
         'pnlPI
         '
@@ -238,14 +286,6 @@ Partial Class addProduct
         Me.Label13.TabIndex = 130
         Me.Label13.Text = "*"
         '
-        'txtDiscount
-        '
-        Me.txtDiscount.Font = New System.Drawing.Font("Segoe UI", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.txtDiscount.Location = New System.Drawing.Point(409, 55)
-        Me.txtDiscount.Name = "txtDiscount"
-        Me.txtDiscount.Size = New System.Drawing.Size(352, 34)
-        Me.txtDiscount.TabIndex = 133
-        '
         'cmbPrdctName
         '
         Me.cmbPrdctName.Font = New System.Drawing.Font("Segoe UI", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
@@ -254,16 +294,6 @@ Partial Class addProduct
         Me.cmbPrdctName.Name = "cmbPrdctName"
         Me.cmbPrdctName.Size = New System.Drawing.Size(233, 36)
         Me.cmbPrdctName.TabIndex = 134
-        '
-        'Label15
-        '
-        Me.Label15.AutoSize = True
-        Me.Label15.Font = New System.Drawing.Font("Segoe UI", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Label15.Location = New System.Drawing.Point(404, 32)
-        Me.Label15.Name = "Label15"
-        Me.Label15.Size = New System.Drawing.Size(93, 28)
-        Me.Label15.TabIndex = 132
-        Me.Label15.Text = "Discount:"
         '
         'Label1
         '
@@ -285,17 +315,6 @@ Partial Class addProduct
         Me.cmbSuppliers.Size = New System.Drawing.Size(233, 36)
         Me.cmbSuppliers.TabIndex = 125
         '
-        'Label12
-        '
-        Me.Label12.AutoSize = True
-        Me.Label12.Font = New System.Drawing.Font("Segoe UI", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Label12.ForeColor = System.Drawing.Color.Red
-        Me.Label12.Location = New System.Drawing.Point(103, 32)
-        Me.Label12.Name = "Label12"
-        Me.Label12.Size = New System.Drawing.Size(20, 28)
-        Me.Label12.TabIndex = 129
-        Me.Label12.Text = "*"
-        '
         'Label2
         '
         Me.Label2.AutoSize = True
@@ -305,14 +324,6 @@ Partial Class addProduct
         Me.Label2.Size = New System.Drawing.Size(142, 28)
         Me.Label2.TabIndex = 110
         Me.Label2.Text = "Product Name:"
-        '
-        'txtUnitPrice
-        '
-        Me.txtUnitPrice.Font = New System.Drawing.Font("Segoe UI", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.txtUnitPrice.Location = New System.Drawing.Point(28, 55)
-        Me.txtUnitPrice.Name = "txtUnitPrice"
-        Me.txtUnitPrice.Size = New System.Drawing.Size(341, 34)
-        Me.txtUnitPrice.TabIndex = 123
         '
         'Label10
         '
@@ -324,16 +335,6 @@ Partial Class addProduct
         Me.Label10.Size = New System.Drawing.Size(20, 28)
         Me.Label10.TabIndex = 127
         Me.Label10.Text = "*"
-        '
-        'Label5
-        '
-        Me.Label5.AutoSize = True
-        Me.Label5.Font = New System.Drawing.Font("Segoe UI", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Label5.Location = New System.Drawing.Point(23, 32)
-        Me.Label5.Name = "Label5"
-        Me.Label5.Size = New System.Drawing.Size(100, 28)
-        Me.Label5.TabIndex = 122
-        Me.Label5.Text = "Unit Price:"
         '
         'Label6
         '

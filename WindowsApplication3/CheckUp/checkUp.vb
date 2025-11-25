@@ -100,10 +100,11 @@ Public Class checkUp
 
                 ' Handle form closing to refresh data
                 AddHandler check.FormClosed, Sub(s, ev)
-                                                 ' Show this checkUp form back in the container
-                                                 mainForm.ShowFormControls(Me)
+                                                 ' Create a new checkUp form instance and show it
+                                                 Dim newCheckUpForm As New checkUp()
+                                                 mainForm.ShowFormControls(newCheckUpForm)
                                                  If check.DataSaved Then
-                                                     LoadPage()
+                                                     newCheckUpForm.LoadPage()
                                                  End If
                                              End Sub
 
@@ -232,10 +233,11 @@ Public Class checkUp
 
                         ' Handle form closing to refresh data
                         AddHandler editCheckup.FormClosed, Sub(s, ev)
-                                                               ' Show this checkUp form back in the container
-                                                               mainForm.ShowFormControls(Me)
+                                                               ' Create a new checkUp form instance and show it
+                                                               Dim newCheckUpForm As New checkUp()
+                                                               mainForm.ShowFormControls(newCheckUpForm)
                                                                If editCheckup.DataSaved Then
-                                                                   LoadPage()
+                                                                   newCheckUpForm.LoadPage()
                                                                End If
                                                            End Sub
 

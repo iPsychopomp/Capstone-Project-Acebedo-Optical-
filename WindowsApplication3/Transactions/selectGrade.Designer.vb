@@ -27,14 +27,15 @@ Partial Class selectGrade
         Me.txtOD = New System.Windows.Forms.TextBox()
         Me.txtODPrice = New System.Windows.Forms.TextBox()
         Me.Panel1 = New System.Windows.Forms.Panel()
+        Me.Label6 = New System.Windows.Forms.Label()
+        Me.Label5 = New System.Windows.Forms.Label()
         Me.txtOS = New System.Windows.Forms.TextBox()
         Me.Label2 = New System.Windows.Forms.Label()
         Me.Label1 = New System.Windows.Forms.Label()
         Me.Label3 = New System.Windows.Forms.Label()
         Me.txtOSPrice = New System.Windows.Forms.TextBox()
         Me.btnConfirm = New System.Windows.Forms.Button()
-        Me.Label5 = New System.Windows.Forms.Label()
-        Me.Label6 = New System.Windows.Forms.Label()
+        Me.btnClear = New System.Windows.Forms.Button()
         Me.Panel1.SuspendLayout()
         Me.SuspendLayout()
         '
@@ -80,6 +81,24 @@ Partial Class selectGrade
         Me.Panel1.Name = "Panel1"
         Me.Panel1.Size = New System.Drawing.Size(414, 134)
         Me.Panel1.TabIndex = 13
+        '
+        'Label6
+        '
+        Me.Label6.AutoSize = True
+        Me.Label6.Location = New System.Drawing.Point(215, 53)
+        Me.Label6.Name = "Label6"
+        Me.Label6.Size = New System.Drawing.Size(69, 28)
+        Me.Label6.TabIndex = 15
+        Me.Label6.Text = "Grade:"
+        '
+        'Label5
+        '
+        Me.Label5.AutoSize = True
+        Me.Label5.Location = New System.Drawing.Point(231, 91)
+        Me.Label5.Name = "Label5"
+        Me.Label5.Size = New System.Drawing.Size(58, 28)
+        Me.Label5.TabIndex = 14
+        Me.Label5.Text = "Price:"
         '
         'txtOS
         '
@@ -133,29 +152,21 @@ Partial Class selectGrade
         Me.btnConfirm.Text = "Confirm"
         Me.btnConfirm.UseVisualStyleBackColor = True
         '
-        'Label5
+        'btnClear
         '
-        Me.Label5.AutoSize = True
-        Me.Label5.Location = New System.Drawing.Point(231, 91)
-        Me.Label5.Name = "Label5"
-        Me.Label5.Size = New System.Drawing.Size(58, 28)
-        Me.Label5.TabIndex = 14
-        Me.Label5.Text = "Price:"
-        '
-        'Label6
-        '
-        Me.Label6.AutoSize = True
-        Me.Label6.Location = New System.Drawing.Point(215, 53)
-        Me.Label6.Name = "Label6"
-        Me.Label6.Size = New System.Drawing.Size(69, 28)
-        Me.Label6.TabIndex = 15
-        Me.Label6.Text = "Grade:"
+        Me.btnClear.Location = New System.Drawing.Point(28, 152)
+        Me.btnClear.Name = "btnClear"
+        Me.btnClear.Size = New System.Drawing.Size(100, 35)
+        Me.btnClear.TabIndex = 14
+        Me.btnClear.Text = "Clear"
+        Me.btnClear.UseVisualStyleBackColor = True
         '
         'selectGrade
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(11.0!, 28.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.ClientSize = New System.Drawing.Size(438, 190)
+        Me.Controls.Add(Me.btnClear)
         Me.Controls.Add(Me.Panel1)
         Me.Controls.Add(Me.btnConfirm)
         Me.Font = New System.Drawing.Font("Segoe UI", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
@@ -183,4 +194,5 @@ Partial Class selectGrade
     Friend WithEvents btnConfirm As System.Windows.Forms.Button
     Friend WithEvents Label6 As System.Windows.Forms.Label
     Friend WithEvents Label5 As System.Windows.Forms.Label
+    Friend WithEvents btnClear As System.Windows.Forms.Button
 End Class

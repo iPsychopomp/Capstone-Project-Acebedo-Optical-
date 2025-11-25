@@ -620,7 +620,7 @@ Partial Class addPatient
         Me.btnSave.Font = New System.Drawing.Font("Segoe UI", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.btnSave.ForeColor = System.Drawing.Color.Black
         Me.btnSave.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft
-        Me.btnSave.Location = New System.Drawing.Point(1425, 560)
+        Me.btnSave.Location = New System.Drawing.Point(1425, 3)
         Me.btnSave.Margin = New System.Windows.Forms.Padding(3, 4, 3, 4)
         Me.btnSave.Name = "btnSave"
         Me.btnSave.Size = New System.Drawing.Size(100, 35)
@@ -631,14 +631,12 @@ Partial Class addPatient
         'pnlDataEntry
         '
         Me.pnlDataEntry.BackColor = System.Drawing.SystemColors.MenuBar
-        Me.pnlDataEntry.Controls.Add(Me.btnBack)
         Me.pnlDataEntry.Controls.Add(Me.pnlSummary)
         Me.pnlDataEntry.Controls.Add(Me.pnlMI)
         Me.pnlDataEntry.Controls.Add(Me.pnlCAI)
         Me.pnlDataEntry.Controls.Add(Me.pnlAI)
         Me.pnlDataEntry.Controls.Add(Me.pnlPI)
         Me.pnlDataEntry.Controls.Add(Me.Panel1)
-        Me.pnlDataEntry.Controls.Add(Me.btnSave)
         Me.pnlDataEntry.Dock = System.Windows.Forms.DockStyle.Fill
         Me.pnlDataEntry.Location = New System.Drawing.Point(0, 0)
         Me.pnlDataEntry.Margin = New System.Windows.Forms.Padding(3, 4, 3, 4)
@@ -652,7 +650,7 @@ Partial Class addPatient
         Me.btnBack.Font = New System.Drawing.Font("Segoe UI", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.btnBack.ForeColor = System.Drawing.Color.Black
         Me.btnBack.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft
-        Me.btnBack.Location = New System.Drawing.Point(1319, 560)
+        Me.btnBack.Location = New System.Drawing.Point(1310, 3)
         Me.btnBack.Margin = New System.Windows.Forms.Padding(3, 4, 3, 4)
         Me.btnBack.Name = "btnBack"
         Me.btnBack.Size = New System.Drawing.Size(100, 35)
@@ -690,7 +688,7 @@ Partial Class addPatient
         Me.pnlSummary.Controls.Add(Me.Label39)
         Me.pnlSummary.Location = New System.Drawing.Point(925, 47)
         Me.pnlSummary.Name = "pnlSummary"
-        Me.pnlSummary.Size = New System.Drawing.Size(600, 506)
+        Me.pnlSummary.Size = New System.Drawing.Size(600, 642)
         Me.pnlSummary.TabIndex = 207
         '
         'lblOthers
@@ -1152,9 +1150,11 @@ Partial Class addPatient
         'Panel1
         '
         Me.Panel1.BackColor = System.Drawing.SystemColors.GradientActiveCaption
+        Me.Panel1.Controls.Add(Me.btnBack)
         Me.Panel1.Controls.Add(Me.pbEdit)
         Me.Panel1.Controls.Add(Me.pbAdd)
         Me.Panel1.Controls.Add(Me.lblHead)
+        Me.Panel1.Controls.Add(Me.btnSave)
         Me.Panel1.Dock = System.Windows.Forms.DockStyle.Top
         Me.Panel1.Font = New System.Drawing.Font("Segoe UI", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.Panel1.Location = New System.Drawing.Point(0, 0)

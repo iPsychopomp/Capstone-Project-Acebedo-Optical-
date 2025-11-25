@@ -27,22 +27,22 @@ Partial Class OrderProduct
         Dim DataGridViewCellStyle9 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
         Dim DataGridViewCellStyle10 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
         Dim DataGridViewCellStyle11 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
+        Dim DataGridViewCellStyle12 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
+        Dim DataGridViewCellStyle13 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
+        Dim DataGridViewCellStyle18 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
+        Dim DataGridViewCellStyle19 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
+        Dim DataGridViewCellStyle20 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
+        Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(OrderProduct))
         Dim DataGridViewCellStyle3 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
         Dim DataGridViewCellStyle4 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
         Dim DataGridViewCellStyle5 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
         Dim DataGridViewCellStyle6 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
         Dim DataGridViewCellStyle7 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
         Dim DataGridViewCellStyle8 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
-        Dim DataGridViewCellStyle12 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
-        Dim DataGridViewCellStyle13 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
-        Dim DataGridViewCellStyle18 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
-        Dim DataGridViewCellStyle19 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
-        Dim DataGridViewCellStyle20 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
         Dim DataGridViewCellStyle14 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
         Dim DataGridViewCellStyle15 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
         Dim DataGridViewCellStyle16 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
         Dim DataGridViewCellStyle17 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
-        Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(OrderProduct))
         Me.TabControl1 = New System.Windows.Forms.TabControl()
         Me.TabPage1 = New System.Windows.Forms.TabPage()
         Me.Label3 = New System.Windows.Forms.Label()
@@ -56,6 +56,13 @@ Partial Class OrderProduct
         Me.btnRemove = New System.Windows.Forms.Button()
         Me.btnAdd = New System.Windows.Forms.Button()
         Me.dgvSelectedProducts = New System.Windows.Forms.DataGridView()
+        Me.TabPage2 = New System.Windows.Forms.TabPage()
+        Me.btnCancelOrder = New System.Windows.Forms.Button()
+        Me.btnReceived = New System.Windows.Forms.Button()
+        Me.dgvOrders = New System.Windows.Forms.DataGridView()
+        Me.pnlBar = New System.Windows.Forms.Panel()
+        Me.PictureBox1 = New System.Windows.Forms.PictureBox()
+        Me.Label6 = New System.Windows.Forms.Label()
         Me.productID = New System.Windows.Forms.DataGridViewTextBoxColumn()
         Me.productName = New System.Windows.Forms.DataGridViewTextBoxColumn()
         Me.category = New System.Windows.Forms.DataGridViewTextBoxColumn()
@@ -63,19 +70,12 @@ Partial Class OrderProduct
         Me.Quantity = New System.Windows.Forms.DataGridViewTextBoxColumn()
         Me.Supplier = New System.Windows.Forms.DataGridViewTextBoxColumn()
         Me.Total = New System.Windows.Forms.DataGridViewTextBoxColumn()
-        Me.TabPage2 = New System.Windows.Forms.TabPage()
-        Me.btnCancelOrder = New System.Windows.Forms.Button()
-        Me.btnReceived = New System.Windows.Forms.Button()
-        Me.dgvOrders = New System.Windows.Forms.DataGridView()
         Me.orderID = New System.Windows.Forms.DataGridViewTextBoxColumn()
         Me.supplierName = New System.Windows.Forms.DataGridViewTextBoxColumn()
         Me.orderDate = New System.Windows.Forms.DataGridViewTextBoxColumn()
         Me.totalAmount = New System.Windows.Forms.DataGridViewTextBoxColumn()
         Me.Column1 = New System.Windows.Forms.DataGridViewTextBoxColumn()
         Me.Status = New System.Windows.Forms.DataGridViewTextBoxColumn()
-        Me.pnlBar = New System.Windows.Forms.Panel()
-        Me.PictureBox1 = New System.Windows.Forms.PictureBox()
-        Me.Label6 = New System.Windows.Forms.Label()
         Me.TabControl1.SuspendLayout()
         Me.TabPage1.SuspendLayout()
         CType(Me.dgvSelectedProducts, System.ComponentModel.ISupportInitialize).BeginInit()
@@ -289,67 +289,6 @@ Partial Class OrderProduct
         Me.dgvSelectedProducts.Size = New System.Drawing.Size(930, 385)
         Me.dgvSelectedProducts.TabIndex = 223
         '
-        'productID
-        '
-        DataGridViewCellStyle3.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight
-        Me.productID.DefaultCellStyle = DataGridViewCellStyle3
-        Me.productID.FillWeight = 70.0!
-        Me.productID.HeaderText = "Product ID"
-        Me.productID.Name = "productID"
-        Me.productID.ReadOnly = True
-        '
-        'productName
-        '
-        DataGridViewCellStyle4.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter
-        Me.productName.DefaultCellStyle = DataGridViewCellStyle4
-        Me.productName.FillWeight = 120.0!
-        Me.productName.HeaderText = "Product Name"
-        Me.productName.Name = "productName"
-        Me.productName.ReadOnly = True
-        '
-        'category
-        '
-        DataGridViewCellStyle5.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter
-        Me.category.DefaultCellStyle = DataGridViewCellStyle5
-        Me.category.FillWeight = 70.0!
-        Me.category.HeaderText = "Category"
-        Me.category.Name = "category"
-        Me.category.ReadOnly = True
-        '
-        'product_price
-        '
-        DataGridViewCellStyle6.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight
-        Me.product_price.DefaultCellStyle = DataGridViewCellStyle6
-        Me.product_price.FillWeight = 60.0!
-        Me.product_price.HeaderText = "Unit Price"
-        Me.product_price.Name = "product_price"
-        Me.product_price.ReadOnly = True
-        '
-        'Quantity
-        '
-        DataGridViewCellStyle7.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight
-        Me.Quantity.DefaultCellStyle = DataGridViewCellStyle7
-        Me.Quantity.FillWeight = 60.0!
-        Me.Quantity.HeaderText = "Quantity"
-        Me.Quantity.Name = "Quantity"
-        Me.Quantity.ReadOnly = True
-        '
-        'Supplier
-        '
-        Me.Supplier.FillWeight = 120.0!
-        Me.Supplier.HeaderText = "Supplier"
-        Me.Supplier.Name = "Supplier"
-        Me.Supplier.ReadOnly = True
-        '
-        'Total
-        '
-        DataGridViewCellStyle8.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight
-        Me.Total.DefaultCellStyle = DataGridViewCellStyle8
-        Me.Total.FillWeight = 80.0!
-        Me.Total.HeaderText = "Total Price"
-        Me.Total.Name = "Total"
-        Me.Total.ReadOnly = True
-        '
         'TabPage2
         '
         Me.TabPage2.BackColor = System.Drawing.SystemColors.Control
@@ -439,6 +378,97 @@ Partial Class OrderProduct
         Me.dgvOrders.Size = New System.Drawing.Size(930, 525)
         Me.dgvOrders.TabIndex = 224
         '
+        'pnlBar
+        '
+        Me.pnlBar.BackColor = System.Drawing.SystemColors.GradientActiveCaption
+        Me.pnlBar.Controls.Add(Me.PictureBox1)
+        Me.pnlBar.Controls.Add(Me.Label6)
+        Me.pnlBar.Dock = System.Windows.Forms.DockStyle.Top
+        Me.pnlBar.Location = New System.Drawing.Point(0, 0)
+        Me.pnlBar.Name = "pnlBar"
+        Me.pnlBar.Size = New System.Drawing.Size(930, 49)
+        Me.pnlBar.TabIndex = 121
+        '
+        'PictureBox1
+        '
+        Me.PictureBox1.Image = CType(resources.GetObject("PictureBox1.Image"), System.Drawing.Image)
+        Me.PictureBox1.Location = New System.Drawing.Point(12, 11)
+        Me.PictureBox1.Name = "PictureBox1"
+        Me.PictureBox1.Size = New System.Drawing.Size(35, 41)
+        Me.PictureBox1.TabIndex = 114
+        Me.PictureBox1.TabStop = False
+        '
+        'Label6
+        '
+        Me.Label6.AutoSize = True
+        Me.Label6.Font = New System.Drawing.Font("Segoe UI Semibold", 12.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label6.Location = New System.Drawing.Point(50, 12)
+        Me.Label6.Name = "Label6"
+        Me.Label6.Size = New System.Drawing.Size(73, 28)
+        Me.Label6.TabIndex = 113
+        Me.Label6.Text = "Orders"
+        '
+        'productID
+        '
+        DataGridViewCellStyle3.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight
+        Me.productID.DefaultCellStyle = DataGridViewCellStyle3
+        Me.productID.FillWeight = 70.0!
+        Me.productID.HeaderText = "Product ID"
+        Me.productID.Name = "productID"
+        Me.productID.ReadOnly = True
+        '
+        'productName
+        '
+        DataGridViewCellStyle4.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter
+        Me.productName.DefaultCellStyle = DataGridViewCellStyle4
+        Me.productName.FillWeight = 120.0!
+        Me.productName.HeaderText = "Product Name"
+        Me.productName.Name = "productName"
+        Me.productName.ReadOnly = True
+        '
+        'category
+        '
+        DataGridViewCellStyle5.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter
+        Me.category.DefaultCellStyle = DataGridViewCellStyle5
+        Me.category.FillWeight = 70.0!
+        Me.category.HeaderText = "Category"
+        Me.category.Name = "category"
+        Me.category.ReadOnly = True
+        '
+        'product_price
+        '
+        DataGridViewCellStyle6.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight
+        Me.product_price.DefaultCellStyle = DataGridViewCellStyle6
+        Me.product_price.FillWeight = 60.0!
+        Me.product_price.HeaderText = "Unit Price(₱)"
+        Me.product_price.Name = "product_price"
+        Me.product_price.ReadOnly = True
+        '
+        'Quantity
+        '
+        DataGridViewCellStyle7.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight
+        Me.Quantity.DefaultCellStyle = DataGridViewCellStyle7
+        Me.Quantity.FillWeight = 60.0!
+        Me.Quantity.HeaderText = "Quantity"
+        Me.Quantity.Name = "Quantity"
+        Me.Quantity.ReadOnly = True
+        '
+        'Supplier
+        '
+        Me.Supplier.FillWeight = 120.0!
+        Me.Supplier.HeaderText = "Supplier"
+        Me.Supplier.Name = "Supplier"
+        Me.Supplier.ReadOnly = True
+        '
+        'Total
+        '
+        DataGridViewCellStyle8.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight
+        Me.Total.DefaultCellStyle = DataGridViewCellStyle8
+        Me.Total.FillWeight = 80.0!
+        Me.Total.HeaderText = "Total Price(₱)"
+        Me.Total.Name = "Total"
+        Me.Total.ReadOnly = True
+        '
         'orderID
         '
         Me.orderID.DataPropertyName = "orderID"
@@ -470,7 +500,7 @@ Partial Class OrderProduct
         DataGridViewCellStyle15.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight
         Me.totalAmount.DefaultCellStyle = DataGridViewCellStyle15
         Me.totalAmount.FillWeight = 70.0!
-        Me.totalAmount.HeaderText = "Total Amount"
+        Me.totalAmount.HeaderText = "Total Amount(₱)"
         Me.totalAmount.Name = "totalAmount"
         Me.totalAmount.ReadOnly = True
         '
@@ -493,36 +523,6 @@ Partial Class OrderProduct
         Me.Status.HeaderText = "Status"
         Me.Status.Name = "Status"
         Me.Status.ReadOnly = True
-        '
-        'pnlBar
-        '
-        Me.pnlBar.BackColor = System.Drawing.SystemColors.GradientActiveCaption
-        Me.pnlBar.Controls.Add(Me.PictureBox1)
-        Me.pnlBar.Controls.Add(Me.Label6)
-        Me.pnlBar.Dock = System.Windows.Forms.DockStyle.Top
-        Me.pnlBar.Location = New System.Drawing.Point(0, 0)
-        Me.pnlBar.Name = "pnlBar"
-        Me.pnlBar.Size = New System.Drawing.Size(930, 49)
-        Me.pnlBar.TabIndex = 121
-        '
-        'PictureBox1
-        '
-        Me.PictureBox1.Image = CType(resources.GetObject("PictureBox1.Image"), System.Drawing.Image)
-        Me.PictureBox1.Location = New System.Drawing.Point(12, 11)
-        Me.PictureBox1.Name = "PictureBox1"
-        Me.PictureBox1.Size = New System.Drawing.Size(35, 41)
-        Me.PictureBox1.TabIndex = 114
-        Me.PictureBox1.TabStop = False
-        '
-        'Label6
-        '
-        Me.Label6.AutoSize = True
-        Me.Label6.Font = New System.Drawing.Font("Segoe UI Semibold", 12.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Label6.Location = New System.Drawing.Point(50, 12)
-        Me.Label6.Name = "Label6"
-        Me.Label6.Size = New System.Drawing.Size(73, 28)
-        Me.Label6.TabIndex = 113
-        Me.Label6.Text = "Orders"
         '
         'OrderProduct
         '
@@ -569,20 +569,20 @@ Partial Class OrderProduct
     Friend WithEvents Label2 As System.Windows.Forms.Label
     Friend WithEvents Label3 As System.Windows.Forms.Label
     Friend WithEvents txtOrderedBy As System.Windows.Forms.TextBox
+    Friend WithEvents pnlBar As System.Windows.Forms.Panel
+    Friend WithEvents PictureBox1 As System.Windows.Forms.PictureBox
+    Friend WithEvents Label6 As System.Windows.Forms.Label
+    Friend WithEvents productID As System.Windows.Forms.DataGridViewTextBoxColumn
+    Friend WithEvents productName As System.Windows.Forms.DataGridViewTextBoxColumn
+    Friend WithEvents category As System.Windows.Forms.DataGridViewTextBoxColumn
+    Friend WithEvents product_price As System.Windows.Forms.DataGridViewTextBoxColumn
+    Friend WithEvents Quantity As System.Windows.Forms.DataGridViewTextBoxColumn
+    Friend WithEvents Supplier As System.Windows.Forms.DataGridViewTextBoxColumn
+    Friend WithEvents Total As System.Windows.Forms.DataGridViewTextBoxColumn
     Friend WithEvents orderID As System.Windows.Forms.DataGridViewTextBoxColumn
     Friend WithEvents supplierName As System.Windows.Forms.DataGridViewTextBoxColumn
     Friend WithEvents orderDate As System.Windows.Forms.DataGridViewTextBoxColumn
     Friend WithEvents totalAmount As System.Windows.Forms.DataGridViewTextBoxColumn
     Friend WithEvents Column1 As System.Windows.Forms.DataGridViewTextBoxColumn
     Friend WithEvents Status As System.Windows.Forms.DataGridViewTextBoxColumn
-    Friend WithEvents pnlBar As System.Windows.Forms.Panel
-    Friend WithEvents PictureBox1 As System.Windows.Forms.PictureBox
-    Friend WithEvents Label6 As System.Windows.Forms.Label
-    Friend WithEvents productID As System.Windows.Forms.DataGridViewTextBoxColumn
-    Friend Shadows WithEvents productName As System.Windows.Forms.DataGridViewTextBoxColumn
-    Friend WithEvents category As System.Windows.Forms.DataGridViewTextBoxColumn
-    Friend WithEvents product_price As System.Windows.Forms.DataGridViewTextBoxColumn
-    Friend WithEvents Quantity As System.Windows.Forms.DataGridViewTextBoxColumn
-    Friend WithEvents Supplier As System.Windows.Forms.DataGridViewTextBoxColumn
-    Friend WithEvents Total As System.Windows.Forms.DataGridViewTextBoxColumn
 End Class

@@ -1,4 +1,4 @@
-﻿Module GlobalVariables
+Module GlobalVariables
     Public LoggedInUser As String
     Public LoggedInRole As String
     Public LoggedInUserID As Integer
@@ -22,7 +22,7 @@ Public Class Login
             'Dim password As String = "s1234"
 
             ' Try to login with isArchived check, fallback if column doesn't exist
-            sql = "SELECT userID, username, role, CONCAT(fname, ' ', lname) AS fullName FROM tbl_users WHERE username= ? AND password= ?"
+            sql = "SELECT userID, username, role, CONCAT(fname, ' ', lname) AS fullName FROM tbl_users WHERE BINARY username = ? AND BINARY password = ?"
             cmd = New Odbc.OdbcCommand(sql, conn)
 
             cmd.Parameters.AddWithValue("?", txtUser.Text.Trim)

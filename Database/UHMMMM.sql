@@ -140,7 +140,7 @@ CREATE TABLE `tbl_doctor` (
   `fName` varchar(100) NOT NULL,
   `mName` varchar(100) DEFAULT NULL,
   `lName` varchar(100) NOT NULL,
-  `dob` date NOT NULL,
+  `dob` date DEFAULT NULL,
   `contactNumber` varchar(15) NOT NULL,
   `email` varchar(255) NOT NULL,
   `dateAdded` date DEFAULT NULL,

@@ -386,7 +386,7 @@ Partial Class CreateCheckUp
         Me.btnSave.Font = New System.Drawing.Font("Segoe UI", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.btnSave.ForeColor = System.Drawing.Color.Black
         Me.btnSave.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft
-        Me.btnSave.Location = New System.Drawing.Point(1412, 541)
+        Me.btnSave.Location = New System.Drawing.Point(1416, 3)
         Me.btnSave.Margin = New System.Windows.Forms.Padding(3, 2, 3, 2)
         Me.btnSave.Name = "btnSave"
         Me.btnSave.Size = New System.Drawing.Size(100, 35)
@@ -473,11 +473,9 @@ Partial Class CreateCheckUp
         'pnlCheckUp
         '
         Me.pnlCheckUp.BackColor = System.Drawing.SystemColors.MenuBar
-        Me.pnlCheckUp.Controls.Add(Me.btnBack)
         Me.pnlCheckUp.Controls.Add(Me.pnlCheckupSumm)
         Me.pnlCheckUp.Controls.Add(Me.pnlPD)
         Me.pnlCheckUp.Controls.Add(Me.pnlVM)
-        Me.pnlCheckUp.Controls.Add(Me.btnSave)
         Me.pnlCheckUp.Controls.Add(Me.pnlRemarks)
         Me.pnlCheckUp.Controls.Add(Me.Panel4)
         Me.pnlCheckUp.Dock = System.Windows.Forms.DockStyle.Fill
@@ -494,7 +492,7 @@ Partial Class CreateCheckUp
         Me.btnBack.Font = New System.Drawing.Font("Segoe UI", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.btnBack.ForeColor = System.Drawing.Color.Black
         Me.btnBack.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft
-        Me.btnBack.Location = New System.Drawing.Point(1306, 541)
+        Me.btnBack.Location = New System.Drawing.Point(1310, 3)
         Me.btnBack.Margin = New System.Windows.Forms.Padding(3, 2, 3, 2)
         Me.btnBack.Name = "btnBack"
         Me.btnBack.Size = New System.Drawing.Size(100, 35)
@@ -538,7 +536,7 @@ Partial Class CreateCheckUp
         Me.pnlCheckupSumm.Controls.Add(Me.Label39)
         Me.pnlCheckupSumm.Location = New System.Drawing.Point(912, 46)
         Me.pnlCheckupSumm.Name = "pnlCheckupSumm"
-        Me.pnlCheckupSumm.Size = New System.Drawing.Size(600, 490)
+        Me.pnlCheckupSumm.Size = New System.Drawing.Size(600, 643)
         Me.pnlCheckupSumm.TabIndex = 232
         '
         'lblBp
@@ -971,8 +969,10 @@ Partial Class CreateCheckUp
         'Panel4
         '
         Me.Panel4.BackColor = System.Drawing.SystemColors.GradientActiveCaption
+        Me.Panel4.Controls.Add(Me.btnBack)
         Me.Panel4.Controls.Add(Me.PictureBox1)
         Me.Panel4.Controls.Add(Me.lblTitle)
+        Me.Panel4.Controls.Add(Me.btnSave)
         Me.Panel4.Dock = System.Windows.Forms.DockStyle.Top
         Me.Panel4.Location = New System.Drawing.Point(0, 0)
         Me.Panel4.Name = "Panel4"
